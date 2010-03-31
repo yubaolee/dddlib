@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-project</artifactId>
+		<version>1.0-beta-1</version>
+	</parent>
+	<artifactId>dayatang-commons-koala</artifactId>
+	<packaging>jar</packaging>
+	<name>Dayatang commons koala module</name>
+	<scm>
+		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/koala/</connection>
+		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/koala/</developerConnection>
+	</scm>
+
+
+
+	<!-- Build Settings -->
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/rules</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>jsr94</groupId>
+			<artifactId>jsr94</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-jsr94</artifactId>
+			<version>${drools.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<drools.version>5.0.1</drools.version>
+		<commons.configuration.version>1.6</commons.configuration.version>
+	</properties>
+</project>
