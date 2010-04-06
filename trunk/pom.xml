@@ -467,9 +467,9 @@
 		<jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
 		<jdbc.version>5.1.12</jdbc.version>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-		<jdbc.url><![CDATA[jdbc:mysql://127.0.0.1/testdb?useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-		<jdbc.username>hr</jdbc.username>
-		<jdbc.password>hr</jdbc.password>
+		<jdbc.url><![CDATA[jdbc:mysql://127.0.0.1/testdb?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+		<jdbc.username>root</jdbc.username>
+		<jdbc.password></jdbc.password>
 		<hibernate.query.substitutions>true 'Y', false 'N'</hibernate.query.substitutions>
 		<hibernate.cache.provider_class>org.hibernate.cache.EhCacheProvider</hibernate.cache.provider_class>
 		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
