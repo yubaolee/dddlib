@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
-import javax.rules.StatelessRuleSession;
+import javax.rules.StatefulRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
@@ -20,11 +20,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dayatang.rule.RuleRuntimeException;
-import com.dayatang.rule.StatelessRuleManager;
+import com.dayatang.rule.StatefulRuleService;
 import com.dayatang.rule.UnSupportedRuleFormatException;
 
 @SuppressWarnings("unchecked")
-public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
+public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 
 	private static final long serialVersionUID = -6550908446842944288L;
 	
@@ -33,12 +33,12 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 	private RuleRuntime ruleRuntime;
 	
 
-	protected static Logger log = LoggerFactory.getLogger(StatelessRuleManagerJsr94.class);
+	protected static Logger log = LoggerFactory.getLogger(StatefulRuleServiceJsr94.class);
 
-	public StatelessRuleManagerJsr94() {
+	public StatefulRuleServiceJsr94() {
 	}
 
-	public StatelessRuleManagerJsr94(RuleServiceProvider ruleServiceProvider) {
+	public StatefulRuleServiceJsr94(RuleServiceProvider ruleServiceProvider) {
 		setRuleServiceProvider(ruleServiceProvider);
 	}
 
@@ -53,27 +53,27 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 	}
 
-	public List executeRules(String ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
-		return executeRules(session, params);
+	public void executeRules(String ruleSource, Map ruleProperty, Map map, List params) {
+		StatefulRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+		executeRules(session, params);
 	}
 
-	public List executeRules(Reader ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
-		return executeRules(session, params);
+	public void executeRules(Reader ruleSource, Map ruleProperty, Map map, List params) {
+		StatefulRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+		executeRules(session, params);
 	}
 
-	public List executeRules(InputStream ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
-		return executeRules(session, params);
+	public void executeRules(InputStream ruleSource, Map ruleProperty, Map map, List params) {
+		StatefulRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+		executeRules(session, params);
 	}
 
-	public List executeRules(Object ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
-		return executeRules(session, params);
+	public void executeRules(Object ruleSource, Map ruleProperty, Map map, List params) {
+		StatefulRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+		executeRules(session, params);
 	}
 
-	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map) {
+	public StatefulRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map) {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map) {
+	public StatefulRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map) {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
 		} catch (Exception e) {
@@ -89,7 +89,7 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map) {
+	public StatefulRuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map) {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map) {
+	public StatefulRuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map) {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
 		} catch (Exception e) {
@@ -105,18 +105,17 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 	}
 
-	private StatelessRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map map) {
+	private StatefulRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map map) {
 		try{
 			String packageName = ruleExecutionSet.getName();
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, map, RuleRuntime.STATELESS_SESSION_TYPE);
+			return (StatefulRuleSession) ruleRuntime.createRuleSession(packageName, map, RuleRuntime.STATEFUL_SESSION_TYPE);
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
-	private List executeRules(StatelessRuleSession statelessSession, List params) {
-		List result;
+	private void executeRules(StatefulRuleSession statefulSession, List params) {
 		StopWatch watch = null;
 		if (log.isDebugEnabled()) {
 			watch = new StopWatch();
@@ -124,7 +123,7 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 		}
 
 		try{
-			result = statelessSession.executeRules(params);
+			statefulSession.executeRules();
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
@@ -135,7 +134,6 @@ public class StatelessRuleManagerJsr94 implements StatelessRuleManager {
 			// for gc
 			watch = null;
 		}
-		return result;
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map ruleProperty) {
