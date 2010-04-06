@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-project</artifactId>
+		<version>1.0-beta-1</version>
+	</parent>
+	<artifactId>dayatang-commons-tapestry</artifactId>
+	<packaging>jar</packaging>
+	<name>Dayatang Common API implemented by Apache Tapestry</name>
+	<description>Common API implemented by Tapestry.</description>
+	<scm>
+		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/tapestry</connection>
+		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/tapestry</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
+	</issueManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>dayatang-commons-domain</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-ioc</artifactId>
+			<version>${tapestry.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-core</artifactId>
+			<version>${tapestry.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<properties>
+		<tapestry.version>5.1.0.5</tapestry.version>
+		<servlet.version>2.5</servlet.version>
+	</properties>
+</project>
