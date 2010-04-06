@@ -477,7 +477,7 @@
 		<module>spring</module>
 		<module>guice</module>
 		<module>utils</module>
-		<module>koala</module>
+		<module>rule</module>
 		<module>querychannel</module>
 		<module>observer</module>
 		<module>excel</module>
