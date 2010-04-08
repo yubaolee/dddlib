@@ -16,8 +16,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import com.dayatang.commons.domain.AbstractEntity;
-import com.dayatang.commons.domain.QuerySettings;
+import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.QuerySettings;
 
 
 @Entity

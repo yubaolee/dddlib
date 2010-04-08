@@ -25,11 +25,11 @@
 
 	<aop:config>
 		<aop:pointcut id="repositoryOperation"
-			expression="execution(* com.dayatang.commons.domain.EntityRepository.*(..))" />
+			expression="execution(* com.dayatang.domain.EntityRepository.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="repositoryOperation" />
 	</aop:config>
 
-	<bean id="repository" class="com.dayatang.commons.repository.EntityRepositoryJpa">
+	<bean id="repository" class="com.dayatang.jpa.EntityRepositoryJpa">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 </beans>

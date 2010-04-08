@@ -148,7 +148,7 @@
                         <compress>true</compress>
                         <index>true</index>
                         <manifestEntries>
-                            <Tapestry-Module-Classes>com.dayatang.commons.security.services.SecurityModule</Tapestry-Module-Classes>
+                            <Tapestry-Module-Classes>com.dayatang.security.services.SecurityModule</Tapestry-Module-Classes>
                         </manifestEntries>
                     </archive>
                 </configuration>
