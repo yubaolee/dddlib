@@ -9,7 +9,6 @@
     <version>3.0.0</version>
     <name>Spring Security services for Tapestry</name>
     <inceptionYear>2007</inceptionYear>
-    <url>http://www.localhost.nu/java/tapestry-spring-security</url>
 	
     <organization>
         <name>Robin Helgelin</name>
