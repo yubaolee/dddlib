@@ -1,4 +1,4 @@
-package com.dayatang.commons.querychannel.domain;
+package com.dayatang.querychannel.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;

@@ -1,4 +1,4 @@
-package com.dayatang.commons.querychannel.support;
+package com.dayatang.querychannel.support;
 
 import java.io.Serializable;
 import java.util.ArrayList;
