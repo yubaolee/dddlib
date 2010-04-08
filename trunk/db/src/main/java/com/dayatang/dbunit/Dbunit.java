@@ -76,6 +76,8 @@ public class Dbunit {
 			// will call default setUpOperation
 			databaseTester.setSetUpOperation(setUpOp());
 			databaseTester.onSetup();
+		} else {
+			logger.warn("没有指定数据集文件！");
 		}
 
 	}
@@ -116,7 +118,6 @@ public class Dbunit {
 	}
 
 	protected String[] getDataSetFilePaths() {
-		logger.warn("没有指定数据集文件！");
 		// return new String[] { "dataset/empty.xml" };
 		return new String[] {};
 	}
