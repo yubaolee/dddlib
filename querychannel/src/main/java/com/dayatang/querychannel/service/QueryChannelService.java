@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.dayatang.commons.domain.Entity;
-import com.dayatang.commons.domain.QuerySettings;
+import com.dayatang.domain.Entity;
+import com.dayatang.domain.QuerySettings;
 import com.dayatang.querychannel.support.Page;
 
 public interface QueryChannelService extends Serializable {

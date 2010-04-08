@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.dayatang.commons.domain.AbstractEntity;
+import com.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table(name = "pay_test_myentity")
