@@ -1,4 +1,4 @@
-package com.dayatang.tapestry.filter;
+package com.dayatang.tapestry.webapp.filter;
 
 import javax.servlet.ServletException;
 
