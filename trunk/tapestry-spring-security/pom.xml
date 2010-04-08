@@ -3,16 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dayatang.commons</groupId>
-    <artifactId>tapestry-spring-security</artifactId>
-    <packaging>jar</packaging>
-    <version>3.0.0</version>
-    <name>Spring Security services for Tapestry</name>
+	<parent>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-project</artifactId>
+		<version>1.0-beta-1</version>
+	</parent>
+    <artifactId>dayatang-spring-security</artifactId>
+    <name>Dayatang Spring Security services for Tapestry</name>
     <inceptionYear>2007</inceptionYear>
-	
-    <organization>
-        <name>Robin Helgelin</name>
-    </organization>
 	
     <licenses>
         <license>

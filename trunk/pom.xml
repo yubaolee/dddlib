@@ -33,6 +33,15 @@
 			</roles>
 		</developer>
 	</developers>
+	
+    <licenses>
+        <license>
+            <name>Apache Software License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+	
 	<ciManagement>
 		<system>continuum</system>
 		<url>http://www.dayatang.com:8080/continuum</url>
@@ -46,7 +55,8 @@
 		</notifiers>
 	</ciManagement>
 	<scm>
-		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/</connection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
