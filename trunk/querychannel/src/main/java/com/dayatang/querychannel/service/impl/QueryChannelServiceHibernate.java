@@ -13,8 +13,8 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.dayatang.commons.domain.Entity;
-import com.dayatang.commons.domain.QuerySettings;
+import com.dayatang.domain.Entity;
+import com.dayatang.domain.QuerySettings;
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
 

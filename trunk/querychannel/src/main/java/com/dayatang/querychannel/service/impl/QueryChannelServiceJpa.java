@@ -12,8 +12,8 @@ import javax.persistence.Query;
 import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
 
-import com.dayatang.commons.domain.Entity;
-import com.dayatang.commons.domain.QuerySettings;
+import com.dayatang.domain.Entity;
+import com.dayatang.domain.QuerySettings;
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
 
