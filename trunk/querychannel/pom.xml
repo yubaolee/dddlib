@@ -13,15 +13,15 @@
 
 	<scm>
 		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/querychannel</connection>
-		<!-- 
-		<connection>scm:svn:https://hrm-koala.googlecode.com/svn/trunk/querychannel</connection>
-		 -->
+		<!--
+			<connection>scm:svn:https://hrm-koala.googlecode.com/svn/trunk/querychannel</connection>
+		-->
 	</scm>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-tapestry</artifactId>
+			<artifactId>dayatang-commons-spring</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
@@ -43,12 +43,6 @@
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${javassist.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tapestry</groupId>
-			<artifactId>tapestry-hibernate-core</artifactId>
-			<version>${tapestry.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${jdbc.groupId}</groupId>
@@ -86,6 +80,5 @@
 
 	<properties>
 		<maven.db.skip>false</maven.db.skip>
-		<tapestry.version>5.1.0.5</tapestry.version>
 	</properties>
 </project>
