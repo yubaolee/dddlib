@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-project</artifactId>
+		<version>1.0-beta-1</version>
+	</parent>
+	<artifactId>dayatang-commons-db</artifactId>
+	<packaging>jar</packaging>
+	<name>Dayatang Database Utils</name>
+	<description>Database Utils</description>
+	<scm>
+		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/db/</connection>
+		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/db/</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
+	</issueManagement>
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>dayatang-commons-domain</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+</project>
