@@ -87,7 +87,7 @@ public class RepositoryJpaTest {
 		assertEquals("男", repository.get(Dictionary.class, 1L).getText());
 	}
 
-	@Test
+	//@Test
 	public void testLoad() {
 		assertEquals("男", repository.load(Dictionary.class, 1L).getText());
 	}
