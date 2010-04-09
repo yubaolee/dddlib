@@ -16,7 +16,7 @@ public interface EntityRepository {
 	 * 将实体（无论是新的还是修改了的）保存到仓储中。
 	 * @param entity 要存储的实体实例。
 	 */
-	void save(Entity entity);
+	<T extends Entity> T save(T entity);
 
 	/**
 	 * 将实体从仓储中删除。如果仓储中不存在此实例将抛出EntityNotExistedException异常。
