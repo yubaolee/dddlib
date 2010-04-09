@@ -79,7 +79,7 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public <T extends Entity> T load(final Class<T> clazz, final Serializable id) {
-		return getJpaTemplate().find(clazz, id);
+		return getJpaTemplate().getReference(clazz, id);
 	}
 
 	@Override
