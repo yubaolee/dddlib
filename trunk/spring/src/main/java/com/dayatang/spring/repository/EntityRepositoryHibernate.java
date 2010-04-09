@@ -131,7 +131,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 				if (settings.getMaxResults() > 0) {
 					query.setMaxResults(settings.getMaxResults());
 				}
-				return (T) query.list();
+				return query.list();
 			}
 		});
 	}
