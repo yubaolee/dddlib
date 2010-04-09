@@ -12,7 +12,7 @@
 
 	<!-- SessionFactory, DataSource, etc. omitted -->
 
-	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -20,10 +20,10 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 
-	<bean id="mySessionFactory"
+	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="myDataSource" />
-		<property name="annotatedPackages">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
 			<list>
 				<value>com.dayatang.spring.domain</value>
 			</list>
@@ -33,25 +33,27 @@
 		</property>
 	</bean>
 
-	<bean id="transactionManager"
+	<bean id="txManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="mySessionFactory" />
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<aop:config>
-		<aop:pointcut id="serviceMethods"
-			expression="execution(* com.dayatang.domain.EntityRepository.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
-	</aop:config>
-
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
-			<tx:method name="*" propagation="REQUIRED" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED"/>
 		</tx:attributes>
 	</tx:advice>
 
+	<aop:config>
+		<aop:pointcut id="repositoryOperation"
+			expression="execution(* com.dayatang.domain.EntityRepository.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="repositoryOperation" />
+	</aop:config>
+
 	<bean id="repository"
 		class="com.dayatang.spring.repository.EntityRepositoryHibernate">
-		<property name="sessionFactory" ref="mySessionFactory" />
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

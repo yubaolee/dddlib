@@ -52,18 +52,16 @@ public class RepositoryJpaTest {
 
 	@After
 	public void tearDown() {
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
 	public void testAddAndRemove() {
 		Dictionary dictionary = new Dictionary("2001", "双硕士", DictionaryCategory.getByName(DictionaryCategory.DEGREE));
-		repository.save(dictionary);
-		List<Dictionary> dictionaries = repository.findAll(Dictionary.class);
-		assertTrue(dictionaries.contains(dictionary));
-		dictionary = dictionaries.get(dictionaries.indexOf(dictionary));
-		Long id = dictionary.getId();
+		dictionary = repository.save(dictionary);
+		assertNotNull(dictionary.getId());
 		repository.remove(dictionary);
-		assertNull(repository.get(Dictionary.class, id));
+		assertNull(repository.get(Dictionary.class, dictionary.getId()));
 	}
 
 	@Test

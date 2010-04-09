@@ -50,8 +50,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 * @see com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
 	 */
 	@Override
-	public void save(Entity entity) {
-		getJpaTemplate().merge(entity);
+	public <T extends Entity> T save(T entity) {
+		return getJpaTemplate().merge(entity);
 	}
 
 	/*

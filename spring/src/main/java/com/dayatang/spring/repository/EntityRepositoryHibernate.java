@@ -49,14 +49,12 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.dayatang.domain.EntityRepository#save(com.dayatang.spring
-	 * .domain.Entity)
+	 * @see com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
 	 */
 	@Override
-	public void save(Entity entity) {
+	public <T extends Entity> T save(T entity) {
 		getHibernateTemplate().saveOrUpdate(entity);
+		return entity;
 	}
 
 	/*
