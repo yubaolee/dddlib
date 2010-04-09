@@ -2,6 +2,7 @@ package com.dayatang.spring.repository;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.spring.repository.internal.QueryTranslator;
+import com.dayatang.spring.repository.internal.HibernateQueryTranslator;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -29,6 +30,14 @@ import com.dayatang.spring.repository.internal.QueryTranslator;
 public class EntityRepositoryHibernate implements EntityRepository {
 
 	private SessionFactory sessionFactory;
+
+	public EntityRepositoryHibernate() {
+		super();
+	}
+
+	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
+		setSessionFactory(sessionFactory);
+	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
@@ -116,11 +125,14 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
+		if (settings.containsInCriteronWithEmptyValue()) {
+			return Collections.EMPTY_LIST;
+		}
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				QueryTranslator translator = new QueryTranslator(settings);
+				HibernateQueryTranslator translator = new HibernateQueryTranslator(settings);
 				String queryString = translator.getQueryString(); 
 				List<Object> params = translator.getParams();
 				Query query = session.createQuery(queryString);
@@ -246,6 +258,9 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@Override
 	public <T extends Entity> T getSingleResult(QuerySettings<T> settings) {
+		if (settings.containsInCriteronWithEmptyValue()) {
+			return null;
+		}
 		List<T> results = find(settings);
 		return results.isEmpty() ? null : results.get(0);
 	}
