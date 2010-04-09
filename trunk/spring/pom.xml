@@ -112,5 +112,6 @@
 	</build>
 	<properties>
 		<javassist.version>3.8.0.GA</javassist.version>
+		<maven.db.skip>false</maven.db.skip>
 	</properties>
 </project>

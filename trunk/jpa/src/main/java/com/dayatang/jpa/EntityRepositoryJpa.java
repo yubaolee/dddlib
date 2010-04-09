@@ -35,14 +35,13 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 		setEntityManagerFactory(entityManagerFactory);
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
 	 */
 	@Override
-	public void save(Entity entity) {
-		getJpaTemplate().merge(entity);
+	public <T extends Entity> T save(T entity) {
+		return getJpaTemplate().merge(entity);
 	}
 
 	/*

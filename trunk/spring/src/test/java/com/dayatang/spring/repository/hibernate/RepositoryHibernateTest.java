@@ -14,19 +14,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.domain.ValidationException;
 import com.dayatang.spring.domain.Dictionary;
 import com.dayatang.spring.domain.DictionaryCategory;
-import com.dayatang.spring.repository.EntityRepositoryHibernate;
 
 /**
  * 
@@ -34,22 +36,28 @@ import com.dayatang.spring.repository.EntityRepositoryHibernate;
  */
 public class RepositoryHibernateTest {
 
-	private static EntityRepositoryHibernate repository;
+	private EntityRepository repository;
+	
+	private static ApplicationContext applicationContext;
 
-	private Transaction tx;
+	@BeforeClass
+	public static void setUpClass() {
+		applicationContext = new ClassPathXmlApplicationContext("applicationContext-hibernate.xml");
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+	}
 
 	@Before
 	public void setUp() {
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		tx = sessionFactory.getCurrentSession().beginTransaction();
-		repository = new EntityRepositoryHibernate(sessionFactory);
+		repository = (EntityRepository) applicationContext.getBean("repository");
 		AbstractEntity.setRepository(repository);
 	}
 
 	@After
 	public void tearDown() {
-		tx.commit();
-		HibernateUtils.close();
+		AbstractEntity.setRepository(null);
 	}
 
 

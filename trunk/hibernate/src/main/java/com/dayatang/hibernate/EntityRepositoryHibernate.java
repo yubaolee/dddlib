@@ -50,8 +50,9 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	 * @see com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
 	 */
 	@Override
-	public void save(Entity entity) {
+	public <T extends Entity> T save(T entity) {
 		getSession().saveOrUpdate(entity);
+		return entity;
 	}
 
 	/*
