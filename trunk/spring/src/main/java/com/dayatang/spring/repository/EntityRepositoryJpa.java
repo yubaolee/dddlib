@@ -29,6 +29,10 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	private EntityManagerFactory entityManagerFactory;
 
+	public EntityRepositoryJpa() {
+		super();
+	}
+
 	public EntityRepositoryJpa(EntityManagerFactory entityManagerFactory) {
 		setEntityManagerFactory(entityManagerFactory);
 	}
