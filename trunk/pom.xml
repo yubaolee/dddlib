@@ -8,12 +8,13 @@
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
 	<url>http://www.dayatang.com</url>
+	<description>
+		Common Domain APIs of dayatang.com. Includes interfaces and base classes.
+	</description>
 	<organization>
 		<name>Dayatang Software Corp.</name>
 		<url>http://www.dayatang.com</url>
 	</organization>
-	<description> Common Domain APIs of dayatang.com. Includes interfaces
-		and base classes.</description>
 	<developers>
 		<developer>
 			<id>yyang</id>
@@ -29,6 +30,7 @@
 			<name>Cao Chen</name>
 			<email>chencao0524@hotmail.com</email>
 			<roles>
+				<role>administrator</role>
 				<role>developer</role>
 			</roles>
 		</developer>
@@ -54,10 +56,12 @@
 			</notifier>
 		</notifiers>
 	</ciManagement>
+	
 	<scm>
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
 		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
 	</scm>
+	
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
@@ -69,12 +73,14 @@
 			<url>http://www.dayatang.com/m2/internal</url>
 		</repository>
 	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>dayatang</id>
 			<url>http://www.dayatang.com/m2/internal</url>
 		</pluginRepository>
 	</pluginRepositories>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -109,6 +115,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -125,6 +132,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
@@ -224,6 +232,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -332,8 +341,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-
 
 	<profiles>
 		<!-- ================= Production Settings Profile ================= -->
