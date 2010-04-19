@@ -9,14 +9,6 @@
 	<artifactId>dayatang-commons-rule</artifactId>
 	<packaging>jar</packaging>
 	<name>Dayatang Commons Rule Module</name>
-	<scm>
-		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/rule/</connection>
-		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/rule/</developerConnection>
-	</scm>
-
-
-
-	<!-- Build Settings -->
 	<build>
 		<resources>
 			<resource>

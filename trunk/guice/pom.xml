@@ -11,14 +11,6 @@
 	<packaging>jar</packaging>
 	<name>Dayatang IoC API implemented by Google Guice</name>
 	<description>Implement IoC interface InstanceProvider with Google Guice.</description>
-	<scm>
-		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/guice/</connection>
-		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/guice/</developerConnection>
-	</scm>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
-	</issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
