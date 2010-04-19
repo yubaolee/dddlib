@@ -10,14 +10,6 @@
 	<packaging>jar</packaging>
 	<name>Dayatang Commons QueryChannel Module</name>
 
-
-	<scm>
-		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/querychannel</connection>
-		<!--
-			<connection>scm:svn:https://hrm-koala.googlecode.com/svn/trunk/querychannel</connection>
-		-->
-	</scm>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.dayatang.commons</groupId>

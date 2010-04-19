@@ -12,14 +12,6 @@
 	<packaging>jar</packaging>
 	<name>Dayatang Excel Date Import and Export Library</name>
 	<description>Dayatang Excel Date Import and Export Library</description>
-	<scm>
-		<connection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/excel/</connection>
-		<developerConnection>scm:svn:http://www.dayatang.com/svn/java-projects/dayatang-commons/trunk/excel/</developerConnection>
-	</scm>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://www.suilink.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
-	</issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
