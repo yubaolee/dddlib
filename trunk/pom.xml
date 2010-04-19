@@ -51,7 +51,6 @@
 			<notifier>
 				<type>mail</type>
 				<configuration>
-					<address>cnyangyu@hotmail.com</address>
 					<address>chencao0524@gmail.com</address>
 					<committers>true</committers>
 				</configuration>
