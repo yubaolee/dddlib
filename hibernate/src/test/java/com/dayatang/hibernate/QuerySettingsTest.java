@@ -11,9 +11,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.domain.AbstractEntity;
@@ -26,22 +30,36 @@ import com.dayatang.hibernate.EntityRepositoryHibernate;
  */
 public class QuerySettingsTest {
 
-	private static EntityRepositoryHibernate repository;
-
+	private static SessionFactory sessionFactory;
+	
 	private Session session;
 
 	private Transaction tx;
+
+	private static EntityRepositoryHibernate repository;
 	
 	private QuerySettings<Dictionary> settings;
 	
 	private DictionaryCategory gender;
 
+	@BeforeClass
+	public static void setUpClass() {
+		sessionFactory = new AnnotationConfiguration().configure()
+			.addAnnotatedClass(DictionaryCategory.class)
+			.addAnnotatedClass(Dictionary.class)
+			.buildSessionFactory();
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+		sessionFactory.close();
+	}
+	
 	@Before
 	public void setUp() {
-		session = createSession();
+		session = sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate();
-		repository.setSession(session);
+		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = DictionaryCategory.getByName(DictionaryCategory.GENDER);
@@ -49,14 +67,11 @@ public class QuerySettingsTest {
 
 	@After
 	public void tearDown() {
-		tx.commit();
+		tx.rollback();
 		if (session.isOpen()) {
-			repository.getSession().close();
+			session.close();
 		}
-	}
-
-	private static Session createSession() {
-		return HibernateUtils.getSessionFactory().getCurrentSession();
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test

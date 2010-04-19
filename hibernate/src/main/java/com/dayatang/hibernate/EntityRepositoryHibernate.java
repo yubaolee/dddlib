@@ -28,6 +28,15 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	private Session session; 
 
 
+	public EntityRepositoryHibernate() {
+		super();
+	}
+
+	public EntityRepositoryHibernate(Session session) {
+		super();
+		setSession(session);
+	}
+
 	/**
 	 * @return the session
 	 */
