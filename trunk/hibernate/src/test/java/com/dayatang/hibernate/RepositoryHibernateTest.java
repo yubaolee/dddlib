@@ -3,20 +3,31 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dayatang.domain.*;
-import com.dayatang.hibernate.EntityRepositoryHibernate;
+import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.ExampleSettings;
+import com.dayatang.domain.QuerySettings;
+import com.dayatang.domain.ValidationException;
 
 /**
  * 
@@ -24,31 +35,42 @@ import com.dayatang.hibernate.EntityRepositoryHibernate;
  */
 public class RepositoryHibernateTest {
 
-	private static EntityRepositoryHibernate repository;
-
+	private static SessionFactory sessionFactory;
+	
 	private Session session;
 
 	private Transaction tx;
 
+	private static EntityRepositoryHibernate repository;
+
+	@BeforeClass
+	public static void setUpClass() {
+		sessionFactory = new AnnotationConfiguration().configure()
+			.addAnnotatedClass(DictionaryCategory.class)
+			.addAnnotatedClass(Dictionary.class)
+			.buildSessionFactory();
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+		sessionFactory.close();
+	}
+	
 	@Before
 	public void setUp() {
-		session = createSession();
+		session = sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate();
-		repository.setSession(session);
+		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
 	}
 
 	@After
 	public void tearDown() {
-		tx.commit();
+		tx.rollback();
 		if (session.isOpen()) {
-			repository.getSession().close();
+			session.close();
 		}
-	}
-
-	private static Session createSession() {
-		return HibernateUtils.getSessionFactory().getCurrentSession();
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
