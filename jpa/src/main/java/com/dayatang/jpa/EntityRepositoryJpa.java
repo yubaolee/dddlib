@@ -6,16 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
-import org.springframework.orm.jpa.JpaCallback;
-import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.jpa.internal.QueryTranslator;
 
@@ -25,15 +21,22 @@ import com.dayatang.jpa.internal.QueryTranslator;
  * @author yyang
  * 
  */
-public class EntityRepositoryJpa extends JpaDaoSupport implements EntityRepository {
+public class EntityRepositoryJpa implements EntityRepository {
 
+	private EntityManager entityManager;
+	
 	public EntityRepositoryJpa() {
 	}
 
-
-	public EntityRepositoryJpa(EntityManagerFactory entityManagerFactory) {
-		setEntityManagerFactory(entityManagerFactory);
+	public EntityRepositoryJpa(EntityManager entityManager) {
+		super();
+		this.entityManager = entityManager;
 	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -41,7 +44,7 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		return getJpaTemplate().merge(entity);
+		return getEntityManager().merge(entity);
 	}
 
 	/*
@@ -50,7 +53,7 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public void remove(Entity entity) {
-		getJpaTemplate().remove(get(entity.getClass(), entity.getId()));
+		getEntityManager().remove(get(entity.getClass(), entity.getId()));
 	}
 
 	/*
@@ -59,7 +62,7 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public <T extends Entity> boolean exists(final Class<T> clazz, final Serializable id) {
-		T entity = getJpaTemplate().find(clazz, id);
+		T entity = getEntityManager().find(clazz, id);
 		return entity != null;
 	}
 
@@ -69,7 +72,7 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public <T extends Entity> T get(final Class<T> clazz, final Serializable id) {
-		return getJpaTemplate().find(clazz, id);
+		return getEntityManager().find(clazz, id);
 	}
 	
 	/*
@@ -78,121 +81,85 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 	 */
 	@Override
 	public <T extends Entity> T load(final Class<T> clazz, final Serializable id) {
-		return getJpaTemplate().getReference(clazz, id);
+		return getEntityManager().getReference(clazz, id);
 	}
 
 	@Override
 	public <T extends Entity> T getUnmodified(final Class<T> clazz, final T entity) {
+		getEntityManager().detach(entity);
 		return get(clazz, entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(final Class<T> clazz) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				String queryString = "select o from " + clazz.getName() + " as o"; 
-				Query query = em.createQuery(queryString);
-				return query.getResultList();
-			}
-		});
+		String queryString = "select o from " + clazz.getName() + " as o"; 
+		return getEntityManager().createQuery(queryString).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				if (settings.containsInCriteronWithEmptyValue()) {
-					return Collections.EMPTY_LIST;
-				}
-				QueryTranslator translator = new QueryTranslator(settings);
-				String queryString = translator.getQueryString(); 
-				List<Object> params = translator.getParams();
-				int firstResult = settings.getFirstResult();
-				int maxResults = settings.getMaxResults();
-				Query query = em.createQuery(queryString);
-				for (int i = 0; i < params.size(); i++) {
-					query.setParameter(i + 1, params.get(i));
-				}
-				if (firstResult < 0) {
-					firstResult =0;
-				}
-				query.setFirstResult(settings.getFirstResult());
-				if (maxResults > 0) {
-					query.setMaxResults(maxResults);
-				}
-				return query.getResultList();
-			}
-		});
+		if (settings.containsInCriteronWithEmptyValue()) {
+			return Collections.EMPTY_LIST;
+		}
+		QueryTranslator translator = new QueryTranslator(settings);
+		String queryString = translator.getQueryString(); 
+		List<Object> params = translator.getParams();
+		int firstResult = settings.getFirstResult();
+		int maxResults = settings.getMaxResults();
+		Query query = getEntityManager().createQuery(queryString);
+		for (int i = 0; i < params.size(); i++) {
+			query.setParameter(i + 1, params.get(i));
+		}
+		if (firstResult < 0) {
+			firstResult =0;
+		}
+		query.setFirstResult(settings.getFirstResult());
+		if (maxResults > 0) {
+			query.setMaxResults(maxResults);
+		}
+		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final String queryString, final Object[] params) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (int i = 0; i < params.length; i++) {
-					query.setParameter(i + 1, params[i]);
-				}
-				return query.getResultList();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final String queryString, final Map<String, Object> params) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (String key : params.keySet()) {
-					query = query.setParameter(key, params.get(key));
-				}
-				return query.getResultList();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (String key : params.keySet()) {
+			query = query.setParameter(key, params.get(key));
+		}
+		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Object[] params) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createNamedQuery(queryName);
-				for (int i = 0; i < params.length; i++) {
-					query.setParameter(i + 1, params[i]);
-				}
-				return query.getResultList();
-			}
-		});
+		Query query = getEntityManager().createNamedQuery(queryName);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		return query.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params) {
-		return getJpaTemplate().executeFind(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createNamedQuery(queryName);
-				for (String key : params.keySet()) {
-					query = query.setParameter(key, params.get(key));
-				}
-				return query.getResultList();
-			}
-		});
+		Query query = getEntityManager().createNamedQuery(queryName);
+		for (String key : params.keySet()) {
+			query = query.setParameter(key, params.get(key));
+		}
+		return query.getResultList();
 	}
 
 	@Override
@@ -206,68 +173,47 @@ public class EntityRepositoryJpa extends JpaDaoSupport implements EntityReposito
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getSingleResult(final String queryString, final Object[] params) {
-		return getJpaTemplate().execute(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (int i = 0; i < params.length; i++) {
-					query.setParameter(i + 1, params[i]);
-				}
-				return query.getSingleResult();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		return query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
-		return getJpaTemplate().execute(new JpaCallback() {
-			
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (String key : params.keySet()) {
-					query = query.setParameter(key, params.get(key));
-				}
-				return query.getSingleResult();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (String key : params.keySet()) {
+			query = query.setParameter(key, params.get(key));
+		}
+		return query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Object[] params) {
-		getJpaTemplate().execute(new JpaCallback() {
-
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (int i = 0; i < params.length; i++) {
-					query.setParameter(i + 1, params[i]);
-				}
-				return query.executeUpdate();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		query.executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Map<String, Object> params) {
-		getJpaTemplate().execute(new JpaCallback() {
-
-			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
-				Query query = em.createQuery(queryString);
-				for (String key : params.keySet()) {
-					query = query.setParameter(key, params.get(key));
-				}
-				return query.executeUpdate();
-			}
-		});
+		Query query = getEntityManager().createQuery(queryString);
+		for (String key : params.keySet()) {
+			query = query.setParameter(key, params.get(key));
+		}
+		query.executeUpdate();
+	}
+	
+	private EntityManager getEntityManager() {
+		if (entityManager == null) {
+			entityManager = InstanceFactory.getInstance(EntityManager.class); 
+		}
+		return entityManager;
 	}
 
 }

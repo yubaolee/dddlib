@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.junit.After;
@@ -30,11 +32,15 @@ public class QuerySettingsTest {
 
 	private static EntityManagerFactory emf;
 	
+	private EntityManager entityManager;
+	
 	private EntityRepositoryJpa repository;
 	
 	private QuerySettings<Dictionary> settings;
 	
 	private DictionaryCategory gender;
+	
+	private EntityTransaction tx;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -48,7 +54,10 @@ public class QuerySettingsTest {
 	
 	@Before
 	public void setUp() {
-		repository = new EntityRepositoryJpa(emf);
+		entityManager = emf.createEntityManager();
+		tx = entityManager.getTransaction();
+		tx.begin();
+		repository = new EntityRepositoryJpa(entityManager);
 		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = DictionaryCategory.getByName(DictionaryCategory.GENDER);
@@ -56,6 +65,9 @@ public class QuerySettingsTest {
 
 	@After
 	public void tearDown() {
+		tx.commit();
+		entityManager.close();
+		DictionaryCategory.setRepository(null);
 	}
 
 	@Test

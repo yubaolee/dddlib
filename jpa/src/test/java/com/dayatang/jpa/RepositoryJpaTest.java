@@ -3,22 +3,29 @@
  */
 package com.dayatang.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.domain.ValidationException;
@@ -29,27 +36,38 @@ import com.dayatang.domain.ValidationException;
  */
 public class RepositoryJpaTest {
 
-	private EntityRepository repository;
+	private static EntityManagerFactory emf;
 	
-	private static ApplicationContext applicationContext;
+	private EntityManager entityManager;
+	
+	private EntityRepositoryJpa repository;
+	
+	private EntityTransaction tx;
 
 	@BeforeClass
 	public static void setUpClass() {
-		applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+		emf = Persistence.createEntityManagerFactory("default");
 	}
 	
 	@AfterClass
 	public static void tearDownClass() {
+		emf.close();
 	}
-
+	
 	@Before
 	public void setUp() {
-		repository = (EntityRepository) applicationContext.getBean("repository");
+		entityManager = emf.createEntityManager();
+		tx = entityManager.getTransaction();
+		tx.begin();
+		repository = new EntityRepositoryJpa(entityManager);
 		AbstractEntity.setRepository(repository);
 	}
 
 	@After
 	public void tearDown() {
+		tx.rollback();
+		entityManager.close();
+		DictionaryCategory.setRepository(null);
 	}
 
 	@Test
