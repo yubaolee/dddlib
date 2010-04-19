@@ -93,7 +93,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@Override
 	public <T extends Entity> T getUnmodified(final Class<T> clazz, final T entity) {
-		getJpaTemplate().getEntityManager().detach(entity);
 		return get(clazz, entity.getId());
 	}
 
