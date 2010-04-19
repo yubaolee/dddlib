@@ -51,8 +51,22 @@
 			<notifier>
 				<type>mail</type>
 				<configuration>
-					<address>dev@dayatang.com</address>
+					<address>cnyangyu@hotmail.com</address>
 				</configuration>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnWarning>false</sendOnWarning>
+				<sendOnSuccess>false</sendOnSuccess>
+			</notifier>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>chencao0524@gmail.com</address>
+				</configuration>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnWarning>true</sendOnWarning>
+				<sendOnSuccess>true</sendOnSuccess>
 			</notifier>
 		</notifiers>
 	</ciManagement>
