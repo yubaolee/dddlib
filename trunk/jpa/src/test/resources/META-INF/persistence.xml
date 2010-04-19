@@ -7,15 +7,11 @@
 		<properties>
 			<!-- Auto detect annotation model classes -->
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml"/>
-			<!-- Datasource -->
-			<!-- 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-			<property name="hibernate.connection.username" value="root" />
-			<property name="hibernate.connection.password" value="" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/myhibernatejpa_dev" />
-			 -->
+			<property name="hibernate.connection.driver_class" value="${jdbc.driverClassName}" />
+			<property name="hibernate.connection.url" value="${jdbc.url}" />
+			<property name="hibernate.connection.username" value="${jdbc.username}" />
+			<property name="hibernate.connection.password" value="${jdbc.password}" />
+			<property name="hibernate.dialect" value="${hibernate.dialect}" />
 		</properties>
 	</persistence-unit>
 </persistence>
