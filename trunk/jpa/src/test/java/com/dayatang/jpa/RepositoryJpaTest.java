@@ -67,7 +67,7 @@ public class RepositoryJpaTest {
 	public void tearDown() {
 		tx.rollback();
 		entityManager.close();
-		DictionaryCategory.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
