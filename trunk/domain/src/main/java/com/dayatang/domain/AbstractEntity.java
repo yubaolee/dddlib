@@ -114,8 +114,8 @@ public abstract class AbstractEntity implements Entity {
 		return repository;
 	}
 
-	public static void setRepository(EntityRepository baseRepository) {
-		AbstractEntity.repository = baseRepository;
+	public static void setRepository(EntityRepository repository) {
+		AbstractEntity.repository = repository;
 	}
 
 	public void save() throws ValidationException {
