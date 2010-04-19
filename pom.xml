@@ -52,21 +52,13 @@
 				<type>mail</type>
 				<configuration>
 					<address>cnyangyu@hotmail.com</address>
+					<address>chencao0524@gmail.com</address>
+					<committers>true</committers>
 				</configuration>
 				<sendOnError>true</sendOnError>
 				<sendOnFailure>true</sendOnFailure>
 				<sendOnWarning>false</sendOnWarning>
 				<sendOnSuccess>false</sendOnSuccess>
-			</notifier>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>chencao0524@gmail.com</address>
-				</configuration>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnWarning>true</sendOnWarning>
-				<sendOnSuccess>true</sendOnSuccess>
 			</notifier>
 		</notifiers>
 	</ciManagement>
