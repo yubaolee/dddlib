@@ -34,13 +34,13 @@ public class QuerySettingsTest {
 	
 	private EntityManager entityManager;
 	
+	private EntityTransaction tx;
+	
 	private EntityRepositoryJpa repository;
 	
 	private QuerySettings<Dictionary> settings;
 	
 	private DictionaryCategory gender;
-	
-	private EntityTransaction tx;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -67,7 +67,7 @@ public class QuerySettingsTest {
 	public void tearDown() {
 		tx.commit();
 		entityManager.close();
-		DictionaryCategory.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
