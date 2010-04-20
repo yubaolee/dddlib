@@ -1,8 +1,8 @@
 package org.drools.examples
  
-import com.dayatang.koala.examples.Person
-import com.dayatang.koala.examples.Helper
-import com.dayatang.koala.time.Foo
+import com.dayatang.rule.examples.Person
+import com.dayatang.rule.examples.Helper
+import com.dayatang.rule.time.Foo
 import java.util.Date
  
 

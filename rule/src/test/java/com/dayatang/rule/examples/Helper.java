@@ -1,4 +1,4 @@
-package com.dayatang.koala.examples;
+package com.dayatang.rule.examples;
 
 public class Helper {
 

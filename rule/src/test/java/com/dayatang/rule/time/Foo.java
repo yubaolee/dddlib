@@ -1,4 +1,4 @@
-package com.dayatang.koala.time;
+package com.dayatang.rule.time;
 
 import java.util.Date;
 

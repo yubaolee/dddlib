@@ -1,4 +1,4 @@
-package com.dayatang.koala.examples;
+package com.dayatang.rule.examples;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

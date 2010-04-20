@@ -1,16 +1,17 @@
-package com.dayatang.koala.examples;
+package com.dayatang.rule.time;
 
-public class Person {
+public class Temp {
 
 	private Long id;
 	private String name;
+	private Integer count;
 
-	public Person() {
+	public Integer getCount() {
+		return count;
 	}
 
-	public Person(Long id, String name) {
-		this.id = id;
-		this.name = name;
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 
 	public Long getId() {
@@ -27,11 +28,5 @@ public class Person {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-
-		return "id = " + id + " name = " + name;
 	}
 }
