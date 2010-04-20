@@ -1,4 +1,4 @@
-package com.dayatang.koala.time;
+package com.dayatang.rule.time;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -12,7 +12,7 @@ import javax.rules.StatelessRuleSession;
 
 import org.junit.Test;
 
-import com.dayatang.koala.examples.RuleStringAssembler;
+import com.dayatang.rule.examples.RuleStringAssembler;
 
 public class FooTest {
 

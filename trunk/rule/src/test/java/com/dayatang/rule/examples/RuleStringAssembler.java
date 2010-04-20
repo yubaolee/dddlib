@@ -1,8 +1,10 @@
-package com.dayatang.koala.examples;
+package com.dayatang.rule.examples;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.rmi.RemoteException;
@@ -18,7 +20,7 @@ import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
 
-public class RuleAssembler {
+public class RuleStringAssembler {
 
 	public static RuleSession assembleRuleSession(String ruleDrl,
 			Integer sessionType, Map params) throws Exception {
@@ -66,8 +68,7 @@ public class RuleAssembler {
 		// Create a Reader for the drl
 		// URL drlUrl = new URL("http://mydomain.org/sources/myrules.drl");
 		// Reader drlReader = new InputStreamReader(drlUrl.openStream());
-
-		Reader drlReader = getReader(drlFile);
+		Reader drlReader = new StringReader(getRuleString(drlFile));
 
 		// Create the RuleExecutionSet for the drl
 		RuleExecutionSet ruleExecutionSet = ruleExecutionSetProvider
@@ -75,11 +76,32 @@ public class RuleAssembler {
 		return ruleExecutionSet;
 	}
 
-	private static Reader getReader(String drlFile) {
+	public static Reader getReader(String drlFile) {
 		CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
-		Reader drlReader = new InputStreamReader(RuleAssembler.class
+		Reader drlReader = new InputStreamReader(RuleStringAssembler.class
 				.getResourceAsStream(drlFile), decoder);
 		return drlReader;
+	}
+
+	public static String getRuleString(String drlFile) {
+		StringBuffer sb = new StringBuffer();
+
+		CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
+		InputStreamReader ir;
+		BufferedReader in;
+		ir = new InputStreamReader(RuleAssembler.class
+				.getResourceAsStream(drlFile), decoder);
+		in = new BufferedReader(ir);
+		String s = null;
+		try {
+			while ((s = in.readLine()) != null) {
+				sb.append(s).append("\r\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return sb.toString();
 	}
 
 }

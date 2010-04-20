@@ -1,4 +1,4 @@
-package com.dayatang.koala.rule;
+package com.dayatang.rule.rule;
 
 import java.util.ArrayList;
 import java.util.HashMap;

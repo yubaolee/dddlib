@@ -1,6 +1,6 @@
 package org.drools.examples
  
-import com.dayatang.koala.examples.HelloWorld.Message;
+import com.dayatang.rule.examples.HelloWorld.Message;
  
 rule "Hello World"
     dialect "mvel"

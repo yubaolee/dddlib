@@ -1,6 +1,6 @@
-package com.dayatang.koala.examples;
+package com.dayatang.rule.examples;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.rules.RuleRuntime;
-import javax.rules.RuleServiceProvider;
-import javax.rules.RuleServiceProviderManager;
 import javax.rules.StatefulRuleSession;
 import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
@@ -20,8 +18,6 @@ import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class JSR94Test {
