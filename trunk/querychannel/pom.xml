@@ -35,6 +35,7 @@
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${javassist.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>${jdbc.groupId}</groupId>
