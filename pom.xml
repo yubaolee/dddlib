@@ -95,6 +95,12 @@
 		<repository>
 			<id>dayatang</id>
 			<url>http://www.dayatang.com/m2/internal</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	
@@ -102,6 +108,12 @@
 		<pluginRepository>
 			<id>dayatang</id>
 			<url>http://www.dayatang.com/m2/internal</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 	
