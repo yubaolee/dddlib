@@ -87,16 +87,26 @@
 		<repository>
 			<id>dayatang</id>
 			<name>Dayatang release repository</name>
-			<url>file:////home/m2/repository</url>
+			<url>file:////home/m2/snapshot/repository</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>dayatang</id>
+			<id>dayatang-releases</id>
 			<url>http://www.dayatang.com/m2/internal</url>
 			<releases>
 				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>dayatang-snapshots</id>
+			<url>http://www.dayatang.com/m2/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
@@ -106,10 +116,20 @@
 	
 	<pluginRepositories>
 		<pluginRepository>
-			<id>dayatang</id>
+			<id>dayatang-releases</id>
 			<url>http://www.dayatang.com/m2/internal</url>
 			<releases>
 				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>dayatang-snapshots</id>
+			<url>http://www.dayatang.com/m2/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
