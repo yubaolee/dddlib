@@ -87,7 +87,7 @@
 		<repository>
 			<id>dayatang</id>
 			<name>Dayatang release repository</name>
-			<url>file:////home/m2/snapshot/repository</url>
+			<url>file:////home/m2/repository/snapshots</url>
 		</repository>
 	</distributionManagement>
 
