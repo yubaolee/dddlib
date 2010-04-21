@@ -82,6 +82,14 @@
 		<system>JIRA</system>
 		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
 	</issueManagement>
+	
+	<distributionManagement>
+		<repository>
+			<id>dayatang</id>
+			<name>Dayatang release repository</name>
+			<url>file:////home/m2/repository</url>
+		</repository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
