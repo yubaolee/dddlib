@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dayatang.commons</groupId>
 	<artifactId>dayatang-commons-project</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-beta-1</version>
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
 	<url>http://www.dayatang.com</url>
@@ -87,7 +87,7 @@
 		<repository>
 			<id>dayatang</id>
 			<name>Dayatang release repository</name>
-			<url>file:////home/m2/repository/snapshots</url>
+			<url>file:////home/m2/repository/internal</url>
 		</repository>
 	</distributionManagement>
 
