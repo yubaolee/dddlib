@@ -30,7 +30,9 @@ public class QueryChannelServiceHibernateTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
-		sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+		sessionFactory = new AnnotationConfiguration().configure()
+		.addAnnotatedClass(MyEntity.class)
+		.buildSessionFactory();
 		queryHibernate = new QueryChannelServiceHibernate();
 		
 		queryHibernate.setSessionFactory(sessionFactory);
