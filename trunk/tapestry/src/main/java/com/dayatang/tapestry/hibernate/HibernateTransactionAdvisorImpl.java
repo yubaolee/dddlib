@@ -8,7 +8,7 @@ import org.apache.tapestry5.ioc.Invocation;
 import org.apache.tapestry5.ioc.MethodAdvice;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 
-import com.dayatang.domain.annotations.Transactional;
+import com.dayatang.annotations.Transactional;
 
 public class HibernateTransactionAdvisorImpl implements HibernateTransactionAdvisor {
 	
