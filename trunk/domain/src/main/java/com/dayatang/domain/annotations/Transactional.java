@@ -1,4 +1,4 @@
-package com.dayatang.domain.annotation;
+package com.dayatang.domain.annotations;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
