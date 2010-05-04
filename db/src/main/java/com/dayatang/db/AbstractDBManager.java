@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 此抽象类适用于所有数据库连接信息从classpath下的jdbc.properties文件中读取
+ * 
  * @author chencao
  *
  */
