@@ -13,7 +13,6 @@ public class MySQLDBManager extends AbstractDBManager {
 	 */
 	private static final long serialVersionUID = 8901910732615981112L;
 
-
 	public MySQLDBManager(String jdbcUrl, String username, String password,
 			Class<Driver> driverClass) {
 		super(jdbcUrl, username, password, driverClass);
