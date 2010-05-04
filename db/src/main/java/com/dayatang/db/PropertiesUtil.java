@@ -25,10 +25,11 @@ public class PropertiesUtil {
 
 	public static String JDBC_CONFIG = "jdbc.properties";
 
-	public static String JDBC_DRIVER;
 	public static String JDBC_URL;
 	public static String JDBC_USERNAME;
 	public static String JDBC_PASSWD;
+	public static String JDBC_DRIVER;
+	
 	public static String JDBC_HOST_NAME;
 	public static String JDBC_DATABSE_NAME;
 	public static String INIT_SQL_FILE;
@@ -37,10 +38,11 @@ public class PropertiesUtil {
 		try {
 			config = new PropertiesConfiguration(JDBC_CONFIG);
 
-			JDBC_DRIVER = getProperty("jdbc.driverClassName");
 			JDBC_URL = getProperty("jdbc.url");
 			JDBC_USERNAME = getProperty("jdbc.username");
 			JDBC_PASSWD = getProperty("jdbc.password");
+			
+			JDBC_DRIVER = getProperty("jdbc.driverClassName");
 			JDBC_HOST_NAME = getProperty("jdbc.hostName");
 			JDBC_DATABSE_NAME = getProperty("jdbc.databaseName");
 			INIT_SQL_FILE = getProperty("init.sql.file");
