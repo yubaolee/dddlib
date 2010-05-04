@@ -1,15 +1,11 @@
-package com.dayatang.db.mysql;
+package com.dayatang.db.oracle;
 
 import java.util.List;
 
 import com.dayatang.db.AbstractDBManager;
 
-public class MySQLDBManager extends AbstractDBManager {
-	
-	public MySQLDBManager() {
-		super();
-	}
-	
+public class OracleDBManager extends AbstractDBManager {
+
 	@Override
 	public void cleanDatabase() {
 		// TODO Auto-generated method stub
