@@ -2,6 +2,13 @@ package com.dayatang.db;
 
 import java.sql.Driver;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author chencao
+ *
+ */
 public abstract class AbstractDBManager implements DBManager {
 
 	/**
@@ -9,17 +16,23 @@ public abstract class AbstractDBManager implements DBManager {
 	 */
 	private static final long serialVersionUID = -5544581304658865155L;
 
-	@SuppressWarnings("unused")
-	private AbstractDBManager() {
-	}
+	private static final Logger logger = LoggerFactory
+			.getLogger(AbstractDBManager.class);
 
-	public AbstractDBManager(String jdbcUrl, String username, String password,
-			Class<Driver> driverClass) {
-		// 属性均从PropertiesUtil中获取
-		this.jdbcUrl = jdbcUrl;
-		this.username = username;
-		this.password = password;
-		this.driverClass = driverClass;
+
+	@SuppressWarnings("unchecked")
+	public AbstractDBManager() {
+		this.jdbcUrl = PropertiesUtil.JDBC_URL;
+		this.username = PropertiesUtil.JDBC_USERNAME;
+		this.password = PropertiesUtil.JDBC_PASSWD;
+		try {
+			this.driverClass = (Class<Driver>) Class
+					.forName(PropertiesUtil.JDBC_DRIVER);
+		} catch (ClassNotFoundException e) {
+			logger.error("initial driver class error!!");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	protected String jdbcUrl;

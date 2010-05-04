@@ -1,6 +1,5 @@
 package com.dayatang.db.mysql;
 
-import java.sql.Driver;
 import java.util.List;
 
 import com.dayatang.db.AbstractDBManager;
@@ -13,9 +12,8 @@ public class MySQLDBManager extends AbstractDBManager {
 	 */
 	private static final long serialVersionUID = 8901910732615981112L;
 
-	public MySQLDBManager(String jdbcUrl, String username, String password,
-			Class<Driver> driverClass) {
-		super(jdbcUrl, username, password, driverClass);
+	public MySQLDBManager() {
+		super();
 	}
 	
 	@Override

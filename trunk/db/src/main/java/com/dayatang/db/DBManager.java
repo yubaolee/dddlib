@@ -2,6 +2,10 @@ package com.dayatang.db;
 
 import java.util.List;
 
+/**
+ * @author chencao
+ *
+ */
 public interface DBManager {
 
 	/**
