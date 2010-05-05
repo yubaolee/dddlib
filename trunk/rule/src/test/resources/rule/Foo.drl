@@ -10,7 +10,8 @@ import java.util.Date
 rule "Check time"
 	dialect "mvel" 
 	when
-		foo : Foo( id == 2, startDate > "20-六月-2007", name matches ".*foo.*" )
+		//foo : Foo( id == 2, startDate > "20-六月-2007", name matches ".*foo.*" )
+		foo : Foo( id == 2, name matches ".*foo.*" )
 	then
 		System.out.println( "Test pass. Foo name = " +  foo);
 

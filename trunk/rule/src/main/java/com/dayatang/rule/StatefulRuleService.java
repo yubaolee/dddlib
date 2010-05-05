@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.rules.RuleSession;
+import javax.rules.StatefulRuleSession;
 
 /**
  * 
@@ -75,7 +75,7 @@ public interface StatefulRuleService extends Serializable {
 	 * @return RuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public RuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map);
+	public StatefulRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map);
 
 	/**
 	 * 得到RuleSession
@@ -85,7 +85,7 @@ public interface StatefulRuleService extends Serializable {
 	 * @return RuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public RuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map);
+	public StatefulRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map);
 
 	/**
 	 * 得到RuleSession
@@ -95,7 +95,7 @@ public interface StatefulRuleService extends Serializable {
 	 * @return RuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public RuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map);
+	public StatefulRuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map);
 
 	/**
 	 * 得到RuleSession
@@ -105,6 +105,6 @@ public interface StatefulRuleService extends Serializable {
 	 * @return RuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public RuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map);
+	public StatefulRuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map);
 
 }
