@@ -15,11 +15,11 @@ import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 public class RuleTest {
 
-	protected StatelessRuleService ruleManagement;
+	protected StatelessRuleService ruleService;
 
 	@Before
 	public void setup() throws Exception {
-		ruleManagement = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
+		ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
 	}
 
 	@Test
@@ -27,9 +27,10 @@ public class RuleTest {
 		Map map = new HashMap();
 		Map globalMap = new HashMap();
 		map.put("map", globalMap);
-		StatelessRuleSession ruleSession = ruleManagement
-				.assembleRuleSession(RuleTest.class
-						.getResourceAsStream("/rule/example.drl"), null, null);
+		StatelessRuleSession ruleSession = ruleService.assembleRuleSession(
+				RuleTest.class.getResourceAsStream("/rule/example.drl"), 
+				null, 
+				null);
 
 		ruleSession.executeRules(new ArrayList());
 		System.out.println(globalMap.get("cc"));
