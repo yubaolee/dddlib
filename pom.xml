@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dayatang.commons</groupId>
 	<artifactId>dayatang-commons-project</artifactId>
@@ -454,7 +453,7 @@
 				<jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
 				<jdbc.url><![CDATA[jdbc:h2:${basedir}/target/testdb]]></jdbc.url>
 				<jdbc.username>sa</jdbc.username>
-				<jdbc.password></jdbc.password>
+				<jdbc.password/>
 			</properties>
 		</profile>
 		<profile>
@@ -468,7 +467,7 @@
 				<jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
 				<jdbc.url><![CDATA[jdbc:hsqldb:${basedir}/target/testdb;shutdown=true]]></jdbc.url>
 				<jdbc.username>sa</jdbc.username>
-				<jdbc.password></jdbc.password>
+				<jdbc.password/>
 			</properties>
 		</profile>
 		<profile>
@@ -549,7 +548,7 @@
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
 		<jdbc.url><![CDATA[jdbc:mysql://127.0.0.1/testdb?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
 		<jdbc.username>root</jdbc.username>
-		<jdbc.password></jdbc.password>
+		<jdbc.password/>
 		<hibernate.query.substitutions>true 'Y', false 'N'</hibernate.query.substitutions>
 		<hibernate.cache.provider_class>org.hibernate.cache.EhCacheProvider</hibernate.cache.provider_class>
 		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
@@ -576,6 +575,6 @@
 		<module>db</module>
 		
 		<module>querychannel</module>
-		
-	</modules>
+    <module>i18n</module>
+  </modules>
 </project>
