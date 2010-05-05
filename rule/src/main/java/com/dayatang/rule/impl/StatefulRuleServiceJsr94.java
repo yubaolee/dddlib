@@ -74,16 +74,22 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 	}
 
 	public StatefulRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map) {
+		StatefulRuleSession result = null;
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			ruleSource.close();
+			return result;
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
 	public StatefulRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map) {
+		StatefulRuleSession result = null;
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			ruleSource.close();
+			return result;
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
@@ -124,6 +130,7 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 
 		try{
 			statefulSession.executeRules();
+			statefulSession.release();
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}

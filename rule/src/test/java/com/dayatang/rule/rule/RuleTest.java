@@ -22,6 +22,7 @@ public class RuleTest {
 		ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void cc() throws Exception {
 		Map map = new HashMap();

@@ -1,18 +1,16 @@
 package com.dayatang.rule.time;
 
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import javax.rules.RuleRuntime;
 import javax.rules.StatelessRuleSession;
 
+import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Test;
 
-import com.dayatang.rule.examples.RuleStringAssembler;
+import com.dayatang.rule.StatelessRuleService;
+import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 public class FooTest {
 
@@ -20,38 +18,27 @@ public class FooTest {
 
 	@Test
 	public void item1() throws Exception {
+		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
+		StatelessRuleSession statelessSession = ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
+		List<?> globalStatelessResults = statelessSession.executeRules(createParams());
+		for (Object object : globalStatelessResults) {
+			System.out.println(object);
+		}
+	}
 
-		StatelessRuleSession statelessSession = (StatelessRuleSession) RuleStringAssembler
-				.assembleRuleSession(ruleDrl,
-						RuleRuntime.STATELESS_SESSION_TYPE, null);
+	private List<Foo> createParams() {
+		List<Foo> params = new ArrayList<Foo>();
+		params.add(createFoo(1L, "foo1", "foo1", new Date()));
+		params.add(createFoo(2L, "foo2", "foo2", new Date()));
+		return params;
+	}
 
-		// System.setProperty("drools.dateformat", "yyyy-mm-dd");
-		// System.out.println(System.getProperty("drools.dateformat"));
-
-		String format = "dd-MMM-yyyy";
-		DateFormatSymbols dateSymbol = new DateFormatSymbols(new Locale(Locale
-				.getDefault().getLanguage(), Locale.getDefault().getCountry()));
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format, dateSymbol);
-		Date date = dateFormat.parse("20-六月-2007");
-		System.out.println(date);
-
-		Foo foo1 = new Foo();
-		foo1.setId(1L);
-		foo1.setName("foo1");
-		foo1.setResult("foo1");
-		foo1.setStartDate(new Date());
-
-		Foo foo2 = new Foo();
-		foo2.setId(1L);
-		foo2.setName("foo2");
-		foo2.setResult("foo2");
-		foo2.setStartDate(new Date());
-
-		List params = new ArrayList();
-		params.add(foo1);
-		params.add(foo2);
-		List globalStatelessResults = new ArrayList();
-		globalStatelessResults = statelessSession.executeRules(params);
-
+	private Foo createFoo(long id, String name, String result, Date startDate) {
+		Foo foo = new Foo();
+		foo.setId(id);
+		foo.setName(name);
+		foo.setResult(result);
+		foo.setStartDate(startDate);
+		return foo;
 	}
 }

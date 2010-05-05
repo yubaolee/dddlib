@@ -74,16 +74,22 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map) {
+		StatelessRuleSession result = null;
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			ruleSource.close();
+			return result;
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
 	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map) {
+		StatelessRuleSession result = null;
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			ruleSource.close();
+			return result;
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
@@ -125,6 +131,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 
 		try{
 			result = statelessSession.executeRules(params);
+			statelessSession.release();
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
@@ -135,6 +142,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 			// for gc
 			watch = null;
 		}
+		
 		return result;
 	}
 
