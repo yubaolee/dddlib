@@ -26,85 +26,85 @@ public interface StatelessRuleService extends Serializable {
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @param params 参数
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(InputStream ruleSource, Map ruleProperty,	Map map, List params);
+	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @param params 参数
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Reader ruleSource, Map ruleProperty, Map map, List params);
+	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @param params 参数
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Object ruleSource, Map ruleProperty, Map map, List params);
+	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @param params 参数
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(String ruleSource, Map ruleProperty, Map map, List params);
+	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 得到StatelessRuleSession
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @return StatelessRuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map);
+	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map executionSetProperties, Map sessionProperties);
 
 	/**
 	 * 得到StatelessRuleSession
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @return StatelessRuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map);
+	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map executionSetProperties, Map sessionProperties);
 
 	/**
 	 * 得到StatelessRuleSession
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @return StatelessRuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map);
+	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map executionSetProperties, Map sessionProperties);
 
 	/**
 	 * 得到StatelessRuleSession
 	 * @param ruleSource 规则源
-	 * @param ruleProperty 规则的属性Map(source=drl/xml dsl=java.io.Reader)
-	 * @param map 规则中的上下文（如全局变量等）
+	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @return StatelessRuleSession
 	 * @throws RuleRuntimeException
 	 */
-	public StatelessRuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map);
+	public StatelessRuleSession assembleRuleSession(String ruleSource, Map executionSetProperties, Map sessionProperties);
 
 }

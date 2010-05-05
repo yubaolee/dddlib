@@ -53,30 +53,30 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	public List executeRules(String ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
 		return executeRules(session, params);
 	}
 
-	public List executeRules(Reader ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
 		return executeRules(session, params);
 	}
 
-	public List executeRules(InputStream ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
 		return executeRules(session, params);
 	}
 
-	public List executeRules(Object ruleSource, Map ruleProperty, Map map, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, ruleProperty, map);
+	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
 		return executeRules(session, params);
 	}
 
-	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map ruleProperty, Map map) {
+	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map executionSetProperties, Map sessionProperties) {
 		StatelessRuleSession result = null;
 		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 			ruleSource.close();
 			return result;
 		} catch (Exception e) {
@@ -84,10 +84,10 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map ruleProperty, Map map) {
+	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map executionSetProperties, Map sessionProperties) {
 		StatelessRuleSession result = null;
 		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 			ruleSource.close();
 			return result;
 		} catch (Exception e) {
@@ -95,27 +95,27 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map ruleProperty, Map map) {
+	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map executionSetProperties, Map sessionProperties) {
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
-	public StatelessRuleSession assembleRuleSession(String ruleSource, Map ruleProperty, Map map) {
+	public StatelessRuleSession assembleRuleSession(String ruleSource, Map executionSetProperties, Map sessionProperties) {
 		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, ruleProperty), map);
+			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
-	private StatelessRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map map) {
+	private StatelessRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map sessionProperties) {
 		try{
 			String packageName = ruleExecutionSet.getName();
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, map, RuleRuntime.STATELESS_SESSION_TYPE);
+			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
@@ -146,9 +146,9 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		return result;
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map ruleProperty) {
+	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
 		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), ruleProperty);
+			return ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		} catch (IOException e) {
@@ -156,9 +156,9 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map ruleProperty) {
+	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
 		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, ruleProperty);
+			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		} catch (IOException e) {
@@ -166,9 +166,9 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(Reader ruleSource, Map ruleProperty) {
+	private RuleExecutionSet createRuleExecutionSet(Reader ruleSource, Map executionSetProperties) {
 		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, ruleProperty);
+			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		} catch (IOException e) {
@@ -176,9 +176,9 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map ruleProperty) {
+	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map executionSetProperties) {
 		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, ruleProperty);
+			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		}
