@@ -47,7 +47,7 @@ public class NotInCriteron extends QueryCriteron {
 
 	@Override
 	public String toString() {
-		return getPropName() + " in collection [" + collectionToString(value) + "]";
+		return getPropName() + " not in collection [" + collectionToString(value) + "]";
 	}
 
 	private String collectionToString(Collection<? extends Object> value) {
