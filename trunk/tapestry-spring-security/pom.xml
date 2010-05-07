@@ -10,6 +10,11 @@
 	<artifactId>tapestry-spring-security</artifactId>
 	<name>Dayatang Spring Security services for Tapestry</name>
 	<inceptionYear>2007</inceptionYear>
+	
+	<scm>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/tapestry-spring-security/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/tapestry-spring-security/</developerConnection>
+	</scm>
 
 	<dependencies>
 		<!-- Tapestry dependencies -->

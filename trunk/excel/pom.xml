@@ -12,6 +12,12 @@
 	<packaging>jar</packaging>
 	<name>Dayatang Excel Date Import and Export Library</name>
 	<description>Dayatang Excel Date Import and Export Library</description>
+	
+	<scm>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/excel/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/excel/</developerConnection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
