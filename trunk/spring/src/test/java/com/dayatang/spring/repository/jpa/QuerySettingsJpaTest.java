@@ -5,6 +5,7 @@ package com.dayatang.spring.repository.jpa;
 
 import static org.junit.Assert.*;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -351,6 +352,52 @@ public class QuerySettingsJpaTest {
 		assertTrue(results.contains(dictionary4));
 		assertTrue(results.contains(dictionary5));
 		assertFalse(results.contains(dictionary6));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testInEmpty() {
+		settings.in("id", Collections.EMPTY_LIST);
+		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.isEmpty());
+	}
+
+	@Test
+	public void testNotInEntity() {
+		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
+		Dictionary dictionary9 = repository.get(Dictionary.class, 9L);
+		Dictionary dictionary11 = repository.get(Dictionary.class, 11L);
+		Set<Long> params = new HashSet<Long>();
+		params.add(7L);
+		params.add(9L);
+		settings.notIn("id", params);
+		List<Dictionary> results = repository.find(settings);
+		assertFalse(results.contains(dictionary7));
+		assertFalse(results.contains(dictionary9));
+		assertTrue(results.contains(dictionary11));
+	}
+
+	@Test
+	public void testNotInString() {
+		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
+		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
+		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
+		Set<String> params = new HashSet<String>();
+		params.add("研究生");
+		params.add("研究生毕业");
+		settings.notIn("text", params);
+		List<Dictionary> results = repository.find(settings);
+		assertFalse(results.contains(dictionary4));
+		assertFalse(results.contains(dictionary5));
+		assertTrue(results.contains(dictionary6));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testNotInEmpty() {
+		settings.notIn("id", Collections.EMPTY_LIST);
+		List<Dictionary> results = repository.find(settings);
+		assertFalse(results.isEmpty());
 	}
 
 	@Test

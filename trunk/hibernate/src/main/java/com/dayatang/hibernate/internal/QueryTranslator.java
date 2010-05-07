@@ -159,6 +159,9 @@ public class QueryTranslator {
 			}
 			if (criteron instanceof NotInCriteron) {
 				Collection<? extends Object> value = ((NotInCriteron) criteron).getValue();
+				if (value.isEmpty()) {
+					continue;
+				}
 				elements.add("o." + criteron.getPropName() + " not in (" + createInString(value) + ")");
 			}
 			if (criteron instanceof IsNullCriteron) {
@@ -173,6 +176,9 @@ public class QueryTranslator {
 			if (criteron instanceof NotEmptyCriteron) {
 				elements.add("o." + criteron.getPropName() + " is not empty");
 			}
+		}
+		if (elements.isEmpty()) {
+			return "";
 		}
 		return " where " +  StringUtils.join(elements, " and ");
 	}

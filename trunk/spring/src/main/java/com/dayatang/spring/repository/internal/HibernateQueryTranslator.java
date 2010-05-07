@@ -31,6 +31,7 @@ import com.dayatang.domain.internal.LtPropCriteron;
 import com.dayatang.domain.internal.NotEmptyCriteron;
 import com.dayatang.domain.internal.NotEqCriteron;
 import com.dayatang.domain.internal.NotEqPropCriteron;
+import com.dayatang.domain.internal.NotInCriteron;
 import com.dayatang.domain.internal.NotNullCriteron;
 import com.dayatang.domain.internal.SizeEqCriteron;
 import com.dayatang.domain.internal.SizeGeCriteron;
@@ -156,6 +157,13 @@ public class HibernateQueryTranslator {
 				Collection<? extends Object> value = ((InCriteron) criteron).getValue();
 				elements.add("o." + criteron.getPropName() + " in (" + createInString(value) + ")");
 			}
+			if (criteron instanceof NotInCriteron) {
+				Collection<? extends Object> value = ((NotInCriteron) criteron).getValue();
+				if (value.isEmpty()) {
+					continue;
+				}
+				elements.add("o." + criteron.getPropName() + " not in (" + createInString(value) + ")");
+			}
 			if (criteron instanceof IsNullCriteron) {
 				elements.add("o." + criteron.getPropName() + " is null");
 			}
@@ -168,6 +176,9 @@ public class HibernateQueryTranslator {
 			if (criteron instanceof NotEmptyCriteron) {
 				elements.add("o." + criteron.getPropName() + " is not empty");
 			}
+		}
+		if (elements.isEmpty()) {
+			return "";
 		}
 		return " where " +  StringUtils.join(elements, " and ");
 	}

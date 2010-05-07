@@ -27,6 +27,7 @@ import com.dayatang.domain.internal.LtPropCriteron;
 import com.dayatang.domain.internal.NotEmptyCriteron;
 import com.dayatang.domain.internal.NotEqCriteron;
 import com.dayatang.domain.internal.NotEqPropCriteron;
+import com.dayatang.domain.internal.NotInCriteron;
 import com.dayatang.domain.internal.NotNullCriteron;
 import com.dayatang.domain.internal.SizeEqCriteron;
 import com.dayatang.domain.internal.SizeGeCriteron;
@@ -188,6 +189,16 @@ public class QuerySettings<T> {
 
 	public QuerySettings<T> in(String propName, Object[] value) {
 		criterons.add(new InCriteron(propName, value));
+		return this;
+	}
+
+	public QuerySettings<T> notIn(String propName, Collection<? extends Object> value) {
+		criterons.add(new NotInCriteron(propName, value));
+		return this;
+	}
+
+	public QuerySettings<T> notIn(String propName, Object[] value) {
+		criterons.add(new NotInCriteron(propName, value));
 		return this;
 	}
 
