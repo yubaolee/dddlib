@@ -79,7 +79,7 @@
 	
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://www.dayatang.com:8080/jira/secure/BrowseProject.jspa?id=10030</url>
+		<url>http://www.dayatang.com:8080/jira/browse/DDDLIB</url>
 	</issueManagement>
 	
 	<distributionManagement>

@@ -11,4 +11,10 @@
 	<packaging>jar</packaging>
 	<name>Dayatang Utils</name>
 	<description> Common Utils.</description>
+	
+	<scm>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/utils/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/utils/</developerConnection>
+	</scm>
+
 </project>
