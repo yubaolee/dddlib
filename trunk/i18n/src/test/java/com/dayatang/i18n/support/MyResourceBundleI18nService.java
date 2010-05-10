@@ -13,6 +13,5 @@ public class MyResourceBundleI18nService extends ResourceBundleI18nService {
 
 	public static I18nServiceAccessor getAccessor() {
 		return new I18nServiceAccessor(new MyResourceBundleI18nService());
-		Date.
 	}
 }
