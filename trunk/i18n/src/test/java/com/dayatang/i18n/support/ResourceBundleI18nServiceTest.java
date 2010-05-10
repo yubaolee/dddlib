@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.dayatang.i18n.LocaleContextHolder;
 import com.dayatang.i18n.NoSuchMessageException;
 
 public class ResourceBundleI18nServiceTest {
@@ -32,4 +33,14 @@ public class ResourceBundleI18nServiceTest {
 		messages.getMessage("abc");
 	}
 
+	
+	@Test
+	public void getMessage_holder() {
+		LocaleContextHolder.setLocale(Locale.ENGLISH);
+		
+		String msg = messages.getMessage("hi", "这是默认消息！");
+		assertEquals("hello", msg);
+		
+		LocaleContextHolder.resetLocale();
+	}
 }
