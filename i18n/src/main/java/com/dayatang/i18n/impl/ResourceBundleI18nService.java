@@ -1,4 +1,4 @@
-package com.dayatang.i18n.support;
+package com.dayatang.i18n.impl;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
