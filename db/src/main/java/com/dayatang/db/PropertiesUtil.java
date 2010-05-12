@@ -52,16 +52,13 @@ public class PropertiesUtil {
 				logger.info("JDBC_URL = {}", PropertiesUtil.JDBC_URL);
 				logger.info("JDBC_USERNAME = {}", PropertiesUtil.JDBC_USERNAME);
 				logger.info("JDBC_PASSWD = {}", PropertiesUtil.JDBC_PASSWD);
-				logger.info("JDBC_HOST_NAME = {}",
-						PropertiesUtil.JDBC_HOST_NAME);
-				logger.info("JDBC_DATABSE_NAME = {}",
-						PropertiesUtil.JDBC_DATABSE_NAME);
+				logger.info("JDBC_HOST_NAME = {}",PropertiesUtil.JDBC_HOST_NAME);
+				logger.info("JDBC_DATABSE_NAME = {}",PropertiesUtil.JDBC_DATABSE_NAME);
 				logger.info("INIT_SQL_FILE = {}", PropertiesUtil.INIT_SQL_FILE);
 			}
 
 		} catch (ConfigurationException e) {
-			logger.error("initial properties error!!");
-			e.printStackTrace();
+			logger.error("initial properties error!! ",e);	
 			System.exit(1);
 		}
 	}
