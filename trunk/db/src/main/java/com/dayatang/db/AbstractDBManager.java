@@ -27,12 +27,15 @@ public abstract class AbstractDBManager implements DBManager {
 		this.jdbcUrl = PropertiesUtil.JDBC_URL;
 		this.username = PropertiesUtil.JDBC_USERNAME;
 		this.password = PropertiesUtil.JDBC_PASSWD;
+		
+		this.hostName = PropertiesUtil.JDBC_HOST_NAME;
+		this.databaseName = PropertiesUtil.JDBC_DATABSE_NAME;
+		
+		
 		try {
-			this.driverClass = (Class<Driver>) Class
-					.forName(PropertiesUtil.JDBC_DRIVER);
+			this.driverClass = (Class<Driver>) Class.forName(PropertiesUtil.JDBC_DRIVER);
 		} catch (ClassNotFoundException e) {
 			logger.error("initial driver class error!!");
-			e.printStackTrace();
 			System.exit(1);
 		}
 	}
@@ -41,6 +44,9 @@ public abstract class AbstractDBManager implements DBManager {
 	protected String username;
 	protected String password;
 	protected Class<Driver> driverClass;
+	
+	protected String hostName;
+	protected String databaseName;
 
 	public String getJdbcUrl() {
 		return jdbcUrl;
@@ -72,6 +78,22 @@ public abstract class AbstractDBManager implements DBManager {
 
 	public void setDriverClass(Class<Driver> driverClass) {
 		this.driverClass = driverClass;
+	}
+
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	public String getDatabaseName() {
+		return databaseName;
+	}
+
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
 	}
 
 }
