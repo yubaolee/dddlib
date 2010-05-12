@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -24,16 +25,16 @@ public class DBManagerUtils {
 		List<DataObject> result = new ArrayList<DataObject>();
 
 		rs = jConn.queryTables();
-
+		String username = PropertiesUtil.JDBC_USERNAME.toUpperCase();
+		
 		while (rs.next()) {
 			
 			String owner = rs.getString(2);
 			
 			if(owner != null){
-				if(!owner.toUpperCase().equals(PropertiesUtil.JDBC_USERNAME.toUpperCase())){
+				if(!owner.toUpperCase().equals(username)){
 					continue;
 				}
-				
 			}
 			
 			DataObject data = new DataObject();
@@ -63,7 +64,7 @@ public class DBManagerUtils {
 				
 				DataObject data = tableNames.get(i);
 			
-				if(data == null){
+				if(data == null || StringUtils.isBlank(data.getName())){
 					continue;
 				}
 				

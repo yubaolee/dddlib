@@ -24,7 +24,7 @@ public class MySQLDBManagerTest {
 	}
 	
 
-	//@Test
+	@Test
 	public void testCleanDatabase() {
 		dbManager.cleanDatabase();
 	}
