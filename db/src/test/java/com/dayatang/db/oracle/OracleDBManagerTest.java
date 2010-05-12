@@ -25,7 +25,7 @@ public class OracleDBManagerTest {
 	}
 	
 
-	//@Test
+	@Test
 	public void testCleanDatabase() {
 		dbManager.cleanDatabase();
 	}
