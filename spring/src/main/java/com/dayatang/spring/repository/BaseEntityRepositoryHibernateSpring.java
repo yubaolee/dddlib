@@ -45,8 +45,9 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	 * .Entity)
 	 */
 	@Override
-	public void save(T entity) {
+	public T save(T entity) {
 		getHibernateTemplate().saveOrUpdate(entity);
+		return entity;
 	}
 
 	/*
