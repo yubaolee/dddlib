@@ -75,8 +75,9 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	 * .Entity)
 	 */
 	@Override
-	public void save(T entity) {
+	public T save(T entity) {
 		entity = getJpaTemplate().merge(entity);
+		return entity;
 	}
 
 	/*

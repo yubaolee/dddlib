@@ -16,7 +16,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 * @param entity
 	 *            要存储的实体实例。
 	 */
-	void save(T entity);
+	T save(T entity);
 
 	/**
 	 * 将实体从仓储中删除。如果仓储中不存在此实例将抛出EntityNotExistedException异常。
