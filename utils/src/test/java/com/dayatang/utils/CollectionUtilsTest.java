@@ -23,36 +23,6 @@ public class CollectionUtilsTest {
 	}
 
 	@Test
-	public void testJoin() {
-		Collection<Item> items = new ArrayList<Item>();
-		items.add(new Item(1, "A"));
-		items.add(new Item(2, "B"));
-		String separator = ", ";
-		String result = CollectionUtils.join(items, "id", separator);
-		String[] results = result.split(separator);
-		List<String> fieldList = Arrays.asList(results);
-		assertEquals(2, fieldList.size());
-		assertTrue(fieldList.contains("1"));
-		assertTrue(fieldList.contains("2"));
-	}
-
-	@Test
-	public void testJoinEmpty() {
-		String separator = ", ";
-		String result = CollectionUtils.join(new ArrayList<Object>(), "id", separator);
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
-	public void testJoinSingle() {
-		Collection<Item> items = new ArrayList<Item>();
-		items.add(new Item(1, "A"));
-		String separator = ", ";
-		String result = CollectionUtils.join(items, "name", separator);
-		assertEquals("A", result);
-	}
-
-	@Test
 	public void testList() {
 		Collection<Item> items = new ArrayList<Item>();
 		items.add(new Item(1, "A"));
@@ -76,6 +46,22 @@ public class CollectionUtilsTest {
 		assertEquals(2, fieldList.size());
 		assertTrue(fieldList.contains("1"));
 		assertTrue(fieldList.contains("2"));
+	}
+
+	@Test
+	public void testEmpty() {
+		String separator = ", ";
+		String result = CollectionUtils.join(new ArrayList<Object>(), "id", separator);
+		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void testSingleElement() {
+		Collection<Item> items = new ArrayList<Item>();
+		items.add(new Item(1, "A"));
+		String separator = ", ";
+		String result = CollectionUtils.join(items, "name", separator);
+		assertEquals("A", result);
 	}
 	
 	public class Item {

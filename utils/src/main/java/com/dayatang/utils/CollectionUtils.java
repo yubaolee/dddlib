@@ -26,6 +26,9 @@ public class CollectionUtils {
 	 * @return
 	 */
 	public static String join(Collection<?> collection, String field, String separator) {
+		if (collection == null) {
+			return "";
+		}
 		Collection<String> results;
 		if (collection instanceof Set<?>) {
 			results = new HashSet<String>();
