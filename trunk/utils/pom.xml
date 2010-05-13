@@ -16,5 +16,12 @@
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/utils/</connection>
 		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/utils/</developerConnection>
 	</scm>
+	<dependencies>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils-core</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+	</dependencies>
 
 </project>
