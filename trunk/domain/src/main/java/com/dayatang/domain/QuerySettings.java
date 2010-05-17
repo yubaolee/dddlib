@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -291,14 +292,14 @@ public class QuerySettings<T> {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		result.append("Class:").append(entityClass.getSimpleName()).append(System.getProperty("line.separator"));
+		result.append("Class:").append(entityClass.getSimpleName()).append(SystemUtils.LINE_SEPARATOR);
 		result.append("criterons: [");
 		for (QueryCriteron criteron : criterons) {
 			result.append(criteron);
 		}
-		result.append("]").append(System.getProperty("line.separator"));
-		result.append("firstResult:" + firstResult).append(System.getProperty("line.separator"));
-		result.append("maxResults" + maxResults).append(System.getProperty("line.separator"));
+		result.append("]").append(SystemUtils.LINE_SEPARATOR);
+		result.append("firstResult:" + firstResult).append(SystemUtils.LINE_SEPARATOR);
+		result.append("maxResults" + maxResults).append(SystemUtils.LINE_SEPARATOR);
 		result.append("orderSettings: [");
 		for (OrderSettings orderSetting : orderSettings) {
 			result.append(orderSetting);
