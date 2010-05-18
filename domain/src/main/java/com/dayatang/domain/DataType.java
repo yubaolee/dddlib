@@ -2,7 +2,7 @@ package com.dayatang.domain;
 
 public enum DataType {
 	STRING,
-	LONG,
+	INT,
 	DOUBLE,
 	BIG_DECIMAL,
 	BOOLEAN,
