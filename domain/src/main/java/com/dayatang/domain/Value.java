@@ -17,9 +17,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Embeddable
 public class Value implements ValueObject {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4254026874177282302L;
 
 	@Enumerated(EnumType.STRING)
@@ -69,7 +66,8 @@ public class Value implements ValueObject {
 			return false;
 		}
 		Value that = (Value) other;
-		return new EqualsBuilder().append(this.getDataType(), that.getDataType())
+		return new EqualsBuilder()
+			.append(this.getDataType(), that.getDataType())
 			.append(this.getValue(), that.getValue())
 			.isEquals();
 	}
