@@ -1,5 +1,9 @@
 package com.dayatang.domain;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -7,6 +11,7 @@ import javax.persistence.Enumerated;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.time.DateUtils;
 
 /** 
  * 值
@@ -18,6 +23,14 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Value implements ValueObject {
 
 	private static final long serialVersionUID = 4254026874177282302L;
+	
+	private static final String[] DATE_TIME_FORMAT = {
+		"yyyy-MM-dd",
+		"hh:mm",
+		"hh:mm:ss",
+		"yyyy-MM-dd hh:mm",
+		"yyyy-MM-dd hh:mm:ss",
+	};
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "data_type")
@@ -52,6 +65,38 @@ public class Value implements ValueObject {
 		this.value = value;
 	}
 
+	public String getString() {
+		return value;
+	}
+	
+	public int getInt() {
+		return value == null ? 0 : Integer.parseInt(value);
+	}
+	
+	public double getDouble() {
+		return value == null ? 0.0 : Double.parseDouble(value);
+	}
+	
+	public BigDecimal getBigDecimal() {
+		return value == null ? null : new BigDecimal(value);
+	}
+	
+	public boolean getBoolean() {
+		return Boolean.parseBoolean(value);
+	}
+	
+	public Date getDate() {
+		if (value == null) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDateStrictly(value, DATE_TIME_FORMAT);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(dataType).append(value).toHashCode();
