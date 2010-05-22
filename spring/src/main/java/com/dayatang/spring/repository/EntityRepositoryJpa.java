@@ -224,32 +224,32 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Object[] params) {
-		return getJpaTemplate().execute(new JpaCallback() {
+	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params) {
+		return getJpaTemplate().execute(new JpaCallback<T>() {
 			
 			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
+			public T doInJpa(EntityManager em) throws PersistenceException {
 				Query query = em.createQuery(queryString);
 				for (int i = 0; i < params.length; i++) {
 					query.setParameter(i + 1, params[i]);
 				}
-				return query.getSingleResult();
+				return (T) query.getSingleResult();
 			}
 		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
-		return getJpaTemplate().execute(new JpaCallback() {
+	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params) {
+		return getJpaTemplate().execute(new JpaCallback<T>() {
 			
 			@Override
-			public Object doInJpa(EntityManager em) throws PersistenceException {
+			public T doInJpa(EntityManager em) throws PersistenceException {
 				Query query = em.createQuery(queryString);
 				for (String key : params.keySet()) {
 					query = query.setParameter(key, params.get(key));
 				}
-				return query.getSingleResult();
+				return (T) query.getSingleResult();
 			}
 		});
 	}
