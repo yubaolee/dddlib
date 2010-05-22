@@ -240,16 +240,16 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Object[] params) {
-		return getHibernateTemplate().execute(new HibernateCallback() {
+	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params) {
+		return getHibernateTemplate().execute(new HibernateCallback<T>() {
 
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public T doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(queryString);
 				for (int i = 0; i < params.length; i++) {
 					query = query.setParameter(i, params[i]);
 				}
-				return query.uniqueResult();
+				return (T) query.uniqueResult();
 			}
 		});
 	}
@@ -265,16 +265,16 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
-		return getHibernateTemplate().execute(new HibernateCallback() {
+	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params) {
+		return getHibernateTemplate().execute(new HibernateCallback<T>() {
 
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public T doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(queryString);
 				for (String key : params.keySet()) {
 					query = query.setParameter(key, params.get(key));
 				}
-				return query.uniqueResult();
+				return (T) query.uniqueResult();
 			}
 		});
 	}

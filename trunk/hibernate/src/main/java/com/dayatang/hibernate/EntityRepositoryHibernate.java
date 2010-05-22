@@ -216,22 +216,24 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return (T) query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Object[] params) {
+	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params) {
 		Query query = getSession().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
 		}
-		return query.uniqueResult();
+		return (T) query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
+	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params) {
 		Query query = getSession().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
-		return query.uniqueResult();
+		return (T) query.uniqueResult();
 	}
 
 	@Override
