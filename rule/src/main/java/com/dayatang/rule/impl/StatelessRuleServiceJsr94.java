@@ -80,6 +80,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 			ruleSource.close();
 			return result;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuleRuntimeException(e);
 		}
 	}
@@ -91,6 +92,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 			ruleSource.close();
 			return result;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuleRuntimeException(e);
 		}
 	}
@@ -99,6 +101,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuleRuntimeException(e);
 		}
 	}
@@ -107,6 +110,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		try {
 			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuleRuntimeException(e);
 		}
 	}
@@ -117,6 +121,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
 			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuleRuntimeException(e);
 		}
 	}
