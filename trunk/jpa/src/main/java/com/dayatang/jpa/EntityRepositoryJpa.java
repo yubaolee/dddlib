@@ -124,7 +124,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> find(final String queryString, final Object[] params) {
+	public List<Object> find(final String queryString, final Object[] params) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
@@ -134,7 +134,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> find(final String queryString, final Map<String, Object> params) {
+	public List<Object> find(final String queryString, final Map<String, Object> params) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
@@ -144,7 +144,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Object[] params) {
+	public List<Object> findByNamedQuery(final String queryName, final Object[] params) {
 		Query query = getEntityManager().createNamedQuery(queryName);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
@@ -154,7 +154,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params) {
+	public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params) {
 		Query query = getEntityManager().createNamedQuery(queryName);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
@@ -173,24 +173,22 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params) {
+	public Object getSingleResult(final String queryString, final Object[] params) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
 		}
-		return (T) query.getSingleResult();
+		return query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params) {
+	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
-		return (T) query.getSingleResult();
+		return query.getSingleResult();
 	}
 
 	@Override
