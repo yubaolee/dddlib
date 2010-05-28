@@ -148,7 +148,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> find(final String queryString, final Object[] params) {
+	public List<Object> find(final String queryString, final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
@@ -164,7 +164,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> find(final String queryString, final Map<String, Object> params) {
+	public List<Object> find(final String queryString, final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
@@ -180,7 +180,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Object[] params) {
+	public List<Object> findByNamedQuery(final String queryName, final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
@@ -196,7 +196,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params) {
+	public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
@@ -238,18 +238,17 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params) {
-		return getHibernateTemplate().execute(new HibernateCallback<T>() {
+	public Object getSingleResult(final String queryString, final Object[] params) {
+		return getHibernateTemplate().execute(new HibernateCallback<Object>() {
 
 			@Override
-			public T doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(queryString);
 				for (int i = 0; i < params.length; i++) {
 					query = query.setParameter(i, params[i]);
 				}
-				return (T) query.uniqueResult();
+				return query.uniqueResult();
 			}
 		});
 	}
@@ -263,18 +262,17 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params) {
-		return getHibernateTemplate().execute(new HibernateCallback<T>() {
+	public Object getSingleResult(final String queryString, final Map<String, Object> params) {
+		return getHibernateTemplate().execute(new HibernateCallback<Object>() {
 
 			@Override
-			public T doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(queryString);
 				for (String key : params.keySet()) {
 					query = query.setParameter(key, params.get(key));
 				}
-				return (T) query.uniqueResult();
+				return query.uniqueResult();
 			}
 		});
 	}

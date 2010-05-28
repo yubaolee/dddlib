@@ -83,7 +83,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	<T extends Entity> List<T> find(String queryString, Object[] params);
+	List<Object> find(String queryString, Object[] params);
 	
 	/**
 	 * 根据查询语句和指定的参数从仓储中查询符合条件的实体集合
@@ -92,7 +92,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	<T extends Entity> List<T> find(String queryString, Map<String, Object> params);
+	List<Object> find(String queryString, Map<String, Object> params);
 	
 	/**
 	 * 根据命名的查询和指定的参数从仓储中查询符合条件的实体集合
@@ -101,7 +101,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	<T extends Entity> List<T> findByNamedQuery(String queryName, Object[] params);
+	List<Object> findByNamedQuery(String queryName, Object[] params);
 	
 	/**
 	 * 根据命名的查询和指定的参数从仓储中查询符合条件的实体集合
@@ -110,7 +110,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	<T extends Entity> List<T> findByNamedQuery(String queryName, Map<String, Object> params);
+	List<Object> findByNamedQuery(String queryName, Map<String, Object> params);
 
 	/**
 	 * 按例查询。
@@ -136,7 +136,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 查询的单一结果
 	 */
-	<T extends Entity> T getSingleResult(String queryString, Object[] params);
+	Object getSingleResult(String queryString, Object[] params);
 	
 	/**
 	 * 根据查询语句和指定的参数访问仓储，返回单一结果。
@@ -144,7 +144,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 查询的单一结果
 	 */
-	<T extends Entity> T getSingleResult(String queryString, Map<String, Object> params);
+	Object getSingleResult(String queryString, Map<String, Object> params);
 	
 	/**
 	 * 执行更新仓储的操作。

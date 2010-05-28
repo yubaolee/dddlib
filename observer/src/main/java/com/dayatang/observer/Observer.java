@@ -1,5 +1,6 @@
 package com.dayatang.observer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,8 +54,7 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	/*
@@ -75,20 +75,21 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 		String queryString = "select o from Observer o where :subjectKey in elements(o.subjectKeys))";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("subjectKey", subject.getSubjectKey());
-		List<Observer> observers = getRepository().find(queryString, params);
+		List<Object> observers = getRepository().find(queryString, params);
 
 		if (logger.isDebugEnabled()) {
 			if (observers.isEmpty()) {
-				logger.debug("没有找到一个观察者：subjectKey为【{}】", subject
-						.getSubjectKey());
+				logger.debug("没有找到一个观察者：subjectKey为【{}】", subject.getSubjectKey());
 			} else {
-				for (Observer observer : observers) {
-					logger.debug("找到一个观察者：subjectKey为【{}】，observer为【{}】",
-							subject.getSubjectKey(), observer);
+				for (Object observer : observers) {
+					logger.debug("找到一个观察者：subjectKey为【{}】，observer为【{}】", subject.getSubjectKey(), observer);
 				}
 			}
 		}
-
-		return observers;
+		List<Observer> results = new ArrayList<Observer>();
+		for (Object observer : observers) {
+			results.add((Observer) observer);
+		}
+		return results;
 	}
 }
