@@ -268,13 +268,26 @@ public class DateUtils {
 	}
 
 	/**
-	 * 将字符串形式的时间表示解析为时间对象
+	 * 将字符串形式的时间表示解析为日期时间对象
 	 * @param timeString
 	 * @return
 	 */
 	public static Date parseTime(String timeString) {
 		try {
 			return org.apache.commons.lang.time.DateUtils.parseDate(timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm", "h:m" });
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 将字符串形式的日期时间表示解析为时间对象
+	 * @param timeString
+	 * @return
+	 */
+	public static Date parseDateTime(String timeString) {
+		try {
+			return org.apache.commons.lang.time.DateUtils.parseDate(timeString, new String[] { "yyyy-MM-dd hh:mm:ss", "yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s", "yyyy-M-d hh:mm:ss" });
 		} catch (ParseException e) {
 			return null;
 		}
