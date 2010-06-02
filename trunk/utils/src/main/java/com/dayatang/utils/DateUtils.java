@@ -261,7 +261,20 @@ public class DateUtils {
 	 */
 	public static Date parseDate(String dateString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d", "yy-MM-dd", "yy-M-d" });
+			return org.apache.commons.lang.time.DateUtils.parseDate(dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d", "yyyy-MM-d", "yyyy-M-dd"});
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 将字符串形式的时间表示解析为时间对象
+	 * @param timeString
+	 * @return
+	 */
+	public static Date parseTime(String timeString) {
+		try {
+			return org.apache.commons.lang.time.DateUtils.parseDate(timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm", "h:m" });
 		} catch (ParseException e) {
 			return null;
 		}
