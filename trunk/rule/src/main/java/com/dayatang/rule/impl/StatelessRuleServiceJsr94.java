@@ -152,10 +152,11 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
-		System.out.println("----------------------------------");
-		System.out.println(ruleExecutionSetProvider);
 		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
+			RuleExecutionSet ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
+			System.out.println("+++++++++++++++++++++++++");
+			System.err.println(ruleExecutionSet.getName());
+			return ruleExecutionSet;
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		} catch (IOException e) {
