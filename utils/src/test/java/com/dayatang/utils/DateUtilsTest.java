@@ -236,5 +236,42 @@ public class DateUtilsTest {
 		assertEquals(4, calendar.get(Calendar.MINUTE));
 		assertEquals(6, calendar.get(Calendar.SECOND));
 	}
+	
+	@Test
+	public void testParseDateTime() {
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(DateUtils.parseDateTime("1968-04-16 02:04:06"));
+		assertEquals(1968, calendar.get(Calendar.YEAR));
+		assertEquals(3, calendar.get(Calendar.MONTH));
+		assertEquals(16, calendar.get(Calendar.DATE));
+		assertEquals(2, calendar.get(Calendar.HOUR));
+		assertEquals(4, calendar.get(Calendar.MINUTE));
+		assertEquals(6, calendar.get(Calendar.SECOND));
+
+		calendar.setTime(DateUtils.parseDateTime("1968-4-16 2:4:6"));
+		assertEquals(1968, calendar.get(Calendar.YEAR));
+		assertEquals(3, calendar.get(Calendar.MONTH));
+		assertEquals(16, calendar.get(Calendar.DATE));
+		assertEquals(2, calendar.get(Calendar.HOUR));
+		assertEquals(4, calendar.get(Calendar.MINUTE));
+		assertEquals(6, calendar.get(Calendar.SECOND));
+
+		calendar.setTime(DateUtils.parseDateTime("1968-04-16 2:4:6"));
+		assertEquals(1968, calendar.get(Calendar.YEAR));
+		assertEquals(3, calendar.get(Calendar.MONTH));
+		assertEquals(16, calendar.get(Calendar.DATE));
+		assertEquals(2, calendar.get(Calendar.HOUR));
+		assertEquals(4, calendar.get(Calendar.MINUTE));
+		assertEquals(6, calendar.get(Calendar.SECOND));
+
+		calendar.setTime(DateUtils.parseDateTime("1968-04-16 2:4:6"));
+		assertEquals(1968, calendar.get(Calendar.YEAR));
+		assertEquals(3, calendar.get(Calendar.MONTH));
+		assertEquals(16, calendar.get(Calendar.DATE));
+		assertEquals(2, calendar.get(Calendar.HOUR));
+		assertEquals(4, calendar.get(Calendar.MINUTE));
+		assertEquals(6, calendar.get(Calendar.SECOND));
+	}
 }
 
