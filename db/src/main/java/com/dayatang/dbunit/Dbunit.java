@@ -3,15 +3,19 @@ package com.dayatang.dbunit;
 import java.io.InputStreamReader;
 
 import org.dbunit.IDatabaseTester;
+import org.dbunit.PropertiesBasedJdbcDatabaseTester;
+import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
 
 import com.dayatang.db.PropertiesUtil;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -27,9 +31,11 @@ public class Dbunit {
 	protected IDatabaseTester databaseTester;
 
 	public Dbunit() {
-		String jdbc_url = PropertiesUtil.JDBC_URL
-				+ "&sessionVariables=FOREIGN_KEY_CHECKS=0";
+		// String jdbc_url = PropertiesUtil.JDBC_URL
+		// + "&sessionVariables=FOREIGN_KEY_CHECKS=0";
 
+		String jdbc_url = PropertiesUtil.JDBC_URL;
+		System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "LPS");
 		try {
 			// databaseTester = new MySQLJdbcDatabaseTester(
 			// PropertiesUtil.JDBC_DRIVER, jdbc_url,
@@ -40,7 +46,19 @@ public class Dbunit {
 			ds.setPassword(PropertiesUtil.JDBC_PASSWD);
 			ds.setJdbcUrl(jdbc_url);
 
-			databaseTester = new MySQLDataSourceDatabaseTester(ds);
+			if (PropertiesUtil.JDBC_DRIVER.toLowerCase().contains("mysql")) {
+				logger.info("use mysql datasource tester.");
+				jdbc_url = PropertiesUtil.JDBC_URL
+						+ "&sessionVariables=FOREIGN_KEY_CHECKS=0";
+				ds.setJdbcUrl(jdbc_url);
+				databaseTester = new MySQLDataSourceDatabaseTester(ds);
+			} else if (PropertiesUtil.JDBC_DRIVER.toLowerCase().contains(
+					"oracle")) {
+				logger.info("use oracle datasource tester.");
+				databaseTester = new OracleDataSourceDatabaseTester(ds, PropertiesUtil.JDBC_USERNAME);
+			} else {
+				throw new RuntimeException("不支持的数据库类型！");
+			}
 
 		} catch (Exception ex) {
 			logger.error("构造测试环境失败！");
@@ -92,6 +110,9 @@ public class Dbunit {
 			FlatXmlDataSet fxset = new FlatXmlDataSet(inReader, true,
 					enableColumnSensing, false);
 			return fxset;
+			// return new CachedDataSet(new FlatXmlProducer(new InputSource(
+			// inReader), true, enableColumnSensing, false));
+
 		} else {
 			return new XmlDataSet(Dbunit.class.getResourceAsStream(path));
 		}
@@ -115,6 +136,7 @@ public class Dbunit {
 
 	/**
 	 * 解析dbunit数据集的格式
+	 * 
 	 * @return 数据集格式
 	 */
 	protected DataSetStrategy getDataSetStrategy() {
@@ -123,6 +145,7 @@ public class Dbunit {
 
 	/**
 	 * 数据集路径数组
+	 * 
 	 * @return 数据集路径数组
 	 */
 	protected String[] getDataSetFilePaths() {
@@ -132,6 +155,7 @@ public class Dbunit {
 
 	/**
 	 * 单元测试方法执行前，针对数据集的操作
+	 * 
 	 * @return 数据集在单元测试方法执行前的操作
 	 */
 	protected DatabaseOperation setUpOp() {
@@ -140,6 +164,7 @@ public class Dbunit {
 
 	/**
 	 * 单元测试方法执行后，针对数据集的操作
+	 * 
 	 * @return 数据集在单元测试方法执行后的操作
 	 */
 	protected DatabaseOperation tearDownOp() {

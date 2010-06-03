@@ -6,27 +6,26 @@ import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
 
-public class MySQLDataSourceDatabaseTester extends DataSourceDatabaseTester {
+public class OracleDataSourceDatabaseTester extends DataSourceDatabaseTester {
 
-	public MySQLDataSourceDatabaseTester(DataSource dataSource) {
+	public OracleDataSourceDatabaseTester(DataSource dataSource) {
 		super(dataSource);
 	}
 	
-	public MySQLDataSourceDatabaseTester(DataSource dataSource, String schema) {
+	public OracleDataSourceDatabaseTester(DataSource dataSource, String schema) {
 		super(dataSource, schema);
 	}
-
+	
 	@Override
 	public IDatabaseConnection getConnection() throws Exception {
 
 		IDatabaseConnection conn = super.getConnection();
-
-		DefaultDataTypeFactory datatypeFactory = new MySqlDataTypeFactory();
+		
+		DefaultDataTypeFactory datatypeFactory = new OracleDataTypeFactory();
 		conn.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
 				datatypeFactory);
-
 		return conn;
 	}
 
