@@ -58,16 +58,27 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 		action4TearDown();
 	}
 
+	/**
+	 * 设置单元测试方法是否回滚，true=回滚
+	 * @return 单元测试方法是否回滚
+	 */
 	protected boolean rollback() {
 		return true;
 	}
 
+	/**
+	 * 单元测试方法执行前的操作
+	 */
 	protected void action4SetUp() {
 	}
 
+	/**
+	 * 单元测试方法执行后的操作
+	 */
 	protected void action4TearDown() {
 	}
 
+	
 	@Override
 	protected DataSetStrategy getDataSetStrategy() {
 		return DataSetStrategy.FlatXml;

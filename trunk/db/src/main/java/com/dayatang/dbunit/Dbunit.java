@@ -77,7 +77,7 @@ public class Dbunit {
 			databaseTester.setSetUpOperation(setUpOp());
 			databaseTester.onSetup();
 		} else {
-			logger.warn("没有指定数据集文件！");
+			logger.warn("have no dataset files!");
 		}
 
 	}
@@ -113,19 +113,35 @@ public class Dbunit {
 		return false;
 	}
 
+	/**
+	 * 解析dbunit数据集的格式
+	 * @return 数据集格式
+	 */
 	protected DataSetStrategy getDataSetStrategy() {
 		return DataSetStrategy.Xml;
 	}
 
+	/**
+	 * 数据集路径数组
+	 * @return 数据集路径数组
+	 */
 	protected String[] getDataSetFilePaths() {
 		// return new String[] { "dataset/empty.xml" };
 		return new String[] {};
 	}
 
+	/**
+	 * 单元测试方法执行前，针对数据集的操作
+	 * @return 数据集在单元测试方法执行前的操作
+	 */
 	protected DatabaseOperation setUpOp() {
 		return DatabaseOperation.REFRESH;
 	}
 
+	/**
+	 * 单元测试方法执行后，针对数据集的操作
+	 * @return 数据集在单元测试方法执行后的操作
+	 */
 	protected DatabaseOperation tearDownOp() {
 		return DatabaseOperation.NONE;
 	}
