@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.spring.factory.SpringProvider;
 
+@Deprecated
 public abstract class PureSpringTestCase {
 
 	protected ApplicationContext context;
@@ -20,6 +21,7 @@ public abstract class PureSpringTestCase {
 
 	@Before
 	public void setup() {
+		System.out.println("=================");
 		InstanceFactory
 				.setInstanceProvider(new SpringProvider(springXmlPath()));
 		context = new ClassPathXmlApplicationContext(springXmlPath());
@@ -27,5 +29,7 @@ public abstract class PureSpringTestCase {
 
 	@After
 	public void teardown() {
+		InstanceFactory.setInstanceProvider(null);
+		context = null;
 	}
 }
