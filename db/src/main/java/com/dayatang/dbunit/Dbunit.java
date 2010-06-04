@@ -95,7 +95,7 @@ public class Dbunit {
 			databaseTester.setSetUpOperation(setUpOp());
 			databaseTester.onSetup();
 		} else {
-			logger.warn("have no dataset files!");
+			logger.warn("没有指定数据集！");
 		}
 
 	}
@@ -107,11 +107,11 @@ public class Dbunit {
 			boolean enableColumnSensing = true;
 			InputStreamReader inReader = new InputStreamReader(Dbunit.class
 					.getResourceAsStream(path), "UTF-8");
-			FlatXmlDataSet fxset = new FlatXmlDataSet(inReader, true,
-					enableColumnSensing, false);
-			return fxset;
-			// return new CachedDataSet(new FlatXmlProducer(new InputSource(
-			// inReader), true, enableColumnSensing, false));
+//			FlatXmlDataSet fxset = new FlatXmlDataSet(inReader, true,
+//					enableColumnSensing, false);
+//			return fxset;
+			return new CachedDataSet(new FlatXmlProducer(new InputSource(
+					inReader), true, enableColumnSensing, false));
 
 		} else {
 			return new XmlDataSet(Dbunit.class.getResourceAsStream(path));
