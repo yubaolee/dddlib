@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JavaProfile_1="http:///_aZXakH6MEdmbwasWWc4yvw.profile.uml2" xmlns:Omondo_1="http:///_zrN_0SUoEdmNXYQzyImvfA.profile.uml2" xmlns:Standard="http://www.eclipse.org/uml2/schemas/Standard/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///_aZXakH6MEdmbwasWWc4yvw.profile.uml2 platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw http:///_zrN_0SUoEdmNXYQzyImvfA.profile.uml2 platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA http://www.eclipse.org/uml2/schemas/Standard/1 platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w">
+  <uml:Model xmi:id="_ewPEUHOVEd-7oo6bEO82Rg" name="dayatang-commons-hibernate">
+    <eAnnotations xmi:id="_ooVK0HOVEd-7oo6bEO82Rg" source="General" references="_ooUjwHOVEd-7oo6bEO82Rg _oobRcHOVEd-7oo6bEO82Rg _opbXAHOVEd-7oo6bEO82Rg"/>
+    <packageImport xmi:id="_exclQHOVEd-7oo6bEO82Rg">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lp648HOVEd-7oo6bEO82Rg" name="com">
+      <packagedElement xmi:type="uml:Package" xmi:id="_lp7gAHOVEd-7oo6bEO82Rg" name="dayatang">
+        <packagedElement xmi:type="uml:Package" xmi:id="_lp8HEHOVEd-7oo6bEO82Rg" name="hibernate">
+          <eAnnotations xmi:id="_oj1FUHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_ojz3MHOVEd-7oo6bEO82Rg"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_ojz3MHOVEd-7oo6bEO82Rg" name="EntityRepositoryHibernate" clientDependency="_okU0kHOVEd-7oo6bEO82Rg _owOikHOVEd-7oo6bEO82Rg _owiroXOVEd-7oo6bEO82Rg _oxH6cXOVEd-7oo6bEO82Rg _ox26QXOVEd-7oo6bEO82Rg _oyJ1MXOVEd-7oo6bEO82Rg _oycJEXOVEd-7oo6bEO82Rg _ozAw0XOVEd-7oo6bEO82Rg _ozmmsXOVEd-7oo6bEO82Rg _o0LOcXOVEd-7oo6bEO82Rg _o0diUXOVEd-7oo6bEO82Rg _o0xEUXOVEd-7oo6bEO82Rg _o1WTIXOVEd-7oo6bEO82Rg _o11bUXOVEd-7oo6bEO82Rg _o2bRMXOVEd-7oo6bEO82Rg _o3AgAXOVEd-7oo6bEO82Rg _o3Ta8XOVEd-7oo6bEO82Rg _o3mV4XOVEd-7oo6bEO82Rg _o35Q0XOVEd-7oo6bEO82Rg">
+            <eAnnotations xmi:id="_oj1FUXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+            <ownedAttribute xmi:id="_onvU8HOVEd-7oo6bEO82Rg" name="session" visibility="private" type="_ooOdIHOVEd-7oo6bEO82Rg">
+              <defaultValue xmi:type="uml:LiteralString" xmi:id="_ooMA4HOVEd-7oo6bEO82Rg">
+                <value xsi:nil="true"/>
+              </defaultValue>
+            </ownedAttribute>
+            <interfaceRealization xmi:id="_okU0kHOVEd-7oo6bEO82Rg" supplier="_okTmcHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg" contract="_okTmcHOVEd-7oo6bEO82Rg"/>
+            <ownedOperation xmi:id="_ooPEMnOVEd-7oo6bEO82Rg" name="getSingleResult" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_ooWY8nOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ooXAAHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oohYEHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oohYEXOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_ooh_IHOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ooimMHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oo5LgHOVEd-7oo6bEO82Rg" name="exists" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_opIcEHOVEd-7oo6bEO82Rg" name="clazz">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opWegHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_opdMMnOVEd-7oo6bEO82Rg" name="id" type="_opclIHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opdzQHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_opeaUHOVEd-7oo6bEO82Rg" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opfBYHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_oo6ZoHOVEd-7oo6bEO82Rg" parameter="_oo7AsHOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_oo7AsHOVEd-7oo6bEO82Rg" parameteredElement="_oo7nwHOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_oo7nwHOVEd-7oo6bEO82Rg" name="T" templateParameter="_oo7AsHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_opgPgHOVEd-7oo6bEO82Rg" name="executeUpdate" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_opg2kHOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ophdoHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_opiEsHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opirwHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oplIAHOVEd-7oo6bEO82Rg" name="getSingleResult" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oplvEHOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opmWIHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_opm9MHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opnkQHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_opoLUXOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_opoyYHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oppZcHOVEd-7oo6bEO82Rg" name="find" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_op4qAHOVEd-7oo6bEO82Rg" name="settings">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_op5REHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_opqAgHOVEd-7oo6bEO82Rg" parameter="_opqnkHOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_opqnkHOVEd-7oo6bEO82Rg" parameteredElement="_opqnkXOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_opqnkXOVEd-7oo6bEO82Rg" name="T" templateParameter="_opqnkHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oqCbAHOVEd-7oo6bEO82Rg" name="remove" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oqIhoXOVEd-7oo6bEO82Rg" name="entity" type="_oqH6kHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqJvwHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oqKW0HOVEd-7oo6bEO82Rg" name="findAll" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oqVV8HOVEd-7oo6bEO82Rg" name="clazz">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqV9AHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_oqK94HOVEd-7oo6bEO82Rg" parameter="_oqLk8HOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_oqLk8HOVEd-7oo6bEO82Rg" parameteredElement="_oqMMAHOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_oqMMAHOVEd-7oo6bEO82Rg" name="T" templateParameter="_oqLk8HOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oqfG8HOVEd-7oo6bEO82Rg" name="getSession" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oqfuAHOVEd-7oo6bEO82Rg" type="_ooOdIHOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqgVEHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oqg8IHOVEd-7oo6bEO82Rg" name="EntityRepositoryHibernate" visibility="public" concurrency="concurrent"/>
+            <ownedOperation xmi:id="_oqhjMHOVEd-7oo6bEO82Rg" name="findByNamedQuery" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oqixUHOVEd-7oo6bEO82Rg" name="queryName" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqjYYHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oqj_cHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqkmgHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oqlNkHOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oql0oHOVEd-7oo6bEO82Rg" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oqmbsHOVEd-7oo6bEO82Rg" name="save" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oquXgHOVEd-7oo6bEO82Rg" name="entity">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oq1FMHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_oqnCwHOVEd-7oo6bEO82Rg" parameter="_oqnp0HOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_oqnp0HOVEd-7oo6bEO82Rg" parameteredElement="_oqnp0XOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_oqnp0XOVEd-7oo6bEO82Rg" name="T" templateParameter="_oqnp0HOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_oq8Z8HOVEd-7oo6bEO82Rg" name="find" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_oq9BAHOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oq9oEHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oq-PIHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oq-2MHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oq_dQHOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orAEUHOVEd-7oo6bEO82Rg" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_orArYHOVEd-7oo6bEO82Rg" name="getUnmodified" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_orJOQHOVEd-7oo6bEO82Rg" name="clazz">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orJ1UHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_orQjAHOVEd-7oo6bEO82Rg" name="entity">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orX3wHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_orBScHOVEd-7oo6bEO82Rg" parameter="_orB5gHOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_orB5gHOVEd-7oo6bEO82Rg" parameteredElement="_orB5gXOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_orB5gXOVEd-7oo6bEO82Rg" name="T" templateParameter="_orB5gHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_orelcHOVEd-7oo6bEO82Rg" name="find" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_orfzkHOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orgaoHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_orhBsHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orhowHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_oriP0XOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ori24HOVEd-7oo6bEO82Rg" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_orjd8HOVEd-7oo6bEO82Rg" name="getSingleResult" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_orsA0HOVEd-7oo6bEO82Rg" name="settings">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_orsn4HOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_orkFAHOVEd-7oo6bEO82Rg" parameter="_orksEHOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_orksEHOVEd-7oo6bEO82Rg" parameteredElement="_orlTIHOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_orlTIHOVEd-7oo6bEO82Rg" name="T" templateParameter="_orksEHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_orzVkHOVEd-7oo6bEO82Rg" name="findByExample" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_osLJAHOVEd-7oo6bEO82Rg" name="example">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_osWvMHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_osiVYHOVEd-7oo6bEO82Rg" name="settings">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_osi8cHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_orz8oHOVEd-7oo6bEO82Rg" parameter="_or0jsHOVEd-7oo6bEO82Rg _or1KwXOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_or0jsHOVEd-7oo6bEO82Rg" parameteredElement="_or1KwHOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_or1KwHOVEd-7oo6bEO82Rg" name="T" templateParameter="_or0jsHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_or1KwXOVEd-7oo6bEO82Rg" parameteredElement="_or1x0HOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_or1x0HOVEd-7oo6bEO82Rg" name="E" templateParameter="_or1KwXOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_osqRMHOVEd-7oo6bEO82Rg" name="findByNamedQuery" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_osq4QHOVEd-7oo6bEO82Rg" name="queryName" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_osrfUHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_ossGYHOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_osstcHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_ost7kHOVEd-7oo6bEO82Rg" type="_oogJ8HOVEd-7oo6bEO82Rg" direction="return">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ost7kXOVEd-7oo6bEO82Rg" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_osuioHOVEd-7oo6bEO82Rg" name="executeUpdate" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_osvwwHOVEd-7oo6bEO82Rg" name="queryString" type="_ooVx4HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oswX0HOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_osw-4HOVEd-7oo6bEO82Rg" name="params" type="_oogJ8HOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_osxl8HOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_osyNAHOVEd-7oo6bEO82Rg" name="load" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_os6I0HOVEd-7oo6bEO82Rg" name="clazz">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_os6v4HOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_os7W8HOVEd-7oo6bEO82Rg" name="id" type="_opclIHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_os7-AHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_osy0EHOVEd-7oo6bEO82Rg" parameter="_oszbIHOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_oszbIHOVEd-7oo6bEO82Rg" parameteredElement="_oszbIXOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_oszbIXOVEd-7oo6bEO82Rg" name="T" templateParameter="_oszbIHOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_otCEoHOVEd-7oo6bEO82Rg" name="EntityRepositoryHibernate" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_otDSwHOVEd-7oo6bEO82Rg" name="session" type="_ooOdIHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_otD50HOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_otD50XOVEd-7oo6bEO82Rg" name="get" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_otMcsHOVEd-7oo6bEO82Rg" name="clazz">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_otNDwHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_otNq0HOVEd-7oo6bEO82Rg" name="id" type="_opclIHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_otNq0XOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+              <ownedTemplateSignature xmi:id="_otFH8HOVEd-7oo6bEO82Rg" parameter="_otFH8XOVEd-7oo6bEO82Rg">
+                <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="_otFH8XOVEd-7oo6bEO82Rg" parameteredElement="_otFvAHOVEd-7oo6bEO82Rg">
+                  <ownedParameteredElement xmi:type="uml:Operation" xmi:id="_otFvAHOVEd-7oo6bEO82Rg" name="T" templateParameter="_otFH8XOVEd-7oo6bEO82Rg"/>
+                </ownedParameter>
+              </ownedTemplateSignature>
+            </ownedOperation>
+            <ownedOperation xmi:id="_otUYgHOVEd-7oo6bEO82Rg" name="setSession" visibility="public" concurrency="concurrent">
+              <ownedParameter xmi:id="_otU_kHOVEd-7oo6bEO82Rg" name="session" type="_ooOdIHOVEd-7oo6bEO82Rg">
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_otVmoHOVEd-7oo6bEO82Rg" value="1"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Package" xmi:id="_ovCPwHOVEd-7oo6bEO82Rg" name="internal">
+            <eAnnotations xmi:id="_ovEE8HOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_ovDd4HOVEd-7oo6bEO82Rg"/>
+            <packagedElement xmi:type="uml:Class" xmi:id="_ovDd4HOVEd-7oo6bEO82Rg" name="QueryTranslator">
+              <eAnnotations xmi:id="_ovEE8XOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_okP8EHOVEd-7oo6bEO82Rg" name="domain">
+          <eAnnotations xmi:id="_okUNgHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_okTmcHOVEd-7oo6bEO82Rg _opu5AHOVEd-7oo6bEO82Rg _oqH6kHOVEd-7oo6bEO82Rg _osaZkHOVEd-7oo6bEO82Rg _ouuGsHOVEd-7oo6bEO82Rg"/>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_okTmcHOVEd-7oo6bEO82Rg" name="EntityRepository">
+            <eAnnotations xmi:id="_okUNgXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_opu5AHOVEd-7oo6bEO82Rg" name="QuerySettings">
+            <eAnnotations xmi:id="_opvgEHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+            <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_opvgEXOVEd-7oo6bEO82Rg" parameter="_opwHIHOVEd-7oo6bEO82Rg">
+              <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_opwHIHOVEd-7oo6bEO82Rg" parameteredElement="_opwHIXOVEd-7oo6bEO82Rg">
+                <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_opwHIXOVEd-7oo6bEO82Rg" name="T" templateParameter="_opwHIHOVEd-7oo6bEO82Rg"/>
+              </ownedParameter>
+            </ownedTemplateSignature>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_oqH6kHOVEd-7oo6bEO82Rg" name="Entity">
+            <eAnnotations xmi:id="_oqIhoHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_osaZkHOVEd-7oo6bEO82Rg" name="ExampleSettings">
+            <eAnnotations xmi:id="_osbAoHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+            <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_osbnsHOVEd-7oo6bEO82Rg" parameter="_osbnsXOVEd-7oo6bEO82Rg">
+              <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_osbnsXOVEd-7oo6bEO82Rg" parameteredElement="_oscOwHOVEd-7oo6bEO82Rg">
+                <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_oscOwHOVEd-7oo6bEO82Rg" name="T" templateParameter="_osbnsXOVEd-7oo6bEO82Rg"/>
+              </ownedParameter>
+            </ownedTemplateSignature>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_ouuGsHOVEd-7oo6bEO82Rg" name="InstanceFactory">
+            <eAnnotations xmi:id="_ouutwHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_ooMn8HOVEd-7oo6bEO82Rg" name="org">
+      <packagedElement xmi:type="uml:Package" xmi:id="_ooNPAHOVEd-7oo6bEO82Rg" name="hibernate">
+        <eAnnotations xmi:id="_ooPEMHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_ooOdIHOVEd-7oo6bEO82Rg _ous4kHOVEd-7oo6bEO82Rg _ovHIQXOVEd-7oo6bEO82Rg"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ooOdIHOVEd-7oo6bEO82Rg" name="Session" isAbstract="true">
+          <eAnnotations xmi:id="_ooPEMXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ous4kHOVEd-7oo6bEO82Rg" name="Criteria" isAbstract="true">
+          <eAnnotations xmi:id="_outfoHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_ou_zgHOVEd-7oo6bEO82Rg" name="criterion">
+          <eAnnotations xmi:id="_ovBosHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_ovBBoHOVEd-7oo6bEO82Rg _ovGhMHOVEd-7oo6bEO82Rg"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_ovBBoHOVEd-7oo6bEO82Rg" name="MatchMode" isAbstract="true">
+            <eAnnotations xmi:id="_ovBosXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_ovGhMHOVEd-7oo6bEO82Rg" name="Example">
+            <eAnnotations xmi:id="_ovHIQHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ovHIQXOVEd-7oo6bEO82Rg" name="Query" isAbstract="true">
+          <eAnnotations xmi:id="_ovHvUHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_ooT8sHOVEd-7oo6bEO82Rg" name="java">
+      <packagedElement xmi:type="uml:Package" xmi:id="_ooUjwHOVEd-7oo6bEO82Rg" name="lang">
+        <eAnnotations xmi:id="_ooWY8HOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_ooVx4HOVEd-7oo6bEO82Rg _oogJ8HOVEd-7oo6bEO82Rg _oo_5MHOVEd-7oo6bEO82Rg"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_ooVx4HOVEd-7oo6bEO82Rg" name="String" isLeaf="true">
+          <eAnnotations xmi:id="_ooWY8XOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_oogJ8HOVEd-7oo6bEO82Rg" name="Object">
+          <eAnnotations xmi:id="_oogxAHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_oo_5MHOVEd-7oo6bEO82Rg" name="Class" isLeaf="true">
+          <eAnnotations xmi:id="_opAgQHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_opAgQXOVEd-7oo6bEO82Rg" parameter="_opBHUHOVEd-7oo6bEO82Rg">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_opBHUHOVEd-7oo6bEO82Rg" parameteredElement="_opBHUXOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_opBHUXOVEd-7oo6bEO82Rg" name="T" templateParameter="_opBHUHOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+          </ownedTemplateSignature>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_oobRcHOVEd-7oo6bEO82Rg" name="util">
+        <eAnnotations xmi:id="_oodGoHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_oocfkHOVEd-7oo6bEO82Rg _op54IHOVEd-7oo6bEO82Rg _ouvU0HOVEd-7oo6bEO82Rg _ovEsAHOVEd-7oo6bEO82Rg _ovHvUXOVEd-7oo6bEO82Rg"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_oocfkHOVEd-7oo6bEO82Rg" name="Map" isAbstract="true">
+          <eAnnotations xmi:id="_oodGoXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_oodGonOVEd-7oo6bEO82Rg" parameter="_oodtsHOVEd-7oo6bEO82Rg _ooe70HOVEd-7oo6bEO82Rg">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_oodtsHOVEd-7oo6bEO82Rg" parameteredElement="_ooeUwHOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_ooeUwHOVEd-7oo6bEO82Rg" name="K" templateParameter="_oodtsHOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_ooe70HOVEd-7oo6bEO82Rg" parameteredElement="_oofi4HOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_oofi4HOVEd-7oo6bEO82Rg" name="V" templateParameter="_ooe70HOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+          </ownedTemplateSignature>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_op54IHOVEd-7oo6bEO82Rg" name="List" isAbstract="true">
+          <eAnnotations xmi:id="_op6fMHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_op6fMXOVEd-7oo6bEO82Rg" parameter="_op7GQHOVEd-7oo6bEO82Rg">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_op7GQHOVEd-7oo6bEO82Rg" parameteredElement="_op7GQXOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_op7GQXOVEd-7oo6bEO82Rg" name="E" templateParameter="_op7GQHOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+          </ownedTemplateSignature>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_ouvU0HOVEd-7oo6bEO82Rg" name="Collections">
+          <eAnnotations xmi:id="_ouv74HOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ovEsAHOVEd-7oo6bEO82Rg" name="Iterator" isAbstract="true">
+          <eAnnotations xmi:id="_ovFTEHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_ovFTEXOVEd-7oo6bEO82Rg" parameter="_ovFTEnOVEd-7oo6bEO82Rg">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_ovFTEnOVEd-7oo6bEO82Rg" parameteredElement="_ovF6IHOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_ovF6IHOVEd-7oo6bEO82Rg" name="E" templateParameter="_ovFTEnOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+          </ownedTemplateSignature>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_ovHvUXOVEd-7oo6bEO82Rg" name="Set" isAbstract="true">
+          <eAnnotations xmi:id="_ovIWYHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+          <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_ovIWYXOVEd-7oo6bEO82Rg" parameter="_ovI9cHOVEd-7oo6bEO82Rg">
+            <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_ovI9cHOVEd-7oo6bEO82Rg" parameteredElement="_ovI9cXOVEd-7oo6bEO82Rg">
+              <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_ovI9cXOVEd-7oo6bEO82Rg" name="E" templateParameter="_ovI9cHOVEd-7oo6bEO82Rg"/>
+            </ownedParameter>
+          </ownedTemplateSignature>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_opbXAHOVEd-7oo6bEO82Rg" name="io">
+        <eAnnotations xmi:id="_opdMMHOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd" references="_opclIHOVEd-7oo6bEO82Rg"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_opclIHOVEd-7oo6bEO82Rg" name="Serializable" isAbstract="true">
+          <eAnnotations xmi:id="_opdMMXOVEd-7oo6bEO82Rg" source="dayatang-commons-hibernate/docs/com.dayatang.hibernateClassDiagram.ucd"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_owOikHOVEd-7oo6bEO82Rg" supplier="_opclIHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_owiroXOVEd-7oo6bEO82Rg" supplier="_oqH6kHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_oxH6cXOVEd-7oo6bEO82Rg" supplier="_ovGhMHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_ox26QXOVEd-7oo6bEO82Rg" supplier="_ouuGsHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_oyJ1MXOVEd-7oo6bEO82Rg" supplier="_oo_5MHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_oycJEXOVEd-7oo6bEO82Rg" supplier="_op54IHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_ozAw0XOVEd-7oo6bEO82Rg" supplier="_ovHIQXOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_ozmmsXOVEd-7oo6bEO82Rg" supplier="_oocfkHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o0LOcXOVEd-7oo6bEO82Rg" supplier="_ouvU0HOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o0diUXOVEd-7oo6bEO82Rg" supplier="_ovEsAHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o0xEUXOVEd-7oo6bEO82Rg" supplier="_osaZkHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o1WTIXOVEd-7oo6bEO82Rg" supplier="_ovBBoHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o11bUXOVEd-7oo6bEO82Rg" supplier="_ovDd4HOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o2bRMXOVEd-7oo6bEO82Rg" supplier="_opu5AHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o3AgAXOVEd-7oo6bEO82Rg" supplier="_ooVx4HOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o3Ta8XOVEd-7oo6bEO82Rg" supplier="_ous4kHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o3mV4XOVEd-7oo6bEO82Rg" supplier="_ovHvUXOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_o35Q0XOVEd-7oo6bEO82Rg" supplier="_ooOdIHOVEd-7oo6bEO82Rg" client="_ojz3MHOVEd-7oo6bEO82Rg"/>
+    <profileApplication xmi:id="_e40YkHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e44C8HOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e44C8XOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e44C8nOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e44qAHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e45REHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e45REXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e454IHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e454IXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e46fMHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Deployment.profile.uml#_gPzkoXlkEdyC2_BXA89-Eg"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Deployment.profile.uml#_69q0IGkDEd2C2vBXA89-Eg"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e46fMXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e47GQHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e47GQXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e47tUHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e48UYHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e48UYXOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e487cHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e487cXOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e49igHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e49igXOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e4-JkHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e4-JkXOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_f9NXwJIyEd2ymsRPCrfQAQ"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e4-woHOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e4_XsHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e4_XsXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e4_-wHOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e4_-wXOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e5Al0HOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+    </profileApplication>
+    <profileApplication xmi:id="_e5Al0XOVEd-7oo6bEO82Rg">
+      <eAnnotations xmi:id="_e5BM4HOVEd-7oo6bEO82Rg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+    </profileApplication>
+  </uml:Model>
+  <JavaProfile_1:JavaProfile__MultidimensionalArray xmi:id="_opj54HOVEd-7oo6bEO82Rg" base_Parameter="_opiEsHOVEd-7oo6bEO82Rg" dimension="1"/>
+  <JavaProfile_1:JavaProfile__MultidimensionalArray xmi:id="_opoLUHOVEd-7oo6bEO82Rg" base_Parameter="_opm9MHOVEd-7oo6bEO82Rg" dimension="1"/>
+  <JavaProfile_1:JavaProfile__MultidimensionalArray xmi:id="_oriP0HOVEd-7oo6bEO82Rg" base_Parameter="_orhBsHOVEd-7oo6bEO82Rg" dimension="1"/>
+  <JavaProfile_1:JavaProfile__MultidimensionalArray xmi:id="_ostUgHOVEd-7oo6bEO82Rg" base_Parameter="_ossGYHOVEd-7oo6bEO82Rg" dimension="1"/>
+  <Omondo_1:Omondo__Import xmi:id="_owiroHOVEd-7oo6bEO82Rg" base_Usage="_owOikHOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_ow1mkHOVEd-7oo6bEO82Rg" base_Usage="_owiroXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_oxH6cHOVEd-7oo6bEO82Rg" base_Usage="_owiroXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_oxkmYHOVEd-7oo6bEO82Rg" base_Usage="_oxH6cXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_ox26QHOVEd-7oo6bEO82Rg" base_Usage="_oxH6cXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_oyJ1MHOVEd-7oo6bEO82Rg" base_Usage="_ox26QXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_oycJEHOVEd-7oo6bEO82Rg" base_Usage="_oyJ1MXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_oyvEAHOVEd-7oo6bEO82Rg" base_Usage="_oycJEXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_ozAw0HOVEd-7oo6bEO82Rg" base_Usage="_oycJEXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_ozTrwHOVEd-7oo6bEO82Rg" base_Usage="_ozAw0XOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_ozmmsHOVEd-7oo6bEO82Rg" base_Usage="_ozAw0XOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_oz5hoHOVEd-7oo6bEO82Rg" base_Usage="_ozmmsXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o0LOcHOVEd-7oo6bEO82Rg" base_Usage="_ozmmsXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o0diUHOVEd-7oo6bEO82Rg" base_Usage="_o0LOcXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o0xEUHOVEd-7oo6bEO82Rg" base_Usage="_o0diUXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o1D_QHOVEd-7oo6bEO82Rg" base_Usage="_o0xEUXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o1WTIHOVEd-7oo6bEO82Rg" base_Usage="_o0xEUXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o11bUHOVEd-7oo6bEO82Rg" base_Usage="_o1WTIXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o2I9UHOVEd-7oo6bEO82Rg" base_Usage="_o11bUXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o2bRMHOVEd-7oo6bEO82Rg" base_Usage="_o11bUXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o2uMIHOVEd-7oo6bEO82Rg" base_Usage="_o2bRMXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o3AgAHOVEd-7oo6bEO82Rg" base_Usage="_o2bRMXOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o3Ta8HOVEd-7oo6bEO82Rg" base_Usage="_o3AgAXOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o3mV4HOVEd-7oo6bEO82Rg" base_Usage="_o3Ta8XOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o35Q0HOVEd-7oo6bEO82Rg" base_Usage="_o3mV4XOVEd-7oo6bEO82Rg"/>
+  <Standard:Call xmi:id="_o4MLwHOVEd-7oo6bEO82Rg" base_Usage="_o35Q0XOVEd-7oo6bEO82Rg"/>
+  <Omondo_1:Omondo__Import xmi:id="_o4efoHOVEd-7oo6bEO82Rg" base_Usage="_o35Q0XOVEd-7oo6bEO82Rg"/>
+</xmi:XMI>
