@@ -67,7 +67,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.danga</groupId>
-			<artifactId>java-memcached-jdk5</artifactId>
+			<artifactId>java-memcached-jdk6</artifactId>
 			<version>${memcached.version}</version>
 		</dependency>
 		<dependency>
