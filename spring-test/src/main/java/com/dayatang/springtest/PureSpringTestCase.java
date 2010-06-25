@@ -15,7 +15,7 @@ public abstract class PureSpringTestCase {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PureSpringTestCase.class);
 
-	protected ApplicationContext context;
+	protected static ApplicationContext context;
 
 	protected String[] springXmlPath() {
 		return new String[] { "classpath:spring/*.xml" };
