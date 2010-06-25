@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import com.danga.MemCached.ErrorHandler;
 import com.danga.MemCached.MemCachedClient;
 import com.danga.MemCached.SockIOPool;
 import com.dayatang.cache.Cache;
@@ -40,8 +39,6 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	private int maxConn = 250;
 
 	private int connectTimeout = 3000;
-
-	private ErrorHandler errorHandler;
 
 	@Override
 	public void afterPropertiesSet() {
@@ -100,10 +97,6 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 
 		mcc = new MemCachedClient();
 
-		if (errorHandler != null) {
-			mcc.setErrorHandler(errorHandler);
-		}
-
 		// Integer[] weights = { 5, 1 };
 
 		// grab an instance of our connection pool
@@ -140,8 +133,8 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 
 		// lets set some compression on for the client
 		// compress anything larger than 64k
-		mcc.setCompressEnable(true);
-		mcc.setCompressThreshold(64 * 1024);
+		// mcc.setCompressEnable(true);
+		// mcc.setCompressThreshold(64 * 1024);
 
 		if (logger.isInfoEnabled()) {
 			Map map = mcc.stats(servers);
@@ -150,8 +143,9 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 				logger.error("客户端创建遇到错误，无法创建。");
 			}
 			for (Object key : keys) {
-				logger.info("客户端创建完成。key = 【{}】， status = 【{}】", key, map
-						.get(key));
+				// logger.info("客户端创建完成。key = 【{}】， status = 【{}】", key, map
+				// .get(key));
+				logger.info("客户端创建完成。key = 【{}】", key);
 			}
 		}
 
@@ -239,25 +233,6 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	 */
 	public void setConnectTimeout(int connectTimeout) {
 		this.connectTimeout = connectTimeout;
-	}
-
-	/**
-	 * 获取错误处理器
-	 * 
-	 * @return 错误处理器
-	 */
-	public ErrorHandler getErrorHandler() {
-		return errorHandler;
-	}
-
-	/**
-	 * 设置错误处理器
-	 * 
-	 * @param errorHandler
-	 *            错误处理器
-	 */
-	public void setErrorHandler(ErrorHandler errorHandler) {
-		this.errorHandler = errorHandler;
 	}
 
 }

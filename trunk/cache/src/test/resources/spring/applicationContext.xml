@@ -18,9 +18,7 @@
 		<property name="initConn" value="3"></property>
 		<property name="minConn" value="3"></property>
 		<property name="maxConn" value="5"></property>
-		<!--<property name="errorHandler" ref="errorHandler"></property>-->
 	</bean>
 
-	<bean id="errorHandler" class="com.dayatang.cache.memcached.DefaultErrorHandler"></bean>
 
 </beans>
