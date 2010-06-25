@@ -24,12 +24,14 @@ public class DSTest extends PureSpringTestCase {
 		List list = dao.listResultWithoutCloseConnection(
 				"from CommonsTestChild", new Object[] {});
 
-		Thread.sleep(10000);
+		Thread.sleep(12000);
 
 		GeminiConnectionLogTimeoutMonitor monitor = (GeminiConnectionLogTimeoutMonitor) context
 				.getBean("connectionMonitor");
 		Assert.assertEquals(1, monitor.getAliveTimeoutConnections().size());
 		Assert.assertEquals(0, monitor.getClosedTimeoutConnections().size());
+		
+		Thread.sleep(10000);
 	}
 
 }

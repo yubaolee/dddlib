@@ -10,7 +10,7 @@
 
 	<bean id="connectionMonitor"
 		class="com.dayatang.dsmonitor.monitor.GeminiConnectionLogTimeoutMonitor">
-		<property name="timeout" value="1000"></property>
+		<property name="timeout" value="10000"></property>
 	</bean>
 
 	<bean id="connectionMonitorFactory"

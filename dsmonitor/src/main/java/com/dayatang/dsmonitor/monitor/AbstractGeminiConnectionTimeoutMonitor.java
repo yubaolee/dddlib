@@ -26,6 +26,9 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements
 	private static Set<GeminiConnection> closedTimeoutConnections = Collections
 			.synchronizedSet(new HashSet<GeminiConnection>());
 
+	/**
+	 * 单位：毫秒，默认10000毫秒，即10s
+	 */
 	private long timeout = 1000;
 
 	public void closeConnection(Connection conn) throws SQLException {
@@ -65,11 +68,21 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 单位：毫秒，默认10000毫秒，即10s
+	 * 
+	 * @return 超时时间
+	 */
 	public long getTimeout() {
 		return timeout;
 	}
 
+	/**
+	 * 设置超时时间
+	 * 
+	 * @param 超时时间
+	 */
 	public void setTimeout(long timeout) {
 		this.timeout = timeout;
 	}
