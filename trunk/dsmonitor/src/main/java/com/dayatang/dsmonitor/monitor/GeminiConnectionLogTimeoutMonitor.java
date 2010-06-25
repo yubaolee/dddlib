@@ -52,7 +52,7 @@ public class GeminiConnectionLogTimeoutMonitor extends
 					logConnection(conn);
 				}
 			} else {
-				logger.info("没有【{}】", title);
+				logger.info("没有【{}】，超时时间为：【{}】ms", title, getTimeout());
 			}
 		}
 	}
