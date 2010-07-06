@@ -31,7 +31,7 @@ public class RuleTest {
 		StatelessRuleSession ruleSession = ruleService.assembleRuleSession(
 				RuleTest.class.getResourceAsStream("/rule/example.drl"), 
 				null, 
-				null);
+				map);
 
 		ruleSession.executeRules(new ArrayList());
 		System.out.println(globalMap.get("cc"));
