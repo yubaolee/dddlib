@@ -9,7 +9,7 @@
 	<artifactId>dayatang-commons-querychannel</artifactId>
 	<packaging>jar</packaging>
 	<name>Dayatang Commons QueryChannel Module</name>
-	
+
 	<scm>
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/querychannel/</connection>
 		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/querychannel/</developerConnection>
@@ -56,29 +56,12 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Tapestry-Module-Classes>
-								com.dayatang.commons.querychannel.infra.tapestry.QueryChannelModule
-							</Tapestry-Module-Classes>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
-
 	</build>
 
 	<properties>

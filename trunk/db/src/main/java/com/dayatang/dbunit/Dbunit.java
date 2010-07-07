@@ -3,11 +3,9 @@ package com.dayatang.dbunit;
 import java.io.InputStreamReader;
 
 import org.dbunit.IDatabaseTester;
-import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -35,7 +33,8 @@ public class Dbunit {
 		// + "&sessionVariables=FOREIGN_KEY_CHECKS=0";
 
 		String jdbc_url = PropertiesUtil.JDBC_URL;
-		System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "LPS");
+		// System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA,
+		// "LPS");
 		try {
 			// databaseTester = new MySQLJdbcDatabaseTester(
 			// PropertiesUtil.JDBC_DRIVER, jdbc_url,
@@ -55,7 +54,11 @@ public class Dbunit {
 			} else if (PropertiesUtil.JDBC_DRIVER.toLowerCase().contains(
 					"oracle")) {
 				logger.info("use oracle datasource tester.");
-				databaseTester = new OracleDataSourceDatabaseTester(ds, PropertiesUtil.JDBC_USERNAME);
+				databaseTester = new OracleDataSourceDatabaseTester(ds,
+						PropertiesUtil.JDBC_USERNAME);
+			} else if (PropertiesUtil.JDBC_DRIVER.toLowerCase().contains("h2")) {
+				logger.info("use h2 datasource tester.");
+				databaseTester = new H2DataSourceDatabaseTester(ds);
 			} else {
 				throw new RuntimeException("不支持的数据库类型！");
 			}
@@ -107,9 +110,9 @@ public class Dbunit {
 			boolean enableColumnSensing = true;
 			InputStreamReader inReader = new InputStreamReader(Dbunit.class
 					.getResourceAsStream(path), "UTF-8");
-//			FlatXmlDataSet fxset = new FlatXmlDataSet(inReader, true,
-//					enableColumnSensing, false);
-//			return fxset;
+			// FlatXmlDataSet fxset = new FlatXmlDataSet(inReader, true,
+			// enableColumnSensing, false);
+			// return fxset;
 			return new CachedDataSet(new FlatXmlProducer(new InputSource(
 					inReader), true, enableColumnSensing, false));
 
