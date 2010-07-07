@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.cache.Cache;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.springtest.PureSpringTestCase;
 
 public class MemCachedBasedCacheTest extends PureSpringTestCase {
@@ -21,7 +22,7 @@ public class MemCachedBasedCacheTest extends PureSpringTestCase {
 	@Before
 	public void setup() {
 		super.setup();
-		cache = (Cache) context.getBean("memcached");
+		cache = InstanceFactory.getInstance(Cache.class, "memcached");
 	}
 
 	@Test
