@@ -85,10 +85,6 @@ public class Value implements ValueObject {
 		return Boolean.parseBoolean(value);
 	}
 	
-	public Object getDefaultValue() {
-		return dataType.getDefaultValue();
-	}
-	
 	public Date getDate() {
 		if (value == null) {
 			return null;
@@ -99,6 +95,14 @@ public class Value implements ValueObject {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public Object getDefaultValue() {
+		return dataType.getDefaultValue();
+	}
+	
+	public Object getRealValue() {
+		return dataType.getRealValue(value);
 	}
 	
 	@Override
