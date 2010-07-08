@@ -3,12 +3,20 @@ package com.dayatang.domain;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 
 public class ValueTest {
+	
+	private final String[] DATE_FORMAT = new String[] {
+		"yyyy-MM-dd",
+		"hh:mm:ss",
+		"yyyy-MM-dd hh:mm:ss"
+	};
 
 	private Value value;
 
@@ -152,6 +160,64 @@ public class ValueTest {
 	public void testToString() {
 		value = new Value(DataType.DATE, "2000-1-5");
 		assertEquals("2000-1-5", value.toString());
+	}
+
+	@Test
+	public void testGetDefaultValue() throws ParseException {
+		Value value;
+
+		value = new Value(DataType.STRING, "abc");
+		assertEquals("", value.getDefaultValue());
+		
+		value = new Value(DataType.INT, "abc");
+		assertEquals(0, value.getDefaultValue());
+		
+		value = new Value(DataType.DOUBLE, "abc");
+		assertEquals(0.0, value.getDefaultValue());
+		
+		value = new Value(DataType.BIG_DECIMAL, "abc");
+		assertEquals(BigDecimal.ZERO, value.getDefaultValue());
+		
+		value = new Value(DataType.BOOLEAN, "abc");
+		assertEquals(false, value.getDefaultValue());
+		
+		value = new Value(DataType.DATE, "abc");
+		assertEquals(DateUtils.parseDate("1000-01-01", DATE_FORMAT), value.getDefaultValue());
+		
+		value = new Value(DataType.TIME, "abc");
+		assertEquals(DateUtils.parseDate("00:00:00", DATE_FORMAT), value.getDefaultValue());
+		
+		value = new Value(DataType.DATE_TIME, "abc");
+		assertEquals(DateUtils.parseDate("1000-01-01 00:00:00", DATE_FORMAT), value.getDefaultValue());
+	}
+
+	@Test
+	public void testGetRealValue() throws ParseException {
+		Value value;
+
+		value = new Value(DataType.STRING, "abc");
+		assertEquals("abc", value.getRealValue());
+		
+		value = new Value(DataType.INT, "12");
+		assertEquals(12, value.getRealValue());
+		
+		value = new Value(DataType.DOUBLE, "12.5");
+		assertEquals(12.5, value.getRealValue());
+		
+		value = new Value(DataType.BIG_DECIMAL, "12.5");
+		assertEquals(BigDecimal.valueOf(12.5), value.getRealValue());
+		
+		value = new Value(DataType.BOOLEAN, "true");
+		assertEquals(true, value.getRealValue());
+		
+		value = new Value(DataType.DATE, "2000-01-01");
+		assertEquals(DateUtils.parseDate("2000-01-01", DATE_FORMAT), value.getRealValue());
+		
+		value = new Value(DataType.TIME, "00:12:00");
+		assertEquals(DateUtils.parseDate("00:12:00", DATE_FORMAT), value.getRealValue());
+		
+		value = new Value(DataType.DATE_TIME, "2000-01-01 00:12:00");
+		assertEquals(DateUtils.parseDate("2000-01-01 00:12:00", DATE_FORMAT), value.getRealValue());
 	}
 
 }
