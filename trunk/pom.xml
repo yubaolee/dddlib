@@ -86,10 +86,22 @@
 
 	<distributionManagement>
 		<repository>
-			<id>dayatang</id>
+			<id>dayatang-release</id>
 			<name>Dayatang release repository</name>
-			<url>file:////home/m2/repository/snapshots</url>
+			<url>dav:http://www.dayatang.com/m2/internal</url>
+			<!-- <url>file:////home/m2/repository/snapshots</url> -->
 		</repository>
+		<snapshotRepository>
+			<id>dayatang-snapshot</id>
+			<name>Dayatang snapshot repository</name>
+			<url>file:////home/m2/repository/snapshots</url>
+		</snapshotRepository>
+		<site>
+			<id>dayatang-site</id>
+			<name>Dayatang site</name>
+			<url>dav:http://www.dayatang.com/projects/dddlib</url>
+		</site>		
+
 	</distributionManagement>
 
 	<repositories>
@@ -192,6 +204,13 @@
 
 	<build>
 		<defaultGoal>install</defaultGoal>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -311,6 +330,8 @@
 		</plugins>
 	</build>
 
+
+
 	<reporting>
 		<plugins>
 			<plugin>
@@ -428,10 +449,8 @@
 			<id>prod</id>
 			<build>
 				<plugins>
-					<!--
-						Override location of data file for DbUnit to load (doesn't have
-						negative keys)
-					-->
+					<!-- Override location of data file for DbUnit to load (doesn't have 
+						negative keys) -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>dbunit-maven-plugin</artifactId>
@@ -525,10 +544,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<!--
-				You need to enable TCP/IP Connections for SQL Server 2005 after
-				installing.
-			-->
+			<!-- You need to enable TCP/IP Connections for SQL Server 2005 after installing. -->
 			<!-- http://www.mattwoodward.com/blog/index.cfm?commentID=211 -->
 			<id>sqlserver</id>
 			<properties>
