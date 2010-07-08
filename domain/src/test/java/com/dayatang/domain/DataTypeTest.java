@@ -34,8 +34,20 @@ public class DataTypeTest {
 		assertEquals(0.0, DataType.DOUBLE.getDefaultValue());
 		assertEquals(BigDecimal.ZERO, DataType.BIG_DECIMAL.getDefaultValue());
 		assertEquals(false, DataType.BOOLEAN.getDefaultValue());
-		assertEquals(DateUtils.parseDate("1970-01-01", DATE_FORMAT), DataType.DATE.getDefaultValue());
+		assertEquals(DateUtils.parseDate("1000-01-01", DATE_FORMAT), DataType.DATE.getDefaultValue());
 		assertEquals(DateUtils.parseDate("00:00:00", DATE_FORMAT), DataType.TIME.getDefaultValue());
-		assertEquals(DateUtils.parseDate("1970-01-01 00:00:00", DATE_FORMAT), DataType.DATE_TIME.getDefaultValue());
+		assertEquals(DateUtils.parseDate("1000-01-01 00:00:00", DATE_FORMAT), DataType.DATE_TIME.getDefaultValue());
+	}
+
+	@Test
+	public void testGetRealValue() throws ParseException {
+		assertEquals("abc", DataType.STRING.getRealValue("abc"));
+		assertEquals(12, DataType.INT.getRealValue("12"));
+		assertEquals(12.5, DataType.DOUBLE.getRealValue("12.5"));
+		assertEquals(BigDecimal.valueOf(12.5), DataType.BIG_DECIMAL.getRealValue("12.5"));
+		assertEquals(true, DataType.BOOLEAN.getRealValue("true"));
+		assertEquals(DateUtils.parseDate("2000-01-01", DATE_FORMAT), DataType.DATE.getRealValue("2000-01-01"));
+		assertEquals(DateUtils.parseDate("00:12:00", DATE_FORMAT), DataType.TIME.getRealValue("00:12:00"));
+		assertEquals(DateUtils.parseDate("2000-01-01 00:12:00", DATE_FORMAT), DataType.DATE_TIME.getRealValue("2000-01-01 00:12:00"));
 	}
 }
