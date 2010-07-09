@@ -4,6 +4,8 @@ public class Person {
 
 	private Long id;
 	private String name;
+	private String gender;
+	private int retireAge;
 
 	public Person() {
 	}
@@ -27,6 +29,22 @@ public class Person {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public int getRetireAge() {
+		return retireAge;
+	}
+
+	public void setRetireAge(int retireAge) {
+		this.retireAge = retireAge;
 	}
 
 	@Override
