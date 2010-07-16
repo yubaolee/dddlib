@@ -46,14 +46,7 @@ public class DroolsTest {
 	}
 
 	private StatelessKnowledgeSession createStatelessKnowledgeSession() {
-		KnowledgeBuilder knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		knowledgeBuilder.add(ResourceFactory.newClassPathResource(ruleDrl, getClass()), ResourceType.DRL);
-		if (knowledgeBuilder.hasErrors()) {
-			System.err.println(knowledgeBuilder.getErrors().toString());
-		}
-		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(); 
-		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
-		return knowledgeBase.newStatelessKnowledgeSession();
+		return createknowledgeBase().newStatelessKnowledgeSession();
 	}
 
 	@Test
@@ -74,13 +67,21 @@ public class DroolsTest {
 	}
 
 	private StatefulKnowledgeSession createStatefulKnowledgeSession() {
+		return createknowledgeBase().newStatefulKnowledgeSession();
+	}
+
+	private KnowledgeBase createknowledgeBase() {
+		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(); 
+		knowledgeBase.addKnowledgePackages(createKnowledgeBuilder().getKnowledgePackages());
+		return knowledgeBase;
+	}
+
+	private KnowledgeBuilder createKnowledgeBuilder() {
 		KnowledgeBuilder knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		knowledgeBuilder.add(ResourceFactory.newClassPathResource(ruleDrl, getClass()), ResourceType.DRL);
 		if (knowledgeBuilder.hasErrors()) {
 			System.err.println(knowledgeBuilder.getErrors().toString());
 		}
-		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(); 
-		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
-		return knowledgeBase.newStatefulKnowledgeSession();
+		return knowledgeBuilder;
 	}
 }
