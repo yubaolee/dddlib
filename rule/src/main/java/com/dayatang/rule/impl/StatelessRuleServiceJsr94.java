@@ -23,7 +23,7 @@ import com.dayatang.rule.RuleRuntimeException;
 import com.dayatang.rule.StatelessRuleService;
 import com.dayatang.rule.UnSupportedRuleFormatException;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 
 	private static final long serialVersionUID = -6550908446842944288L;
