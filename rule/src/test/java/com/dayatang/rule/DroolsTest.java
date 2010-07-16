@@ -3,12 +3,14 @@ package com.dayatang.rule;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.definition.KnowledgePackage;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.StatelessKnowledgeSession;
@@ -64,6 +66,7 @@ public class DroolsTest {
 		assertEquals(60, yyang.getRetireAge());
 
 		// Release the resources
+		session.dispose();
 	}
 
 	private StatefulKnowledgeSession createStatefulKnowledgeSession() {
@@ -72,7 +75,8 @@ public class DroolsTest {
 
 	private KnowledgeBase createknowledgeBase() {
 		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(); 
-		knowledgeBase.addKnowledgePackages(createKnowledgeBuilder().getKnowledgePackages());
+		Collection<KnowledgePackage> knowledgePackages = createKnowledgeBuilder().getKnowledgePackages();
+		knowledgeBase.addKnowledgePackages(knowledgePackages);
 		return knowledgeBase;
 	}
 
