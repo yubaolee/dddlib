@@ -32,8 +32,8 @@ public class DayatangRuleTest {
 	@Test
 	public void stateless() throws Exception {
 		// Execute rule
-		StatelessRuleSession statelessSession = createStatelessRuleSession();
-		statelessSession.executeRules(Arrays.asList(chencao, xishi, yyang));
+		StatelessRuleSession session = createStatelessRuleSession();
+		session.executeRules(Arrays.asList(chencao, xishi, yyang));
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
@@ -41,7 +41,7 @@ public class DayatangRuleTest {
 		assertEquals(60, yyang.getRetireAge());
 		
 		//Release the resources
-		statelessSession.release();
+		session.release();
 	}
 
 	private StatelessRuleSession createStatelessRuleSession() {
@@ -52,11 +52,11 @@ public class DayatangRuleTest {
 	@Test
 	public void stateful() throws Exception {
 		// Execute rule
-		StatefulRuleSession statefulSession = createStatefulRuleSession();
-		statefulSession.addObject(chencao);
-		statefulSession.addObject(xishi);
-		statefulSession.addObject(yyang);
-		statefulSession.executeRules();
+		StatefulRuleSession session = createStatefulRuleSession();
+		session.addObject(chencao);
+		session.addObject(xishi);
+		session.addObject(yyang);
+		session.executeRules();
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
@@ -64,7 +64,7 @@ public class DayatangRuleTest {
 		assertEquals(60, yyang.getRetireAge());
 		
 		//Release the resources
-		statefulSession.release();
+		session.release();
 	}
 
 	private StatefulRuleSession createStatefulRuleSession() {
