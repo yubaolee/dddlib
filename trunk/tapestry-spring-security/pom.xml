@@ -100,7 +100,7 @@
 	</build>
 	<properties>
 		<tapestry.version>5.1.0.5</tapestry.version>
-		<spring.version>3.0.2.RELEASE</spring.version>
-		<spring.security.version>3.0.2.RELEASE</spring.security.version>
+		<spring.version>3.0.3.RELEASE</spring.version>
+		<spring.security.version>3.0.3.RELEASE</spring.security.version>
 	</properties>
 </project>
