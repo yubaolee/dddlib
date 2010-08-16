@@ -129,6 +129,7 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 		}
 
 		try{
+			statefulSession.addObjects(params);
 			statefulSession.executeRules();
 			statefulSession.release();
 		} catch (Exception e) {
