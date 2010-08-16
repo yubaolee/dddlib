@@ -20,7 +20,7 @@ import javax.rules.StatefulRuleSession;
  * @version $LastChangedRevision$ $LastChangedBy$ $LastChangedDate$
  * 
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface StatefulRuleService extends Serializable {
 	
 	/**
