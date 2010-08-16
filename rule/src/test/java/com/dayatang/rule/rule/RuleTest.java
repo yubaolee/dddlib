@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.rules.StatelessRuleSession;
-
 import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dayatang.rule.StatefulRuleService;
 import com.dayatang.rule.StatelessRuleService;
+import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class RuleTest {
 
 	protected StatelessRuleService ruleService;
@@ -22,18 +23,25 @@ public class RuleTest {
 		ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
-	public void cc() throws Exception {
+	public void stateless() throws Exception {
+		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
 		Map map = new HashMap();
 		Map globalMap = new HashMap();
 		map.put("map", globalMap);
-		StatelessRuleSession ruleSession = ruleService.assembleRuleSession(
-				RuleTest.class.getResourceAsStream("/rule/example.drl"), 
-				null, 
-				map);
-
-		ruleSession.executeRules(new ArrayList());
+		ruleService.executeRules(RuleTest.class.getResourceAsStream("/rule/example.drl"), null, map, new ArrayList());
 		System.out.println(globalMap.get("cc"));
 	}
+
+	@Test
+	public void stateful() throws Exception {
+		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
+		Map map = new HashMap();
+		Map globalMap = new HashMap();
+		map.put("map", globalMap);
+		ruleService.executeRules(RuleTest.class.getResourceAsStream("/rule/example.drl"), null, map, new ArrayList());
+		System.out.println(globalMap.get("cc"));
+	}
+	
+	
 }
