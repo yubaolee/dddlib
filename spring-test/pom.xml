@@ -47,21 +47,27 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.8</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.8</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${jdbc.groupId}</groupId>
 			<artifactId>${jdbc.artifactId}</artifactId>
 			<version>${jdbc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.0.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
