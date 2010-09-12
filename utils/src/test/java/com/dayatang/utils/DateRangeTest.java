@@ -2,6 +2,7 @@ package com.dayatang.utils;
 
 import static org.junit.Assert.*;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -56,9 +57,12 @@ public class DateRangeTest {
 	}
 
 	@Test
-	public void testToString() {
-		System.out.println();
-		assertEquals("[2007-12-5 - 2007-12-15]", range.toString());
+	public void testToString() throws ParseException {
+		Date from = DateUtils.parseDate("2007-12-05 04:10:15", new String[] {"yyyy-M-d hh:mm:ss"});
+		Date to = DateUtils.parseDate("2007-12-15 23:10:15", new String[] {"yyyy-M-d hh:mm:ss"});
+		String fromString = DateFormat.getDateInstance().format(from);
+		String toString = DateFormat.getDateInstance().format(to);
+		assertEquals("[" + fromString + " - " + toString + "]", range.toString());
 	}
 
 }
