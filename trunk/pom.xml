@@ -91,7 +91,7 @@
 			<url>dav:http://www.dayatang.com:8080/archiva/repository/internal/</url>
 		</repository>
 		<snapshotRepository>
-			<id>dayatang-snapshot</id>
+			<id>dayatang-snapshots</id>
 			<name>Dayatang snapshot repository</name>
 			<url>dav:http://www.dayatang.com:8080/archiva/repository/snapshots</url>
 		</snapshotRepository>
