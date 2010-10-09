@@ -32,7 +32,6 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<spring.version>3.0.0.RELEASE</spring.version>
 		<jxl.version>2.6.10</jxl.version>
 	</properties>
 </project>
