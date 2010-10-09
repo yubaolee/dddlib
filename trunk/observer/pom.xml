@@ -58,7 +58,6 @@
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>${javassist.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>

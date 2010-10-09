@@ -58,7 +58,6 @@
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-			<version>${commons.dbcp.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -72,7 +71,6 @@
 	</build>
 	<properties>
 		<maven.db.skip>false</maven.db.skip>
-		<aspectj.weaver.version>1.6.8</aspectj.weaver.version>
-		<commons.dbcp.version>1.2.2</commons.dbcp.version>
+		<aspectj.weaver.version>1.6.9</aspectj.weaver.version>
 	</properties>
 </project>
