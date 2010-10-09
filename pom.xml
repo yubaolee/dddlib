@@ -7,7 +7,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
-	<url>http://www.dayatang.com</url>
+	<url>dav:http://www.dayatang.com/projects/dddlib</url>
 	<description>
 		Common Domain APIs of dayatang.com. Includes interfaces
 		and base classes.
@@ -88,26 +88,24 @@
 		<repository>
 			<id>dayatang-release</id>
 			<name>Dayatang release repository</name>
-			<url>dav:http://www.dayatang.com/m2/internal</url>
-			<!-- <url>file:////home/m2/repository/snapshots</url> -->
+			<url>dav:http://www.dayatang.com:8080/archiva/repository/internal/</url>
 		</repository>
 		<snapshotRepository>
 			<id>dayatang-snapshot</id>
 			<name>Dayatang snapshot repository</name>
-			<url>file:////home/m2/repository/snapshots</url>
+			<url>dav:http://www.dayatang.com:8080/archiva/repository/snapshots</url>
 		</snapshotRepository>
 		<site>
 			<id>dayatang-site</id>
 			<name>Dayatang site</name>
 			<url>dav:http://www.dayatang.com/projects/dddlib</url>
 		</site>
-
 	</distributionManagement>
 
 	<repositories>
 		<repository>
 			<id>dayatang-releases</id>
-			<url>http://www.dayatang.com/m2/internal</url>
+			<url>http://www.dayatang.com/maven2/internal</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -117,7 +115,7 @@
 		</repository>
 		<repository>
 			<id>dayatang-snapshots</id>
-			<url>http://www.dayatang.com/m2/snapshots</url>
+			<url>http://www.dayatang.com/maven2/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -130,7 +128,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>dayatang-releases</id>
-			<url>http://www.dayatang.com/m2/internal</url>
+			<url>http://www.dayatang.com/maven2/internal</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -140,7 +138,7 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>dayatang-snapshots</id>
-			<url>http://www.dayatang.com/m2/snapshots</url>
+			<url>http://www.dayatang.com/maven2/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -203,14 +201,6 @@
 	</dependencies>
 
 	<build>
-		<defaultGoal>install</defaultGoal>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-				<version>1.0-beta-2</version>
-			</extension>
-		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -332,6 +322,13 @@
 				</dependencies>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 	</build>
 
 
