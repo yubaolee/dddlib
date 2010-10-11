@@ -3,6 +3,6 @@ package com.dayatang.guice;
 public class MyService2 implements Service {
 	@Override
 	public String sayHello() {
-		return "I am Sruvice 2";
+		return "I am Service 2";
 	}
 }
