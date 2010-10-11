@@ -37,6 +37,7 @@ public class GuiceProvider implements InstanceProvider {
 	 * @param beanClass 实例的类型
 	 * @return 指定类型的实例。
 	 */
+        @Override
 	public <T> T getInstance(Class<T> beanClass) {
 		return injector.getInstance(beanClass);
 	}
