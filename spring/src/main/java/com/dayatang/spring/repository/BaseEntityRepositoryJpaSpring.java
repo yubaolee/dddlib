@@ -127,6 +127,18 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * org.beyond.commons.domain.EntityRepository#getUnmodified(org.beyond.commons
+	 * .domain.Entity)
+	 */
+	@Override
+	public T getUnmodified(T entity) {
+		return (T) getJpaTemplate().find(entityClass, entity.getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.beyond.commons.domain.EntityRepository#findAll()
 	 */
 	@Override
@@ -146,8 +158,9 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 
 			@Override
 			public Object doInJpa(EntityManager em) throws PersistenceException {
-				return em.createQuery(
-						"select o from " + entityClass.getName() + " o")
+				return em
+						.createQuery(
+								"select o from " + entityClass.getName() + " o")
 						.setFirstResult(firstResult).setMaxResults(maxResults)
 						.getResultList();
 			}
@@ -189,8 +202,9 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 
 			@Override
 			public Object doInJpa(EntityManager em) throws PersistenceException {
-				return em.createQuery(
-						"select o from " + entityClass.getName() + " o")
+				return em
+						.createQuery(
+								"select o from " + entityClass.getName() + " o")
 						.setFirstResult(firstResult).setMaxResults(maxResults)
 						.getResultList();
 			}
@@ -199,8 +213,7 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	}
 
 	@Override
-	public List<Object> find(final String queryString,
-			final Object[] params) {
+	public List<Object> find(final String queryString, final Object[] params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
 
 			@Override
