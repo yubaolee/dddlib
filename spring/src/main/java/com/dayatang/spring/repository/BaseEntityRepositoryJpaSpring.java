@@ -213,7 +213,7 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	}
 
 	@Override
-	public List<Object> find(final String queryString, final Object[] params) {
+	public List find(final String queryString, final Object[] params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
 
 			@Override
@@ -228,7 +228,7 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	}
 
 	@Override
-	public List<Object> find(final String queryString,
+	public List find(final String queryString,
 			final Map<String, Object> params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
 
@@ -244,7 +244,7 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	}
 
 	@Override
-	public List<Object> findByNamedQuery(final String queryName,
+	public List findByNamedQuery(final String queryName,
 			final Object[] params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
 
@@ -260,7 +260,7 @@ public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends
 	}
 
 	@Override
-	public List<Object> findByNamedQuery(final String queryName,
+	public List findByNamedQuery(final String queryName,
 			final Map<String, Object> params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
 
