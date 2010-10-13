@@ -41,7 +41,7 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 	@ElementCollection
 	@CollectionTable(name = "COMMONS_OBSERVER_SUBJECTKEY", joinColumns = @JoinColumn(name = "OBSERVER_ID"))
-	@Column(name = "subject_key")
+	@Column(name = "SUBJECT_KEY")
 	private Set<String> subjectKeys = new HashSet<String>();
 
 	public Set<String> getSubjectKeys() {
