@@ -122,7 +122,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString, Object[] params);
+	List find(String queryString, Object[] params);
 
 	/**
 	 * 根据查询语句和指定的参数从仓储中查询符合条件的实体集合
@@ -135,7 +135,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString,
+	List find(String queryString,
 			Map<String, Object> params);
 
 	/**
@@ -149,7 +149,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName,
+	List findByNamedQuery(String queryName,
 			Object[] params);
 
 	/**
@@ -163,7 +163,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName,
+	List findByNamedQuery(String queryName,
 			Map<String, Object> params);
 
 	/**
