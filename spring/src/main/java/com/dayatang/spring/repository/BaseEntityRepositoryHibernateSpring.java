@@ -185,8 +185,7 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	}
 
 	@Override
-	public <E extends Entity> List<E> find(final String queryString,
-			final Object[] params) {
+	public List<Object> find(final String queryString, final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			@Override
@@ -202,7 +201,7 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	}
 
 	@Override
-	public <E extends Entity> List<E> find(final String queryString,
+	public List<Object> find(final String queryString,
 			final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
@@ -219,7 +218,7 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	}
 
 	@Override
-	public <E extends Entity> List<E> findByNamedQuery(final String queryName,
+	public List<Object> findByNamedQuery(final String queryName,
 			final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
@@ -236,7 +235,7 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	}
 
 	@Override
-	public <E extends Entity> List<E> findByNamedQuery(final String queryName,
+	public List<Object> findByNamedQuery(final String queryName,
 			final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 
