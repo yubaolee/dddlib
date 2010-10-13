@@ -378,7 +378,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.0-beta-3-SNAPSHOT</version>
+                    <version>${site.plugin.version}</version>
                     <configuration>
                         <locales>zh,en</locales>
                         <inputEncoding>UTF-8</inputEncoding>
@@ -669,6 +669,7 @@
         </profile>
     </profiles>
     <properties>
+    	<site.plugin.version>2.1.1</site.plugin.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.0.4.RELEASE</spring.version>
         <tapestry.version>5.1.0.5</tapestry.version>
