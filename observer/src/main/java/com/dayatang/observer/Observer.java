@@ -26,9 +26,10 @@ import org.slf4j.LoggerFactory;
 import com.dayatang.domain.AbstractEntity;
 
 @Entity
-@Table(name = "COMMONS_OBSERVER")
+@Table(name = "commons_observer")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "OBSERVER_CATEGORY", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "observer_category", discriminatorType = DiscriminatorType.STRING)
+@SuppressWarnings("unchecked")
 public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 	/**

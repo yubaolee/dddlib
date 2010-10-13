@@ -54,15 +54,6 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	T load(ID id);
 
 	/**
-	 * 从仓储中获取entity参数所代表的未修改的实体
-	 * 
-	 * @param entity
-	 *            要查询的实体
-	 * @return 参数entity在仓储中的未修改版本
-	 */
-	T getUnmodified(T entity);
-
-	/**
 	 * 从仓储中查找指定类型的实体集合
 	 * 
 	 * @return 实体实例的集合。
@@ -122,7 +113,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString, Object[] params);
+	<E extends Entity> List<E> find(String queryString, Object[] params);
 
 	/**
 	 * 根据查询语句和指定的参数从仓储中查询符合条件的实体集合
@@ -135,7 +126,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString,
+	<E extends Entity> List<E> find(String queryString,
 			Map<String, Object> params);
 
 	/**
@@ -149,7 +140,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName,
+	<E extends Entity> List<E> findByNamedQuery(String queryName,
 			Object[] params);
 
 	/**
@@ -163,7 +154,7 @@ public interface BaseEntityRepository<T extends Entity, ID extends Serializable>
 	 *            查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName,
+	<E extends Entity> List<E> findByNamedQuery(String queryName,
 			Map<String, Object> params);
 
 	/**
