@@ -97,6 +97,19 @@ public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID e
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * org.beyond.commons.domain.EntityRepository#getUnmodified(org.beyond.commons
+	 * .domain.Entity)
+	 */
+	@Override
+	public T getUnmodified(T entity) {
+		getHibernateTemplate().evict(entity);
+		return (T) getHibernateTemplate().get(entityClass, entity.getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.beyond.commons.domain.EntityRepository#findAll()
 	 */
 	@Override
