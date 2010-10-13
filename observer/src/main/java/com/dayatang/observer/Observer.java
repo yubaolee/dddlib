@@ -36,10 +36,11 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 4841919329150188032L;
 
-	private static final Logger logger = LoggerFactory.getLogger(Observer.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(Observer.class);
 
 	@ElementCollection
-	@CollectionTable(name = "commons_observer_subjectkey", joinColumns = @JoinColumn(name = "observer_id"))
+	@CollectionTable(name = "COMMONS_OBSERVER_SUBJECTKEY", joinColumns = @JoinColumn(name = "OBSERVER_ID"))
 	@Column(name = "subject_key")
 	private Set<String> subjectKeys = new HashSet<String>();
 
@@ -53,7 +54,8 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	/*
@@ -78,10 +80,12 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 		if (logger.isDebugEnabled()) {
 			if (observers.isEmpty()) {
-				logger.debug("没有找到一个观察者：subjectKey为【{}】", subject.getSubjectKey());
+				logger.debug("没有找到一个观察者：subjectKey为【{}】",
+						subject.getSubjectKey());
 			} else {
 				for (Object observer : observers) {
-					logger.debug("找到一个观察者：subjectKey为【{}】，observer为【{}】", subject.getSubjectKey(), observer);
+					logger.debug("找到一个观察者：subjectKey为【{}】，observer为【{}】",
+							subject.getSubjectKey(), observer);
 				}
 			}
 		}
