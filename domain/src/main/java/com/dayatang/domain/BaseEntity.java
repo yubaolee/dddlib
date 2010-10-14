@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * 抽象实体类，可作为所有领域实体的基类，提供ID和版本属性。
@@ -73,5 +75,10 @@ public abstract class BaseEntity implements Entity {
 	public abstract boolean equals(Object arg0);
 
 	@Override
-	public abstract String toString();
+	public String toString() {
+		// return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		// .append(recordId).append(tariffNo).toString();
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.MULTI_LINE_STYLE).toString();
+	}
 }
