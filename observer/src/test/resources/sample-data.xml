@@ -2,7 +2,7 @@
 <dataset>
 
 
-	<table name="commons_observer">
+	<table name="COMMONS_OBSERVER">
 		<column>observer_category</column>
 		<column>id</column>
 		<column>version</column>
@@ -24,7 +24,7 @@
 		</row>
 	</table>
 	
-	<table name="commons_observer_subjectkey">
+	<table name="COMMONS_OBSERVER_SUBJECTKEY">
 		<column>observer_id</column>
 		<column>subject_key</column>
 		<row>
