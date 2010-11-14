@@ -49,12 +49,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>${hibernate.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 			<optional>true</optional>
@@ -77,6 +71,5 @@
 
 	<properties>
 		<maven.db.skip>false</maven.db.skip>
-		<tapestry.version>5.1.0.5</tapestry.version>
 	</properties>
 </project>
