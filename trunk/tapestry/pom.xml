@@ -46,7 +46,6 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<tapestry.version>5.1.0.5</tapestry.version>
 		<servlet.version>2.5</servlet.version>
 	</properties>
 </project>
