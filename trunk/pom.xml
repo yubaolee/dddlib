@@ -354,7 +354,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-5</version>
+                    <version>2.2</version>
                     <configuration>
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -373,7 +373,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>${site.plugin.version}</version>
+                    <version>3.0-beta-3</version>
                     <configuration>
                         <locales>zh,en</locales>
                         <inputEncoding>UTF-8</inputEncoding>
@@ -664,10 +664,9 @@
         </profile>
     </profiles>
     <properties>
-    	<site.plugin.version>2.1.1</site.plugin.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.0.5.RELEASE</spring.version>
-        <tapestry.version>5.2.2</tapestry.version>
+        <tapestry.version>5.2.4</tapestry.version>
         <hibernate.version>3.6.0.Final</hibernate.version>
         <javassist.version>3.11.0.GA</javassist.version>
         <maven.db.skip>true</maven.db.skip>
