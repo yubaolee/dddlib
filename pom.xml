@@ -84,14 +84,14 @@
 
     <distributionManagement>
         <repository>
-            <id>dayatang-release</id>
+            <id>dayatang.nexus.release</id>
             <name>Dayatang release repository</name>
-            <url>dav:http://www.dayatang.com:8080/archiva/repository/internal/</url>
+            <url>dav:http://www.dayatang.com:8080/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
-            <id>dayatang-snapshots</id>
+            <id>dayatang.nexus.snapshots</id>
             <name>Dayatang snapshot repository</name>
-            <url>dav:http://www.dayatang.com:8080/archiva/repository/snapshots</url>
+            <url>dav:http://www.dayatang.com:8080/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>
             <id>dayatang-site</id>
@@ -103,7 +103,7 @@
     <repositories>
         <repository>
             <id>dayatang-releases</id>
-            <url>http://www.dayatang.com/maven2/internal</url>
+            <url>http://www.dayatang.com/maven2/public-release</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -113,7 +113,7 @@
         </repository>
         <repository>
             <id>dayatang-snapshots</id>
-            <url>http://www.dayatang.com/maven2/snapshots</url>
+            <url>http://www.dayatang.com/maven2/public-snapshots</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -126,7 +126,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>dayatang-releases</id>
-            <url>http://www.dayatang.com/maven2/internal</url>
+            <url>http://www.dayatang.com/maven2/public-release</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -136,7 +136,7 @@
         </pluginRepository>
         <pluginRepository>
             <id>dayatang-snapshots</id>
-            <url>http://www.dayatang.com/maven2/snapshots</url>
+            <url>http://www.dayatang.com/maven2/public-snapshots</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
