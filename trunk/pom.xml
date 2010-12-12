@@ -513,8 +513,8 @@
 				<artifactId>maven-changelog-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<username>${svn.username}</username>
-					<password>${svn.password}</password>
+					<username>${scm.username}</username>
+					<password>${scm.password}</password>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
 			</plugin>
