@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<inceptionYear>dayatang</inceptionYear>
+	<parent>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-project</artifactId>
+		<version>2.0</version>
+	</parent>
+	<artifactId>dayatang-commons-excel</artifactId>
+	<packaging>jar</packaging>
+	<name>Dayatang Excel Date Import and Export Library</name>
+	<description>Dayatang Excel Date Import and Export Library</description>
+	
+	<scm>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.0/excel</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.0/excel</developerConnection>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>${jxl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<properties>
+		<jxl.version>2.6.10</jxl.version>
+	</properties>
+</project>
