@@ -386,6 +386,8 @@
 					<version>2.1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<username>${scm.username}</username>
+						<password>${scm.password}</password>
 					</configuration>
 				</plugin>
             </plugins>
