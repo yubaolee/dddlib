@@ -399,7 +399,7 @@
 						<encoding>UTF-8</encoding>
 						<charset>UTF-8</charset>
 						<minmemory>128m</minmemory>
-						<maxmemory>1g</maxmemory>
+						<maxmemory>1024m</maxmemory>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -465,7 +465,7 @@
 					<encoding>UTF-8</encoding>
 					<charset>UTF-8</charset>
 					<minmemory>128m</minmemory>
-					<maxmemory>1g</maxmemory>
+					<maxmemory>1024m</maxmemory>
 				</configuration>
 			</plugin>
 			<plugin>
