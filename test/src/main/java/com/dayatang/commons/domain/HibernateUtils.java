@@ -1,7 +1,7 @@
 package com.dayatang.commons.domain;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 
 public class HibernateUtils {
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -9,12 +9,12 @@ public class HibernateUtils {
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            return new AnnotationConfiguration().configure()
+            return new Configuration().configure()
             	.addAnnotatedClass(DictionaryCategory.class)
             	.addAnnotatedClass(Dictionary.class)
             	.buildSessionFactory();
         }
-        catch (Throwable ex) {
+        catch (Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
