@@ -1,6 +1,7 @@
 package com.dayatang.i18n.impl;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -80,20 +81,19 @@ public class ResourceBundleI18nService extends AbstractI18nService {
 	 * @see #setBasename
 	 * @see java.util.ResourceBundle#getBundle(String)
 	 */
-	public void setBasenames(String[] basenames) {
-		if (basenames != null) {
-			this.basenames = new String[basenames.length];
-			for (int i = 0; i < basenames.length; i++) {
-				String basename = basenames[i];
-				// Assert.hasText(basename, "Basename must not be empty");
-				if (StringUtils.isBlank(basename)) {
-					throw new IllegalArgumentException(
-							"Basename must not be empty");
-				}
-				this.basenames[i] = basename.trim();
-			}
-		} else {
+	public void setBasenames(String[] names) {
+		if (names == null) {
 			this.basenames = new String[0];
+		} else {
+			this.basenames = Arrays.copyOf(names, names.length);
+		}
+		for (int i = 0; i < basenames.length; i++) {
+			String basename = basenames[i];
+			if (StringUtils.isEmpty(basename) || StringUtils.isBlank(basename)) {
+				throw new IllegalArgumentException(
+						"Basename must not be null or empty");
+			}
+			this.basenames[i] = basename.trim();
 		}
 	}
 
