@@ -289,7 +289,7 @@ public class ResourceBundleI18nService extends AbstractI18nService {
 		ClassLoader cl = null;
 		try {
 			cl = Thread.currentThread().getContextClassLoader();
-		} catch (Throwable ex) {
+		} catch (Exception ex) {
 			// Cannot access thread context ClassLoader - falling back to system
 			// class loader...
 		}
