@@ -2,6 +2,7 @@ package com.dayatang.dsmonitor.datasource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public class GeminiConnection extends DelegatingConnection implements Connection
 	}
 
 	public void setStackTraceElements(StackTraceElement[] stackTraceElements) {
-		this.stackTraceElements = stackTraceElements;
+		this.stackTraceElements = Arrays.copyOf(stackTraceElements, stackTraceElements.length);
 	}
 
 	public StopWatch getStopWatch() {
