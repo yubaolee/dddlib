@@ -36,7 +36,7 @@ public class MySQLDBManager extends AbstractDBManager {
 			List<DataObject> allTableNames = DBManagerUtils.getAllTableNames(jConn);
 			
 			// 删除表
-			DBManagerUtils.dropTables(jConn,allTableNames);
+			DBManagerUtils.dropTables(jConn, allTableNames);
 
 			logger.info("清理数据库，已删除所有表和视图  !");
 		
