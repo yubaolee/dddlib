@@ -1,5 +1,6 @@
 package com.dayatang.cache.memcached;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -92,7 +93,7 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected void prepareClient() {
 
 		mcc = new MemCachedClient();
@@ -156,7 +157,7 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	}
 
 	public void setServers(String[] servers) {
-		this.servers = servers;
+		this.servers = Arrays.copyOf(servers, servers.length); 
 	}
 
 	/**
