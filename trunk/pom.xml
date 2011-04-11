@@ -689,7 +689,7 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<tapestry.version>5.2.5</tapestry.version>
-		<hibernate.version>3.6.1.Final</hibernate.version>
+		<hibernate.version>3.6.3.Final</hibernate.version>
 		<maven.db.skip>true</maven.db.skip>
 		<!-- Database settings -->
 		<dbunit.dataTypeFactoryName>org.dbunit.dataset.datatype.DefaultDataTypeFactory</dbunit.dataTypeFactoryName>
