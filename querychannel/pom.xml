@@ -36,7 +36,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.javassist</groupId>
+			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<scope>runtime</scope>
 		</dependency>
