@@ -5,6 +5,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.BeforeClass;
+import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.dayatang.dbunit.DataSetStrategy;
 import com.dayatang.dbunit.Dbunit;
@@ -17,6 +20,10 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 
 	private Transaction tx;
 
+	HibernateTransactionManager tm;
+
+	TransactionStatus ts;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		InstanceFactory
@@ -27,13 +34,16 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 		return new String[] { "classpath*:spring/*.xml" };
 	}
 
-
 	@Override
 	public final void setUp() throws Exception {
 		super.setUp();
-		
+
 		SessionFactory sessionFactory = InstanceFactory
 				.getInstance(SessionFactory.class);
+		tm = InstanceFactory.getInstance(HibernateTransactionManager.class);
+		if (tm != null) {
+			ts = tm.getTransaction(new DefaultTransactionDefinition());
+		}
 		if (sessionFactory != null) {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -45,11 +55,19 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 	public final void tearDown() throws Exception {
 		super.tearDown();
 		if (rollback()) {
-			if (tx != null && tx.isActive())
+			if (ts != null && tm != null) {
+				tm.rollback(ts);
+			}
+			if (tx != null && tx.isActive()) {
 				tx.rollback();
+			}
 		} else {
-			if (tx != null && tx.isActive())
+			if (ts != null && tm != null) {
+				tm.commit(ts);
+			}
+			if (tx != null && tx.isActive()) {
 				tx.commit();
+			}
 		}
 		if (session != null && session.isOpen()) {
 			session.close();
@@ -60,6 +78,7 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 
 	/**
 	 * 设置单元测试方法是否回滚，true=回滚
+	 * 
 	 * @return 单元测试方法是否回滚
 	 */
 	protected boolean rollback() {
@@ -78,7 +97,6 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 	protected void action4TearDown() {
 	}
 
-	
 	@Override
 	protected DataSetStrategy getDataSetStrategy() {
 		return DataSetStrategy.FlatXml;
