@@ -2,8 +2,6 @@ package com.dayatang.provider;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.domain.InstanceProvider;
@@ -11,14 +9,6 @@ import com.dayatang.service.MyService2;
 import com.dayatang.service.Service;
 
 public class Jdk6InstanceProviderTest {
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public void testGetInstance() {
