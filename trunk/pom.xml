@@ -718,6 +718,7 @@
 		<module>jpa</module>
 		<module>tapestry</module>
 		<module>spring</module>
+		<module>serviceloader</module>
 		<module>guice</module>
 		<module>utils</module>
 		<module>rule</module>
