@@ -12,8 +12,7 @@ public class TapestryProvider implements InstanceProvider {
 		TapestryProvider.registry = registry;
 	}
 
-	@SuppressWarnings("unchecked")
-	public TapestryProvider(Class... beanClasses) {
+	public TapestryProvider(Class<?>... beanClasses) {
 		RegistryBuilder builder = new RegistryBuilder();
 		builder.add(beanClasses);
 		registry = builder.build();
@@ -28,5 +27,9 @@ public class TapestryProvider implements InstanceProvider {
 	@Override
 	public <T> T getInstance(Class<T> beanClass, String beanName) {
 		return registry.getService(beanName, beanClass);
+	}
+
+	public void shutdown() {
+		registry.shutdown();
 	}
 }

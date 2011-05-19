@@ -13,13 +13,15 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.commons.domain.Dictionary;
+import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.hibernate.EntityRepositoryHibernate;
@@ -44,10 +46,7 @@ public class QuerySettingsTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		sessionFactory = new AnnotationConfiguration().configure()
-			.addAnnotatedClass(DictionaryCategory.class)
-			.addAnnotatedClass(Dictionary.class)
-			.buildSessionFactory();
+		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass

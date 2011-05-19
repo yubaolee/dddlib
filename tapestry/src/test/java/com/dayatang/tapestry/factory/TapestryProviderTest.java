@@ -1,67 +1,54 @@
 package com.dayatang.tapestry.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.tapestry.factory.TapestryProvider;
+import com.dayatang.commons.ioc.AbstractInstanceProviderTest;
+import com.dayatang.commons.ioc.Service;
+import com.dayatang.domain.InstanceProvider;
 
-public class TapestryProviderTest {
-
-	private TapestryProvider tapestryProvider;
-
-	@Before
-	public void setUp() throws Exception {
-
-	}
+public class TapestryProviderTest extends AbstractInstanceProviderTest {
 
 	@After
 	public void tearDown() throws Exception {
-		InstanceFactory.setInstanceProvider(null);
+		((TapestryProvider)provider).shutdown();
+	}
+
+	@Override
+	protected InstanceProvider createInstanceProvider() {
+		return new TapestryProvider(WithAnnotationModule.class);
+	}
+
+	@Override
+	public void testGetInstance() {
+		provider = new TapestryProvider(WithoutAnnotationModule.class);
+		super.testGetInstance();
 	}
 
 	@Test
 	public void testConstructorFromModule() {
-		tapestryProvider = new TapestryProvider(WithoutAnnotationModule.class);
-		InstanceFactory.setInstanceProvider(tapestryProvider);
-		assertEquals("I am Sruvice 1", tapestryProvider.getInstance(Service.class).sayHello());
+		provider = new TapestryProvider(WithoutAnnotationModule.class);
+		Service service = provider.getInstance(Service.class);
+		assertEquals("I am Service 1", service.sayHello());
 	}
 
 	@Test
 	public void testConstructorFromRegistry() {
-		tapestryProvider = new TapestryProvider(createRegistry(WithoutAnnotationModule.class));
-		InstanceFactory.setInstanceProvider(tapestryProvider);
-		assertEquals("I am Sruvice 1", tapestryProvider.getInstance(Service.class).sayHello());
+		provider = new TapestryProvider(createRegistry(WithoutAnnotationModule.class));
+		Service service = provider.getInstance(Service.class);
+		assertEquals("I am Service 1", service.sayHello());
 	}
 
-	@SuppressWarnings("unchecked")
-	private Registry createRegistry(Class... moduleClass) {
+	private Registry createRegistry(Class<?>... moduleClass) {
 		RegistryBuilder builder = new RegistryBuilder();
-		for (Class clazz : moduleClass) {
+		for (Class<?> clazz : moduleClass) {
 			builder.add(clazz);
 		}
 		return builder.build();
 	}
-	
-	@Test
-	public void testGetInstanceClassOfT() {
-		tapestryProvider = new TapestryProvider(WithoutAnnotationModule.class);
-		InstanceFactory.setInstanceProvider(tapestryProvider);
-		assertEquals("I am Sruvice 1", tapestryProvider.getInstance(Service.class).sayHello());
-	}
-
-	@Test
-	public void testGetInstanceStringClassOfT() {
-		tapestryProvider = new TapestryProvider(WithAnnotationModule.class);
-		InstanceFactory.setInstanceProvider(tapestryProvider);
-		assertEquals("I am Sruvice 1", tapestryProvider.getInstance(Service.class, "service1").sayHello());
-		assertEquals("I am Sruvice 2", tapestryProvider.getInstance(Service.class, "service2").sayHello());
-	}
-
 }
 

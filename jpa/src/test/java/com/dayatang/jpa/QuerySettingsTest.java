@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.commons.domain.Dictionary;
+import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 

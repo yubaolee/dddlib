@@ -1,7 +1,10 @@
-package com.dayatang.commons.domain;
+package com.dayatang.commons.repository;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import com.dayatang.commons.domain.Dictionary;
+import com.dayatang.commons.domain.DictionaryCategory;
 
 public class HibernateUtils {
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -23,6 +26,10 @@ public class HibernateUtils {
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    public static void close() {
+    	sessionFactory.close();
     }
 
 

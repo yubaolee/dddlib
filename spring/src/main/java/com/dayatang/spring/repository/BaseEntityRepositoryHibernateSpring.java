@@ -21,7 +21,7 @@ import com.dayatang.domain.Entity;
  * @author chencao
  * 
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class BaseEntityRepositoryHibernateSpring<T extends Entity, ID extends Serializable>
 		extends HibernateDaoSupport implements BaseEntityRepository<T, ID> {
 

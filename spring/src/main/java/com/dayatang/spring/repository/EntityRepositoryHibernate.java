@@ -27,6 +27,7 @@ import com.dayatang.spring.repository.internal.HibernateQueryTranslator;
  * @author yyang
  * 
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class EntityRepositoryHibernate implements EntityRepository {
 
 	private SessionFactory sessionFactory;
@@ -108,7 +109,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return get(clazz, entity.getId());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(final Class<T> clazz) {
 		return getHibernateTemplate().executeFind(new HibernateCallback<Object>() {
@@ -120,7 +120,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
 		if (settings.containsInCriteronWithEmptyValue()) {
@@ -146,7 +145,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> find(final String queryString, final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
@@ -162,7 +160,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> find(final String queryString, final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
@@ -178,7 +175,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> findByNamedQuery(final String queryName, final Object[] params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
@@ -194,7 +190,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
@@ -210,7 +205,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity, E extends T> List<T> findByExample(final E example, final ExampleSettings<T> settings) {
 		final Example theExample = Example.create(example);
@@ -277,7 +271,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Object[] params) {
 		getHibernateTemplate().execute(new HibernateCallback() {
@@ -293,7 +286,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Map<String, Object> params) {
 		getHibernateTemplate().execute(new HibernateCallback() {

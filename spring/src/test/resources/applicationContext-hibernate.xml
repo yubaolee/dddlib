@@ -25,7 +25,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.dayatang.spring.domain</value>
+				<value>com.dayatang.commons.domain</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
