@@ -4,18 +4,10 @@
 	version="1.0">
 	<persistence-unit name="default">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.dayatang.querychannel.domain.MyEntity</class>
 		<properties>
-			<!-- Auto detect annotation model classes -->
 			<property name="hibernate.archive.autodetection" value="class" />
 			<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml"/>
-			<!-- Datasource -->
-			<!-- 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-			<property name="hibernate.connection.username" value="root" />
-			<property name="hibernate.connection.password" value="" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/myhibernatejpa_dev" />
-			 -->
 		</properties>
 	</persistence-unit>
 </persistence>

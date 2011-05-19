@@ -39,11 +39,10 @@ public class QueryChannelServiceJpaTest {
 		et.begin();
 
 		Session session = (Session) em.getDelegate();
-		
-		
+
 		String hql = "delete from MyEntity";
 		Query query = session.createQuery(hql);
-		
+
 		query.executeUpdate();
 
 		logger.info("清洗测试数据完毕.");
@@ -54,9 +53,11 @@ public class QueryChannelServiceJpaTest {
 			entity.setName("entity" + i);
 			entity.setVersion(1);
 
-			Long id = (Long)session.save(entity);
+			Long id = (Long) session.save(entity);
 
-			logger.info("初始化测试数据:MyEntity[{id="+id+",name="+entity.getName()+",version="+entity.getVersion()+"}]");
+			logger.info("初始化测试数据:MyEntity[{id=" + id + ",name="
+					+ entity.getName() + ",version=" + entity.getVersion()
+					+ "}]");
 		}
 
 		et.commit();
