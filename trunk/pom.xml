@@ -718,6 +718,7 @@
 
 	<modules>
 		<module>domain</module>
+		<module>jdk6ioc</module>
 		<module>test</module>
 		<module>hibernate</module>
 		<module>jpa</module>

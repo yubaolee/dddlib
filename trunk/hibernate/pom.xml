@@ -16,19 +16,17 @@
 		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/hibernate/</developerConnection>
 	</scm>
 
-	<build>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>dayatang-commons-domain</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>dayatang-commons-test</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -60,6 +58,28 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>${project.parent.groupId}</groupId>
+						<artifactId>dayatang-commons-test</artifactId>
+						<version>${project.parent.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
 	<properties>
 		<maven.db.skip>false</maven.db.skip>
 	</properties>

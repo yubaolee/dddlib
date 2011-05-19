@@ -38,6 +38,12 @@
 			<version>${tapestry.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>dayatang-commons-test</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>${servlet.version}</version>

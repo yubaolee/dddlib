@@ -1,5 +1,6 @@
 package com.dayatang.guice;
 
+
 import com.dayatang.domain.InstanceProvider;
 import com.google.inject.Guice;
 import com.google.inject.Injector;

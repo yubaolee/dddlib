@@ -3,7 +3,9 @@
  */
 package com.dayatang.spring.repository.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,10 +21,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.commons.domain.Dictionary;
+import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.spring.domain.Dictionary;
-import com.dayatang.spring.domain.DictionaryCategory;
 import com.dayatang.spring.repository.EntityRepositoryJpa;
 
 /**

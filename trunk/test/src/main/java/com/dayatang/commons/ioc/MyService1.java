@@ -1,4 +1,4 @@
-package com.dayatang.service;
+package com.dayatang.commons.ioc;
 
 public class MyService1 implements Service {
 	@Override

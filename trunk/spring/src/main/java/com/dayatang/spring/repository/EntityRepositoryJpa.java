@@ -25,6 +25,7 @@ import com.dayatang.spring.repository.internal.JpaQueryTranslator;
  * @author yyang
  * 
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class EntityRepositoryJpa implements EntityRepository {
 
 	private EntityManagerFactory entityManagerFactory;
@@ -96,7 +97,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return get(clazz, entity.getId());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(final Class<T> clazz) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
@@ -110,7 +110,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
 		if (settings.containsInCriteronWithEmptyValue()) {
@@ -144,7 +143,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> find(final String queryString, final Object[] params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
@@ -160,7 +158,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> find(final String queryString, final Map<String, Object> params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
@@ -176,7 +173,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> findByNamedQuery(final String queryName, final Object[] params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
@@ -192,7 +188,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params) {
 		return getJpaTemplate().executeFind(new JpaCallback() {
@@ -252,7 +247,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Object[] params) {
 		getJpaTemplate().execute(new JpaCallback() {
@@ -268,7 +262,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void executeUpdate(final String queryString, final Map<String, Object> params) {
 		getJpaTemplate().execute(new JpaCallback() {

@@ -22,7 +22,7 @@ import com.dayatang.domain.InstanceFactory;
  * @author chencao
  * 
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class BaseEntityRepositoryJpaSpring<T extends Entity, ID extends Serializable>
 		implements BaseEntityRepository<T, ID> {
 

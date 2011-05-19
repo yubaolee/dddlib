@@ -22,13 +22,13 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.dayatang.commons.domain.Dictionary;
+import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.domain.ValidationException;
-import com.dayatang.spring.domain.Dictionary;
-import com.dayatang.spring.domain.DictionaryCategory;
 
 /**
  * 
