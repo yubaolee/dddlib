@@ -291,7 +291,7 @@
 							<export>true</export>
 							<jdk5>true</jdk5>
 							<persistenceunit>default</persistenceunit>
-							<outputfilename>mes-platform.ddl</outputfilename>
+							<outputfilename>db.ddl</outputfilename>
 							<skip>${maven.db.skip}</skip>
 						</componentProperties>
 					</configuration>
