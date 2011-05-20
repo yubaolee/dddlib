@@ -705,7 +705,7 @@
 		<tapestry.version>5.2.5</tapestry.version>
 		<hibernate.version>3.6.4.Final</hibernate.version>
 		<maven.db.skip>true</maven.db.skip>
-		<!-- Database settings -->
+		<!-- Database settings, default to H2 database -->
 		<dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
 		<dbunit.dataTypeFactoryName>org.dbunit.ext.h2.H2DataTypeFactory</dbunit.dataTypeFactoryName>
 		<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
