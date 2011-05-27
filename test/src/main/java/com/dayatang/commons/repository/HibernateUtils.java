@@ -1,7 +1,7 @@
 package com.dayatang.commons.repository;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
@@ -12,7 +12,8 @@ public class HibernateUtils {
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            return new Configuration().configure()
+            return new AnnotationConfiguration()
+            	.configure()
             	.addAnnotatedClass(DictionaryCategory.class)
             	.addAnnotatedClass(Dictionary.class)
             	.buildSessionFactory();

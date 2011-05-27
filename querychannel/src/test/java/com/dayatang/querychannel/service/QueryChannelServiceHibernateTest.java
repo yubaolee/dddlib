@@ -10,7 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class QueryChannelServiceHibernateTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
-		sessionFactory = new Configuration().configure()
+		sessionFactory = new AnnotationConfiguration().configure()
 		.addAnnotatedClass(MyEntity.class)
 		.buildSessionFactory();
 		queryHibernate = new QueryChannelServiceHibernate();
