@@ -1,8 +1,13 @@
 package com.dayatang.script;
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -12,11 +17,6 @@ import javax.script.ScriptException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.dayatang.script.ScriptService;
-import com.dayatang.script.ScriptType;
-
-import static org.junit.Assert.*;
 
 public class ScriptServiceTest {
 	
@@ -84,9 +84,11 @@ public class ScriptServiceTest {
 	
 	
 	@Test
-	public void testEvalReader() throws ScriptException, FileNotFoundException {
+	public void testEvalReader() throws ScriptException, FileNotFoundException, MalformedURLException, URISyntaxException {
 		ScriptEngine engine = new ScriptService().getEngine();
-		engine.eval(new FileReader(getClass().getResource("/test.groovy").getFile()));
+		InputStream in = getClass().getResourceAsStream("/test.groovy");
+		engine.eval(new InputStreamReader(in));
 	}
+	
 	
 }
