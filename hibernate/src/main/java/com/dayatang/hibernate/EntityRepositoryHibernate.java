@@ -5,10 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.pattern.LogEvent;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
@@ -25,6 +29,8 @@ import com.dayatang.hibernate.internal.QueryTranslator;
  */
 public class EntityRepositoryHibernate implements EntityRepository {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
+	
 	private Session session; 
 
 
@@ -122,7 +128,9 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		}
 		QueryTranslator translator = new QueryTranslator(settings);
 		String queryString = translator.getQueryString(); 
+		LOGGER.info("QueryString: '" + queryString + "'");
 		List<Object> params = translator.getParams();
+		LOGGER.info("params: " + params.toArray());
 		Query query = getSession().createQuery(queryString);
 		for (int i = 0; i < params.size(); i++) {
 			query.setParameter(i, params.get(i));
