@@ -4,7 +4,6 @@
 package com.dayatang.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,8 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  * 抽象实体类，可作为所有领域实体的基类，提供ID和版本属性。
@@ -34,9 +37,6 @@ public abstract class AbstractEntity implements Entity {
 
 	@Version
 	private int version;
-
-	@Transient
-	private Set<String> errorCodes = new HashSet<String>();
 
 	/**
 	 * 获得实体的标识
@@ -80,31 +80,27 @@ public abstract class AbstractEntity implements Entity {
 		return getId() == null;
 	}
 
+	
+	
 	/**
 	 * 校验实体。如果子类决定覆盖该方法，在方法体的最后应调用super.validate()。
 	 */
 	protected void validate() {
-		if (hasValidateError()) {
-			throw new ValidationException(errorCodes);
+		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		Validator validator = validatorFactory.getValidator();
+		Set<ConstraintViolation<AbstractEntity>> constraintViolations = validator.validate(this);
+		if (constraintViolations.isEmpty()) {
+			return;
 		}
+		throw new javax.validation.ValidationException(toErrorMessage(constraintViolations));
 	}
 
-	/**
-	 * 添加一条验证错误消息
-	 * 
-	 * @param message
-	 */
-	protected void addValidateError(String message) {
-		errorCodes.add(message);
-	}
-
-	/**
-	 * 判断是否存在验证错误。
-	 * 
-	 * @return
-	 */
-	protected boolean hasValidateError() {
-		return !errorCodes.isEmpty();
+	private String toErrorMessage(Set<ConstraintViolation<AbstractEntity>> constraintViolations) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (ConstraintViolation<AbstractEntity> violation : constraintViolations) {
+			stringBuilder.append(violation.getPropertyPath().toString() + ": " + violation.getMessage() + System.getProperty("line.separator"));
+		}
+		return stringBuilder.toString();
 	}
 
 	public static EntityRepository getRepository() {

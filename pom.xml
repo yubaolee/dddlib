@@ -154,6 +154,16 @@
 				<version>1</version>
 			</dependency>
 			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>1.0.0.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.2.0.Beta2</version>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
@@ -209,6 +219,12 @@
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -323,6 +339,11 @@
 							<groupId>net.sourceforge.cobertura</groupId>
 							<artifactId>cobertura</artifactId>
 							<version>1.9.4.1</version>
+						</dependency>
+						<dependency>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-validator</artifactId>
+							<version>4.2.0.Beta2</version>
 						</dependency>
 					</dependencies>
 				</plugin>

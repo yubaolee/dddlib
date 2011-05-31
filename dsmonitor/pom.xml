@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
@@ -27,7 +28,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
+
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
@@ -69,10 +70,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>quartz-all</artifactId>
-			<version>${quartz.version}</version>
-			<scope>test</scope>
+			<groupId>org.opensymphony.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>${jdbc.groupId}</groupId>
@@ -82,9 +82,9 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<quartz.version>1.6.0</quartz.version>
+		<quartz.version>1.6.1</quartz.version>
 		<dbunit.dataTypeFactoryName>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory
-					</dbunit.dataTypeFactoryName>
+		</dbunit.dataTypeFactoryName>
 		<hibernate.dialect>org.hibernate.dialect.H2Dialect
 					</hibernate.dialect>
 		<jdbc.groupId>com.h2database</jdbc.groupId>

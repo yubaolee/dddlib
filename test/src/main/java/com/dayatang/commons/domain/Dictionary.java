@@ -10,8 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -29,8 +30,10 @@ public class Dictionary extends AbstractEntity {
 
 	private static final long serialVersionUID = 5429887402331650527L;
 	
+	@Size(min = 1)
 	private String code;
 
+	@Size(min = 1)
 	private String text;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -158,17 +161,6 @@ public class Dictionary extends AbstractEntity {
 	 */
 	public void setParentCode(String parentCode) {
 		this.parentCode = parentCode;
-	}
-
-	@Override
-	public void validate() {
-		if (StringUtils.isEmpty(code)) {
-			addValidateError("code cannot be empty!");
-		}
-		if (StringUtils.isEmpty(text)) {
-			addValidateError("text cannot be empty!");
-		}
-		super.validate();
 	}
 
 	public void disable() {

@@ -2,6 +2,8 @@ package com.dayatang.domain;
 
 import static org.junit.Assert.*;
 
+import javax.validation.constraints.NotNull;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +20,20 @@ public class AbstractEntityTest {
 
 			private static final long serialVersionUID = 6071678807201286598L;
 
+			@NotNull
+			private String name;
+			
+			
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
+
 			@Override
-			public boolean equals(Object arg0) {
+			public boolean equals(Object other) {
 				return false;
 			}
 
@@ -61,4 +75,8 @@ public class AbstractEntityTest {
 		assertFalse(abstractEntity.isNew());
 	}
 
+	@Test
+	public void testValidateFailure() {
+		
+	}
 }
