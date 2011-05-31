@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +30,6 @@ import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.domain.ValidationException;
 
 /**
  * 

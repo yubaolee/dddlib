@@ -3,11 +3,18 @@
  */
 package com.dayatang.spring.repository.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.ValidationException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,7 +30,6 @@ import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.domain.ValidationException;
 
 /**
  * 
