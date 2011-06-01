@@ -87,6 +87,9 @@ public abstract class AbstractEntity implements Entity {
 	 */
 	protected void validate() {
 		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		if (validatorFactory == null) {
+			return;
+		}
 		Validator validator = validatorFactory.getValidator();
 		Set<ConstraintViolation<AbstractEntity>> constraintViolations = validator.validate(this);
 		if (constraintViolations.isEmpty()) {
