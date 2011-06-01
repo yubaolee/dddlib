@@ -3,6 +3,7 @@ package com.dayatang.domain;
 import static org.junit.Assert.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class AbstractEntityTest {
 
 			private static final long serialVersionUID = 6071678807201286598L;
 
-			@NotNull
+			@Size(min = 1, message = "name.is.empty")
 			private String name;
 			
 			

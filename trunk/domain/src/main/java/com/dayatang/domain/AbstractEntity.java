@@ -101,7 +101,7 @@ public abstract class AbstractEntity implements Entity {
 	private String toErrorMessage(Set<ConstraintViolation<AbstractEntity>> constraintViolations) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (ConstraintViolation<AbstractEntity> violation : constraintViolations) {
-			stringBuilder.append(violation.getPropertyPath().toString() + ": " + violation.getMessage() + System.getProperty("line.separator"));
+			stringBuilder.append(violation.getMessage() + System.getProperty("line.separator"));
 		}
 		return stringBuilder.toString();
 	}
