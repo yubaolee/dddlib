@@ -8,6 +8,7 @@ import java.util.Map;
  * 具体实体的仓储访问接口。专门用于从仓储中访问指定的实体类型。
  * 
  */
+@SuppressWarnings("rawtypes")
 public interface BaseEntityRepository<T extends Entity, ID extends Serializable> {
 
 	/**

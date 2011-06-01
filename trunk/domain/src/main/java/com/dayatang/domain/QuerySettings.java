@@ -261,7 +261,7 @@ public class QuerySettings<T> {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
