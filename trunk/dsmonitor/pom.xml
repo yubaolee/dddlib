@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>2.3-SNAPSHOT</version>
+		<version>2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-dsmonitor</artifactId>
 	<packaging>jar</packaging>
@@ -27,8 +27,33 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<!-- goal>jar</goal -->
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
-
+		
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
@@ -70,9 +95,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.opensymphony.quartz</groupId>
-			<artifactId>quartz</artifactId>
-			<version>1.6.1</version>
+			<groupId>opensymphony</groupId>
+			<artifactId>quartz-all</artifactId>
+			<version>${quartz.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>${jdbc.groupId}</groupId>
@@ -82,9 +108,9 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<quartz.version>1.6.1</quartz.version>
+		<quartz.version>1.6.0</quartz.version>
 		<dbunit.dataTypeFactoryName>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory
-		</dbunit.dataTypeFactoryName>
+					</dbunit.dataTypeFactoryName>
 		<hibernate.dialect>org.hibernate.dialect.H2Dialect
 					</hibernate.dialect>
 		<jdbc.groupId>com.h2database</jdbc.groupId>
