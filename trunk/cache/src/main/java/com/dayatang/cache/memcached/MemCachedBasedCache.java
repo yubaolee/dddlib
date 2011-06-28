@@ -1,9 +1,11 @@
 package com.dayatang.cache.memcached;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -41,7 +43,9 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 
 	private int connectTimeout = 3000;
 
-	@Override
+	private String poolName;
+
+	
 	public void afterPropertiesSet() {
 		Assert.notEmpty(servers);
 
@@ -60,7 +64,7 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 		// }
 	}
 
-	@Override
+	
 	public Object get(String key) {
 		Object obj = mcc.get(key);
 
@@ -71,12 +75,12 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 		return obj;
 	}
 
-	@Override
+	
 	public boolean isKeyInCache(String key) {
 		return mcc.keyExists(key);
 	}
 
-	@Override
+	
 	public void put(String key, Object value) {
 		mcc.set(key, value);
 		if (logger.isDebugEnabled()) {
@@ -84,7 +88,22 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 		}
 	}
 
-	@Override
+	
+	public void put(String key, Object value, Date expiry) {
+		mcc.set(key, value, expiry);
+		if (logger.isDebugEnabled()) {
+			logger.debug("缓存数据，key：{}，过期日期：{}", key, expiry);
+		}
+	}
+
+	
+	public void put(String key, Object value, long living) {
+		Date now = new Date();
+		Date expiry = new Date(now.getTime() + living);
+		put(key, value, expiry);
+	}
+
+	
 	public boolean remove(String key) {
 		boolean result = mcc.delete(key);
 		if (logger.isDebugEnabled()) {
@@ -96,12 +115,17 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	@SuppressWarnings("rawtypes")
 	protected void prepareClient() {
 
-		mcc = new MemCachedClient();
+		// grab an instance of our connection pool
+		SockIOPool pool = null;
+		if (StringUtils.isBlank(getPoolName())) {
+			pool = SockIOPool.getInstance();
+			mcc = new MemCachedClient();
+		} else {
+			pool = SockIOPool.getInstance(getPoolName());
+			mcc = new MemCachedClient(getPoolName());
+		}
 
 		// Integer[] weights = { 5, 1 };
-
-		// grab an instance of our connection pool
-		SockIOPool pool = SockIOPool.getInstance();
 
 		// set the servers and the weights
 		pool.setServers(servers);
@@ -157,7 +181,7 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	}
 
 	public void setServers(String[] servers) {
-		this.servers = Arrays.copyOf(servers, servers.length); 
+		this.servers = Arrays.copyOf(servers, servers.length);
 	}
 
 	/**
@@ -234,6 +258,25 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	 */
 	public void setConnectTimeout(int connectTimeout) {
 		this.connectTimeout = connectTimeout;
+	}
+
+	/**
+	 * 获取socket pool名称
+	 * 
+	 * @return socket pool名称
+	 */
+	public String getPoolName() {
+		return poolName;
+	}
+
+	/**
+	 * 设置socket pool名称
+	 * 
+	 * @param poolName
+	 *            socket pool名称
+	 */
+	public void setPoolName(String poolName) {
+		this.poolName = poolName;
 	}
 
 }
