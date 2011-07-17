@@ -535,7 +535,7 @@
 				<artifactId>maven-changes-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<tracUser>${trac.user}</tracUser>
+					<tracUser>${trac.username}</tracUser>
 					<tracPassword>${trac.password}</tracPassword>
 					<query>status!=closed&amp;order=type</query>
 					<outputEncoding>UTF-8</outputEncoding>
