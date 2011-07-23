@@ -486,7 +486,7 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>com.dayatang.mojo.hibernate3</groupId>
 				<artifactId>hibernate3-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
