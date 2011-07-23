@@ -8,10 +8,8 @@ import java.util.List;
 
 import javax.persistence.MappedSuperclass;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-
-import com.dayatang.domain.Entity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 抽象实体类，可作为所有遗留系统领域实体的基类。

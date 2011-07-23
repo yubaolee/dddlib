@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 日期范围类。包括左右边界值。忽略时间部分。
