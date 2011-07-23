@@ -335,7 +335,7 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
+					<groupId>com.dayatang.mojo.hibernate3</groupId>
 					<artifactId>hibernate3-maven-plugin</artifactId>
 					<version>2.2</version>
 					<configuration>
@@ -346,6 +346,8 @@
 							</component>
 						</components>
 						<componentProperties>
+							<scan-classes>true</scan-classes>
+							<scan-jars>true</scan-jars>
 							<update>true</update>
 							<create>true</create>
 							<export>true</export>
