@@ -2,8 +2,8 @@ package com.dayatang.utils;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * 整数范围类。包括左右边界值。

@@ -1,12 +1,14 @@
 package com.dayatang.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -112,7 +114,7 @@ public class DateUtilsTest {
 	
 	private Date parseDate(String dateString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(dateString, new String[] {"yyyy-M-d"});
+			return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, new String[] {"yyyy-M-d"});
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -121,7 +123,7 @@ public class DateUtilsTest {
 	
 	private Date parseDateTime(String dateString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(dateString, new String[] {"yyyy-M-d hh:mm:ss"});
+			return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, new String[] {"yyyy-M-d hh:mm:ss"});
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;

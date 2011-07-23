@@ -18,7 +18,7 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 抽象实体类，可作为所有领域实体的基类，提供ID和版本属性。

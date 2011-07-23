@@ -33,7 +33,7 @@ public class DateUtils {
 
 	private static Date getMaxDate() {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate("8888-01-01", new String[] { "yyyy-MM-dd" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate("8888-01-01", new String[] { "yyyy-MM-dd" });
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -42,7 +42,7 @@ public class DateUtils {
 
 	private static Date getMinDate() {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate("1000-01-01", new String[] { "yyyy-MM-dd" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate("1000-01-01", new String[] { "yyyy-MM-dd" });
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -130,8 +130,8 @@ public class DateUtils {
 		if (date1 == null || date2 == null) {
 			throw new InvalidParameterException("date1 and date2 cannot be null!");
 		}
-		Date startDate = org.apache.commons.lang.time.DateUtils.truncate(date1, Calendar.DATE);
-		Date endDate = org.apache.commons.lang.time.DateUtils.truncate(date2, Calendar.DATE);
+		Date startDate = org.apache.commons.lang3.time.DateUtils.truncate(date1, Calendar.DATE);
+		Date endDate = org.apache.commons.lang3.time.DateUtils.truncate(date2, Calendar.DATE);
 		if (startDate.after(endDate)) {
 			throw new InvalidParameterException("date1 cannot be after date2!");
 		}
@@ -166,7 +166,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static Date getPrevDay(Date date) {
-		return org.apache.commons.lang.time.DateUtils.addDays(date, -1);
+		return org.apache.commons.lang3.time.DateUtils.addDays(date, -1);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static Date getNextDay(Date date) {
-		return org.apache.commons.lang.time.DateUtils.addDays(date, 1);
+		return org.apache.commons.lang3.time.DateUtils.addDays(date, 1);
 	}
 
 	/**
@@ -187,8 +187,8 @@ public class DateUtils {
 	 * @return
 	 */
 	public static boolean isDateAfter(Date date1, Date date2) {
-		Date theDate1 = org.apache.commons.lang.time.DateUtils.truncate(date1, Calendar.DATE);
-		Date theDate2 = org.apache.commons.lang.time.DateUtils.truncate(date2, Calendar.DATE);
+		Date theDate1 = org.apache.commons.lang3.time.DateUtils.truncate(date1, Calendar.DATE);
+		Date theDate2 = org.apache.commons.lang3.time.DateUtils.truncate(date2, Calendar.DATE);
 		return theDate1.after(theDate2);
 	}
 
@@ -239,7 +239,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static boolean isSameDay(Date date1, Date date2) {
-		return org.apache.commons.lang.time.DateUtils.isSameDay(date1, date2);
+		return org.apache.commons.lang3.time.DateUtils.isSameDay(date1, date2);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static boolean isSameDay(Calendar date1, Calendar date2) {
-		return org.apache.commons.lang.time.DateUtils.isSameDay(date1, date2);
+		return org.apache.commons.lang3.time.DateUtils.isSameDay(date1, date2);
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class DateUtils {
 	 */
 	public static Date parseDate(String dateString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d", "yyyy-MM-d", "yyyy-M-dd"});
+			return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d", "yyyy-MM-d", "yyyy-M-dd"});
 		} catch (ParseException e) {
 			return null;
 		}
@@ -274,7 +274,7 @@ public class DateUtils {
 	 */
 	public static Date parseTime(String timeString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm", "h:m" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm", "h:m" });
 		} catch (ParseException e) {
 			return null;
 		}
@@ -287,7 +287,7 @@ public class DateUtils {
 	 */
 	public static Date parseDateTime(String timeString) {
 		try {
-			return org.apache.commons.lang.time.DateUtils.parseDate(timeString, new String[] { "yyyy-MM-dd hh:mm:ss", "yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s", "yyyy-M-d hh:mm:ss" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(timeString, new String[] { "yyyy-MM-dd hh:mm:ss", "yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s", "yyyy-M-d hh:mm:ss" });
 		} catch (ParseException e) {
 			return null;
 		}

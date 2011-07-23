@@ -1,9 +1,8 @@
 package com.dayatang.domain;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +16,9 @@ public class InstanceFactoryTest {
 
 	private InstanceProvider instanceProvider;
 
-	private Mockery context = new Mockery();
-
 	@Before
 	public void setUp() throws Exception {
-		instanceProvider = context.mock(InstanceProvider.class);
+		instanceProvider = mock(InstanceProvider.class);
 		InstanceFactory.setInstanceProvider(instanceProvider);
 	}
 
@@ -52,14 +49,8 @@ public class InstanceFactoryTest {
 			}
 			
 		};
-		context.checking(new Expectations() {
-			{
-				oneOf(instanceProvider).getInstance(Entity.class);
-				will(returnValue(entity));
-			}
-		});
+		stub(instanceProvider.getInstance(Entity.class)).toReturn(entity);
 		assertEquals(entity, InstanceFactory.getInstance(Entity.class));
-		context.assertIsSatisfied();
 	}
 
 }
