@@ -10,12 +10,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.ValidationException;
 
+import org.dbunit.DatabaseUnitException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -27,6 +29,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.DbUnitUtils;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.ExampleSettings;
@@ -47,8 +50,10 @@ public class RepositoryHibernateTest {
 	private static EntityRepositoryHibernate repository;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws DatabaseUnitException, SQLException, Exception {
 		sessionFactory = HibernateUtils.getSessionFactory();
+		//DbUnitUtils dbUnitUtils = new DbUnitUtils();
+		//dbUnitUtils.importDate(QuerySettingsTest.class.getResourceAsStream("/sample-data.xml"));
 	}
 	
 	@AfterClass
