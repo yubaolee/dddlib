@@ -5,11 +5,13 @@ package com.dayatang.hibernate;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dbunit.DatabaseUnitException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,6 +23,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.DbUnitUtils;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
@@ -45,8 +48,10 @@ public class QuerySettingsTest {
 	private DictionaryCategory gender;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws DatabaseUnitException, SQLException, Exception {
 		sessionFactory = HibernateUtils.getSessionFactory();
+		//DbUnitUtils dbUnitUtils = new DbUnitUtils();
+		//dbUnitUtils.importDate(QuerySettingsTest.class.getResourceAsStream("/sample-data.xml"));
 	}
 	
 	@AfterClass

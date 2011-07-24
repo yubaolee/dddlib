@@ -342,17 +342,16 @@
 						<components>
 							<component>
 								<name>hbm2ddl</name>
-								<implementation>jpaconfiguration</implementation>
+								<implementation>annotationconfiguration</implementation>
 							</component>
 						</components>
 						<componentProperties>
-							<scan-classes>true</scan-classes>
-							<scan-jars>true</scan-jars>
 							<update>true</update>
 							<create>true</create>
-							<export>true</export>
 							<jdk5>true</jdk5>
-							<persistenceunit>default</persistenceunit>
+							<scan-classes>true</scan-classes>
+							<scan-jars>true</scan-jars>
+							<configurationfile>target/test-classes/hibernate.cfg.xml</configurationfile>
 							<outputfilename>db.ddl</outputfilename>
 							<skip>${maven.db.skip}</skip>
 						</componentProperties>
@@ -370,26 +369,6 @@
 							<groupId>${jdbc.groupId}</groupId>
 							<artifactId>${jdbc.artifactId}</artifactId>
 							<version>${jdbc.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>org.hibernate</groupId>
-							<artifactId>hibernate-core</artifactId>
-							<version>${hibernate.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>org.hibernate</groupId>
-							<artifactId>hibernate-entitymanager</artifactId>
-							<version>${hibernate.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>net.sourceforge.cobertura</groupId>
-							<artifactId>cobertura</artifactId>
-							<version>1.9.4.1</version>
-						</dependency>
-						<dependency>
-							<groupId>org.hibernate</groupId>
-							<artifactId>hibernate-validator</artifactId>
-							<version>4.2.0.Final</version>
 						</dependency>
 					</dependencies>
 				</plugin>
