@@ -36,6 +36,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<scope>compile</scope>
 			<optional>true</optional>
 		</dependency>
 
@@ -72,6 +73,7 @@
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
