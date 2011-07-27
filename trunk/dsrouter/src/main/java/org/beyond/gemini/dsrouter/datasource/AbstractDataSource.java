@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.Assert;
 
 public abstract class AbstractDataSource implements DataSource {
 
@@ -48,7 +47,12 @@ public abstract class AbstractDataSource implements DataSource {
 
 	@SuppressWarnings("unchecked")
 	public <T> T unwrap(Class<T> iface) throws SQLException {
-		Assert.notNull(iface, "Interface argument must not be null");
+
+		if (iface == null) {
+			throw new IllegalArgumentException(
+					"Interface argument must not be null");
+		}
+
 		if (!DataSource.class.equals(iface)) {
 			throw new SQLException(
 					"DataSource of type ["
