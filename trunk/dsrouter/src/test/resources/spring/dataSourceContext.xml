@@ -100,7 +100,7 @@
 
 	<!-- 配置动态路由数据源 供SessionFactory使用 -->
 	<bean id="dataSource"
-		class="org.beyond.gemini.dsrouter.datasource.DynamicRoutingDataSource">
+		class="com.dayatang.dsrouter.datasource.DynamicRoutingDataSource">
 		<property name="dataSourceContext" ref="dataSourceContext">
 		</property>
 		<property name="defaultDataSource" ref="c3p0DefaultDataSource"></property>
@@ -109,13 +109,13 @@
 
 	<!--
 		定义数据源构建器 <bean id="dataSourceBuilder"
-		class="org.beyond.gemini.dsrouter.builder.mysql.C3P0MySQLDataSourceBuilder">
+		class="com.dayatang.dsrouter.builder.mysql.C3P0MySQLDataSourceBuilder">
 		</bean>
 	-->
 
 	<!-- 实现DataSourceContext接口 -->
 	<bean id="dataSourceContext"
-		class="org.beyond.gemini.dsrouter.context.memory.InMemoryDataSourceContext">
+		class="com.dayatang.dsrouter.context.memory.InMemoryDataSourceContext">
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
 		<property name="urlMapping">
