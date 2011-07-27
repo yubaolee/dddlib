@@ -13,10 +13,8 @@ import org.beyond.gemini.dsrouter.builder.mysql.C3P0MySQLDataSourceBuilder;
 import org.beyond.gemini.dsrouter.context.DataSourceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
-public class DynamicRoutingDataSource extends AbstractDataSource implements
-		InitializingBean {
+public class DynamicRoutingDataSource extends AbstractDataSource {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DynamicRoutingDataSource.class);
@@ -78,7 +76,7 @@ public class DynamicRoutingDataSource extends AbstractDataSource implements
 		this.dataSourceMapping = dataSourceMapping;
 	}
 
-	@Override
+	// @Override
 	public void afterPropertiesSet() throws Exception {
 		if (defaultDataSource != null) {
 
