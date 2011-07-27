@@ -10,6 +10,15 @@ import com.dayatang.querychannel.support.Page;
 
 public interface QueryChannelService extends Serializable {
 
+	/**
+	 * 根据查询语句和查询参数，返回查询结果的数量
+	 * 
+	 * @param queryStr
+	 *            查询语句
+	 * @param params
+	 *            查询参数
+	 * @return 查询结果数量
+	 */
 	public long queryResultSize(String queryStr, Object[] params);
 
 	public <T> List<T> queryResult(String queryStr, Object[] params,
