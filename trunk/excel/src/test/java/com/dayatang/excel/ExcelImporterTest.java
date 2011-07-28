@@ -10,8 +10,6 @@ import jxl.read.biff.BiffException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 public class ExcelImporterTest {
 
@@ -19,29 +17,25 @@ public class ExcelImporterTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Resource resource = new ClassPathResource("import.xls");
-		importer = new ExcelImporter(resource.getFile());
+		importer = new ExcelImporter(getClass().getResourceAsStream("/import.xls"));
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		if (importer == null) {
+			return;
+		}
 		importer.close();
 	}
 
 	@Test
 	public void testExcelImporterFile() throws BiffException, IOException {
-		Resource resource = new ClassPathResource("import.xls");
-		ExcelImporter importer = new ExcelImporter(resource.getFile());
 		assertEquals("Company", importer.getWorkbook().getSheet(0).getName());
-		importer.close();
 	}
 
 	@Test
 	public void testExcelImporterInputStream() throws BiffException, IOException {
-		Resource resource = new ClassPathResource("import.xls");
-		ExcelImporter importer = new ExcelImporter(resource.getInputStream());
 		assertEquals("Company", importer.getWorkbook().getSheet(0).getName());
-		importer.close();
 	}
 
 	@Test
