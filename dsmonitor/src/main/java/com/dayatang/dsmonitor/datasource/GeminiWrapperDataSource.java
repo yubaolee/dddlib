@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.jdbc.datasource.DelegatingDataSource;
-
 import com.dayatang.dsmonitor.monitor.ConnectionMonitor;
 
 public class GeminiWrapperDataSource extends DelegatingDataSource {
