@@ -8,12 +8,11 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
 
 import com.danga.MemCached.MemCachedClient;
 import com.danga.MemCached.SockIOPool;
 import com.dayatang.cache.Cache;
+import com.dayatang.utils.Assert;
 
 /**
  * 基于Memcached的缓存实现
@@ -21,7 +20,7 @@ import com.dayatang.cache.Cache;
  * @author chencao
  * 
  */
-public class MemCachedBasedCache implements Cache, InitializingBean {
+public class MemCachedBasedCache implements Cache {
 
 	/**
 	 * 
@@ -45,27 +44,10 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 
 	private String poolName;
 
-	
-	public void afterPropertiesSet() {
-		Assert.notEmpty(servers);
+	private boolean initialized = false;
 
-		if (logger.isInfoEnabled()) {
-			for (String server : servers) {
-				logger.info("准备为Memcached服务器{}创建客户端...", server);
-				logger.info("最小连接数为：{}", minConn);
-				logger.info("最大接数为：{}", maxConn);
-				logger.info("初始化连接数为：{}", initConn);
-				logger.info("连接超时时间为：{}毫秒", connectTimeout);
-			}
-		}
-		prepareClient();
-		// if (logger.isDebugEnabled()) {
-		// logger.debug("客户端创建完成。...");
-		// }
-	}
-
-	
 	public Object get(String key) {
+		init();
 		Object obj = mcc.get(key);
 
 		if (logger.isDebugEnabled()) {
@@ -75,36 +57,36 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 		return obj;
 	}
 
-	
 	public boolean isKeyInCache(String key) {
+		init();
 		return mcc.keyExists(key);
 	}
 
-	
 	public void put(String key, Object value) {
+		init();
 		mcc.set(key, value);
 		if (logger.isDebugEnabled()) {
 			logger.debug("缓存数据，key：{}", key);
 		}
 	}
 
-	
 	public void put(String key, Object value, Date expiry) {
+		init();
 		mcc.set(key, value, expiry);
 		if (logger.isDebugEnabled()) {
 			logger.debug("缓存数据，key：{}，过期日期：{}", key, expiry);
 		}
 	}
 
-	
 	public void put(String key, Object value, long living) {
+		init();
 		Date now = new Date();
 		Date expiry = new Date(now.getTime() + living);
 		put(key, value, expiry);
 	}
 
-	
 	public boolean remove(String key) {
+		init();
 		boolean result = mcc.delete(key);
 		if (logger.isDebugEnabled()) {
 			logger.debug("删除缓存，key：{}", key);
@@ -277,6 +259,30 @@ public class MemCachedBasedCache implements Cache, InitializingBean {
 	 */
 	public void setPoolName(String poolName) {
 		this.poolName = poolName;
+	}
+
+	public void init() {
+
+		if (initialized) {
+			return;
+		}
+		Assert.notEmpty(servers);
+
+		if (logger.isInfoEnabled()) {
+			for (String server : servers) {
+				logger.info("准备为Memcached服务器{}创建客户端...", server);
+				logger.info("最小连接数为：{}", minConn);
+				logger.info("最大接数为：{}", maxConn);
+				logger.info("初始化连接数为：{}", initConn);
+				logger.info("连接超时时间为：{}毫秒", connectTimeout);
+			}
+		}
+		prepareClient();
+		// if (logger.isDebugEnabled()) {
+		// logger.debug("客户端创建完成。...");
+		// }
+		initialized = true;
+
 	}
 
 }

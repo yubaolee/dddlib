@@ -9,10 +9,10 @@
             http://www.springframework.org/schema/tx
 			http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-	<bean id="memcached" class="com.dayatang.cache.memcached.MemCachedBasedCache">
+	<bean id="memcached" class="com.dayatang.cache.memcached.MemCachedBasedCache" >
 		<property name="servers">
 			<list>
-				<value>10.108.34.122:11211</value>
+				<value>localhost:11211</value>
 			</list>
 		</property>
 		<property name="initConn" value="3"></property>
