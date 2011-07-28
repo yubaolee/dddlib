@@ -8,6 +8,12 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 来自spring
+ * 
+ * @author chencao
+ * 
+ */
 public abstract class AbstractDataSource implements DataSource {
 
 	/** Logger available to subclasses */
