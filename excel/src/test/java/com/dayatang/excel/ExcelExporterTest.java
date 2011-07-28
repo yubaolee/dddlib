@@ -2,6 +2,7 @@ package com.dayatang.excel;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 public class ExcelExporterTest {
 
@@ -23,8 +22,8 @@ public class ExcelExporterTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Resource resource = new ClassPathResource("export.xls");
-		exporter = new ExcelExporter(resource.getFile());
+		String file = getClass().getResource("/export.xls").getFile();
+		exporter = new ExcelExporter(new File(file));
 	}
 
 	@After
