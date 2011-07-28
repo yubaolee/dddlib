@@ -14,7 +14,7 @@ WikiDevPlan
 
 WikiDevInfo
 
-* [Articles HOWTO articles]
+  * [Articles HOWTO articles]
     * [ArticlesXSS Web security]
     * [ArticlesDom DOM manipulation]
     * [ArticlesStyle CSS and style]
