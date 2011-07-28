@@ -15,6 +15,7 @@
   * [ExternalResources 外部资源]
   * [CurrentProjects 目前项目]
   * [DevPlan 开发计划]
+  * [DevJoin 加入开发]
   * [DevGuide 开发者指南]
     * [GetStart 入门]
     * [CodeOverview 代码概览]
