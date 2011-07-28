@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dayatang.domain.AbstractEntity;
 
+@SuppressWarnings("rawtypes")
 @Entity
 @Table(name = "COMMONS_OBSERVER")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
