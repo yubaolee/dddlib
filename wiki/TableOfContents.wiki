@@ -5,7 +5,7 @@
   * [Goals Goals of DDDLib]
   * [Note Release Notes]
   * [RoadMap Roadmap of DDDLib]
-  * [Installing Installing]
+  * [Installing 安装]
     * [GetDDDLib Get DDDLib]
     * [InstallingDDDLib Installing DDDLib]
   * [UserGuide User Guide]
