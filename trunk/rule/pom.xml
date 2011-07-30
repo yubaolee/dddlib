@@ -56,7 +56,6 @@
 	</dependencies>
 
 	<properties>
-		<drools.version>5.1.1</drools.version>
-		<commons.configuration.version>1.6</commons.configuration.version>
+		<drools.version>5.2.0.Final</drools.version>
 	</properties>
 </project>
