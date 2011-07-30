@@ -46,8 +46,7 @@
 	</licenses>
 
 	<ciManagement>
-		<system>continuum</system>
-		<url>http://www.dayatang.com:8080/continuum</url>
+		<url>http://www.dayatang.com:8080/hudson/job/dddlib/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -70,6 +69,7 @@
 				<sendOnSuccess>true</sendOnSuccess>
 			</notifier>
 		</notifiers>
+		<system>hudson</system>
 	</ciManagement>
 
 	<scm>
@@ -78,8 +78,8 @@
 	</scm>
 
 	<issueManagement>
-		<system>JIRA</system>
-		<url>http://www.dayatang.com:8080/jira/browse/DDDLIB</url>
+		<system>trac</system>
+		<url>http://www.suilink.com/trac/dddlib</url>
 	</issueManagement>
 
 	<distributionManagement>
