@@ -103,7 +103,7 @@
 	<repositories>
 		<repository>
 			<id>dayatang-releases</id>
-			<url>http://www.dayatang.com/maven2/public-release</url>
+			<url>http://www.dayatang.com/nexus/content/groups/public-release/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -113,7 +113,7 @@
 		</repository>
 		<repository>
 			<id>dayatang-snapshots</id>
-			<url>http://www.dayatang.com/maven2/public-snapshots</url>
+			<url>http://www.dayatang.com/nexus/content/groups/public-snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -126,7 +126,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>dayatang-releases</id>
-			<url>http://www.dayatang.com/maven2/public-release</url>
+			<url>http://www.dayatang.com/nexus/content/groups/public-release</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -136,7 +136,7 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>dayatang-snapshots</id>
-			<url>http://www.dayatang.com/maven2/public-snapshots</url>
+			<url>http://www.dayatang.com/nexus/content/groups/public-snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
