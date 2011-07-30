@@ -13,8 +13,8 @@
 	<description>Datasource Router classes for spring</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/spring-dsrouter/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/spring-dsrouter/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/dsrouter/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/dsrouter/</developerConnection>
 	</scm>
 
 	<dependencies>
