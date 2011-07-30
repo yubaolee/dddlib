@@ -46,6 +46,7 @@
 	</licenses>
 
 	<ciManagement>
+		<system>hudson</system>
 		<url>http://www.dayatang.com:8080/hudson/job/dddlib/</url>
 		<notifiers>
 			<notifier>
@@ -69,7 +70,6 @@
 				<sendOnSuccess>true</sendOnSuccess>
 			</notifier>
 		</notifiers>
-		<system>hudson</system>
 	</ciManagement>
 
 	<scm>
