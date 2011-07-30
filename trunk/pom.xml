@@ -589,7 +589,6 @@
 								<encoding>UTF-8</encoding>
 							</configuration>
 						</plugin>
-						<!-- 
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-changes-plugin</artifactId>
@@ -601,7 +600,6 @@
 								<outputEncoding>UTF-8</outputEncoding>
 							</configuration>
 						</plugin>
-						-->
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-changelog-plugin</artifactId>
