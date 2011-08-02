@@ -3,14 +3,15 @@ package com.dayatang.domain.internal;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
-public class NotEqPropCriteron extends QueryCriteron {
+public class NotEqPropCriteron implements QueryCriterion {
 	
 	private String otherProp;
+	private String propName;
 
 	public NotEqPropCriteron(String propName, String otherProp) {
-		super(propName);
+		this.propName = propName;
 		this.otherProp = otherProp;
 	}
 
@@ -38,6 +39,10 @@ public class NotEqPropCriteron extends QueryCriteron {
 	@Override
 	public String toString() {
 		return getPropName() + " != " + otherProp;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 
 	

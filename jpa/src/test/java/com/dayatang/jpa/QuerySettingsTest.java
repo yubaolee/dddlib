@@ -64,7 +64,7 @@ public class QuerySettingsTest {
 		repository = new EntityRepositoryJpa(entityManager);
 		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
-		gender = DictionaryCategory.getByName(DictionaryCategory.GENDER);
+		//gender = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 	}
 
 	@After
@@ -477,4 +477,5 @@ public class QuerySettingsTest {
 		Dictionary doctor = Dictionary.get(46L);
 		assertFalse(results.contains(doctor));
 	}
+
 }

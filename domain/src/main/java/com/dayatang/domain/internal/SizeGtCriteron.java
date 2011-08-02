@@ -3,15 +3,16 @@ package com.dayatang.domain.internal;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
 
-public class SizeGtCriteron extends QueryCriteron {
+public class SizeGtCriteron implements QueryCriterion {
 	
 	private int value;
+	private String propName;
 
 	public SizeGtCriteron(String propName, int value) {
-		super(propName);
+		this.propName = propName;
 		this.value = value;
 	}
 
@@ -39,6 +40,10 @@ public class SizeGtCriteron extends QueryCriteron {
 	@Override
 	public String toString() {
 		return "size of " + getPropName() + " > " + value;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 	
 }

@@ -1,13 +1,13 @@
 package com.dayatang.hibernate;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.hibernate.internal.QueryTranslator;
+import com.dayatang.hibernate.internal.CriteriaBuilder;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -66,6 +66,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@Override
 	public <T extends Entity> T save(T entity) {
 		getSession().saveOrUpdate(entity);
+		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return entity;
 	}
 
@@ -76,6 +77,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@Override
 	public void remove(Entity entity) {
 		getSession().delete(entity);
+		LOGGER.info("remove a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 	}
 
 	/*
@@ -122,23 +124,14 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		if (settings.containsInCriteronWithEmptyValue()) {
-			return Collections.EMPTY_LIST;
-		}
-		QueryTranslator translator = new QueryTranslator(settings);
-		String queryString = translator.getQueryString(); 
-		LOGGER.info("QueryString: '" + queryString + "'");
-		List<Object> params = translator.getParams();
-		LOGGER.info("params: " + StringUtils.join(params, ", "));
-		Query query = getSession().createQuery(queryString);
-		for (int i = 0; i < params.size(); i++) {
-			query.setParameter(i, params.get(i));
-		}
-		query.setFirstResult(settings.getFirstResult());
+		DetachedCriteria detachedCriteria = CriteriaBuilder.createCriteria(settings);
+		Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+		criteria.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {
-			query.setMaxResults(settings.getMaxResults());
+			criteria.setMaxResults(settings.getMaxResults());
 		}
-		return query.list();
+		System.out.println(criteria.toString());
+		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -203,24 +196,10 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return getSession().createCriteria(settings.getEntityClass()).add(theExample).list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T getSingleResult(QuerySettings<T> settings) {
-		if (settings.containsInCriteronWithEmptyValue()) {
-			return null;
-		}
-		QueryTranslator translator = new QueryTranslator(settings);
-		String queryString = translator.getQueryString(); 
-		List<Object> params = translator.getParams();
-		Query query = getSession().createQuery(queryString);
-		for (int i = 0; i < params.size(); i++) {
-			query.setParameter(i, params.get(i));
-		}
-		query.setFirstResult(settings.getFirstResult());
-		if (settings.getMaxResults() > 0) {
-			query.setMaxResults(settings.getMaxResults());
-		}
-		return (T) query.uniqueResult();
+		List<T> list = find(settings);
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override

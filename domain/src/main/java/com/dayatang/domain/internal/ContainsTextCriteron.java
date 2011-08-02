@@ -3,15 +3,16 @@ package com.dayatang.domain.internal;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
 
-public class ContainsTextCriteron extends QueryCriteron {
+public class ContainsTextCriteron implements QueryCriterion {
 	
 	private String value;
+	private String propName;
 
 	public ContainsTextCriteron(String propName, String value) {
-		super(propName);
+		this.propName = propName;
 		this.value = value;
 	}
 
@@ -39,6 +40,10 @@ public class ContainsTextCriteron extends QueryCriteron {
 	@Override
 	public String toString() {
 		return getPropName() + " like '*" + value + "*'";
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 	
 }

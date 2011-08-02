@@ -3,13 +3,15 @@ package com.dayatang.domain.internal;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
 
-public class NotEmptyCriteron extends QueryCriteron {
+public class NotEmptyCriteron implements QueryCriterion {
+
+	private String propName;
 
 	public NotEmptyCriteron(String propName) {
-		super(propName);
+		this.propName = propName;
 	}
 
 	@Override
@@ -32,6 +34,10 @@ public class NotEmptyCriteron extends QueryCriteron {
 	@Override
 	public String toString() {
 		return getPropName() + " is not empty";
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 	
 }

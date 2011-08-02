@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,6 +44,9 @@ public class DictionaryCategory extends AbstractEntity {
 	public static final String JOB_CLASS = "jobClass";
 
 	private String name;
+	
+	@Column(name = "sort_order")
+	private int sortOrder;
 
 	@OneToMany(mappedBy = "category")
 	private Set<Dictionary> dictionaries = new HashSet<Dictionary>();
@@ -55,6 +59,14 @@ public class DictionaryCategory extends AbstractEntity {
 		this.name = name;
 	}
 	
+	public int getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
 	public Set<Dictionary> getDictionaries() {
 		return dictionaries;
 	}
