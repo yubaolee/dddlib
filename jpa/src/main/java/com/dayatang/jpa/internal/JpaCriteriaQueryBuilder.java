@@ -16,7 +16,7 @@ import com.dayatang.domain.OrderSettings;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
-public class CriteriaQueryBuilder {
+public class JpaCriteriaQueryBuilder {
 
 	public static final  <T extends Entity> CriteriaQuery<T> createCriteriaQuery(QuerySettings<T> settings, EntityManager entityManager) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -29,7 +29,7 @@ public class CriteriaQueryBuilder {
 		
 		List<Predicate> criterions = new ArrayList<Predicate>();
 		for (QueryCriterion criterion : settings.getCriterions()) {
-			Predicate predicate = CriterionConverter.convert(criterion, builder, root, settings.getEntityClass());
+			Predicate predicate = JpaCriterionConverter.convert(criterion, builder, root, settings.getEntityClass());
 			if (predicate != null) {
 				criterions.add(predicate);
 			}

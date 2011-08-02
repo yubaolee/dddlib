@@ -45,7 +45,7 @@ import com.dayatang.domain.internal.StartsWithTextCriteron;
  * @author yyang
  *
  */
-public class CriterionConverter {
+public class HibernateCriterionConverter {
 	
 	@SuppressWarnings("rawtypes")
 	public static Criterion convert(QueryCriterion criterion, DetachedCriteria criteria) {

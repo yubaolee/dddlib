@@ -18,7 +18,7 @@ import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.hibernate.internal.CriteriaBuilder;
+import com.dayatang.hibernate.internal.HibernateCriteriaBuilder;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -124,7 +124,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		DetachedCriteria detachedCriteria = CriteriaBuilder.createCriteria(settings);
+		DetachedCriteria detachedCriteria = HibernateCriteriaBuilder.createCriteria(settings);
 		Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
 		criteria.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {
