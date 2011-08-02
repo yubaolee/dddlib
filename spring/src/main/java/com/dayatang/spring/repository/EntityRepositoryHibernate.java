@@ -2,14 +2,15 @@ package com.dayatang.spring.repository;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -19,7 +20,7 @@ import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.spring.repository.internal.HibernateQueryTranslator;
+import com.dayatang.spring.repository.internal.HibernateCriteriaBuilder;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -122,25 +123,16 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		if (settings.containsInCriteronWithEmptyValue()) {
-			return Collections.EMPTY_LIST;
-		}
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				HibernateQueryTranslator translator = new HibernateQueryTranslator(settings);
-				String queryString = translator.getQueryString(); 
-				List<Object> params = translator.getParams();
-				Query query = session.createQuery(queryString);
-				for (int i = 0; i < params.size(); i++) {
-					query.setParameter(i, params.get(i));
-				}
-				query.setFirstResult(settings.getFirstResult());
+				DetachedCriteria detachedCriteria = HibernateCriteriaBuilder.createCriteria(settings);
+				Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+				criteria.setFirstResult(settings.getFirstResult());
 				if (settings.getMaxResults() > 0) {
-					query.setMaxResults(settings.getMaxResults());
+					criteria.setMaxResults(settings.getMaxResults());
 				}
-				return query.list();
+				return criteria.list();
 			}
 		});
 	}
@@ -249,9 +241,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@Override
 	public <T extends Entity> T getSingleResult(QuerySettings<T> settings) {
-		if (settings.containsInCriteronWithEmptyValue()) {
-			return null;
-		}
 		List<T> results = find(settings);
 		return results.isEmpty() ? null : results.get(0);
 	}
