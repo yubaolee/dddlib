@@ -7,7 +7,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
 import com.dayatang.domain.Entity;
-import com.dayatang.domain.OrderSettings;
+import com.dayatang.domain.OrderSetting;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
@@ -24,14 +24,14 @@ public class HibernateCriteriaBuilder {
 				criteria.add(hibernateCriterion);
 			}
 		}
-		for (OrderSettings orderSettings : settings.getOrderSettings()) {
+		for (OrderSetting orderSettings : settings.getOrderSettings()) {
 			criteria.addOrder(toOrder(orderSettings));
 		}
 		//System.out.println(criteria.);
 		return criteria;
 	}
 
-	private static Order toOrder(OrderSettings orderSettings) {
+	private static Order toOrder(OrderSetting orderSettings) {
 		if (orderSettings.isAscending()) {
 			return Order.asc(orderSettings.getPropName());
 		}
