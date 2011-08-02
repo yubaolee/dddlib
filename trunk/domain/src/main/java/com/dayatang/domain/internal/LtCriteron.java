@@ -3,19 +3,20 @@ package com.dayatang.domain.internal;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
 
-public class LtCriteron extends QueryCriteron {
+public class LtCriteron implements QueryCriterion {
 	
-	private Object value;
+	private Number value;
+	private String propName;
 
-	public LtCriteron(String propName, Object value) {
-		super(propName);
+	public LtCriteron(String propName, Number value) {
+		this.propName = propName;
 		this.value = value;
 	}
 
-	public Object getValue() {
+	public Number getValue() {
 		return value;
 	}
 
@@ -39,6 +40,10 @@ public class LtCriteron extends QueryCriteron {
 	@Override
 	public String toString() {
 		return getPropName() + " < " + value;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 	
 }

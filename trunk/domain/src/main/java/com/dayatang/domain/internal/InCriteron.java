@@ -7,20 +7,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 
 
-public class InCriteron extends QueryCriteron {
+public class InCriteron implements QueryCriterion {
 	
 	private Collection<? extends Object> value;
+	private String propName;
 
 	public InCriteron(String propName, Collection<? extends Object> value) {
-		super(propName);
+		this.propName = propName;
 		this.value = value;
 	}
 	
 	public InCriteron(String propName, Object[] value) {
-		super(propName);
+		this.propName = propName;
 		this.value = Arrays.asList(value);
 	}
 
@@ -52,6 +53,10 @@ public class InCriteron extends QueryCriteron {
 
 	private String collectionToString(Collection<? extends Object> value) {
 		return StringUtils.join(value, ",");
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 	
 }

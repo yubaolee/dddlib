@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.OrderSettings;
-import com.dayatang.domain.QueryCriteron;
+import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.domain.internal.BetweenCriteron;
 import com.dayatang.domain.internal.ContainsTextCriteron;
@@ -64,16 +64,16 @@ public class HibernateQueryTranslator {
 
 	private void prepare() {
 		queryString = "select distinct(o) from " + settings.getEntityClass().getName() + " as o ";
-		queryString += getWhereClause(settings.getCriterons());
+		queryString += getWhereClause(settings.getCriterions());
 		queryString += getOrderClause(settings.getOrderSettings());
 	}
 
-	private String getWhereClause(Set<QueryCriteron> criterons) {
+	private String getWhereClause(Set<QueryCriterion> criterons) {
 		if (criterons.isEmpty()) {
 			return "";
 		}
 		List<String> elements = new ArrayList<String>();
-		for (QueryCriteron criteron : settings.getCriterons()) {
+		for (QueryCriterion criteron : settings.getCriterions()) {
 			if (criteron instanceof EqCriteron) {
 				elements.add("o." + criteron.getPropName() + " = ?");
 				params.add(((EqCriteron) criteron).getValue());

@@ -1,19 +1,19 @@
 package com.dayatang.jpa;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.jpa.internal.QueryTranslator;
+import com.dayatang.jpa.internal.CriteriaQueryBuilder;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -100,24 +100,11 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		if (settings.containsInCriteronWithEmptyValue()) {
-			return Collections.EMPTY_LIST;
-		}
-		QueryTranslator translator = new QueryTranslator(settings);
-		String queryString = translator.getQueryString(); 
-		List<Object> params = translator.getParams();
-		int firstResult = settings.getFirstResult();
-		int maxResults = settings.getMaxResults();
-		Query query = getEntityManager().createQuery(queryString);
-		for (int i = 0; i < params.size(); i++) {
-			query.setParameter(i + 1, params.get(i));
-		}
-		if (firstResult < 0) {
-			firstResult =0;
-		}
+		CriteriaQuery<T> criteriaQuery = CriteriaQueryBuilder.createCriteriaQuery(settings, getEntityManager());
+		Query query = getEntityManager().createQuery(criteriaQuery);
 		query.setFirstResult(settings.getFirstResult());
-		if (maxResults > 0) {
-			query.setMaxResults(maxResults);
+		if (settings.getMaxResults() > 0) {
+			query.setMaxResults(settings.getMaxResults());
 		}
 		return query.getResultList();
 	}
