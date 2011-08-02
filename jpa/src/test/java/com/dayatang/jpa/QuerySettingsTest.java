@@ -16,6 +16,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -478,4 +482,16 @@ public class QuerySettingsTest {
 		assertFalse(results.contains(doctor));
 	}
 
+	
+	@Test
+	public void aTest() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<DictionaryCategory> query = builder.createQuery(DictionaryCategory.class);
+		Root<DictionaryCategory> root = query.from(DictionaryCategory.class);
+		Path c = root.join("dictionaries");
+		System.out.println(c.getJavaType());
+		c.alias("c");
+		query.select(root).where(builder.equal(c.get("text"), "研究生毕业"));
+		System.out.println(entityManager.createQuery(query).getResultList().size());
+	}
 }
