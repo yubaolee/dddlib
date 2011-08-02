@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class OrderSettings {
+public class OrderSetting {
 
 	private boolean ascending = true;
 	private String propName;
@@ -19,7 +19,7 @@ public class OrderSettings {
 		return propName;
 	}
 
-	private OrderSettings(boolean ascending, String propName) {
+	private OrderSetting(boolean ascending, String propName) {
 		if (StringUtils.isEmpty(propName)) {
 			throw new InvalidParameterException("propName should not be empty!");
 		}
@@ -27,21 +27,21 @@ public class OrderSettings {
 		this.propName = propName;
 	}
 
-	public static OrderSettings asc(String propName) {
-		return new OrderSettings(true, propName);
+	public static OrderSetting asc(String propName) {
+		return new OrderSetting(true, propName);
 	}
 
-	public static OrderSettings desc(String propName) {
-		return new OrderSettings(false, propName);
+	public static OrderSetting desc(String propName) {
+		return new OrderSetting(false, propName);
 	}
 
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof OrderSettings))
+		if (!(other instanceof OrderSetting))
 			return false;
-		OrderSettings castOther = (OrderSettings) other;
+		OrderSetting castOther = (OrderSetting) other;
 		return new EqualsBuilder().append(ascending, castOther.ascending)
 				.append(propName, castOther.propName).isEquals();
 	}

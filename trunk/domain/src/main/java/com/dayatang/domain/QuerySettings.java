@@ -25,7 +25,7 @@ public class QuerySettings<T> {
 	private int maxResults;
 	private Map<String, String> aliases = new HashMap<String, String>();
 	private Set<QueryCriterion> criterions = new HashSet<QueryCriterion>();
-	private List<OrderSettings> orderSettings = new ArrayList<OrderSettings>();
+	private List<OrderSetting> orderSettings = new ArrayList<OrderSetting>();
 	
 	public static <T extends Entity> QuerySettings<T> create(Class<T> entityClass) {
 		return new QuerySettings<T>(entityClass);
@@ -59,7 +59,7 @@ public class QuerySettings<T> {
 		return maxResults;
 	}
 
-	public List<OrderSettings> getOrderSettings() {
+	public List<OrderSetting> getOrderSettings() {
 		return orderSettings;
 	}
 
@@ -244,12 +244,12 @@ public class QuerySettings<T> {
 	}
 
 	public QuerySettings<T> asc(String propName) {
-		orderSettings.add(OrderSettings.asc(propName));
+		orderSettings.add(OrderSetting.asc(propName));
 		return this;
 	}
 
 	public QuerySettings<T> desc(String propName) {
-		orderSettings.add(OrderSettings.desc(propName));
+		orderSettings.add(OrderSetting.desc(propName));
 		return this;
 	}
 
@@ -293,7 +293,7 @@ public class QuerySettings<T> {
 		result.append("firstResult:" + firstResult).append(SystemUtils.LINE_SEPARATOR);
 		result.append("maxResults" + maxResults).append(SystemUtils.LINE_SEPARATOR);
 		result.append("orderSettings: [");
-		for (OrderSettings orderSetting : orderSettings) {
+		for (OrderSetting orderSetting : orderSettings) {
 			result.append(orderSetting);
 		}
 		result.append("]");

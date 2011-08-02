@@ -12,7 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.dayatang.domain.Entity;
-import com.dayatang.domain.OrderSettings;
+import com.dayatang.domain.OrderSetting;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
@@ -45,10 +45,10 @@ public class JpaCriteriaQueryBuilder {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static Order[] toOrder(CriteriaBuilder builder, Root root, List<OrderSettings> orderSettings) {
+	private static Order[] toOrder(CriteriaBuilder builder, Root root, List<OrderSetting> orderSettings) {
 		Order[] results = new Order[orderSettings.size()];
 		int i = 0;
-		for (OrderSettings orderSetting : orderSettings) {
+		for (OrderSetting orderSetting : orderSettings) {
 			if (orderSetting.isAscending()) {
 				results[i] = builder.asc(root.get(orderSetting.getPropName()));
 			} else {
