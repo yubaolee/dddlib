@@ -11,7 +11,7 @@ import com.dayatang.domain.OrderSettings;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
-public class CriteriaBuilder {
+public class HibernateCriteriaBuilder {
 
 	public static final DetachedCriteria createCriteria(QuerySettings<? extends Entity> settings) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(settings.getEntityClass());
@@ -19,7 +19,7 @@ public class CriteriaBuilder {
 			criteria.createAlias(aliasEntry.getKey(), aliasEntry.getValue());
 		}
 		for (QueryCriterion criterion : settings.getCriterions()) {
-			Criterion hibernateCriterion = CriterionConverter.convert(criterion, criteria);
+			Criterion hibernateCriterion = HibernateCriterionConverter.convert(criterion, criteria);
 			if (hibernateCriterion != null) {
 				criteria.add(hibernateCriterion);
 			}

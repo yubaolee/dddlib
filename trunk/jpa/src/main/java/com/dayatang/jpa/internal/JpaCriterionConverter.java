@@ -46,7 +46,7 @@ import com.dayatang.domain.internal.StartsWithTextCriteron;
  *
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class CriterionConverter {
+public class JpaCriterionConverter {
 
 	public static <T extends Entity> Predicate convert(QueryCriterion criterion, CriteriaBuilder builder, Root<T> root, Class<T> entityClass) {
 		if (criterion instanceof EqCriteron) {

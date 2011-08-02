@@ -13,7 +13,7 @@ import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.jpa.internal.CriteriaQueryBuilder;
+import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -100,7 +100,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		CriteriaQuery<T> criteriaQuery = CriteriaQueryBuilder.createCriteriaQuery(settings, getEntityManager());
+		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.createCriteriaQuery(settings, getEntityManager());
 		Query query = getEntityManager().createQuery(criteriaQuery);
 		query.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {
