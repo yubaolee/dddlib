@@ -8,15 +8,15 @@ import com.dayatang.domain.QueryCriterion;
 
 public class LtCriteron implements QueryCriterion {
 	
-	private Number value;
+	private Comparable<?> value;
 	private String propName;
 
-	public LtCriteron(String propName, Number value) {
+	public LtCriteron(String propName, Comparable<?> value) {
 		this.propName = propName;
 		this.value = value;
 	}
 
-	public Number getValue() {
+	public Comparable<?> getValue() {
 		return value;
 	}
 
