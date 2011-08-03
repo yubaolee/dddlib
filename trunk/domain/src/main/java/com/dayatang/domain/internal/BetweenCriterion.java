@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class BetweenCriteron implements QueryCriterion {
+public class BetweenCriterion implements QueryCriterion {
 	
 	private Comparable<?> from;
 	
@@ -14,7 +14,7 @@ public class BetweenCriteron implements QueryCriterion {
 
 	private String propName;
 
-	public BetweenCriteron(String propName, Comparable<?> from, Comparable<?> to) {
+	public BetweenCriterion(String propName, Comparable<?> from, Comparable<?> to) {
 		this.propName = propName;
 		this.from = from;
 		this.to = to;
@@ -32,9 +32,9 @@ public class BetweenCriteron implements QueryCriterion {
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof BetweenCriteron))
+		if (!(other instanceof BetweenCriterion))
 			return false;
-		BetweenCriteron castOther = (BetweenCriteron) other;
+		BetweenCriterion castOther = (BetweenCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(from, castOther.from)

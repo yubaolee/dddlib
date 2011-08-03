@@ -6,34 +6,40 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class NotEmptyCriteron implements QueryCriterion {
-
+public class SizeGeCriterion implements QueryCriterion {
+	
+	private int value;
 	private String propName;
 
-	public NotEmptyCriteron(String propName) {
+	public SizeGeCriterion(String propName, int value) {
 		this.propName = propName;
+		this.value = value;
+	}
+
+	public int getValue() {
+		return value;
 	}
 
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof NotEmptyCriteron))
+		if (!(other instanceof SizeGeCriterion))
 			return false;
-		NotEmptyCriteron castOther = (NotEmptyCriteron) other;
+		SizeGeCriterion castOther = (SizeGeCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
-			.isEquals();
+			.append(value, castOther.value).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(getPropName()).toHashCode();
+		return new HashCodeBuilder(17, 37).append(getPropName()).append(value).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return getPropName() + " is not empty";
+		return "size of " + getPropName() + " >= " + value;
 	}
 
 	public String getPropName() {

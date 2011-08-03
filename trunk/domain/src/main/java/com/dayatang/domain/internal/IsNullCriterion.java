@@ -5,45 +5,39 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
 
-public class GePropCriteron implements QueryCriterion {
-	
-	private String otherProp;
+
+public class IsNullCriterion implements QueryCriterion {
+
 	private String propName;
 
-	public GePropCriteron(String propName, String otherProp) {
+	public IsNullCriterion(String propName) {
 		this.propName = propName;
-		this.otherProp = otherProp;
-	}
-
-	public String getOtherProp() {
-		return otherProp;
 	}
 
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof GePropCriteron))
+		if (!(other instanceof IsNullCriterion))
 			return false;
-		GePropCriteron castOther = (GePropCriteron) other;
+		IsNullCriterion castOther = (IsNullCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
-			.append(otherProp, castOther.otherProp).isEquals();
+			.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(getPropName()).append(otherProp).toHashCode();
+		return new HashCodeBuilder(17, 37).append(getPropName()).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return getPropName() + " >= " + otherProp;
+		return getPropName() + " is null ";
 	}
 
 	public String getPropName() {
 		return propName;
 	}
-
 	
 }

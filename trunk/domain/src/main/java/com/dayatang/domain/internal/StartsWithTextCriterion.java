@@ -6,17 +6,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class GeCriteron implements QueryCriterion {
+public class StartsWithTextCriterion implements QueryCriterion {
 	
-	private Comparable<?> value;
+	private String value;
 	private String propName;
 
-	public GeCriteron(String propName, Comparable<?> value) {
+	public StartsWithTextCriterion(String propName, String value) {
 		this.propName = propName;
 		this.value = value;
 	}
 
-	public Comparable<?> getValue() {
+	public String getValue() {
 		return value;
 	}
 
@@ -24,9 +24,9 @@ public class GeCriteron implements QueryCriterion {
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof GeCriteron))
+		if (!(other instanceof StartsWithTextCriterion))
 			return false;
-		GeCriteron castOther = (GeCriteron) other;
+		StartsWithTextCriterion castOther = (StartsWithTextCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(value, castOther.value).isEquals();
@@ -39,11 +39,10 @@ public class GeCriteron implements QueryCriterion {
 
 	@Override
 	public String toString() {
-		return getPropName() + " >= " + value;
+		return getPropName() + " like '" + value + "*'";
 	}
 
 	public String getPropName() {
 		return propName;
 	}
-	
 }

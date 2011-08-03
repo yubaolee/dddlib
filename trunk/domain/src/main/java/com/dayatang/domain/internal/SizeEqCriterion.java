@@ -1,31 +1,22 @@
 package com.dayatang.domain.internal;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
 
 
-public class InCriteron implements QueryCriterion {
+public class SizeEqCriterion implements QueryCriterion {
 	
-	private Collection<? extends Object> value;
+	private int value;
 	private String propName;
 
-	public InCriteron(String propName, Collection<? extends Object> value) {
+	public SizeEqCriterion(String propName, int value) {
 		this.propName = propName;
 		this.value = value;
 	}
-	
-	public InCriteron(String propName, Object[] value) {
-		this.propName = propName;
-		this.value = Arrays.asList(value);
-	}
 
-	public Collection<? extends Object> getValue() {
+	public int getValue() {
 		return value;
 	}
 
@@ -33,9 +24,9 @@ public class InCriteron implements QueryCriterion {
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof InCriteron))
+		if (!(other instanceof SizeEqCriterion))
 			return false;
-		InCriteron castOther = (InCriteron) other;
+		SizeEqCriterion castOther = (SizeEqCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(value, castOther.value).isEquals();
@@ -48,11 +39,7 @@ public class InCriteron implements QueryCriterion {
 
 	@Override
 	public String toString() {
-		return getPropName() + " in collection [" + collectionToString(value) + "]";
-	}
-
-	private String collectionToString(Collection<? extends Object> value) {
-		return StringUtils.join(value, ",");
+		return "size of " + getPropName() + " = " + value;
 	}
 
 	public String getPropName() {
