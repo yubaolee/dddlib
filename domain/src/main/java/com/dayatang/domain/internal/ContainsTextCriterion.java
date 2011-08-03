@@ -5,45 +5,45 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
 
-public class LtPropCriteron implements QueryCriterion {
+
+public class ContainsTextCriterion implements QueryCriterion {
 	
-	private String otherProp;
+	private String value;
 	private String propName;
 
-	public LtPropCriteron(String propName, String otherProp) {
+	public ContainsTextCriterion(String propName, String value) {
 		this.propName = propName;
-		this.otherProp = otherProp;
+		this.value = value;
 	}
 
-	public String getOtherProp() {
-		return otherProp;
+	public String getValue() {
+		return value;
 	}
 
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof LtPropCriteron))
+		if (!(other instanceof ContainsTextCriterion))
 			return false;
-		LtPropCriteron castOther = (LtPropCriteron) other;
+		ContainsTextCriterion castOther = (ContainsTextCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
-			.append(otherProp, castOther.otherProp).isEquals();
+			.append(value, castOther.value).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(getPropName()).append(otherProp).toHashCode();
+		return new HashCodeBuilder(17, 37).append(getPropName()).append(value).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return getPropName() + " < " + otherProp;
+		return getPropName() + " like '*" + value + "*'";
 	}
 
 	public String getPropName() {
 		return propName;
 	}
-
 	
 }

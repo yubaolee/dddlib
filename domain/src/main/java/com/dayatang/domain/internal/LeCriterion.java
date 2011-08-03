@@ -6,17 +6,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class SizeEqCriteron implements QueryCriterion {
+public class LeCriterion implements QueryCriterion {
 	
-	private int value;
+	private Comparable<?> value;
 	private String propName;
 
-	public SizeEqCriteron(String propName, int value) {
+	public LeCriterion(String propName, Comparable<?> value) {
 		this.propName = propName;
 		this.value = value;
 	}
 
-	public int getValue() {
+	public Comparable<?> getValue() {
 		return value;
 	}
 
@@ -24,9 +24,9 @@ public class SizeEqCriteron implements QueryCriterion {
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof SizeEqCriteron))
+		if (!(other instanceof LeCriterion))
 			return false;
-		SizeEqCriteron castOther = (SizeEqCriteron) other;
+		LeCriterion castOther = (LeCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(value, castOther.value).isEquals();
@@ -39,7 +39,7 @@ public class SizeEqCriteron implements QueryCriterion {
 
 	@Override
 	public String toString() {
-		return "size of " + getPropName() + " = " + value;
+		return getPropName() + " <= " + value;
 	}
 
 	public String getPropName() {

@@ -6,27 +6,28 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class ContainsElementCriteron implements QueryCriterion {
+public class GtCriterion<T> implements QueryCriterion {
 	
-	private Object value;
+	private Comparable<T> value;
 	private String propName;
 
-	public ContainsElementCriteron(String propName, Object value) {
+	public GtCriterion(String propName, Comparable<T> value) {
 		this.propName = propName;
 		this.value = value;
 	}
 
-	public Object getValue() {
+	public Comparable<T> getValue() {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof ContainsElementCriteron))
+		if (!(other instanceof GtCriterion))
 			return false;
-		ContainsElementCriteron castOther = (ContainsElementCriteron) other;
+		GtCriterion<T> castOther = (GtCriterion<T>) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(value, castOther.value).isEquals();
@@ -39,7 +40,7 @@ public class ContainsElementCriteron implements QueryCriterion {
 
 	@Override
 	public String toString() {
-		return getPropName() + " contains " + value;
+		return getPropName() + " > " + value;
 	}
 
 	public String getPropName() {

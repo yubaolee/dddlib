@@ -10,35 +10,35 @@ import javax.persistence.criteria.Root;
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.internal.AndCriterion;
-import com.dayatang.domain.internal.BetweenCriteron;
-import com.dayatang.domain.internal.ContainsTextCriteron;
-import com.dayatang.domain.internal.EqCriteron;
-import com.dayatang.domain.internal.EqPropCriteron;
-import com.dayatang.domain.internal.GeCriteron;
-import com.dayatang.domain.internal.GePropCriteron;
-import com.dayatang.domain.internal.GtCriteron;
-import com.dayatang.domain.internal.GtPropCriteron;
-import com.dayatang.domain.internal.InCriteron;
-import com.dayatang.domain.internal.IsEmptyCriteron;
-import com.dayatang.domain.internal.IsNullCriteron;
-import com.dayatang.domain.internal.LeCriteron;
-import com.dayatang.domain.internal.LePropCriteron;
-import com.dayatang.domain.internal.LtCriteron;
-import com.dayatang.domain.internal.LtPropCriteron;
+import com.dayatang.domain.internal.BetweenCriterion;
+import com.dayatang.domain.internal.ContainsTextCriterion;
+import com.dayatang.domain.internal.EqCriterion;
+import com.dayatang.domain.internal.EqPropCriterion;
+import com.dayatang.domain.internal.GeCriterion;
+import com.dayatang.domain.internal.GePropCriterion;
+import com.dayatang.domain.internal.GtCriterion;
+import com.dayatang.domain.internal.GtPropCriterion;
+import com.dayatang.domain.internal.InCriterion;
+import com.dayatang.domain.internal.IsEmptyCriterion;
+import com.dayatang.domain.internal.IsNullCriterion;
+import com.dayatang.domain.internal.LeCriterion;
+import com.dayatang.domain.internal.LePropCriterion;
+import com.dayatang.domain.internal.LtCriterion;
+import com.dayatang.domain.internal.LtPropCriterion;
 import com.dayatang.domain.internal.NotCriterion;
-import com.dayatang.domain.internal.NotEmptyCriteron;
-import com.dayatang.domain.internal.NotEqCriteron;
-import com.dayatang.domain.internal.NotEqPropCriteron;
-import com.dayatang.domain.internal.NotInCriteron;
-import com.dayatang.domain.internal.NotNullCriteron;
+import com.dayatang.domain.internal.NotEmptyCriterion;
+import com.dayatang.domain.internal.NotEqCriterion;
+import com.dayatang.domain.internal.NotEqPropCriterion;
+import com.dayatang.domain.internal.NotInCriterion;
+import com.dayatang.domain.internal.NotNullCriterion;
 import com.dayatang.domain.internal.OrCriterion;
-import com.dayatang.domain.internal.SizeEqCriteron;
-import com.dayatang.domain.internal.SizeGeCriteron;
-import com.dayatang.domain.internal.SizeGtCriteron;
-import com.dayatang.domain.internal.SizeLeCriteron;
-import com.dayatang.domain.internal.SizeLtCriteron;
-import com.dayatang.domain.internal.SizeNotEqCriteron;
-import com.dayatang.domain.internal.StartsWithTextCriteron;
+import com.dayatang.domain.internal.SizeEqCriterion;
+import com.dayatang.domain.internal.SizeGeCriterion;
+import com.dayatang.domain.internal.SizeGtCriterion;
+import com.dayatang.domain.internal.SizeLeCriterion;
+import com.dayatang.domain.internal.SizeLtCriterion;
+import com.dayatang.domain.internal.SizeNotEqCriterion;
+import com.dayatang.domain.internal.StartsWithTextCriterion;
 
 /**
  * 一个工具类,用于将QueryCriterion转换成Hibernate的Criterion
@@ -49,123 +49,123 @@ import com.dayatang.domain.internal.StartsWithTextCriteron;
 public class JpaCriterionConverter {
 
 	public static <T extends Entity> Predicate convert(QueryCriterion criterion, CriteriaBuilder builder, Root<T> root, Class<T> entityClass) {
-		if (criterion instanceof EqCriteron) {
-			Path path = getPath(root, ((EqCriteron) criterion).getPropName());
-			return builder.equal(path, ((EqCriteron) criterion).getValue());
+		if (criterion instanceof EqCriterion) {
+			Path path = getPath(root, ((EqCriterion) criterion).getPropName());
+			return builder.equal(path, ((EqCriterion) criterion).getValue());
 		}
-		if (criterion instanceof NotEqCriteron) {
-			Path path = getPath(root, ((NotEqCriteron) criterion).getPropName());
-			return builder.notEqual(path, ((NotEqCriteron) criterion).getValue());
+		if (criterion instanceof NotEqCriterion) {
+			Path path = getPath(root, ((NotEqCriterion) criterion).getPropName());
+			return builder.notEqual(path, ((NotEqCriterion) criterion).getValue());
 		}
-		if (criterion instanceof GtCriteron) {
-			GtCriteron theCriteron = (GtCriteron) criterion;
+		if (criterion instanceof GtCriterion) {
+			GtCriterion theCriteron = (GtCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Comparable value = theCriteron.getValue();
 			return builder.greaterThan(path, value);
 		}
-		if (criterion instanceof GeCriteron) {
-			GeCriteron theCriteron = (GeCriteron) criterion;
+		if (criterion instanceof GeCriterion) {
+			GeCriterion theCriteron = (GeCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Comparable value = theCriteron.getValue();
 			return builder.greaterThanOrEqualTo(path, value);
 		}
-		if (criterion instanceof LtCriteron) {
-			LtCriteron theCriteron = (LtCriteron) criterion;
+		if (criterion instanceof LtCriterion) {
+			LtCriterion theCriteron = (LtCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Comparable value = theCriteron.getValue();
 			return builder.lessThan(path, value);
 		}
-		if (criterion instanceof LeCriteron) {
-			LeCriteron theCriteron = (LeCriteron) criterion;
+		if (criterion instanceof LeCriterion) {
+			LeCriterion theCriteron = (LeCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Comparable value = theCriteron.getValue();
 			return builder.lessThanOrEqualTo(path, value);
 		}
-		if (criterion instanceof EqPropCriteron) {
-			EqPropCriteron theCriteron = (EqPropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof EqPropCriterion) {
+			EqPropCriterion theCriteron = (EqPropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.equal(path1, path2);
 		}
-		if (criterion instanceof NotEqPropCriteron) {
-			NotEqPropCriteron theCriteron = (NotEqPropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof NotEqPropCriterion) {
+			NotEqPropCriterion theCriteron = (NotEqPropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.notEqual(path1, path2);
 		}
-		if (criterion instanceof GtPropCriteron) {
-			GtPropCriteron theCriteron = (GtPropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof GtPropCriterion) {
+			GtPropCriterion theCriteron = (GtPropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.greaterThan(path1, path2);
 		}
-		if (criterion instanceof GePropCriteron) {
-			GePropCriteron theCriteron = (GePropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof GePropCriterion) {
+			GePropCriterion theCriteron = (GePropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.greaterThanOrEqualTo(path1, path2);
 		}
-		if (criterion instanceof LtPropCriteron) {
-			LtPropCriteron theCriteron = (LtPropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof LtPropCriterion) {
+			LtPropCriterion theCriteron = (LtPropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.lessThan(path1, path2);
 		}
-		if (criterion instanceof LePropCriteron) {
-			LePropCriteron theCriteron = (LePropCriteron) criterion;
-			Path path1 = getPath(root, theCriteron.getPropName());
-			Path path2 = getPath(root, theCriteron.getOtherProp());
+		if (criterion instanceof LePropCriterion) {
+			LePropCriterion theCriteron = (LePropCriterion) criterion;
+			Path path1 = getPath(root, theCriteron.getPropName1());
+			Path path2 = getPath(root, theCriteron.getPropName2());
 			return builder.lessThanOrEqualTo(path1, path2);
 		}
-		if (criterion instanceof SizeEqCriteron) {
-			SizeEqCriteron theCriteron = (SizeEqCriteron) criterion;
+		if (criterion instanceof SizeEqCriterion) {
+			SizeEqCriterion theCriteron = (SizeEqCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.equal(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof SizeNotEqCriteron) {
-			SizeNotEqCriteron theCriteron = (SizeNotEqCriteron) criterion;
+		if (criterion instanceof SizeNotEqCriterion) {
+			SizeNotEqCriterion theCriteron = (SizeNotEqCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.notEqual(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof SizeGtCriteron) {
-			SizeGtCriteron theCriteron = (SizeGtCriteron) criterion;
+		if (criterion instanceof SizeGtCriterion) {
+			SizeGtCriterion theCriteron = (SizeGtCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.gt(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof SizeGeCriteron) {
-			SizeGeCriteron theCriteron = (SizeGeCriteron) criterion;
+		if (criterion instanceof SizeGeCriterion) {
+			SizeGeCriterion theCriteron = (SizeGeCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.ge(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof SizeLtCriteron) {
-			SizeLtCriteron theCriteron = (SizeLtCriteron) criterion;
+		if (criterion instanceof SizeLtCriterion) {
+			SizeLtCriterion theCriteron = (SizeLtCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.lt(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof SizeLeCriteron) {
-			SizeLeCriteron theCriteron = (SizeLeCriteron) criterion;
+		if (criterion instanceof SizeLeCriterion) {
+			SizeLeCriterion theCriteron = (SizeLeCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.le(builder.size(path), theCriteron.getValue());
 		}
-		if (criterion instanceof StartsWithTextCriteron) {
-			StartsWithTextCriteron theCriteron = (StartsWithTextCriteron) criterion;
+		if (criterion instanceof StartsWithTextCriterion) {
+			StartsWithTextCriterion theCriteron = (StartsWithTextCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.like(path, theCriteron.getValue() + "%");
 		}
-		if (criterion instanceof ContainsTextCriteron) {
-			ContainsTextCriteron theCriteron = (ContainsTextCriteron) criterion;
+		if (criterion instanceof ContainsTextCriterion) {
+			ContainsTextCriterion theCriteron = (ContainsTextCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.like(path, "%" + theCriteron.getValue() + "%");
 		}
-		if (criterion instanceof BetweenCriteron) {
-			BetweenCriteron theCriteron = (BetweenCriteron) criterion;
+		if (criterion instanceof BetweenCriterion) {
+			BetweenCriterion theCriteron = (BetweenCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Comparable from = theCriteron.getFrom();
 			Comparable to = theCriteron.getTo();
 			return builder.between(path, from, to);
 		}
-		if (criterion instanceof InCriteron) {
-			InCriteron theCriteron = (InCriteron) criterion;
+		if (criterion instanceof InCriterion) {
+			InCriterion theCriteron = (InCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Collection value = theCriteron.getValue();
 			if (value.isEmpty()) {
@@ -173,8 +173,8 @@ public class JpaCriterionConverter {
 			}
 			return path.in(theCriteron.getValue());
 		}
-		if (criterion instanceof NotInCriteron) {
-			NotInCriteron theCriteron = (NotInCriteron) criterion;
+		if (criterion instanceof NotInCriterion) {
+			NotInCriterion theCriteron = (NotInCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			Collection value = theCriteron.getValue();
 			if (value == null || value.isEmpty()) {
@@ -182,23 +182,23 @@ public class JpaCriterionConverter {
 			}
 			return builder.not(path.in(value));
 		}
-		if (criterion instanceof IsNullCriteron) {
-			IsNullCriteron theCriteron = (IsNullCriteron) criterion;
+		if (criterion instanceof IsNullCriterion) {
+			IsNullCriterion theCriteron = (IsNullCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.isNull(path);
 		}
-		if (criterion instanceof NotNullCriteron) {
-			NotNullCriteron theCriteron = (NotNullCriteron) criterion;
+		if (criterion instanceof NotNullCriterion) {
+			NotNullCriterion theCriteron = (NotNullCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.isNotNull(path);
 		}
-		if (criterion instanceof IsEmptyCriteron) {
-			IsEmptyCriteron theCriteron = (IsEmptyCriteron) criterion;
+		if (criterion instanceof IsEmptyCriterion) {
+			IsEmptyCriterion theCriteron = (IsEmptyCriterion) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
 			return builder.isEmpty(path);
 		}
-		if (criterion instanceof NotEmptyCriteron) {
-			NotEmptyCriteron isEmptyCriteron = (NotEmptyCriteron) criterion;
+		if (criterion instanceof NotEmptyCriterion) {
+			NotEmptyCriterion isEmptyCriteron = (NotEmptyCriterion) criterion;
 			Path propName = root.get(isEmptyCriteron.getPropName());
 			Class propType = propName.getJavaType();
 			return builder.isNotEmpty(propName.as(propType));

@@ -6,45 +6,44 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class EqPropCriteron implements QueryCriterion {
+public class ContainsElementCriterion implements QueryCriterion {
 	
-	private String otherProp;
+	private Object value;
 	private String propName;
 
-	public EqPropCriteron(String propName, String otherProp) {
+	public ContainsElementCriterion(String propName, Object value) {
 		this.propName = propName;
-		this.otherProp = otherProp;
+		this.value = value;
 	}
 
-	public String getOtherProp() {
-		return otherProp;
+	public Object getValue() {
+		return value;
 	}
 
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
-		if (!(other instanceof EqPropCriteron))
+		if (!(other instanceof ContainsElementCriterion))
 			return false;
-		EqPropCriteron castOther = (EqPropCriteron) other;
+		ContainsElementCriterion castOther = (ContainsElementCriterion) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
-			.append(otherProp, castOther.otherProp).isEquals();
+			.append(value, castOther.value).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(getPropName()).append(otherProp).toHashCode();
+		return new HashCodeBuilder(17, 37).append(getPropName()).append(value).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return getPropName() + " = " + otherProp;
+		return getPropName() + " contains " + value;
 	}
 
 	public String getPropName() {
 		return propName;
 	}
-
 	
 }
