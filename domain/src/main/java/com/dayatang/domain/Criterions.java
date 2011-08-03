@@ -51,19 +51,19 @@ public class Criterions {
 		return new NotEqCriteron(propName, value);
 	}
 	
-	public static QueryCriterion ge(String propName, Number value) {
+	public static QueryCriterion ge(String propName, Comparable<?> value) {
 		return new GeCriteron(propName, value);
 	}
 	
-	public static QueryCriterion gt(String propName, Number value) {
+	public static QueryCriterion gt(String propName, Comparable<?> value) {
 		return new GtCriteron(propName, value);
 	}
 	
-	public static QueryCriterion le(String propName, Number value) {
+	public static QueryCriterion le(String propName, Comparable<?> value) {
 		return new LeCriteron(propName, value);
 	}
 	
-	public static QueryCriterion lt(String propName, Number value) {
+	public static QueryCriterion lt(String propName, Comparable<?> value) {
 		return new LtCriteron(propName, value);
 	}
 	
@@ -123,7 +123,7 @@ public class Criterions {
 		return new StartsWithTextCriteron(propName, value);
 	}
 
-	public static QueryCriterion in(String propName, Collection<? extends Object> value) {
+	public static QueryCriterion in(String propName, Collection<?> value) {
 		return new InCriteron(propName, value);
 	}
 
@@ -131,7 +131,7 @@ public class Criterions {
 		return new InCriteron(propName, value);
 	}
 
-	public static QueryCriterion notIn(String propName, Collection<? extends Object> value) {
+	public static QueryCriterion notIn(String propName, Collection<?> value) {
 		return new NotInCriteron(propName, value);
 	}
 
@@ -139,8 +139,7 @@ public class Criterions {
 		return new NotInCriteron(propName, value);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T extends Object> QueryCriterion between(String propName, Comparable<T> from, Comparable<T> to) {
+	public static QueryCriterion between(String propName, Comparable<?> from, Comparable<?> to) {
 		return new BetweenCriteron(propName, from, to);
 	}
 	

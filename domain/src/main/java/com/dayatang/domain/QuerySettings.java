@@ -79,22 +79,22 @@ public class QuerySettings<T> {
 		return this;
 	}
 	
-	public QuerySettings<T> ge(String propName, Number value) {
+	public QuerySettings<T> ge(String propName, Comparable<?> value) {
 		addCriterion(Criterions.ge(propName, value));
 		return this;
 	}
 	
-	public QuerySettings<T> gt(String propName, Number value) {
+	public QuerySettings<T> gt(String propName, Comparable<?> value) {
 		addCriterion(Criterions.gt(propName, value));
 		return this;
 	}
 	
-	public QuerySettings<T> le(String propName, Number value) {
+	public QuerySettings<T> le(String propName, Comparable<?> value) {
 		addCriterion(Criterions.le(propName, value));
 		return this;
 	}
 	
-	public QuerySettings<T> lt(String propName, Number value) {
+	public QuerySettings<T> lt(String propName, Comparable<?> value) {
 		addCriterion(Criterions.lt(propName, value));
 		return this;
 	}

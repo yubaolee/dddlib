@@ -60,26 +60,26 @@ public class JpaCriterionConverter {
 		if (criterion instanceof GtCriteron) {
 			GtCriteron theCriteron = (GtCriteron) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
-			Number value = theCriteron.getValue();
-			return builder.gt(path.as(value.getClass()), value);
+			Comparable value = theCriteron.getValue();
+			return builder.greaterThan(path, value);
 		}
 		if (criterion instanceof GeCriteron) {
 			GeCriteron theCriteron = (GeCriteron) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
-			Number value = theCriteron.getValue();
-			return builder.ge(path.as(value.getClass()), value);
+			Comparable value = theCriteron.getValue();
+			return builder.greaterThanOrEqualTo(path, value);
 		}
 		if (criterion instanceof LtCriteron) {
 			LtCriteron theCriteron = (LtCriteron) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
-			Number value = theCriteron.getValue();
-			return builder.lt(path.as(value.getClass()), value);
+			Comparable value = theCriteron.getValue();
+			return builder.lessThan(path, value);
 		}
 		if (criterion instanceof LeCriteron) {
 			LeCriteron theCriteron = (LeCriteron) criterion;
 			Path path = getPath(root, theCriteron.getPropName());
-			Number value = theCriteron.getValue();
-			return builder.le(path.as(value.getClass()), value);
+			Comparable value = theCriteron.getValue();
+			return builder.lessThanOrEqualTo(path, value);
 		}
 		if (criterion instanceof EqPropCriteron) {
 			EqPropCriteron theCriteron = (EqPropCriteron) criterion;

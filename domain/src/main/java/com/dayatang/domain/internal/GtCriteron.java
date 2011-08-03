@@ -6,27 +6,28 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.dayatang.domain.QueryCriterion;
 
 
-public class GtCriteron implements QueryCriterion {
+public class GtCriteron<T> implements QueryCriterion {
 	
-	private Number value;
+	private Comparable<T> value;
 	private String propName;
 
-	public GtCriteron(String propName, Number value) {
+	public GtCriteron(String propName, Comparable<T> value) {
 		this.propName = propName;
 		this.value = value;
 	}
 
-	public Number getValue() {
+	public Comparable<T> getValue() {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other)
 			return true;
 		if (!(other instanceof GtCriteron))
 			return false;
-		GtCriteron castOther = (GtCriteron) other;
+		GtCriteron<T> castOther = (GtCriteron<T>) other;
 		return new EqualsBuilder()
 			.append(this.getPropName(), castOther.getPropName())
 			.append(value, castOther.value).isEquals();
