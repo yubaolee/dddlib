@@ -7,7 +7,6 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
@@ -124,8 +123,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		DetachedCriteria detachedCriteria = HibernateCriteriaBuilder.createCriteria(settings);
-		Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+		Criteria criteria = HibernateCriteriaBuilder.createCriteria(settings, getSession());
 		criteria.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {
 			criteria.setMaxResults(settings.getMaxResults());

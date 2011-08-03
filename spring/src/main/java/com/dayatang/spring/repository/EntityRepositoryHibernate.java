@@ -10,7 +10,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -126,8 +125,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				DetachedCriteria detachedCriteria = HibernateCriteriaBuilder.createCriteria(settings);
-				Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+				Criteria criteria = HibernateCriteriaBuilder.createCriteria(settings, session);
 				criteria.setFirstResult(settings.getFirstResult());
 				if (settings.getMaxResults() > 0) {
 					criteria.setMaxResults(settings.getMaxResults());

@@ -2,8 +2,8 @@ package com.dayatang.hibernate.internal;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -48,7 +48,7 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
 public class HibernateCriterionConverter {
 	
 	@SuppressWarnings("rawtypes")
-	public static Criterion convert(QueryCriterion criterion, DetachedCriteria criteria) {
+	public static Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
 			Property property = getPath(((EqCriterion) criterion).getPropName(), criteria);
 			System.out.println("------------------------" + property);
@@ -176,7 +176,7 @@ public class HibernateCriterionConverter {
 		return null;
 	}
 
-	private static Property getPath(String propName, DetachedCriteria criteria) {
+	private static Property getPath(String propName, Criteria criteria) {
 		String[] nameExpr = propName.split("\\.");
 		if (nameExpr.length < 2) {
 			return Property.forName(propName);
