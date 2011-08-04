@@ -1,9 +1,7 @@
 package com.dayatang.commons.repository;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
-//import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
@@ -14,7 +12,7 @@ public class HibernateUtils {
 
     private static SessionFactory buildSessionFactory() {
         try {
-        	cfg = new AnnotationConfiguration()
+        	cfg = new Configuration()
         		.addAnnotatedClass(DictionaryCategory.class)
         		.addAnnotatedClass(Dictionary.class)
         		.configure();
