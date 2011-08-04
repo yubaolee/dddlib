@@ -13,7 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
@@ -28,25 +28,7 @@ import com.dayatang.spring.repository.internal.HibernateCriteriaBuilder;
  * 
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class EntityRepositoryHibernate implements EntityRepository {
-
-	private SessionFactory sessionFactory;
-
-	public EntityRepositoryHibernate() {
-		super();
-	}
-
-	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
-		setSessionFactory(sessionFactory);
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public HibernateTemplate getHibernateTemplate() {
-		return new HibernateTemplate(sessionFactory);
-	}
+public class EntityRepositoryHibernate extends HibernateDaoSupport implements EntityRepository {
 
 	/*
 	 * (non-Javadoc)

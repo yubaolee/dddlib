@@ -50,7 +50,8 @@ public class HibernateCriterionConverter {
 	@SuppressWarnings("rawtypes")
 	public static Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
-			Property property = getPath(((EqCriterion) criterion).getPropName(), criteria);
+			Property property = Property.forName(((EqCriterion) criterion).getPropName());
+					//getPath(((EqCriterion) criterion).getPropName(), criteria);
 			System.out.println("------------------------" + property);
 			return property.eq(((EqCriterion) criterion).getValue());
 		}
