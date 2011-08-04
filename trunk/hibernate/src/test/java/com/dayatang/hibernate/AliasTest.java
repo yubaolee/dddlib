@@ -46,7 +46,8 @@ public class AliasTest {
 		while (index > 0) {
 			String aliasName = propName.substring(0, index);
 			int index1 = aliasName.lastIndexOf(".");
-			String alias = index1 == -1 ? aliasName : aliasName.substring(index1 + 1);
+			String prefix = aliasName.substring(0, index1 + 1).replaceAll("\\.", "_");
+			String alias = index1 == -1 ? aliasName : prefix + aliasName.substring(index1 + 1);
 			results.put(aliasName, alias);
 			index = propName.indexOf(".", index + 1);
 		}
