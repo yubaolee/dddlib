@@ -44,7 +44,9 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		return getEntityManager().merge(entity);
+		T result = getEntityManager().merge(entity);
+		getEntityManager().flush();
+		return result;
 	}
 
 	/*
@@ -54,6 +56,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@Override
 	public void remove(Entity entity) {
 		getEntityManager().remove(get(entity.getClass(), entity.getId()));
+		getEntityManager().flush();
 	}
 
 	/*
