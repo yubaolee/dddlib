@@ -2,6 +2,7 @@ package com.dayatang.utils;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -18,7 +19,7 @@ public class ConfigUtilsTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = new ConfigUtils("/conf.properties");
+		instance = ConfigUtils.fromClasspath("/conf.properties");
 	}
 
 	@After
@@ -26,14 +27,25 @@ public class ConfigUtilsTest {
 	}
 
 	@Test
-	public void testConfigUtilsString() {
-		instance = new ConfigUtils("/conf.properties");
+	public void testFromClasspath() {
+		instance = ConfigUtils.fromClasspath("/conf.properties");
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
 	@Test
-	public void testConfigUtilsURL() {
-		instance = new ConfigUtils(getClass().getResource("/conf.properties"));
+	public void testFromPathname() {
+		String pathname = getClass().getResource("/conf.properties").getFile();
+		instance = ConfigUtils.fromFileSystem(pathname);
+		assertTrue(instance.getProperties().size() > 0);
+	}
+
+	@Test
+	public void testFromDirAndFile() {
+		String pathname = getClass().getResource("/conf.properties").getFile();
+		File file = new File(pathname);
+		String dir = file.getParent();
+		String fileName = file.getName();
+		instance = ConfigUtils.fromFileSystem(dir, fileName);
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
@@ -178,7 +190,7 @@ public class ConfigUtilsTest {
 	public void testSave() {
 		instance.setString("xyz", "yyyy-MM-dd");
 		instance.save();
-		instance = new ConfigUtils(instance.getFileUrl());
+		instance = ConfigUtils.fromClasspath("/conf.properties");
 		assertEquals("yyyy-MM-dd", instance.getString("xyz"));
 	}
 

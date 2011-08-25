@@ -3,8 +3,6 @@ package com.dayatang.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +28,7 @@ public class CollectionUtils {
 		if (collection == null || collection.isEmpty()) {
 			return "";
 		}
-		Collection<String> elements = (collection instanceof Set<?>) ? new HashSet<String>() : new ArrayList<String>();
+		Collection<String> elements = new ArrayList<String>();
 		try {
 			for (Object item : collection) {
 				elements.add(BeanUtils.getProperty(item, field));
