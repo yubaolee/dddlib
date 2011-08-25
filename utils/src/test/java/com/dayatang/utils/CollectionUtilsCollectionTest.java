@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.*;
 
-public class CollectionUtilsListTest {
+public class CollectionUtilsCollectionTest {
 
 	@Before
 	public void setUp() throws Exception {
