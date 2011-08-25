@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,16 +41,71 @@ public class ConfigUtils {
 	private URL fileUrl;
 	private String prefix = "";
 	private boolean usePrefix = false;
-	private boolean writeable = true;
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Hashtable<String, String> hTable = null;
 	
-	public ConfigUtils(String fileInClasspath) {
-		this.fileUrl = ConfigUtils.class.getResource(fileInClasspath);
-		loadFile();
+	/**
+	 * 从类路径读入配置文件
+	 * @param fileName
+	 * @return
+	 */
+	public static ConfigUtils fromClasspath(final String fileName) {
+		URL url = ConfigUtils.class.getResource(fileName);
+		return new ConfigUtils(url);
+	}
+	
+	/**
+	 * 从文件系统读入配置文件
+	 * @param pathname
+	 * @return
+	 */
+	public static ConfigUtils fromFileSystem(final String pathname) {
+		File file = new File(pathname);
+		if (!file.exists()) {
+			throw new RuntimeException("File " + pathname + " not exists!");
+		}
+		if (!file.canRead()) {
+			throw new RuntimeException("File " + pathname + " is unreadable!");
+		}
+		try {
+			return new ConfigUtils(file.toURI().toURL());
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 从文件系统读入配置文件
+	 * @param dirPath
+	 * @param fileName
+	 * @return
+	 */
+	public static ConfigUtils fromFileSystem(final String dirPath, final String fileName) {
+		if (StringUtils.isEmpty(dirPath)) {
+			return fromFileSystem(fileName);
+		}
+		File dir = new File(dirPath);
+		if (!dir.exists()) {
+			throw new RuntimeException("Directory " + dir + " not exists!");
+		}
+		File file = new File(dirPath, fileName);
+		if (!file.exists()) {
+			throw new RuntimeException("File " + file + " not exists!");
+		}
+		if (!file.canRead()) {
+			throw new RuntimeException("File " + file + " is unreadable!");
+		}
+		try {
+			return new ConfigUtils(file.toURI().toURL());
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public ConfigUtils(URL url) {
+	private ConfigUtils(URL url) {
+		if (url == null) {
+			throw new RuntimeException("url is null!");
+		}
 		this.fileUrl = url;
 		loadFile();
 	}
@@ -288,7 +344,7 @@ public class ConfigUtils {
 	 */
 	public Date getDate(String key, Date defaultValue) {
 		String result = getString(key);
-		if (result == null) {
+		if (StringUtils.isEmpty(result)) {
 			return defaultValue;
 		}
 		try {
@@ -331,15 +387,8 @@ public class ConfigUtils {
 	 * @return true表示保存成功
 	 */
 	public void save() {
-		if (!writeable || fileUrl == null) {
-			return;
-		}
 		try {
 			File file = new File(fileUrl.getFile());
-			File dir = file.getParentFile();
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
 			Properties props = pfu.unRectifyProperties(hTable);
 			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "8859_1")), "Config file for " + fileUrl);
 		} catch (Exception e) {
