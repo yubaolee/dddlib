@@ -183,6 +183,7 @@ public class HibernateCriterionConverter {
 			return Property.forName(propName);
 		}
 		try {
+			//criteria.
 			criteria.createAlias(nameExpr[0], nameExpr[0]);
 		} catch (Exception e) {
 			e.printStackTrace();

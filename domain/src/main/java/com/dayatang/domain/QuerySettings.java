@@ -2,8 +2,8 @@ package com.dayatang.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +24,7 @@ public class QuerySettings<T> {
 	private String rootAlias;
 	private int firstResult;
 	private int maxResults;
-	private Map<String, String> aliases = new HashMap<String, String>();
+	private Map<String, String> aliases = new LinkedHashMap<String, String>();
 	private Set<QueryCriterion> criterions = new HashSet<QueryCriterion>();
 	private List<OrderSetting> orderSettings = new ArrayList<OrderSetting>();
 	
@@ -81,8 +81,7 @@ public class QuerySettings<T> {
 		aliases.put(propName, aliasName);
 		return this;
 	}
-	
-	
+
 	public QuerySettings<T> eq(String propName, Object value) {
 		addCriterion(Criterions.eq(propName, value));
 		return this;

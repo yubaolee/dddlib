@@ -11,6 +11,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.OrderSetting;
 import com.dayatang.domain.QueryCriterion;
@@ -23,8 +25,12 @@ public class JpaCriteriaQueryBuilder {
 		CriteriaQuery<T> query = builder.createQuery(settings.getEntityClass());
 		Root<T> root = query.from(settings.getEntityClass());
 		query.select(root);
-		for (Map.Entry<String, String> aliasEntry : settings.getAliases().entrySet()) {
-			root.get(aliasEntry.getKey()).alias(aliasEntry.getValue());
+		if (!StringUtils.isEmpty(settings.getRootAlias())) {
+			root.alias(settings.getRootAlias());
+		}
+		Map<String, String> aliases = settings.getAliases();
+		for (String key : aliases.keySet()) {
+			root.get(key).alias(aliases.get(key));
 		}
 		
 		List<Predicate> criterions = new ArrayList<Predicate>();
