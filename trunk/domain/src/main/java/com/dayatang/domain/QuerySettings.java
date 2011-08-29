@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class QuerySettings<T> {
 	
 	private Class<T> entityClass;
-	private String alias;
+	private String rootAlias;
 	private int firstResult;
 	private int maxResults;
 	private Map<String, String> aliases = new HashMap<String, String>();
@@ -43,7 +43,7 @@ public class QuerySettings<T> {
 
 	public QuerySettings(Class<T> entityClass, String alias) {
 		this.entityClass = entityClass;
-		this.alias = alias;
+		this.rootAlias = alias;
 	}
 
 	/**
@@ -51,6 +51,10 @@ public class QuerySettings<T> {
 	 */
 	public Class<T> getEntityClass() {
 		return entityClass;
+	}
+
+	public String getRootAlias() {
+		return rootAlias;
 	}
 
 	public Map<String, String> getAliases() {
