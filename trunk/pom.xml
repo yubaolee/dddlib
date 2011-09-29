@@ -394,7 +394,7 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.0</version>
 					<configuration>
-						<locales>zh,en</locales>
+						<locales>zh_CN</locales>
 						<inputEncoding>UTF-8</inputEncoding>
 						<outputEncoding>UTF-8</outputEncoding>
 					</configuration>
