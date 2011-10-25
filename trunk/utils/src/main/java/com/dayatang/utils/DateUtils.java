@@ -19,7 +19,8 @@ public class DateUtils {
 
 	private static final int MONTHS_IN_A_YEAR = 12;
 
-	private static final int[] daysInMonth = new int[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	private static final int[] daysInMonth = new int[] { 31, 28, 31, 30, 31,
+			30, 31, 31, 30, 31, 30, 31 };
 
 	/**
 	 * 最小日期，设定为1000年1月1日
@@ -33,7 +34,8 @@ public class DateUtils {
 
 	private static Date getMaxDate() {
 		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate("8888-01-01", new String[] { "yyyy-MM-dd" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(
+					"8888-01-01", new String[] { "yyyy-MM-dd" });
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -42,7 +44,8 @@ public class DateUtils {
 
 	private static Date getMinDate() {
 		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate("1000-01-01", new String[] { "yyyy-MM-dd" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(
+					"1000-01-01", new String[] { "yyyy-MM-dd" });
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -58,7 +61,8 @@ public class DateUtils {
 	 */
 	public static int getYearDiff(Date date1, Date date2) {
 		if (date1 == null || date2 == null) {
-			throw new InvalidParameterException("date1 and date2 cannot be null!");
+			throw new InvalidParameterException(
+					"date1 and date2 cannot be null!");
 		}
 		if (date1.after(date2)) {
 			throw new InvalidParameterException("date1 cannot be after date2!");
@@ -93,7 +97,8 @@ public class DateUtils {
 	 */
 	public static int getMonthDiff(Date date1, Date date2) {
 		if (date1 == null || date2 == null) {
-			throw new InvalidParameterException("date1 and date2 cannot be null!");
+			throw new InvalidParameterException(
+					"date1 and date2 cannot be null!");
 		}
 		if (date1.after(date2)) {
 			throw new InvalidParameterException("date1 cannot be after date2!");
@@ -128,14 +133,18 @@ public class DateUtils {
 	 */
 	public static int getDayDiff(Date date1, Date date2) {
 		if (date1 == null || date2 == null) {
-			throw new InvalidParameterException("date1 and date2 cannot be null!");
+			throw new InvalidParameterException(
+					"date1 and date2 cannot be null!");
 		}
-		Date startDate = org.apache.commons.lang3.time.DateUtils.truncate(date1, Calendar.DATE);
-		Date endDate = org.apache.commons.lang3.time.DateUtils.truncate(date2, Calendar.DATE);
+		Date startDate = org.apache.commons.lang3.time.DateUtils.truncate(
+				date1, Calendar.DATE);
+		Date endDate = org.apache.commons.lang3.time.DateUtils.truncate(date2,
+				Calendar.DATE);
 		if (startDate.after(endDate)) {
 			throw new InvalidParameterException("date1 cannot be after date2!");
 		}
-		long millSecondsInOneDay = HOURS_IN_A_DAY * MINUTES_IN_AN_HOUR * SECONDS_IN_A_MINUTE * MILLIS_IN_A_SECOND;
+		long millSecondsInOneDay = HOURS_IN_A_DAY * MINUTES_IN_AN_HOUR
+				* SECONDS_IN_A_MINUTE * MILLIS_IN_A_SECOND;
 		return (int) ((endDate.getTime() - startDate.getTime()) / millSecondsInOneDay);
 	}
 
@@ -187,8 +196,10 @@ public class DateUtils {
 	 * @return
 	 */
 	public static boolean isDateAfter(Date date1, Date date2) {
-		Date theDate1 = org.apache.commons.lang3.time.DateUtils.truncate(date1, Calendar.DATE);
-		Date theDate2 = org.apache.commons.lang3.time.DateUtils.truncate(date2, Calendar.DATE);
+		Date theDate1 = org.apache.commons.lang3.time.DateUtils.truncate(date1,
+				Calendar.DATE);
+		Date theDate2 = org.apache.commons.lang3.time.DateUtils.truncate(date2,
+				Calendar.DATE);
 		return theDate1.after(theDate2);
 	}
 
@@ -261,7 +272,9 @@ public class DateUtils {
 	 */
 	public static Date parseDate(String dateString) {
 		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d", "yyyy-MM-d", "yyyy-M-dd"});
+			return org.apache.commons.lang3.time.DateUtils.parseDate(
+					dateString, new String[] { "yyyy-MM-dd", "yyyy-M-d",
+							"yyyy-MM-d", "yyyy-M-dd" });
 		} catch (ParseException e) {
 			return null;
 		}
@@ -269,12 +282,15 @@ public class DateUtils {
 
 	/**
 	 * 将字符串形式的时间表示解析为日期时间对象
+	 * 
 	 * @param timeString
 	 * @return
 	 */
 	public static Date parseTime(String timeString) {
 		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate(timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm", "h:m" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(
+					timeString, new String[] { "hh:mm:ss", "h:m:s", "hh:mm",
+							"h:m" });
 		} catch (ParseException e) {
 			return null;
 		}
@@ -282,12 +298,16 @@ public class DateUtils {
 
 	/**
 	 * 将字符串形式的日期时间表示解析为时间对象
+	 * 
 	 * @param timeString
 	 * @return
 	 */
 	public static Date parseDateTime(String timeString) {
 		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate(timeString, new String[] { "yyyy-MM-dd hh:mm:ss", "yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s", "yyyy-M-d hh:mm:ss" });
+			return org.apache.commons.lang3.time.DateUtils.parseDate(
+					timeString, new String[] { "yyyy-MM-dd hh:mm:ss",
+							"yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s",
+							"yyyy-M-d hh:mm:ss" });
 		} catch (ParseException e) {
 			return null;
 		}
@@ -304,7 +324,8 @@ public class DateUtils {
 	 *            星期，例如星期三，星期四
 	 * @return
 	 */
-	public static int getWeekDaysBetween(Date fromDate, Date toDate, int dayOfWeek) {
+	public static int getWeekDaysBetween(Date fromDate, Date toDate,
+			int dayOfWeek) {
 		int result = 0;
 		Date firstDate = getFirstWeekdayBetween(fromDate, toDate, dayOfWeek);
 		if (firstDate == null) {
@@ -330,7 +351,8 @@ public class DateUtils {
 	 *            星期，例如星期三，星期四
 	 * @return
 	 */
-	public static Date getFirstWeekdayBetween(Date fromDate, Date toDate, int dayOfWeek) {
+	public static Date getFirstWeekdayBetween(Date fromDate, Date toDate,
+			int dayOfWeek) {
 		Calendar aDay = Calendar.getInstance();
 		aDay.setTime(fromDate);
 		while (aDay.getTime().before(toDate)) {
@@ -434,5 +456,33 @@ public class DateUtils {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		return calendar.get(field);
+	}
+
+	/**
+	 * 获得指定日期之后一段时期的日期。例如某日期之后3天的日期等。
+	 * @param origDate 基准日期
+	 * @param amount 时间数量
+	 * @param timeUnit 时间单位，如年、月、日等。用Calendar中的常量代表
+	 * @return
+	 */
+	public Date dateAfter(Date origDate, int amount, int timeUnit) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(origDate);
+		calendar.add(timeUnit, amount);
+		return calendar.getTime();
+	}
+
+	/**
+	 * 获得指定日期之前一段时期的日期。例如某日期之前3天的日期等。
+	 * @param origDate 基准日期
+	 * @param amount 时间数量
+	 * @param timeUnit 时间单位，如年、月、日等。用Calendar中的常量代表
+	 * @return
+	 */
+	public Date dateBefore(Date origDate, int amount, int timeUnit) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(origDate);
+		calendar.add(timeUnit, -amount);
+		return calendar.getTime();
 	}
 }
