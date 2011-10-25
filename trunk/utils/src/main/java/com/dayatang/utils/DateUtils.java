@@ -465,7 +465,7 @@ public class DateUtils {
 	 * @param timeUnit 时间单位，如年、月、日等。用Calendar中的常量代表
 	 * @return
 	 */
-	public Date dateAfter(Date origDate, int amount, int timeUnit) {
+	public static final Date dateAfter(Date origDate, int amount, int timeUnit) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(origDate);
 		calendar.add(timeUnit, amount);
@@ -479,7 +479,7 @@ public class DateUtils {
 	 * @param timeUnit 时间单位，如年、月、日等。用Calendar中的常量代表
 	 * @return
 	 */
-	public Date dateBefore(Date origDate, int amount, int timeUnit) {
+	public static final Date dateBefore(Date origDate, int amount, int timeUnit) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(origDate);
 		calendar.add(timeUnit, -amount);

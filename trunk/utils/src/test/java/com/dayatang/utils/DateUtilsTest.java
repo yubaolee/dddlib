@@ -275,5 +275,19 @@ public class DateUtilsTest {
 		assertEquals(4, calendar.get(Calendar.MINUTE));
 		assertEquals(6, calendar.get(Calendar.SECOND));
 	}
+	
+	@Test
+	public void dateAfter() {
+		Date origDate = DateUtils.parseDate("2000-01-02");
+		assertEquals(DateUtils.parseDate("2000-01-05"), DateUtils.dateAfter(origDate, 3, Calendar.DATE));
+		assertEquals(DateUtils.parseDate("2003-01-02"), DateUtils.dateAfter(origDate, 3, Calendar.YEAR));
+	}
+	
+	@Test
+	public void dateBefore() {
+		Date origDate = DateUtils.parseDate("2000-01-05");
+		assertEquals(DateUtils.parseDate("2000-01-02"), DateUtils.dateBefore(origDate, 3, Calendar.DATE));
+		assertEquals(DateUtils.parseDate("1997-01-05"), DateUtils.dateBefore(origDate, 3, Calendar.YEAR));
+	}
 }
 
