@@ -398,7 +398,7 @@ public class ConfigUtils {
 
 	private void store(Properties props, BufferedWriter bw, String comments) throws IOException {
 		if (!StringUtils.isEmpty(comments)) {
-			bw.append(comments);
+			bw.append("#" + comments);
 			bw.newLine();
 		}
 		bw.write("#" + new Date().toString());
