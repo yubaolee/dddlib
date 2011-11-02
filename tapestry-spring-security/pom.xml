@@ -4,15 +4,15 @@
     <parent>
         <groupId>com.dayatang.commons</groupId>
         <artifactId>dayatang-commons-project</artifactId>
-        <version>2.4-SNAPSHOT</version>
+        <version>2.4</version>
     </parent>
     <artifactId>tapestry-spring-security</artifactId>
     <name>Dayatang Spring Security services for Tapestry</name>
     <inceptionYear>2007</inceptionYear>
 	
     <scm>
-        <connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/tapestry-spring-security/</connection>
-        <developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/tapestry-spring-security/</developerConnection>
+        <connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.4/tapestry-spring-security</connection>
+        <developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.4/tapestry-spring-security</developerConnection>
     </scm>
 
     <dependencies>
