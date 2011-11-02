@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,6 +19,7 @@ import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.hibernate.internal.HibernateCriteriaBuilder;
+import com.dayatang.hibernate.internal.QueryTranslator;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -123,12 +125,20 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		Criteria criteria = HibernateCriteriaBuilder.createCriteria(settings, getSession());
-		criteria.setFirstResult(settings.getFirstResult());
-		if (settings.getMaxResults() > 0) {
-			criteria.setMaxResults(settings.getMaxResults());
+		QueryTranslator translator = new QueryTranslator(settings);
+		String queryString = translator.getQueryString(); 
+		LOGGER.info("QueryString: '" + queryString + "'");
+		List<Object> params = translator.getParams();
+		LOGGER.info("params: " + StringUtils.join(params, ", "));
+		Query query = getSession().createQuery(queryString);
+		for (int i = 0; i < params.size(); i++) {
+			query.setParameter(i, params.get(i));
 		}
-		return criteria.list();
+		query.setFirstResult(settings.getFirstResult());
+		if (settings.getMaxResults() > 0) {
+			query.setMaxResults(settings.getMaxResults());
+		}
+		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")

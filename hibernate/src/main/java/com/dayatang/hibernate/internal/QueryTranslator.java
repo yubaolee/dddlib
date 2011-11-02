@@ -126,11 +126,15 @@ public class QueryTranslator {
 			}
 			if (criterion instanceof InCriterion) {
 				Collection<? extends Object> value = ((InCriterion) criterion).getValue();
-				elements.add("o." + ((InCriterion) criterion).getPropName() + " in (" + createInString(value) + ")");
+				if (value == null || value.isEmpty()) {
+					elements.add("1 > 1");
+				} else {
+					elements.add("o." + ((InCriterion) criterion).getPropName() + " in (" + createInString(value) + ")");
+				}
 			}
 			if (criterion instanceof NotInCriterion) {
 				Collection<? extends Object> value = ((NotInCriterion) criterion).getValue();
-				if (value.isEmpty()) {
+				if (value == null || value.isEmpty()) {
 					continue;
 				}
 				elements.add("o." + ((NotInCriterion) criterion).getPropName() + " not in (" + createInString(value) + ")");
