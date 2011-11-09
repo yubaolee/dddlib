@@ -56,15 +56,6 @@ public class ConfigurationFileImplTest {
 	}
 
 	@Test
-	public void testSetDatePattern() {
-		instance.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		Calendar result = Calendar.getInstance();
-		result.set(2011, 0, 15, 12, 0, 0);
-		result.set(Calendar.MILLISECOND, 0);
-		assertEquals(result.getTime(), instance.getDate("time"));
-	}
-
-	@Test
 	public void testGetStringStringString() {
 		assertEquals("yyyy-M-d", instance.getString("date.format", "yyyy-MM-dd"));
 		assertEquals("yyyy-MM-dd", instance.getString("format", "yyyy-MM-dd"));
@@ -159,7 +150,6 @@ public class ConfigurationFileImplTest {
 	public void testGetDateStringDate() {
 		Date orig = DateUtils.parseDate("2002-05-11");
 		Date defaultDate = DateUtils.parseDate("2008-05-11");
-		instance.setDatePattern("yyyy-MM-dd");
 		assertEquals(orig, instance.getDate("birthday", defaultDate));
 		assertEquals(defaultDate, instance.getDate("birthday1", defaultDate));
 	}
@@ -167,7 +157,6 @@ public class ConfigurationFileImplTest {
 	@Test
 	public void testGetDateString() {
 		Date orig = DateUtils.parseDate("2002-05-11");
-		instance.setDatePattern("yyyy-MM-dd");
 		assertEquals(orig, instance.getDate("birthday"));
 		assertEquals(null, instance.getDate("birthday1"));
 	}
