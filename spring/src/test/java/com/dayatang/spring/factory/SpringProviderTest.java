@@ -12,6 +12,7 @@ import com.dayatang.commons.ioc.Service;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.InstanceProvider;
 import com.dayatang.spring.factory.SpringProvider;
+import com.dayatang.utils.Configuration;
 
 public class SpringProviderTest extends AbstractInstanceProviderTest {
 	
@@ -28,6 +29,9 @@ public class SpringProviderTest extends AbstractInstanceProviderTest {
 		InstanceFactory.setInstanceProvider(springProvider);
 		Service service = springProvider.getInstance(Service.class);
 		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
+		
+		Configuration configuration = springProvider.getInstance(Configuration.class);
+		System.out.println(configuration.getString("log4j.rootLogger"));		
 	}
 	
 	@Test
