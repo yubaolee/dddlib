@@ -15,11 +15,11 @@ import com.dayatang.utils.DateUtils;
 
 public class ConfigUtilsTest {
 
-	private ConfigUtils instance;
+	private ConfigurationFileImpl instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = ConfigUtils.fromClasspath("/conf.properties");
+		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
 	}
 
 	@After
@@ -28,14 +28,14 @@ public class ConfigUtilsTest {
 
 	@Test
 	public void testFromClasspath() {
-		instance = ConfigUtils.fromClasspath("/conf.properties");
+		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
 	@Test
 	public void testFromPathname() {
 		String pathname = getClass().getResource("/conf.properties").getFile();
-		instance = ConfigUtils.fromFileSystem(pathname);
+		instance = ConfigurationFileImpl.fromFileSystem(pathname);
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
@@ -45,19 +45,12 @@ public class ConfigUtilsTest {
 		File file = new File(pathname);
 		String dir = file.getParent();
 		String fileName = file.getName();
-		instance = ConfigUtils.fromFileSystem(dir, fileName);
+		instance = ConfigurationFileImpl.fromFileSystem(dir, fileName);
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
 	@Test
 	public void testUsePrefix() {
-		instance.usePrefix();
-		assertEquals(500, instance.getInt("emp.size"));
-		assertEquals(500, instance.getInt("com.dayatang.emp.size"));
-	}
-
-	@Test
-	public void testUsePrefixString() {
 		instance.usePrefix("org.dayatang");
 		assertTrue(instance.getBoolean("finished"));
 	}
@@ -190,7 +183,7 @@ public class ConfigUtilsTest {
 	public void testSave() {
 		instance.setString("xyz", "yyyy-MM-dd");
 		instance.save();
-		instance = ConfigUtils.fromClasspath("/conf.properties");
+		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
 		assertEquals("yyyy-MM-dd", instance.getString("xyz"));
 	}
 
