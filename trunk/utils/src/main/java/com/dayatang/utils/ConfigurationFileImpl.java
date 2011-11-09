@@ -17,27 +17,21 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * ConfigUtils为读取/回写配置文件的工具类，一个实例大概对应了一个物理配置文件，可以使用
- * ConfigUtils.getConfigSet("aa.conf")，ConfigUtils.getConfigSet("/a/b",
- * "xx.conf") 获得/a/b/xx.conf配置文件。 具体配置大致采用 configUtils.getConfig(key)的方式读取。
+ * ConfigurationFileImpl为读取/回写配置文件的工具类，一个实例大概对应了一个物理配置文件，可以使用
+ * getXxx("aa.conf")，getXxx("/a/b","xx.conf") 获得/a/b/xx.conf配置文件。 具体配置大致采用
+ * ConfigurationFileImpl.getXxx(key)的方式读取。
  * 每个配置项用key --> value 的方式组织，推荐采用点分字符串的方式编制key部分，如果不指定前缀，
- * configUtils.usePrefix()激活配置项前缀功能，缺省采用"com.dayatang."
- * 作为统一前缀，你可以通过configUtils.usePrefix("xxx.xxx")设置某个具体实例的前缀，
- * 前缀的作用在于减少复杂性，如果我们在配置文件里有cn
- * .com.pzhsteel.smbserverhost=smbserverhost.com这一项，我们可以
- * 并且不更改默认前缀的话，configUtils.
- * getConfig("smbserverhost")和configUtils.get("com.dayatang.smbserverhost")
+ * usePrefix()激活配置项前缀功能，你可以通过usePrefix("xxx.xxx")设置某个具体实例的前缀。
+ * 前缀的作用在于减少复杂性，如果我们在配置文件里有cn.com.pzhsteel.smbserverhost=smbserverhost.com
+ * 这一项，并且不更改默认前缀的话，getXxx("smbserverhost")和get("com.dayatang.smbserverhost")
  * 将会返回同样的结果。
  * 如果要使用别人已指定前缀的配置文件，又想使用这个功能的话，请首先了解前缀是什么，然后调用usePrefix设置前缀，使用这一方便的功能。
  * 配置文件的格式符合标准的java属性文件格式，采用UTF8的编码方式，支持中文，不需native2ascii。
  * 
- * @author jzhai
+ * @author yyang
  */
-public class ConfigUtils {
-
-	public static final String DEFAULT_PREFIX = "com.dayatang.";
+public class ConfigurationFileImpl implements WritableConfiguration {
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
-
 	private URL fileUrl;
 	private String prefix = "";
 	private boolean usePrefix = false;
@@ -49,9 +43,9 @@ public class ConfigUtils {
 	 * @param fileName
 	 * @return
 	 */
-	public static ConfigUtils fromClasspath(final String fileName) {
-		URL url = ConfigUtils.class.getResource(fileName);
-		return new ConfigUtils(url);
+	public static ConfigurationFileImpl fromClasspath(final String fileName) {
+		URL url = ConfigurationFileImpl.class.getResource(fileName);
+		return new ConfigurationFileImpl(url);
 	}
 	
 	/**
@@ -59,19 +53,8 @@ public class ConfigUtils {
 	 * @param pathname
 	 * @return
 	 */
-	public static ConfigUtils fromFileSystem(final String pathname) {
-		File file = new File(pathname);
-		if (!file.exists()) {
-			throw new RuntimeException("File " + pathname + " not exists!");
-		}
-		if (!file.canRead()) {
-			throw new RuntimeException("File " + pathname + " is unreadable!");
-		}
-		try {
-			return new ConfigUtils(file.toURI().toURL());
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
+	public static ConfigurationFileImpl fromFileSystem(final String pathname) {
+		return fromFileSystem(new File(pathname));
 	}
 	
 	/**
@@ -80,29 +63,28 @@ public class ConfigUtils {
 	 * @param fileName
 	 * @return
 	 */
-	public static ConfigUtils fromFileSystem(final String dirPath, final String fileName) {
+	public static ConfigurationFileImpl fromFileSystem(final String dirPath, final String fileName) {
 		if (StringUtils.isEmpty(dirPath)) {
 			return fromFileSystem(fileName);
 		}
-		File dir = new File(dirPath);
-		if (!dir.exists()) {
-			throw new RuntimeException("Directory " + dir + " not exists!");
-		}
-		File file = new File(dirPath, fileName);
+		return fromFileSystem(new File(dirPath, fileName));
+	}
+	
+	private static ConfigurationFileImpl fromFileSystem(final File file) {
 		if (!file.exists()) {
-			throw new RuntimeException("File " + file + " not exists!");
+			throw new RuntimeException("File " + file.getName() + " not exists!");
 		}
 		if (!file.canRead()) {
-			throw new RuntimeException("File " + file + " is unreadable!");
+			throw new RuntimeException("File " + file.getName() + " is unreadable!");
 		}
 		try {
-			return new ConfigUtils(file.toURI().toURL());
+			return new ConfigurationFileImpl(file.toURI().toURL());
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private ConfigUtils(URL url) {
+	private ConfigurationFileImpl(final URL url) {
 		if (url == null) {
 			throw new RuntimeException("url is null!");
 		}
@@ -111,40 +93,29 @@ public class ConfigUtils {
 	}
 
 	/**
-	 * 激活配置前缀功能，默认为"com.dayatang."前缀
-	 */
-	public void usePrefix() {
-		usePrefix(DEFAULT_PREFIX);
-	}
-
-	/**
 	 * 激活配置前缀功能
 	 * 
 	 * @param prefix 如"com.dayatang.mes."
 	 */
 	public void usePrefix(final String prefix) {
-		if (StringUtils.isEmpty(prefix)) {
-			this.prefix = "";
-			usePrefix = false;
-			return;
+		if (StringUtils.isNotEmpty(prefix)) {
+			usePrefix = true;
+			this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
 		}
-		usePrefix = true;
-		this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
 	}
 
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setDatePattern(java.lang.String)
+	 */
+	@Override
 	public void setDatePattern(String datePattern) {
 		dateFormat = new SimpleDateFormat(datePattern);
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getString(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getString(String key, String defaultValue) {
 		if (StringUtils.isEmpty(key)) {
 			throw new IllegalArgumentException("Key is null or empty!");
@@ -159,25 +130,18 @@ public class ConfigUtils {
 		return result == null ? defaultValue : result;
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getString(java.lang.String)
 	 */
+	@Override
 	public String getString(String key) {
 		return getString(key, "");
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setString(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void setString(String key, String value) {
 		if (StringUtils.isEmpty(key)) {
 			throw new IllegalArgumentException("Key is null or empty!");
@@ -185,163 +149,110 @@ public class ConfigUtils {
 		hTable.put(key, value == null ? "" : StringPropertyReplacer.replaceProperties(value));
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String, int)
 	 */
+	@Override
 	public int getInt(String key, int defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
 		return Integer.parseInt(result);
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值 找不到返回0
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String)
 	 */
+	@Override
 	public int getInt(String key) {
 		return getInt(key, 0);
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setInt(java.lang.String, int)
 	 */
+	@Override
 	public void setInt(String key, int value) {
 		setString(key, String.valueOf(value));
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String, long)
 	 */
+	@Override
 	public long getLong(String key, long defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
 		return Long.parseLong(result);
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值 找不到返回0
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String)
 	 */
+	@Override
 	public long getLong(String key) {
 		return getLong(key, 0);
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setLong(java.lang.String, long)
 	 */
+	@Override
 	public void setLong(String key, long value) {
 		setString(key, String.valueOf(value));
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String, double)
 	 */
+	@Override
 	public double getDouble(String key, double defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
 		return Double.parseDouble(result);
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值 找不到返回0
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String)
 	 */
+	@Override
 	public double getDouble(String key) {
 		return getDouble(key, 0);
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setDouble(java.lang.String, double)
 	 */
+	@Override
 	public void setDouble(String key, double value) {
 		setString(key, String.valueOf(value));
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String, boolean)
 	 */
+	@Override
 	public boolean getBoolean(String key, boolean defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
 		return Boolean.parseBoolean(result);
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值 找不到配置返回false
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String)
 	 */
+	@Override
 	public boolean getBoolean(String key) {
 		return getBoolean(key, false);
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setBoolean(java.lang.String, boolean)
 	 */
+	@Override
 	public void setBoolean(String key, boolean value) {
 		setString(key, String.valueOf(value));
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @param defaultValue
-	 *            配置文件中找不到则返回默认值
-	 * @return 返回的配置值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String, java.util.Date)
 	 */
+	@Override
 	public Date getDate(String key, Date defaultValue) {
 		String result = getString(key);
 		if (StringUtils.isEmpty(result)) {
@@ -355,25 +266,18 @@ public class ConfigUtils {
 		}
 	}
 
-	/**
-	 * 获取某关键字对应的配置
-	 * 
-	 * @param key
-	 *            配置关键字，如果激活前缀，则在配置文件中查找先查找key，如果找不到则查找prefix+key的配置项
-	 * @return 返回的配置值 找不到返回0
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String)
 	 */
+	@Override
 	public Date getDate(String key) {
 		return getDate(key, null);
 	}
 
-	/**
-	 * 设置配置值
-	 * 
-	 * @param key
-	 *            配置项关键字
-	 * @param value
-	 *            值
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#setDate(java.lang.String, java.util.Date)
 	 */
+	@Override
 	public void setDate(String key, Date value) {
 		if (value == null) {
 			setString(key, "");
@@ -381,11 +285,10 @@ public class ConfigUtils {
 		setString(key, dateFormat.format(value));
 	}
 
-	/**
-	 * 保存配置文件，如果不存在，创建之
-	 * 
-	 * @return true表示保存成功
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#save()
 	 */
+	@Override
 	public void save() {
 		try {
 			File file = new File(fileUrl.getFile());
