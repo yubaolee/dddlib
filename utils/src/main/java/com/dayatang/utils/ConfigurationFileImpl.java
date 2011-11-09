@@ -34,7 +34,6 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private URL fileUrl;
 	private String prefix = "";
-	private boolean usePrefix = false;
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Hashtable<String, String> hTable = null;
 	
@@ -99,7 +98,6 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	 */
 	public void usePrefix(final String prefix) {
 		if (StringUtils.isNotEmpty(prefix)) {
-			usePrefix = true;
 			this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
 		}
 	}
@@ -124,9 +122,7 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 		if (result != null) {
 			return result;
 		}
-		if (usePrefix) {
-			result = hTable.get(prefix + key);
-		}
+		result = hTable.get(prefix + key);
 		return result == null ? defaultValue : result;
 	}
 
