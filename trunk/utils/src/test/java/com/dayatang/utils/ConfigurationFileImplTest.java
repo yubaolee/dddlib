@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.dayatang.utils.DateUtils;
 
-public class ConfigUtilsTest {
+public class ConfigurationFileImplTest {
 
 	private ConfigurationFileImpl instance;
 	
