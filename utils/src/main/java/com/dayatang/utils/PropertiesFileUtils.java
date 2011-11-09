@@ -11,7 +11,7 @@ import java.util.Properties;
  * @author jzhai
  */
 public class PropertiesFileUtils {
-	static final String ISO_8859_1 = "iso8859-1";
+	public static final String ISO_8859_1 = "iso8859-1";
 	private String encoding = "UTF-8";
 
 	public PropertiesFileUtils(String encoding) {
