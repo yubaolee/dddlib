@@ -1,6 +1,7 @@
 package com.dayatang.utils;
 
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * 用于读取全局性配置信息的接口。
@@ -110,5 +111,11 @@ public interface Configuration {
 	 * @return 参数key对应的键值。如果键值不存在则返回null。
 	 */
 	Date getDate(String key);
+
+	/**
+	 * 获取全部的配置项，以Properties的形式呈现。
+	 * @return 全部配置项。
+	 */
+	Properties getProperties();
 
 }
