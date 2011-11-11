@@ -358,12 +358,14 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 		return fileUrl;
 	}
 
+	@Override
 	public Properties getProperties() {
 		Properties results = new Properties();
 		results.putAll(this.hTable);
 		return results;
 	}
 
+	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "{" + fileUrl + "}";
 	}
