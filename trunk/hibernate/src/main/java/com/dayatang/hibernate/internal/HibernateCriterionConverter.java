@@ -47,7 +47,6 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
  */
 public class HibernateCriterionConverter {
 	
-	@SuppressWarnings("rawtypes")
 	public static Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
 			Property property = Property.forName(((EqCriterion) criterion).getPropName());

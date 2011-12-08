@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -18,7 +17,6 @@ import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.hibernate.internal.HibernateCriteriaBuilder;
 import com.dayatang.hibernate.internal.QueryTranslator;
 
 /**
