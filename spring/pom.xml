@@ -95,7 +95,6 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.9</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -47,12 +47,9 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
  */
 public class HibernateCriterionConverter {
 	
-	@SuppressWarnings("rawtypes")
 	public static Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
-			Property property = getPath(((EqCriterion) criterion).getPropName(), criteria);
-			System.out.println("------------------------" + property);
-			return property.eq(((EqCriterion) criterion).getValue());
+			return Restrictions.eq(((EqCriterion) criterion).getPropName(), ((EqCriterion) criterion).getValue());
 		}
 		if (criterion instanceof NotEqCriterion) {
 			return Restrictions.not(Restrictions.eq(((NotEqCriterion) criterion).getPropName(), ((NotEqCriterion) criterion).getValue()));
