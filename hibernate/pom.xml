@@ -78,6 +78,10 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>dbunit-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 	<properties>
