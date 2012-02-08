@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,6 +31,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
 	
+	@Inject
 	private Session session; 
 
 
