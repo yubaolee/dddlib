@@ -77,40 +77,44 @@ public interface EntityRepository {
 	<T extends Entity> List<T> find(QuerySettings<T> settings);
 	
 	/**
-	 * 根据查询语句和指定的参数从仓储中查询符合条件的实体集合
-	 * @param <T> 实体类型
+	 * 根据查询语句和指定的参数从仓储中查询符合条件的结果
+	 * @param <T> 返回值集合中包含的元素的类型
 	 * @param queryString 访问仓储的DSL语句，采用JPA QL的语义，但不一定用JPA实现。
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString, Object[] params);
+	<T> List<T> find(String queryString, Object[] params, Class<T> resultClass);
 	
 	/**
-	 * 根据查询语句和指定的参数从仓储中查询符合条件的实体集合
-	 * @param <T> 要查询的目标实体的类型
+	 * 根据查询语句和指定的参数从仓储中查询符合条件的的结果
+	 * @param <T> 返回值集合中包含的元素的类型
 	 * @param queryString 访问仓储的DSL语句，采用JPA QL的语义，但不一定用JPA实现。
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> find(String queryString, Map<String, Object> params);
+	<T> List<T> find(String queryString, Map<String, Object> params, Class<T> resultClass);
 	
 	/**
-	 * 根据命名的查询和指定的参数从仓储中查询符合条件的实体集合
-	 * @param <T> 要查询的目标实体的类型
+	 * 根据命名的查询和指定的参数从仓储中查询符合条件的的结果
+	 * @param <T> 返回值集合中包含的元素的类型
 	 * @param queryName 命名查询的名字。
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName, Object[] params);
+	<T> List<T> findByNamedQuery(String queryName, Object[] params, Class<T> resultClass);
 	
 	/**
-	 * 根据命名的查询和指定的参数从仓储中查询符合条件的实体集合
-	 * @param <T> 要查询的目标实体的类型
+	 * 根据命名的查询和指定的参数从仓储中查询符合条件的的结果
+	 * @param <T> 返回值集合中包含的元素的类型
 	 * @param queryName 命名查询的名字。
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 符合查询条件的实体的集合.
 	 */
-	List<Object> findByNamedQuery(String queryName, Map<String, Object> params);
+	<T> List<T> findByNamedQuery(String queryName, Map<String, Object> params, Class<T> resultClass);
 
 	/**
 	 * 按例查询。
