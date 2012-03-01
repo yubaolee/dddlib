@@ -837,6 +837,5 @@
 		<module>dsmonitor</module>
 		<module>querychannel</module>
 		<module>dsrouter</module>
-    <module>dayatang-commons-security</module>
   </modules>
 </project>

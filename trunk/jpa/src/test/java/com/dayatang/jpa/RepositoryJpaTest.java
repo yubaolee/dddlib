@@ -123,9 +123,9 @@ public class RepositoryJpaTest {
 		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String queryString = "select o from  Dictionary o where o.category = ?";
 		Object[] params = new Object[] { category };
-		List<Object> results = repository.find(queryString, params);
-		for (Object dictionary : results) {
-			assertEquals(category, ((Dictionary) dictionary).getCategory());
+		List<Dictionary> results = repository.find(queryString, params, Dictionary.class);
+		for (Dictionary dictionary : results) {
+			assertEquals(category, dictionary.getCategory());
 		}
 	}
 
@@ -135,9 +135,9 @@ public class RepositoryJpaTest {
 		String queryString = "select o from  Dictionary o where o.category = :category";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("category", category);
-		List<Object> results = repository.find(queryString, params);
-		for (Object dictionary : results) {
-			assertEquals(category, ((Dictionary) dictionary).getCategory());
+		List<Dictionary> results = repository.find(queryString, params, Dictionary.class);
+		for (Dictionary dictionary : results) {
+			assertEquals(category, dictionary.getCategory());
 		}
 	}
 
@@ -146,10 +146,10 @@ public class RepositoryJpaTest {
 		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String code = "1";
 		Object[] params = new Object[] { category, code };
-		List<Object> results = repository.findByNamedQuery("findByCategoryAndCode", params);
-		for (Object dictionary : results) {
-			assertEquals(category, ((Dictionary) dictionary).getCategory());
-			assertEquals(code, ((Dictionary) dictionary).getCode());
+		List<Dictionary> results = repository.findByNamedQuery("findByCategoryAndCode", params, Dictionary.class);
+		for (Dictionary dictionary : results) {
+			assertEquals(category, dictionary.getCategory());
+			assertEquals(code, dictionary.getCode());
 		}
 	}
 
@@ -158,9 +158,9 @@ public class RepositoryJpaTest {
 		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("category", category);
-		List<Object> results = repository.findByNamedQuery("findByCategory", params);
-		for (Object dictionary : results) {
-			assertEquals(category, ((Dictionary) dictionary).getCategory());
+		List<Dictionary> results = repository.findByNamedQuery("findByCategory", params, Dictionary.class);
+		for (Dictionary dictionary : results) {
+			assertEquals(category, dictionary.getCategory());
 		}
 	}
 

@@ -77,7 +77,7 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 		String queryString = "select o from Observer o where :subjectKey in elements(o.subjectKeys))";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("subjectKey", subject.getSubjectKey());
-		List<Object> observers = getRepository().find(queryString, params);
+		List<Object> observers = getRepository().find(queryString, params, Object.class);
 
 		if (logger.isDebugEnabled()) {
 			if (observers.isEmpty()) {
