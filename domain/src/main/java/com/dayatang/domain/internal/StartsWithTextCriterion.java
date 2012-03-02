@@ -1,19 +1,30 @@
 package com.dayatang.domain.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
-
+import com.dayatang.domain.QueryException;
 
 public class StartsWithTextCriterion implements QueryCriterion {
-	
-	private String value;
+
 	private String propName;
+	private String value;
 
 	public StartsWithTextCriterion(String propName, String value) {
+		if (StringUtils.isEmpty(propName)) {
+			throw new QueryException("Property name is null!");
+		}
+		if (StringUtils.isEmpty(value)) {
+			throw new QueryException("Value is null!");
+		}
 		this.propName = propName;
 		this.value = value;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 
 	public String getValue() {
@@ -27,9 +38,8 @@ public class StartsWithTextCriterion implements QueryCriterion {
 		if (!(other instanceof StartsWithTextCriterion))
 			return false;
 		StartsWithTextCriterion castOther = (StartsWithTextCriterion) other;
-		return new EqualsBuilder()
-			.append(this.getPropName(), castOther.getPropName())
-			.append(value, castOther.value).isEquals();
+		return new EqualsBuilder().append(this.getPropName(), castOther.getPropName()).append(value, castOther.value)
+				.isEquals();
 	}
 
 	@Override
@@ -40,9 +50,5 @@ public class StartsWithTextCriterion implements QueryCriterion {
 	@Override
 	public String toString() {
 		return getPropName() + " like '" + value + "*'";
-	}
-
-	public String getPropName() {
-		return propName;
 	}
 }

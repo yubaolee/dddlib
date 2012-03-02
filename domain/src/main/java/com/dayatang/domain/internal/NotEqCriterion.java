@@ -1,19 +1,29 @@
 package com.dayatang.domain.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
+import com.dayatang.domain.QueryException;
 
 
 public class NotEqCriterion implements QueryCriterion {
 	
-	private Object value;
 	private String propName;
 
+	private Object value;
+
 	public NotEqCriterion(String propName, Object value) {
+		if (StringUtils.isEmpty(propName)) {
+			throw new QueryException("Property name is null!");
+		}
 		this.propName = propName;
 		this.value = value;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 
 	public Object getValue() {
@@ -40,10 +50,6 @@ public class NotEqCriterion implements QueryCriterion {
 	@Override
 	public String toString() {
 		return getPropName() + " != " + value;
-	}
-
-	public String getPropName() {
-		return propName;
 	}
 	
 }

@@ -1,19 +1,29 @@
 package com.dayatang.domain.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
+import com.dayatang.domain.QueryException;
 
 
 public class LtCriterion implements QueryCriterion {
 	
-	private Comparable<?> value;
 	private String propName;
 
+	private Comparable<?> value;
+
 	public LtCriterion(String propName, Comparable<?> value) {
+		if (StringUtils.isEmpty(propName)) {
+			throw new QueryException("Property name is null!");
+		}
 		this.propName = propName;
 		this.value = value;
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 
 	public Comparable<?> getValue() {
@@ -40,10 +50,6 @@ public class LtCriterion implements QueryCriterion {
 	@Override
 	public String toString() {
 		return getPropName() + " < " + value;
-	}
-
-	public String getPropName() {
-		return propName;
 	}
 	
 }
