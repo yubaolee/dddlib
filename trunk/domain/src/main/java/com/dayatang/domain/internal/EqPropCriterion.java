@@ -1,9 +1,11 @@
 package com.dayatang.domain.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
+import com.dayatang.domain.QueryException;
 
 
 public class EqPropCriterion implements QueryCriterion {
@@ -12,8 +14,15 @@ public class EqPropCriterion implements QueryCriterion {
 	private String propName2;
 
 	public EqPropCriterion(String propName1, String propName2) {
+		if (StringUtils.isEmpty(propName1) || StringUtils.isEmpty(propName2)) {
+			throw new QueryException("One of property name is null!");
+		}
 		this.propName1 = propName1;
 		this.propName2 = propName2;
+	}
+
+	public String getPropName1() {
+		return propName1;
 	}
 
 	public String getPropName2() {
@@ -40,10 +49,6 @@ public class EqPropCriterion implements QueryCriterion {
 	@Override
 	public String toString() {
 		return getPropName1() + " = " + propName2;
-	}
-
-	public String getPropName1() {
-		return propName1;
 	}
 
 	

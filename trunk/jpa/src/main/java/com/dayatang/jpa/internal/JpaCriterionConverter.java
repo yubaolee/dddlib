@@ -1,7 +1,5 @@
 package com.dayatang.jpa.internal;
 
-import java.util.Collection;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -176,20 +174,12 @@ public class JpaCriterionConverter {
 		if (criterion instanceof InCriterion) {
 			InCriterion theCriteron = (InCriterion) criterion;
 			Path path = getPropPath(root, theCriteron.getPropName());
-			Collection value = theCriteron.getValue();
-			if (value.isEmpty()) {
-				return builder.le(root.get("id").as(Long.class), -1L);
-			}
 			return path.in(theCriteron.getValue());
 		}
 		if (criterion instanceof NotInCriterion) {
 			NotInCriterion theCriteron = (NotInCriterion) criterion;
 			Path path = getPropPath(root, theCriteron.getPropName());
-			Collection value = theCriteron.getValue();
-			if (value == null || value.isEmpty()) {
-				return null;
-			}
-			return builder.not(path.in(value));
+			return builder.not(path.in(theCriteron.getValue()));
 		}
 		if (criterion instanceof IsNullCriterion) {
 			IsNullCriterion theCriteron = (IsNullCriterion) criterion;
@@ -218,12 +208,8 @@ public class JpaCriterionConverter {
 		if (criterion instanceof AndCriterion) {
 			AndCriterion andCriterion = (AndCriterion) criterion;
 			QueryCriterion[] criterions = andCriterion.getCriterons();
-			int length = criterions.length;
-			if (length < 2) {
-				throw new IllegalArgumentException("AndCriterion params size should >= 2");
-			}
 			Predicate predicate = convert(criterions[0]);
-			for (int i = 1; i < length; i++) {
+			for (int i = 1; i < criterions.length; i++) {
 				predicate = builder.and(predicate, convert(criterions[i]));
 			}
 			return predicate;
@@ -231,9 +217,6 @@ public class JpaCriterionConverter {
 		if (criterion instanceof OrCriterion) {
 			OrCriterion orCriterion = (OrCriterion) criterion;
 			QueryCriterion[] criterions = orCriterion.getCriterons();
-			if (criterions == null || criterions.length < 2) {
-				throw new IllegalArgumentException("OrCriterion params size should >= 2");
-			}
 			Predicate predicate = convert(criterions[0]);
 			for (int i = 1; i < criterions.length; i++) {
 				predicate = builder.or(predicate, convert(criterions[i]));

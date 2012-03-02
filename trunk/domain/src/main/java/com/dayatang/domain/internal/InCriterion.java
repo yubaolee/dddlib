@@ -8,21 +8,39 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.dayatang.domain.QueryCriterion;
+import com.dayatang.domain.QueryException;
 
 
 public class InCriterion implements QueryCriterion {
 	
-	private Collection<? extends Object> value;
 	private String propName;
 
+	private Collection<? extends Object> value;
+
 	public InCriterion(String propName, Collection<? extends Object> value) {
+		if (StringUtils.isEmpty(propName)) {
+			throw new QueryException("Property name is null!");
+		}
+		if (value == null || value.isEmpty()) {
+			throw new QueryException("Value collection is null or empty!");
+		}
 		this.propName = propName;
 		this.value = value;
 	}
 	
 	public InCriterion(String propName, Object[] value) {
+		if (StringUtils.isEmpty(propName)) {
+			throw new QueryException("Property name is null!");
+		}
+		if (value == null || value.length == 0) {
+			throw new QueryException("Value array is null or empty!");
+		}
 		this.propName = propName;
 		this.value = Arrays.asList(value);
+	}
+
+	public String getPropName() {
+		return propName;
 	}
 
 	public Collection<? extends Object> getValue() {
@@ -53,10 +71,6 @@ public class InCriterion implements QueryCriterion {
 
 	private String collectionToString(Collection<? extends Object> value) {
 		return StringUtils.join(value, ",");
-	}
-
-	public String getPropName() {
-		return propName;
 	}
 	
 }

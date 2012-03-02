@@ -67,28 +67,28 @@ public class Criterions {
 		return new LtCriterion(propName, value);
 	}
 	
-	public static QueryCriterion eqProp(String propName, String otherProp) {
-		return new EqPropCriterion(propName, otherProp);
+	public static QueryCriterion eqProp(String propName1, String propName2) {
+		return new EqPropCriterion(propName1, propName2);
 	}
 	
-	public static QueryCriterion notEqProp(String propName, String otherProp) {
-		return new NotEqPropCriterion(propName, otherProp);
+	public static QueryCriterion notEqProp(String propName1, String propName2) {
+		return new NotEqPropCriterion(propName1, propName2);
 	}
 	
-	public static QueryCriterion gtProp(String propName, String otherProp) {
-		return new GtPropCriterion(propName, otherProp);
+	public static QueryCriterion gtProp(String propName1, String propName2) {
+		return new GtPropCriterion(propName1, propName2);
 	}
 	
-	public static QueryCriterion geProp(String propName, String otherProp) {
-		return new GePropCriterion(propName, otherProp);
+	public static QueryCriterion geProp(String propName1, String propName2) {
+		return new GePropCriterion(propName1, propName2);
 	}
 	
-	public static QueryCriterion ltProp(String propName, String otherProp) {
-		return new LtPropCriterion(propName, otherProp);
+	public static QueryCriterion ltProp(String propName1, String propName2) {
+		return new LtPropCriterion(propName1, propName2);
 	}
 	
-	public static QueryCriterion leProp(String propName, String otherProp) {
-		return new LePropCriterion(propName, otherProp);
+	public static QueryCriterion leProp(String propName1, String propName2) {
+		return new LePropCriterion(propName1, propName2);
 	}
 	
 	public static QueryCriterion sizeEq(String propName, int size) {
