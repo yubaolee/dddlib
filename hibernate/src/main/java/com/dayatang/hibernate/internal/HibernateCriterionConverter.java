@@ -47,7 +47,16 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
  */
 public class HibernateCriterionConverter {
 	
-	public static Criterion convert(QueryCriterion criterion, Criteria criteria) {
+	private static HibernateCriterionConverter instance;
+	
+	public static synchronized HibernateCriterionConverter getInstance() {
+		if (instance == null) {
+			instance = new HibernateCriterionConverter();
+		}
+		return instance;
+	}
+	
+	public Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
 			Property property = Property.forName(((EqCriterion) criterion).getPropName());
 					//getPath(((EqCriterion) criterion).getPropName(), criteria);
@@ -176,7 +185,7 @@ public class HibernateCriterionConverter {
 		return null;
 	}
 
-	private static Property getPath(String propName, Criteria criteria) {
+	private Property getPath(String propName, Criteria criteria) {
 		String[] nameExpr = propName.split("\\.");
 		if (nameExpr.length < 2) {
 			return Property.forName(propName);
