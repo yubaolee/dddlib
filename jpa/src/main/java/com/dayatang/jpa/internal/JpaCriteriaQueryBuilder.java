@@ -20,9 +20,6 @@ import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
 public class JpaCriteriaQueryBuilder {
-	
-	private JpaCriterionConverter converter = JpaCriterionConverter.getInstance();
-	
 	private static JpaCriteriaQueryBuilder instance;
 	
 	public static synchronized JpaCriteriaQueryBuilder getInstance() {
@@ -45,9 +42,10 @@ public class JpaCriteriaQueryBuilder {
 			root.get(key).alias(aliases.get(key));
 		}
 		
+		JpaCriterionConverter converter = new JpaCriterionConverter(builder, root);
 		List<Predicate> criterions = new ArrayList<Predicate>();
 		for (QueryCriterion criterion : settings.getCriterions()) {
-			Predicate predicate = converter.convert(criterion, builder, root, settings.getEntityClass());
+			Predicate predicate = converter.convert(criterion);
 			if (predicate != null) {
 				criterions.add(predicate);
 			}
