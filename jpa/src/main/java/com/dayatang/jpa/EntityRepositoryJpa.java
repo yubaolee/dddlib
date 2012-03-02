@@ -107,7 +107,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.createCriteriaQuery(settings, getEntityManager());
+		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.getInstance().createCriteriaQuery(settings, getEntityManager());
 		Query query = getEntityManager().createQuery(criteriaQuery);
 		query.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {

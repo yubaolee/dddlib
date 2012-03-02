@@ -446,7 +446,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testFindPaging() {
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", DictionaryCategory.getByName(DictionaryCategory.EDUCATION))
-				.setFirstResult(2).setMaxResults(10).asc("sortOrder");
+				.setFirstResult(2).setMaxResults(10).asc("category.sortOrder");
 		List<Dictionary> results = repository.find(settings);
 		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
 		Dictionary dictionary5 = repository.get(Dictionary.class, 3L);

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -19,8 +20,14 @@ import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QuerySettings;
 
 public class JpaCriteriaQueryBuilder {
+	
+	private JpaCriterionConverter converter = JpaCriterionConverter.getInstance();
+	
+	public static JpaCriteriaQueryBuilder getInstance() {
+		return new JpaCriteriaQueryBuilder();
+	}
 
-	public static final  <T extends Entity> CriteriaQuery<T> createCriteriaQuery(QuerySettings<T> settings, EntityManager entityManager) {
+	public final  <T extends Entity> CriteriaQuery<T> createCriteriaQuery(QuerySettings<T> settings, EntityManager entityManager) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> query = builder.createQuery(settings.getEntityClass());
 		Root<T> root = query.from(settings.getEntityClass());
@@ -35,7 +42,7 @@ public class JpaCriteriaQueryBuilder {
 		
 		List<Predicate> criterions = new ArrayList<Predicate>();
 		for (QueryCriterion criterion : settings.getCriterions()) {
-			Predicate predicate = JpaCriterionConverter.convert(criterion, builder, root, settings.getEntityClass());
+			Predicate predicate = converter.convert(criterion, builder, root, settings.getEntityClass());
 			if (predicate != null) {
 				criterions.add(predicate);
 			}
@@ -51,17 +58,27 @@ public class JpaCriteriaQueryBuilder {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static Order[] toOrder(CriteriaBuilder builder, Root root, List<OrderSetting> orderSettings) {
+	private Order[] toOrder(CriteriaBuilder builder, Root root, List<OrderSetting> orderSettings) {
 		Order[] results = new Order[orderSettings.size()];
 		int i = 0;
 		for (OrderSetting orderSetting : orderSettings) {
+			Path<?> path = getPropPath(root, orderSetting.getPropName());
 			if (orderSetting.isAscending()) {
-				results[i] = builder.asc(root.get(orderSetting.getPropName()));
+				results[i] = builder.asc(path);
 			} else {
-				results[i] = builder.desc(root.get(orderSetting.getPropName()));
+				results[i] = builder.desc(path);
 			}
 			i++;
 		}
 		return results;
+	}
+
+	private Path<?> getPropPath(Root<?> root, String propName) {
+		String[] props = propName.split("\\.");
+		Path<?> path = root;
+		for (int j = 0; j < props.length; j++) {
+			path = path.get(props[j]);
+		}
+		return path;
 	}
 }
