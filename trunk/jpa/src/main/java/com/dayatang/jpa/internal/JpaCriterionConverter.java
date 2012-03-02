@@ -7,7 +7,6 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.dayatang.domain.Entity;
 import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.internal.AndCriterion;
 import com.dayatang.domain.internal.BetweenCriterion;
@@ -42,22 +41,23 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
 
 /**
  * 一个工具类,用于将QueryCriterion转换成Hibernate的Criterion
+ * 
  * @author yyang
- *
+ * 
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class JpaCriterionConverter {
-	
-	private static JpaCriterionConverter instance;
-	
-	public static synchronized JpaCriterionConverter getInstance() {
-		if (instance == null) {
-			instance = new JpaCriterionConverter();
-		}
-		return instance;
+
+	private CriteriaBuilder builder;
+	private Root root;
+
+	public JpaCriterionConverter(CriteriaBuilder builder, Root root) {
+		super();
+		this.builder = builder;
+		this.root = root;
 	}
-	
-	public <T extends Entity> Predicate convert(QueryCriterion criterion, CriteriaBuilder builder, Root<T> root, Class<T> entityClass) {
+
+	public Predicate convert(QueryCriterion criterion) {
 		if (criterion instanceof EqCriterion) {
 			Path path = getPropPath(root, ((EqCriterion) criterion).getPropName());
 			return builder.equal(path, ((EqCriterion) criterion).getValue());
@@ -213,7 +213,7 @@ public class JpaCriterionConverter {
 			return builder.isNotEmpty(propName.as(propType));
 		}
 		if (criterion instanceof NotCriterion) {
-			return builder.not(convert(((NotCriterion) criterion).getCriteron(), builder, root, entityClass));
+			return builder.not(convert(((NotCriterion) criterion).getCriteron()));
 		}
 		if (criterion instanceof AndCriterion) {
 			AndCriterion andCriterion = (AndCriterion) criterion;
@@ -222,9 +222,9 @@ public class JpaCriterionConverter {
 			if (length < 2) {
 				throw new IllegalArgumentException("AndCriterion params size should >= 2");
 			}
-			Predicate predicate = convert(criterions[0], builder, root, entityClass);
+			Predicate predicate = convert(criterions[0]);
 			for (int i = 1; i < length; i++) {
-				predicate = builder.and(predicate, convert(criterions[i], builder, root, entityClass));
+				predicate = builder.and(predicate, convert(criterions[i]));
 			}
 			return predicate;
 		}
@@ -234,9 +234,9 @@ public class JpaCriterionConverter {
 			if (criterions == null || criterions.length < 2) {
 				throw new IllegalArgumentException("OrCriterion params size should >= 2");
 			}
-			Predicate predicate = convert(criterions[0], builder, root, entityClass);
+			Predicate predicate = convert(criterions[0]);
 			for (int i = 1; i < criterions.length; i++) {
-				predicate = builder.or(predicate, convert(criterions[i], builder, root, entityClass));
+				predicate = builder.or(predicate, convert(criterions[i]));
 			}
 			return predicate;
 		}
