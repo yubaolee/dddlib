@@ -47,9 +47,14 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class JpaCriterionConverter {
-
-	public static JpaCriterionConverter getInstance() {
-		return new JpaCriterionConverter();
+	
+	private static JpaCriterionConverter instance;
+	
+	public static synchronized JpaCriterionConverter getInstance() {
+		if (instance == null) {
+			instance = new JpaCriterionConverter();
+		}
+		return instance;
 	}
 	
 	public <T extends Entity> Predicate convert(QueryCriterion criterion, CriteriaBuilder builder, Root<T> root, Class<T> entityClass) {

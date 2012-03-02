@@ -23,11 +23,16 @@ public class JpaCriteriaQueryBuilder {
 	
 	private JpaCriterionConverter converter = JpaCriterionConverter.getInstance();
 	
-	public static JpaCriteriaQueryBuilder getInstance() {
-		return new JpaCriteriaQueryBuilder();
+	private static JpaCriteriaQueryBuilder instance;
+	
+	public static synchronized JpaCriteriaQueryBuilder getInstance() {
+		if (instance == null) {
+			instance = new JpaCriteriaQueryBuilder();
+		}
+		return instance;
 	}
 
-	public final  <T extends Entity> CriteriaQuery<T> createCriteriaQuery(QuerySettings<T> settings, EntityManager entityManager) {
+	public final <T extends Entity> CriteriaQuery<T> createCriteriaQuery(QuerySettings<T> settings, EntityManager entityManager) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> query = builder.createQuery(settings.getEntityClass());
 		Root<T> root = query.from(settings.getEntityClass());
