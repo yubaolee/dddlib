@@ -231,13 +231,12 @@ public class JpaCriterionConverter {
 		if (criterion instanceof OrCriterion) {
 			OrCriterion orCriterion = (OrCriterion) criterion;
 			QueryCriterion[] criterions = orCriterion.getCriterons();
-			int length = criterions.length;
-			if (length < 2) {
+			if (criterions == null || criterions.length < 2) {
 				throw new IllegalArgumentException("OrCriterion params size should >= 2");
 			}
 			Predicate predicate = convert(criterions[0], builder, root, entityClass);
-			for (int i = 1; i < length; i++) {
-				predicate = builder.and(predicate, convert(criterions[i], builder, root, entityClass));
+			for (int i = 1; i < criterions.length; i++) {
+				predicate = builder.or(predicate, convert(criterions[i], builder, root, entityClass));
 			}
 			return predicate;
 		}

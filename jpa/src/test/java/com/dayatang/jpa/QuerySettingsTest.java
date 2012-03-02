@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.Criterions;
 import com.dayatang.domain.QuerySettings;
 
 /**
@@ -444,6 +445,33 @@ public class QuerySettingsTest {
 	}
 
 	@Test
+	public void testAnd() {
+		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
+		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
+		DictionaryCategory category = DictionaryCategory.get(DictionaryCategory.class, 2L);
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
+				.and(Criterions.eq("id", 4L), Criterions.eq("category", category));
+		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.contains(dictionary4));
+		assertFalse(results.contains(dictionary6));
+		
+	}
+	@Test
+	public void testOr() {
+		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
+		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
+		DictionaryCategory category = DictionaryCategory.get(DictionaryCategory.class, 2L);
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
+				.eq("category", category)
+				.or(Criterions.eq("id", 4L), Criterions.eq("id", 6L));
+		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.contains(dictionary4));
+		assertTrue(results.contains(dictionary6));
+		
+	}
+	
+	
+	@Test
 	public void testFindPaging() {
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", DictionaryCategory.getByName(DictionaryCategory.EDUCATION))
 				.setFirstResult(2).setMaxResults(10).asc("category.sortOrder");
@@ -483,6 +511,7 @@ public class QuerySettingsTest {
 	}
 
 	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void aTest() {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
