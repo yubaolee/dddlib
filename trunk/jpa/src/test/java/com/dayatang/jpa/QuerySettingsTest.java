@@ -456,6 +456,7 @@ public class QuerySettingsTest {
 		assertFalse(results.contains(dictionary6));
 		
 	}
+	
 	@Test
 	public void testOr() {
 		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
@@ -469,7 +470,19 @@ public class QuerySettingsTest {
 		assertTrue(results.contains(dictionary6));
 		
 	}
-	
+
+	@Test
+	public void testNot() {
+		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
+		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
+				.not(Criterions.eq("id", 4L));
+		List<Dictionary> results = repository.find(settings);
+		assertFalse(results.contains(dictionary4));
+		assertTrue(results.contains(dictionary6));
+		
+	}
+		
 	
 	@Test
 	public void testFindPaging() {
