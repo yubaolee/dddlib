@@ -31,6 +31,7 @@ import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
+import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
 
 /**
@@ -372,6 +373,14 @@ public class QuerySettingsTest {
 		assertFalse(results.contains(dictionary6));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test(expected = QueryException.class)
+	public void testInEmpty() {
+		settings.in("id", Collections.EMPTY_LIST);
+		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.isEmpty());
+	}
+
 	@Test
 	public void testNotInEntity() {
 		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
@@ -403,7 +412,7 @@ public class QuerySettingsTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
+	@Test(expected = QueryException.class)
 	public void testNotInEmpty() {
 		settings.notIn("id", Collections.EMPTY_LIST);
 		List<Dictionary> results = repository.find(settings);
