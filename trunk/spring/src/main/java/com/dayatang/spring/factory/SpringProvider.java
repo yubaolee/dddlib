@@ -1,6 +1,7 @@
 package com.dayatang.spring.factory;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dayatang.domain.InstanceProvider;
@@ -31,6 +32,14 @@ public class SpringProvider implements InstanceProvider {
 		SpringProvider.applicationContext = applicationContext;
 	}
 
+	/**
+	 * 根据一批Spring配置文件初始化spring实例提供者。
+	 * @param annotatedClasses
+	 */
+	public SpringProvider(Class<?>... annotatedClasses) {
+		applicationContext = new AnnotationConfigApplicationContext(annotatedClasses);
+	}
+	
 	/**
 	 * 返回指定类型的实例。
 	 * @param beanClass 实例的类型

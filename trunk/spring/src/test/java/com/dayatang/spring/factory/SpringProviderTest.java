@@ -42,6 +42,14 @@ public class SpringProviderTest extends AbstractInstanceProviderTest {
 		Service service = springProvider.getInstance(Service.class);
 		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
 	}
+	
+	@Test
+	public void testConstructorFromConfigurationFiles() {
+		springProvider = new SpringProvider(SpringConfiguration.class);
+		InstanceFactory.setInstanceProvider(springProvider);
+		Service service = springProvider.getInstance(Service.class, "service1");
+		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
+	}
 
 }
 
