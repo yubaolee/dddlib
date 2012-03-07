@@ -123,26 +123,8 @@
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
-		<plugins>
-			<plugin>
-				<groupId>com.dayatang.mojo.hibernate3</groupId>
-				<artifactId>hibernate3-maven-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>${project.parent.groupId}</groupId>
-						<artifactId>dayatang-commons-test</artifactId>
-						<version>${project.parent.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>dbunit-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
 	</build>
 	<properties>
 		<servlet.version>2.5</servlet.version>
-		<maven.db.skip>true</maven.db.skip>
 	</properties>
 </project>
