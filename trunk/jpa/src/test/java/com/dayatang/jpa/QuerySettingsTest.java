@@ -3,9 +3,7 @@
  */
 package com.dayatang.jpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,10 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,42 +35,55 @@ import com.dayatang.domain.QuerySettings;
 public class QuerySettingsTest {
 
 	private static EntityManagerFactory emf;
-	
+
 	private EntityManager entityManager;
-	
+
 	private EntityTransaction tx;
-	
+
 	private EntityRepositoryJpa repository;
-	
+
 	private QuerySettings<Dictionary> settings;
-	
+
 	private DictionaryCategory gender;
+
+	private DictionaryCategory education;
+
+	private Dictionary male;
+
+	private Dictionary female;
+
+	private Dictionary undergraduate;
 
 	@BeforeClass
 	public static void setUpClass() {
 		emf = Persistence.createEntityManagerFactory("default");
 	}
-	
+
 	@AfterClass
 	public static void tearDownClass() {
 		emf.close();
 	}
-	
+
 	@Before
 	public void setUp() {
 		entityManager = emf.createEntityManager();
-		tx = entityManager.getTransaction();
-		tx.begin();
 		repository = new EntityRepositoryJpa(entityManager);
 		AbstractEntity.setRepository(repository);
+		tx = entityManager.getTransaction();
+		tx.begin();
 		settings = QuerySettings.create(Dictionary.class);
-		//gender = DictionaryCategory.getByName(DictionaryCategory.GENDER);
+		gender = createCategory("gender", 1);
+		education = createCategory("education", 2);
+		male = createDictionary("01", "男", gender, 100, "01");
+		female = createDictionary("02", "女", gender, 150, "01");
+		undergraduate = createDictionary("01", "本科", education, 200, "05");
 	}
 
 	@After
 	public void tearDown() {
-		tx.commit();
+		tx.rollback();
 		entityManager.close();
+		repository = null;
 		AbstractEntity.setRepository(null);
 	}
 
@@ -84,293 +91,227 @@ public class QuerySettingsTest {
 	public void testEq() {
 		settings.eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
-		for (Dictionary dictionary : results) {
-			assertEquals(gender, dictionary.getCategory());
-		}
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testNotEq() {
 		settings.notEq("category", gender);
 		List<Dictionary> results = repository.find(settings);
-		for (Dictionary dictionary : results) {
-			assertFalse(gender.equals(dictionary.getCategory()));
-		}
+		Dictionary dictionary = results.get(0);
+		assertEquals(education, dictionary.getCategory());
 	}
 
 	@Test
 	public void testGe() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.ge("id", 5L);
+		settings.ge("sortOrder", 150);
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertTrue(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testGt() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.gt("id", 5L);
+		settings.gt("sortOrder", 150);
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testLe() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.le("id", 5L);
+		settings.le("sortOrder", 150);
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertFalse(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testLt() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.lt("id", 5L);
+		settings.lt("sortOrder", 150);
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary5));
-		assertFalse(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testEqProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		settings.eqProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary5));
-		assertFalse(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testNotEqProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		settings.notEqProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertTrue(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testGtProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		settings.gtProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testGeProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		settings.geProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testLtProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.ltProp("parentCode", "code");
+		settings.ltProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testLeProp() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		settings.leProp("parentCode", "code");
+		settings.leProp("code", "parentCode");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testSizeEq() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeEq("dictionaries", 3);
+		settings.sizeEq("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertTrue(results.contains(category1));
-		assertFalse(results.contains(category2));
-		assertFalse(results.contains(category3));
+		assertTrue(results.contains(gender));
+		assertFalse(results.contains(education));
 	}
 
 	@Test
 	public void testSizeNotEq() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeNotEq("dictionaries", 3);
+		settings.sizeNotEq("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertFalse(results.contains(category1));
-		assertTrue(results.contains(category2));
-		assertTrue(results.contains(category3));
+		assertFalse(results.contains(gender));
+		assertTrue(results.contains(education));
 	}
-	
+
 	@Test
 	public void testSizeGt() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeGt("dictionaries", 3);
+		settings.sizeGt("dictionaries", 1);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertFalse(results.contains(category1));
-		assertTrue(results.contains(category2));
-		assertTrue(results.contains(category3));
+		assertTrue(results.contains(gender));
+		assertFalse(results.contains(education));
 	}
-	
+
 	@Test
 	public void testSizeGe() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeGe("dictionaries", 3);
+		settings.sizeGe("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertTrue(results.contains(category1));
-		assertTrue(results.contains(category2));
-		assertTrue(results.contains(category3));
+		assertTrue(results.contains(gender));
+		assertFalse(results.contains(education));
 	}
-	
+
 	@Test
 	public void testSizeLt() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLt("dictionaries", 4);
+		settings.sizeLt("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertTrue(results.contains(category1));
-		assertFalse(results.contains(category2));
-		assertFalse(results.contains(category3));
+		assertFalse(results.contains(gender));
+		assertTrue(results.contains(education));
 	}
-	
+
 	@Test
 	public void testSizeLe() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category2 = repository.get(DictionaryCategory.class, 2L);
-		DictionaryCategory category3 = repository.get(DictionaryCategory.class, 3L);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLe("dictionaries", 3);
+		settings.sizeLe("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
-		assertTrue(results.contains(category1));
-		assertFalse(results.contains(category2));
-		assertFalse(results.contains(category3));
+		assertTrue(results.contains(gender));
+		assertTrue(results.contains(education));
 	}
 
 	@Test
 	public void testIsEmpty() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category9 = repository.get(DictionaryCategory.class, 9L);
+		DictionaryCategory empty = createCategory("a", 3);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
 		settings.isEmpty("dictionaries");
 		List<DictionaryCategory> results = repository.find(settings);
-		assertFalse(results.contains(category1));
-		assertTrue(results.contains(category9));
+		assertTrue(results.contains(empty));
+		assertFalse(results.contains(gender));
+		assertFalse(results.contains(education));
 	}
 
 	@Test
 	public void testNotEmpty() {
-		DictionaryCategory category1 = repository.get(DictionaryCategory.class, 1L);
-		DictionaryCategory category9 = repository.get(DictionaryCategory.class, 9L);
+		DictionaryCategory empty = createCategory("a", 3);
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
 		settings.notEmpty("dictionaries");
 		List<DictionaryCategory> results = repository.find(settings);
-		assertTrue(results.contains(category1));
-		assertFalse(results.contains(category9));
+		assertFalse(results.contains(empty));
+		assertTrue(results.contains(gender));
+		assertTrue(results.contains(education));
 	}
-
 
 	@Test
 	public void testContainsText() {
-		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
-		Dictionary dictionary9 = repository.get(Dictionary.class, 9L);
-		Dictionary dictionary11 = repository.get(Dictionary.class, 11L);
-		settings.containsText("text", "大学");
+		settings.containsText("text", "科");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary7));
-		assertTrue(results.contains(dictionary9));
-		assertFalse(results.contains(dictionary11));
+		assertTrue(results.contains(undergraduate));
+		assertFalse(results.contains(male));
+		assertFalse(results.contains(female));
 	}
 
 	@Test
 	public void testStartsWithText() {
-		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
-		Dictionary dictionary9 = repository.get(Dictionary.class, 9L);
-		Dictionary dictionary11 = repository.get(Dictionary.class, 11L);
-		settings.startsWithText("text", "大学");
+		settings.startsWithText("text", "本");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary7));
-		assertFalse(results.contains(dictionary9));
-		assertFalse(results.contains(dictionary11));
+		assertTrue(results.contains(undergraduate));
+		
+		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "科");
+		results = repository.find(settings);
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testInEntity() {
-		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
-		Dictionary dictionary9 = repository.get(Dictionary.class, 9L);
-		Dictionary dictionary11 = repository.get(Dictionary.class, 11L);
 		Set<Long> params = new HashSet<Long>();
-		params.add(7L);
-		params.add(9L);
+		params.add(male.getId());
+		params.add(female.getId());
 		settings.in("id", params);
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary7));
-		assertTrue(results.contains(dictionary9));
-		assertFalse(results.contains(dictionary11));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testInString() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		Set<String> params = new HashSet<String>();
-		params.add("研究生");
-		params.add("研究生毕业");
+		params.add("男");
+		params.add("女");
 		settings.in("text", params);
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary5));
-		assertFalse(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -383,32 +324,26 @@ public class QuerySettingsTest {
 
 	@Test
 	public void testNotInEntity() {
-		Dictionary dictionary7 = repository.get(Dictionary.class, 7L);
-		Dictionary dictionary9 = repository.get(Dictionary.class, 9L);
-		Dictionary dictionary11 = repository.get(Dictionary.class, 11L);
 		Set<Long> params = new HashSet<Long>();
-		params.add(7L);
-		params.add(9L);
+		params.add(male.getId());
+		params.add(female.getId());
 		settings.notIn("id", params);
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary7));
-		assertFalse(results.contains(dictionary9));
-		assertTrue(results.contains(dictionary11));
+		assertFalse(results.contains(male));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testNotInString() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
 		Set<String> params = new HashSet<String>();
-		params.add("研究生");
-		params.add("研究生毕业");
+		params.add("男");
+		params.add("女");
 		settings.notIn("text", params);
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertFalse(results.contains(male));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -421,128 +356,103 @@ public class QuerySettingsTest {
 
 	@Test
 	public void testIsNull() {
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		Dictionary dictionary15 = repository.get(Dictionary.class, 15L);
 		settings.isNull("description");
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
-		assertFalse(results.contains(dictionary15));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testNotNull() {
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		Dictionary dictionary15 = repository.get(Dictionary.class, 15L);
-		settings.notNull("description");
+		settings.notNull("text");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary5));
-		assertFalse(results.contains(dictionary6));
-		assertTrue(results.contains(dictionary15));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testBetween() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).between("id", 5L, 9L);
+		settings.between("parentCode", "01", "02");
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary6));
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testAnd() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		DictionaryCategory category = DictionaryCategory.get(DictionaryCategory.class, 2L);
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
-				.and(Criterions.eq("id", 4L), Criterions.eq("category", category));
+		settings.and(Criterions.eq("code", "01"), Criterions.eq("category", gender));
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary6));
-		
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
-	
+
 	@Test
 	public void testOr() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		DictionaryCategory category = DictionaryCategory.get(DictionaryCategory.class, 2L);
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
-				.eq("category", category)
-				.or(Criterions.eq("id", 4L), Criterions.eq("id", 6L));
+		settings.or(Criterions.eq("text", "男"), Criterions.eq("sortOrder", 150));
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary6));
-		
+		assertTrue(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testNot() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
-				.not(Criterions.eq("id", 4L));
+		settings.not(Criterions.eq("code", "01"));
 		List<Dictionary> results = repository.find(settings);
-		assertFalse(results.contains(dictionary4));
-		assertTrue(results.contains(dictionary6));
-		
+		assertFalse(results.contains(male));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(undergraduate));
 	}
-		
-	
+
 	@Test
 	public void testFindPaging() {
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", DictionaryCategory.getByName(DictionaryCategory.EDUCATION))
-				.setFirstResult(2).setMaxResults(10).asc("category.sortOrder");
+		createDictionary("08", "xyz", education, 150, "01");
+		createDictionary("09", "xyy", education, 160, "02");
+		settings.setFirstResult(1).setMaxResults(2);
 		List<Dictionary> results = repository.find(settings);
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 3L);
-		Dictionary dictionary6 = repository.get(Dictionary.class, 6L);
-		assertEquals(10, results.size());
-		assertFalse(results.contains(dictionary4));
-		assertFalse(results.contains(dictionary5));
-		assertTrue(results.contains(dictionary6));
+		assertEquals(2, results.size());
 	}
 
 	@Test
 	public void testFindOrder() {
-		Dictionary dictionary4 = repository.get(Dictionary.class, 4L);
-		Dictionary dictionary5 = repository.get(Dictionary.class, 5L);
-
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", DictionaryCategory.getByName(DictionaryCategory.EDUCATION))
-				.asc("sortOrder");
+		settings.asc("sortOrder");
 		List<Dictionary> results = repository.find(settings);
-		assertTrue(results.indexOf(dictionary4) < results.indexOf(dictionary5));
+		assertTrue(results.indexOf(male) < results.indexOf(female));
+		assertTrue(results.indexOf(female) < results.indexOf(undergraduate));
 
-		settings = QuerySettings.create(Dictionary.class).eq("category", DictionaryCategory.getByName(DictionaryCategory.EDUCATION)).desc("sortOrder");
+		settings = QuerySettings.create(Dictionary.class).desc("sortOrder");
 		results = repository.find(settings);
-		assertTrue(results.indexOf(dictionary4) > results.indexOf(dictionary5));
+		assertTrue(results.indexOf(male) > results.indexOf(female));
+		assertTrue(results.indexOf(female) > results.indexOf(undergraduate));
 	}
 
-	@Test
+	//@Test
 	public void testAlias() {
-		String education = DictionaryCategory.EDUCATION;
-		List<Dictionary> results = repository.find(QuerySettings.create(Dictionary.class).eq("category.name", education));
+		List<Dictionary> results = repository.find(settings.eq("category.name", education));
 		Dictionary graduate = Dictionary.get(4L);
 		assertTrue(results.contains(graduate));
 		Dictionary doctor = Dictionary.get(46L);
 		assertFalse(results.contains(doctor));
 	}
 
-	
-	@SuppressWarnings("rawtypes")
-	@Test
-	public void aTest() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<DictionaryCategory> query = builder.createQuery(DictionaryCategory.class);
-		Root<DictionaryCategory> root = query.from(DictionaryCategory.class);
-		Path c = root.join("dictionaries");
-		System.out.println(c.getJavaType());
-		c.alias("c");
-		query.select(root).where(builder.equal(c.get("text"), "研究生毕业"));
-		System.out.println(entityManager.createQuery(query).getResultList().size());
+	private DictionaryCategory createCategory(String name, int sortOrder) {
+		DictionaryCategory category = new DictionaryCategory();
+		category.setName(name);
+		category.setSortOrder(sortOrder);
+		entityManager.persist(category);
+		return category;
+	}
+
+	private Dictionary createDictionary(String code, String text, DictionaryCategory category, int sortOrder,
+			String parentCode) {
+		Dictionary dictionary = new Dictionary(code, text, category);
+		dictionary.setSortOrder(sortOrder);
+		dictionary.setParentCode(parentCode);
+		entityManager.persist(dictionary);
+		return dictionary;
 	}
 }

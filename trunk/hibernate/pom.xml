@@ -85,6 +85,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<maven.db.skip>false</maven.db.skip>
+		<maven.db.skip>true</maven.db.skip>
 	</properties>
 </project>

@@ -140,7 +140,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
 	 * @return 查询的单一结果
 	 */
-	Object getSingleResult(String queryString, Object[] params);
+	<T extends Entity> T getSingleResult(String queryString, Object[] params, Class<T> resultClass);
 	
 	/**
 	 * 根据查询语句和指定的参数访问仓储，返回单一结果。
@@ -148,7 +148,7 @@ public interface EntityRepository {
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
 	 * @return 查询的单一结果
 	 */
-	Object getSingleResult(String queryString, Map<String, Object> params);
+	<T extends Entity> T getSingleResult(String queryString, Map<String, Object> params, Class<T> resultClass);
 	
 	/**
 	 * 执行更新仓储的操作。

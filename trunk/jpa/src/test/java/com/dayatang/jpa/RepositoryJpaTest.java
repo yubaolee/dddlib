@@ -39,23 +39,31 @@ import com.dayatang.domain.QuerySettings;
 public class RepositoryJpaTest {
 
 	private static EntityManagerFactory emf;
-	
+
 	private EntityManager entityManager;
-	
+
 	private EntityRepositoryJpa repository;
-	
+
 	private EntityTransaction tx;
+
+	private DictionaryCategory gender;
+
+	private DictionaryCategory education;
+
+	private Dictionary male;
+
+	private Dictionary undergraduate;
 
 	@BeforeClass
 	public static void setUpClass() {
 		emf = Persistence.createEntityManagerFactory("default");
 	}
-	
+
 	@AfterClass
 	public static void tearDownClass() {
 		emf.close();
 	}
-	
+
 	@Before
 	public void setUp() {
 		entityManager = emf.createEntityManager();
@@ -63,6 +71,10 @@ public class RepositoryJpaTest {
 		tx.begin();
 		repository = new EntityRepositoryJpa(entityManager);
 		AbstractEntity.setRepository(repository);
+		gender = createCategory("gender", 1);
+		education = createCategory("education", 2);
+		male = createDictionary("01", "男", gender, 100, "01");
+		undergraduate = createDictionary("01", "本科", education, 200, "05");
 	}
 
 	@After
@@ -74,7 +86,7 @@ public class RepositoryJpaTest {
 
 	@Test
 	public void testAddAndRemove() {
-		Dictionary dictionary = new Dictionary("2001", "双硕士", DictionaryCategory.getByName(DictionaryCategory.DEGREE));
+		Dictionary dictionary = new Dictionary("2001", "双硕士", gender);
 		dictionary = repository.save(dictionary);
 		assertNotNull(dictionary.getId());
 		repository.remove(dictionary);
@@ -83,7 +95,7 @@ public class RepositoryJpaTest {
 
 	@Test
 	public void testValidateFailure() {
-		Dictionary dictionary = new Dictionary("", "", DictionaryCategory.getByName(DictionaryCategory.DEGREE));
+		Dictionary dictionary = new Dictionary("", "", gender);
 		try {
 			dictionary.save();
 			fail("应抛出异常！");
@@ -92,90 +104,81 @@ public class RepositoryJpaTest {
 			assertTrue(true);
 		}
 	}
-	
+
 	@Test
 	public void testExistsById() {
-		assertTrue(repository.exists(Dictionary.class, 1L));
+		assertTrue(repository.exists(Dictionary.class, male.getId()));
 		assertFalse(repository.exists(Dictionary.class, 1000L));
 	}
 
 	@Test
 	public void testGet() {
-		assertEquals("男", repository.get(Dictionary.class, 1L).getText());
+		assertEquals(male, repository.get(Dictionary.class, male.getId()));
 	}
 
-	//@Test
+	@Test
 	public void testLoad() {
-		assertEquals("男", repository.load(Dictionary.class, 1L).getText());
+		assertEquals(male.getId(), repository.load(Dictionary.class, male.getId()).getId());
 	}
 
 	@Test
 	public void testGetUnmodified() {
-		Dictionary dictionary = repository.get(Dictionary.class, 1L);
-		dictionary.setText("xyz");
-		Dictionary unmodified = repository.getUnmodified(Dictionary.class, dictionary);
+		male.setText("xyz");
+		Dictionary unmodified = repository.getUnmodified(Dictionary.class, male);
 		assertEquals("男", unmodified.getText());
-		assertEquals("xyz", dictionary.getText());
+		assertEquals("xyz", male.getText());
 	}
 
 	@Test
 	public void testFindQueryStringArrayParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String queryString = "select o from  Dictionary o where o.category = ?";
-		Object[] params = new Object[] { category };
+		Object[] params = new Object[] { gender };
 		List<Dictionary> results = repository.find(queryString, params, Dictionary.class);
-		for (Dictionary dictionary : results) {
-			assertEquals(category, dictionary.getCategory());
-		}
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testFindQueryStringMapParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String queryString = "select o from  Dictionary o where o.category = :category";
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("category", category);
+		params.put("category", gender);
 		List<Dictionary> results = repository.find(queryString, params, Dictionary.class);
-		for (Dictionary dictionary : results) {
-			assertEquals(category, dictionary.getCategory());
-		}
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testFindNamedQueryArrayParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
-		String code = "1";
-		Object[] params = new Object[] { category, code };
+		Object[] params = new Object[] { gender, "01" };
 		List<Dictionary> results = repository.findByNamedQuery("findByCategoryAndCode", params, Dictionary.class);
-		for (Dictionary dictionary : results) {
-			assertEquals(category, dictionary.getCategory());
-			assertEquals(code, dictionary.getCode());
-		}
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testFindNamedQueryMapParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("category", category);
+		params.put("category", gender);
 		List<Dictionary> results = repository.findByNamedQuery("findByCategory", params, Dictionary.class);
-		for (Dictionary dictionary : results) {
-			assertEquals(category, dictionary.getCategory());
-		}
+		assertTrue(results.contains(male));
+		assertFalse(results.contains(undergraduate));
 	}
 
-	//JPA暂时不支持按例查询
-	//@Test
+	// JPA暂时不支持按例查询
+	// @Test
 	public void testFindByExample() {
 		Dictionary dictionary1 = Dictionary.get(20L);
 		Dictionary dictionary2 = Dictionary.get(21L);
 		Dictionary dictionary3 = Dictionary.get(22L);
 		Dictionary example = new Dictionary(null, "技工学校", null);
-		List<Dictionary> dictionaries = repository.findByExample(example, ExampleSettings.create(Dictionary.class).excludeZeroes());
+		List<Dictionary> dictionaries = repository.findByExample(example, ExampleSettings.create(Dictionary.class)
+				.excludeZeroes());
 		assertTrue(dictionaries.contains(dictionary1));
 		assertFalse(dictionaries.contains(dictionary2));
 		assertFalse(dictionaries.contains(dictionary3));
-		dictionaries = repository.findByExample(example, ExampleSettings.create(Dictionary.class).excludeZeroes().enableLike());
+		dictionaries = repository.findByExample(example, ExampleSettings.create(Dictionary.class).excludeZeroes()
+				.enableLike());
 		assertTrue(dictionaries.contains(dictionary1));
 		assertTrue(dictionaries.contains(dictionary2));
 		assertTrue(dictionaries.contains(dictionary3));
@@ -183,47 +186,39 @@ public class RepositoryJpaTest {
 
 	@Test
 	public void testGetSingleResultSettings() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
-		String code = "1";
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class)
-			.eq("category", category).eq("code", code);
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender)
+				.eq("code", "01");
 		Dictionary dictionary = repository.getSingleResult(settings);
-		assertEquals(category, dictionary.getCategory());
-		assertEquals(code, dictionary.getCode());
+		assertEquals(male, dictionary);
 	}
 
 	@Test
 	public void testGetSingleResultArray() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
-		String code = "1";
 		String queryString = "select o from  Dictionary o where o.category = ? and o.code = ?";
-		Object[] params = new Object[] { category, code};
-		Dictionary dictionary = (Dictionary) repository.getSingleResult(queryString, params);
-		assertEquals(category, dictionary.getCategory());
-		assertEquals(code, dictionary.getCode());
+		Object[] params = new Object[] { gender, "01" };
+		Dictionary dictionary = (Dictionary) repository.getSingleResult(queryString, params, Dictionary.class);
+		assertEquals(male, dictionary);
 	}
 
 	@Test
 	public void testGetSingleResultMap() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
-		String code = "1";
 		String queryString = "select o from  Dictionary o where o.category = :category and o.code = :code";
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("category", category);
-		params.put("code", code);
-		Dictionary dictionary = (Dictionary) repository.getSingleResult(queryString, params);
-		assertEquals(category, dictionary.getCategory());
-		assertEquals(code, dictionary.getCode());
+		params.put("category", gender);
+		params.put("code", "01");
+		Dictionary dictionary = (Dictionary) repository.getSingleResult(queryString, params, Dictionary.class);
+		assertEquals(male, dictionary);
 	}
 
 	@Test
 	public void testExecuteUpdateArrayParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String description = "abcd";
 		String queryString = "update Dictionary o set o.description = ? where o.category = ?";
-		repository.executeUpdate(queryString, new Object[] { description, category });
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", category);
+		repository.executeUpdate(queryString, new Object[] { description, gender });
+		entityManager.clear();
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.size() > 0);
 		for (Dictionary dictionary : results) {
 			assertEquals(description, dictionary.getDescription());
 		}
@@ -231,17 +226,35 @@ public class RepositoryJpaTest {
 
 	@Test
 	public void testExecuteUpdateMapParams() {
-		DictionaryCategory category = DictionaryCategory.getByName(DictionaryCategory.GENDER);
 		String description = "abcd";
 		String queryString = "update Dictionary set description = :description where category = :category";
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("category", category);
+		params.put("category", gender);
 		params.put("description", description);
 		repository.executeUpdate(queryString, params);
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", category);
+		entityManager.clear();
+		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.size() > 0);
 		for (Dictionary dictionary : results) {
 			assertEquals(description, dictionary.getDescription());
 		}
+	}
+
+	private DictionaryCategory createCategory(String name, int sortOrder) {
+		DictionaryCategory category = new DictionaryCategory();
+		category.setName(name);
+		category.setSortOrder(sortOrder);
+		entityManager.persist(category);
+		return category;
+	}
+
+	private Dictionary createDictionary(String code, String text, DictionaryCategory category, int sortOrder,
+			String parentCode) {
+		Dictionary dictionary = new Dictionary(code, text, category);
+		dictionary.setSortOrder(sortOrder);
+		dictionary.setParentCode(parentCode);
+		entityManager.persist(dictionary);
+		return dictionary;
 	}
 }

@@ -143,6 +143,6 @@
 	</build>
 	<properties>
 		<servlet.version>2.5</servlet.version>
-		<maven.db.skip>false</maven.db.skip>
+		<maven.db.skip>true</maven.db.skip>
 	</properties>
 </project>
