@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.observer.Observer;
@@ -12,6 +13,11 @@ import com.dayatang.observer.integration.AbstractIntegratedTestCase;
 
 public class ObserverTest extends AbstractIntegratedTestCase {
 
+	@Before
+	public void setUp() {
+		
+	}
+	
 	@Test
 	public void process() {
 		Baby baby = new Baby();
