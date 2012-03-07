@@ -3,17 +3,13 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.dbunit.DatabaseUnitException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -58,7 +54,7 @@ public class QuerySettingsTest {
 	private Dictionary undergraduate;
 
 	@BeforeClass
-	public static void setUpClass() throws DatabaseUnitException, SQLException, Exception {
+	public static void setUpClass() throws Exception {
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
