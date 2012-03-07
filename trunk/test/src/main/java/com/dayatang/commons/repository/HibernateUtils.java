@@ -29,7 +29,7 @@ public class HibernateUtils {
     }
 
     public static synchronized SessionFactory getSessionFactory() {
-    	if (sessionFactory.isClosed()) {
+    	if (sessionFactory == null || sessionFactory.isClosed()) {
     		sessionFactory = buildSessionFactory();
     	}
         return sessionFactory;
