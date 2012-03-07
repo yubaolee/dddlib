@@ -13,6 +13,7 @@
 			<property name="hibernate.connection.url" value="${jdbc.url}" />
 			<property name="hibernate.connection.username" value="${jdbc.username}" />
 			<property name="hibernate.connection.password" value="${jdbc.password}" />
+			<property name="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
 			<property name="hibernate.dialect" value="${hibernate.dialect}" />
 		</properties>
 	</persistence-unit>

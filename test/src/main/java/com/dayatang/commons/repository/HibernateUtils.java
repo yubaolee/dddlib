@@ -2,13 +2,14 @@ package com.dayatang.commons.repository;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 
 public class HibernateUtils {
 	private static Configuration cfg;
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -16,7 +17,7 @@ public class HibernateUtils {
         		.addAnnotatedClass(DictionaryCategory.class)
         		.addAnnotatedClass(Dictionary.class)
         		.configure();
-        	//new SchemaExport(cfg).create(false, true);
+        	new SchemaExport(cfg).create(false, true);
             return cfg.buildSessionFactory();
         }
         catch (Exception ex) {
@@ -27,7 +28,10 @@ public class HibernateUtils {
        
     }
 
-    public static SessionFactory getSessionFactory() {
+    public static synchronized SessionFactory getSessionFactory() {
+    	if (sessionFactory.isClosed()) {
+    		sessionFactory = buildSessionFactory();
+    	}
         return sessionFactory;
     }
 

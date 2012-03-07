@@ -85,7 +85,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<maven.db.skip>false</maven.db.skip>
+		<maven.db.skip>true</maven.db.skip>
 		<aspectj.weaver.version>1.6.9</aspectj.weaver.version>
 	</properties>
 </project>
