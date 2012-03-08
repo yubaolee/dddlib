@@ -10,13 +10,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.querychannel.HibernateUtils;
 import com.dayatang.querychannel.domain.MyEntity;
 import com.dayatang.querychannel.service.impl.QueryChannelServiceHibernate;
 import com.dayatang.querychannel.support.Page;
@@ -30,14 +30,10 @@ public class QueryChannelServiceHibernateTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
-		sessionFactory = new AnnotationConfiguration().configure()
-		.addAnnotatedClass(MyEntity.class)
-		.buildSessionFactory();
-		queryHibernate = new QueryChannelServiceHibernate();
-		
-		queryHibernate.setSessionFactory(sessionFactory);
+		sessionFactory = HibernateUtils.getSessionFactory();
+		queryHibernate = new QueryChannelServiceHibernate(sessionFactory.openSession());
 
-		Session session = sessionFactory.getCurrentSession();
+		Session session = queryHibernate.getSession();
 		Transaction tx = session.beginTransaction();
 
 
@@ -65,7 +61,7 @@ public class QueryChannelServiceHibernateTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		sessionFactory.close();
+		HibernateUtils.close();
 	}
 
 	@Before

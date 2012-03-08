@@ -22,11 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dayatang.commons</groupId>
 			<artifactId>dayatang-commons-hibernate</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
@@ -54,6 +49,12 @@
 			<groupId>${jdbc.groupId}</groupId>
 			<artifactId>${jdbc.artifactId}</artifactId>
 			<version>${jdbc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
