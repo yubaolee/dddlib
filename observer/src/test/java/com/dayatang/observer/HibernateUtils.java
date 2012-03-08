@@ -9,35 +9,31 @@ import com.dayatang.observer.domain.MotherObserver;
 
 public class HibernateUtils {
 	private static Configuration cfg;
-    private static SessionFactory sessionFactory = buildSessionFactory();
+	private static SessionFactory sessionFactory = buildSessionFactory();
 
-    private static SessionFactory buildSessionFactory() {
-        try {
-        	cfg = new Configuration()
-        		.addAnnotatedClass(FatherObserver.class)
-        		.addAnnotatedClass(MotherObserver.class)
-        		.configure();
-        	new SchemaExport(cfg).create(false, true);
-            return cfg.buildSessionFactory();
-        }
-        catch (Exception ex) {
-            // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-       
-    }
+	private static SessionFactory buildSessionFactory() {
+		try {
+			cfg = new Configuration()
+					.addAnnotatedClass(FatherObserver.class)
+					.addAnnotatedClass(MotherObserver.class)
+					.configure();
+			new SchemaExport(cfg).create(true, true);
+			return cfg.buildSessionFactory();
+		} catch (Exception ex) {
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
 
-    public static synchronized SessionFactory getSessionFactory() {
-    	if (sessionFactory == null || sessionFactory.isClosed()) {
-    		sessionFactory = buildSessionFactory();
-    	}
-        return sessionFactory;
-    }
+	public static synchronized SessionFactory getSessionFactory() {
+		if (sessionFactory == null || sessionFactory.isClosed()) {
+			sessionFactory = buildSessionFactory();
+		}
+		return sessionFactory;
+	}
 
-    public static void close() {
-    	sessionFactory.close();
-    }
-
+	public static void close() {
+		sessionFactory.close();
+	}
 
 }
