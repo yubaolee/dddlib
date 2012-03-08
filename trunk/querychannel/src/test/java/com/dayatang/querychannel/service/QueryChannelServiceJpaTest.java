@@ -29,12 +29,10 @@ public class QueryChannelServiceJpaTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		entityManagerFactory = Persistence
-				.createEntityManagerFactory("default");
-		queryJpa = new QueryChannelServiceJpa();
-		queryJpa.setEntityManagerFactory(entityManagerFactory);
+		entityManagerFactory = Persistence.createEntityManagerFactory("default");
+		queryJpa = new QueryChannelServiceJpa(entityManagerFactory.createEntityManager());
 
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = queryJpa.getEntityManager();
 		EntityTransaction et = em.getTransaction();
 		et.begin();
 

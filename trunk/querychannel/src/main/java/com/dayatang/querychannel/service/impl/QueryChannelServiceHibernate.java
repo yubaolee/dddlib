@@ -1,40 +1,55 @@
 package com.dayatang.querychannel.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.dayatang.domain.Entity;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
 
 @SuppressWarnings("unchecked")
-public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
-		QueryChannelService {
+public class QueryChannelServiceHibernate implements QueryChannelService {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2520631490347218114L;
 
-	private Query createQuery(Session session, String queryStr, Object[] params) {
-		Query query = session.createQuery(queryStr);
+	@Inject
+	private Session session;
+
+	public QueryChannelServiceHibernate() {
+	}
+
+	public QueryChannelServiceHibernate(Session session) {
+		this.session = session;
+	}
+
+	public Session getSession() {
+		if (session == null) {
+			session = InstanceFactory.getInstance(Session.class);
+		}
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	private Query createQuery(String queryStr, Object[] params) {
+		Query query = getSession().createQuery(queryStr);
 		return setParameters(query, params);
 	}
 
-	private Query createNamedQuery(Session session, String queryName,
-			Object[] params) {
-		Query query = session.getNamedQuery(queryName);
+	private Query createNamedQuery(String queryName, Object[] params) {
+		Query query = getSession().getNamedQuery(queryName);
 		return setParameters(query, params);
 	}
 
@@ -97,8 +112,7 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 		}
 
 		if (distinctIndex != -1) {
-			String distinctToFrom = queryStr
-					.substring(distinctIndex, fromIndex);
+			String distinctToFrom = queryStr.substring(distinctIndex, fromIndex);
 
 			// 除去“,”之后的语句
 			int commaIndex = distinctToFrom.indexOf(",");
@@ -124,8 +138,7 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 
 		}
 
-		StringBuilder builder = new StringBuilder("select count(" + strInCount
-				+ ") ");
+		StringBuilder builder = new StringBuilder("select count(" + strInCount + ") ");
 
 		return builder;
 	}
@@ -135,8 +148,7 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 	 * 
 	 */
 	private static String removeOrders(String queryStr) {
-		Matcher m = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*",
-				Pattern.CASE_INSENSITIVE).matcher(queryStr);
+		Matcher m = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*", Pattern.CASE_INSENSITIVE).matcher(queryStr);
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {
 			m.appendReplacement(sb, "");
@@ -155,8 +167,7 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 		return (pageSize == 0) ? Page.DEFAULT_PAGE_SIZE : pageSize;
 	}
 
-	private long countSizeInSession(Session session, final String queryStr,
-			final Object[] params) {
+	private long countSizeInSession(final String queryStr, final Object[] params) {
 
 		long totalCount = 0;
 
@@ -171,14 +182,14 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 			countQueryString = buildCountQueryStr(queryStr);
 		}
 
-		Query query = createQuery(session, countQueryString, params);
+		Query query = createQuery(countQueryString, params);
 
 		if (containGroup) {
 			totalCount = query.list().size();
 		} else {
-			List count = query.list();
+			List<Long> count = query.list();
 			if (!count.isEmpty()) {
-				totalCount = (Long) count.get(0);
+				totalCount = count.get(0);
 			}
 		}
 		return totalCount;
@@ -186,203 +197,99 @@ public class QueryChannelServiceHibernate extends HibernateDaoSupport implements
 
 	@Override
 	public <T> T querySingleResult(final String queryStr, final Object[] params) {
-		return (T) getHibernateTemplate().execute(new HibernateCallback() {
-
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				Query query = createQuery(session, queryStr, params);
-				List list = query.list();
-				return list.isEmpty() ? null : list.get(0);
-			}
-		});
+		Query query = createQuery(queryStr, params);
+		List<T> list = query.list();
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override
 	public <T> List<T> queryResult(final String queryStr, final Object[] params) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				Query query = createQuery(session, queryStr, params);
-
-				return query.list();
-			}
-		});
+		Query query = createQuery(queryStr, params);
+		return query.list();
 	}
 
 	@Override
-	public <T> List<T> queryResult(final String queryStr,
-			final Object[] params, final long firstRow, final int pageSize) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				Query query = createQuery(session, queryStr, params);
-				query.setFirstResult(Long.valueOf(firstRow).intValue())
-						.setMaxResults(pageSize);
-				return query.list();
-			}
-		});
+	public <T> List<T> queryResult(final String queryStr, final Object[] params, final long firstRow, final int pageSize) {
+		Query query = createQuery(queryStr, params);
+		query.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(pageSize);
+		return query.list();
 	}
 
 	@Override
 	public long queryResultSize(final String queryStr, final Object[] params) {
-		return (Long) getHibernateTemplate().execute(new HibernateCallback() {
-
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				return countSizeInSession(session, queryStr, params);
-			}
-		});
+		return countSizeInSession(queryStr, params);
 	}
 
 	@Override
-	public List<Map<String, Object>> queryMapResult(final String queryStr,
-			final Object[] params) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				Query query = createQuery(session, queryStr, params);
-				query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-				return query.list();
-			}
-		});
+	public List<Map<String, Object>> queryMapResult(final String queryStr, final Object[] params) {
+		Query query = createQuery(queryStr, params);
+		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		return query.list();
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResult(final String queryStr,
-			final Object[] params, final long firstRow, final int pageSize) {
-
-		return (Page<T>) getHibernateTemplate().execute(
-				new HibernateCallback() {
-
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-
-						long totalCount = countSizeInSession(session, queryStr,
-								params);
-
-						List<T> data = createQuery(session, queryStr, params)
-								.setFirstResult(
-										Long.valueOf(firstRow).intValue())
-								.setMaxResults(getPageSize(pageSize)).list();
-
-						return new Page<T>(firstRow, totalCount,
-								getPageSize(pageSize), data);
-					}
-				});
-
+	public <T> Page<T> queryPagedResult(final String queryStr, final Object[] params, final long firstRow,
+			final int pageSize) {
+		long totalCount = countSizeInSession(queryStr, params);
+		List<T> data = createQuery(queryStr, params)
+				.setFirstResult(Long.valueOf(firstRow).intValue())
+				.setMaxResults(getPageSize(pageSize))
+				.list();
+		return new Page<T>(firstRow, totalCount, getPageSize(pageSize), data);
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResultByPageNo(String queryStr,
-			Object[] params, int currentPage, int pageSize) {
-
+	public <T> Page<T> queryPagedResultByPageNo(String queryStr, Object[] params, int currentPage, int pageSize) {
 		final int firstRow = getFirstRow(currentPage, pageSize);
-
 		return queryPagedResult(queryStr, params, firstRow, pageSize);
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResultByNamedQuery(final String queryName,
-			final Object[] params, final long firstRow, final int pageSize) {
-		return (Page<T>) getHibernateTemplate().execute(
-				new HibernateCallback() {
-
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-
-						String queryStr = session.getNamedQuery(queryName)
-								.getQueryString();
-
-						long totalCount = countSizeInSession(session, queryStr,
-								params);
-
-						List<T> data = createNamedQuery(session, queryName,
-								params).setFirstResult(
-								Long.valueOf(firstRow).intValue())
-								.setMaxResults(getPageSize(pageSize)).list();
-
-						return new Page<T>(firstRow, totalCount,
-								getPageSize(pageSize), data);
-					}
-				});
-	}
-
-	@Override
-	public <T> Page<T> queryPagedResultByPageNoAndNamedQuery(String queryName,
-			Object[] params, int currentPage, int pageSize) {
-
-		final int firstRow = getFirstRow(currentPage, pageSize);
-
-		return queryPagedResultByNamedQuery(queryName, params, firstRow,
-				pageSize);
-	}
-
-	@Override
-	public Page<Map<String, Object>> queryPagedMapResult(final String queryStr,
-			final Object[] params, int currentPage, final int pageSize) {
-
-		final int firstRow = getFirstRow(currentPage, pageSize);
-
-		return (Page<Map<String, Object>>) getHibernateTemplate().execute(
-				new HibernateCallback() {
-
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-
-						long totalCount = countSizeInSession(session, queryStr,
-								params);
-
-						List<Map<String, Object>> data = createQuery(session,
-								queryStr, params).setFirstResult(
-								Long.valueOf(firstRow).intValue())
-								.setMaxResults(getPageSize(pageSize))
-								.setResultTransformer(
-										Criteria.ALIAS_TO_ENTITY_MAP).list();
-
-						return new Page<Map<String, Object>>(firstRow,
-								totalCount, getPageSize(pageSize), data);
-					}
-				});
-	}
-
-	@Override
-	public Page<Map<String, Object>> queryPagedMapResultByNamedQuery(
-			final String queryName, final Object[] params, int currentPage,
+	public <T> Page<T> queryPagedResultByNamedQuery(final String queryName, final Object[] params, final long firstRow,
 			final int pageSize) {
-
-		final int firstRow = getFirstRow(currentPage, pageSize);
-
-		return (Page<Map<String, Object>>) getHibernateTemplate().execute(
-				new HibernateCallback() {
-
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-
-						String queryStr = session.getNamedQuery(queryName)
-								.getQueryString();
-
-						long totalCount = countSizeInSession(session, queryStr,
-								params);
-
-						List<Map<String, Object>> data = createNamedQuery(
-								session, queryName, params).setFirstResult(
-								Long.valueOf(firstRow).intValue())
-								.setMaxResults(getPageSize(pageSize))
-								.setResultTransformer(
-										Criteria.ALIAS_TO_ENTITY_MAP).list();
-
-						return new Page<Map<String, Object>>(firstRow,
-								totalCount, getPageSize(pageSize), data);
-					}
-				});
+		String queryStr = getSession().getNamedQuery(queryName).getQueryString();
+		long totalCount = countSizeInSession(queryStr, params);
+		List<T> data = createNamedQuery(queryName, params)
+				.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(getPageSize(pageSize)).list();
+		return new Page<T>(firstRow, totalCount, getPageSize(pageSize), data);
 	}
 
 	@Override
-	public <T extends Entity> Page<T> queryPagedByQuerySettings(
-			QuerySettings<T> settings, int currentPage, int pageSize) {
+	public <T> Page<T> queryPagedResultByPageNoAndNamedQuery(String queryName, Object[] params, int currentPage,
+			int pageSize) {
+		final int firstRow = getFirstRow(currentPage, pageSize);
+		return queryPagedResultByNamedQuery(queryName, params, firstRow, pageSize);
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryPagedMapResult(final String queryStr, final Object[] params, int currentPage,
+			final int pageSize) {
+		final int firstRow = getFirstRow(currentPage, pageSize);
+		long totalCount = countSizeInSession(queryStr, params);
+		List<Map<String, Object>> data = createQuery(queryStr, params)
+				.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(getPageSize(pageSize))
+				.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
+		return new Page<Map<String, Object>>(firstRow, totalCount, getPageSize(pageSize), data);
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryPagedMapResultByNamedQuery(final String queryName, final Object[] params,
+			int currentPage, final int pageSize) {
+
+		final int firstRow = getFirstRow(currentPage, pageSize);
+		String queryStr = getSession().getNamedQuery(queryName).getQueryString();
+
+		long totalCount = countSizeInSession(queryStr, params);
+
+		List<Map<String, Object>> data = createNamedQuery(queryName, params)
+				.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(getPageSize(pageSize))
+				.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
+
+		return new Page<Map<String, Object>>(firstRow, totalCount, getPageSize(pageSize), data);
+	}
+
+	@Override
+	public <T extends Entity> Page<T> queryPagedByQuerySettings(QuerySettings<T> settings, int currentPage, int pageSize) {
 		throw new RuntimeException("还没有实现。");
 	}
 }
