@@ -54,7 +54,7 @@ public class ExcelReaderTemplate {
 		return result;
 	}
 
-	public <T> T execute(ExcelReaderCallback<T> callback) throws IOException {
+	public <T> T execute(ExcelReaderCallback<T> callback) throws Exception {
 		HSSFWorkbook workbook = new HSSFWorkbook(in);
 		T result = callback.doInPoi(workbook);
 		if (needCloseStream) {
