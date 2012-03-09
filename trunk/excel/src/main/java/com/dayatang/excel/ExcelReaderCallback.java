@@ -1,7 +1,7 @@
 package com.dayatang.excel;
 
-import jxl.Workbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public interface ExcelReaderCallback<T> {
-	T doInJxl(Workbook workbook);
+	T doInPoi(HSSFWorkbook workbook);
 }

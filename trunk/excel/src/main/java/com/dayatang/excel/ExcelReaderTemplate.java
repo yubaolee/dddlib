@@ -7,8 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Excel模板类。用于执行打开和关闭工作簿等公共行为。
@@ -23,30 +22,30 @@ public class ExcelReaderTemplate {
 	//执行Excel操作后是否需要关闭in
 	private boolean needCloseStream = false;
 
-	private ExcelReaderTemplate(File excelFile) throws BiffException, IOException {
+	private ExcelReaderTemplate(File excelFile) throws IOException {
 		in = new BufferedInputStream(new FileInputStream(excelFile));
 	}
 
-	private ExcelReaderTemplate(InputStream in) throws BiffException, IOException {
+	private ExcelReaderTemplate(InputStream in) throws IOException {
 		this.in = new BufferedInputStream(in);
 		
 	}
 	
-	public static ExcelReaderTemplate fromInputStream(InputStream in) throws BiffException, IOException {
+	public static ExcelReaderTemplate fromInputStream(InputStream in) throws IOException {
 		return new ExcelReaderTemplate(in);
 	}
 	
-	public static ExcelReaderTemplate fromClasspath(String pathname) throws BiffException, IOException {
+	public static ExcelReaderTemplate fromClasspath(String pathname) throws IOException {
 		ExcelReaderTemplate result = fromInputStream(ExcelReaderTemplate.class.getResourceAsStream(pathname));
 		result.needCloseStream = true;
 		return result;
 	}
 	
-	public static ExcelReaderTemplate fromFileSystem(String pathname) throws BiffException, IOException {
+	public static ExcelReaderTemplate fromFileSystem(String pathname) throws IOException {
 		return fromFile(new File(pathname));
 	}
 	
-	public static ExcelReaderTemplate fromFile(File file) throws BiffException, IOException {
+	public static ExcelReaderTemplate fromFile(File file) throws IOException {
 		if (!file.exists()) {
 			throw new FileNotFoundException("File '" + file + "' not found!");
 		}
@@ -55,10 +54,9 @@ public class ExcelReaderTemplate {
 		return result;
 	}
 
-	public <T> T execute(ExcelReaderCallback<T> callback) throws BiffException, IOException {
-		Workbook workbook = Workbook.getWorkbook(in);
-		T result = callback.doInJxl(workbook);
-		workbook.close();
+	public <T> T execute(ExcelReaderCallback<T> callback) throws IOException {
+		HSSFWorkbook workbook = new HSSFWorkbook(in);
+		T result = callback.doInPoi(workbook);
 		if (needCloseStream) {
 			in.close();
 		}
