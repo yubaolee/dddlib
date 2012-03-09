@@ -39,22 +39,22 @@ public class ExcelReader {
 	}
 	
 	
-	public List<Object[]> getData(final int sheetIndex, final int rowFrom, final int colFrom, final int colTo) throws Exception {
+	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int colTo) throws Exception {
 		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
 			public List<Object[]> doInJxl(Workbook workbook) {
-				return getData(workbook.getSheet(sheetIndex), rowFrom, colFrom, colTo);
+				return read(workbook.getSheet(sheetIndex), rowFrom, colFrom, colTo);
 			}
 		});
 	}
 
-	public List<Object[]> getData(final String sheetName, final int rowFrom, final int colFrom, final int colTo) throws Exception {
+	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int colTo) throws Exception {
 		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
 			public List<Object[]> doInJxl(Workbook workbook) {
-				return getData(workbook.getSheet(sheetName), rowFrom, colFrom, colTo);
+				return read(workbook.getSheet(sheetName), rowFrom, colFrom, colTo);
 			}
 		});
 	}
@@ -66,7 +66,7 @@ public class ExcelReader {
 	 * @param colTo
 	 * @return
 	 */
-	private List<Object[]> getData(Sheet sheet, int rowFrom, int colFrom, int colTo) {
+	private List<Object[]> read(Sheet sheet, int rowFrom, int colFrom, int colTo) {
 		List<Object[]> results = new ArrayList<Object[]>();
 		
 		for (int row = rowFrom; row < sheet.getRows(); row++) {

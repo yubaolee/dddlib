@@ -27,7 +27,7 @@ public class ExcelWriterTest {
 	public void testExportData() throws Exception {
 		List<Object[]> data = createData();
 		instance.createSheet("Company", "Dept", "Job", "Post", "Employee");
-		instance.writerData("Company", 0, 0, data);
+		instance.writer("Company", 0, 0, data);
 		ExcelReader reader = ExcelReader.fromFileSystem(file);
 		String sn = reader.readCellContents("Company", 0, 2).toString();
 		assertEquals("dayatang", sn);

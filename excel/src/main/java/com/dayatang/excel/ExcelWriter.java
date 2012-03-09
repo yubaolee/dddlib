@@ -70,13 +70,13 @@ public class ExcelWriter {
 	 * @param data
 	 * @throws Exception
 	 */
-	public void writerData(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data)
+	public void writer(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data)
 			throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				writerData(workbook.getSheet(sheetIndex), rowFrom, colFrom, data);
+				writer(workbook.getSheet(sheetIndex), rowFrom, colFrom, data);
 			}
 		});
 	}
@@ -89,30 +89,30 @@ public class ExcelWriter {
 	 * @param data
 	 * @throws Exception
 	 */
-	public void writerData(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data)
+	public void writer(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data)
 			throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				writerData(workbook.getSheet(sheetName), rowFrom, colFrom, data);
+				writer(workbook.getSheet(sheetName), rowFrom, colFrom, data);
 			}
 		});
 	}
 
-	private void writerData(WritableSheet sheet, int rowFrom, int colFrom, List<Object[]> data)
+	private void writer(WritableSheet sheet, int rowFrom, int colFrom, List<Object[]> data)
 			throws RowsExceededException, WriteException {
 		int row = rowFrom;
 		for (Object[] dataRow : data) {
 			int col = colFrom;
 			for (Object dataCell : dataRow) {
-				writeData(sheet, col++, row, dataCell);
+				writer(sheet, col++, row, dataCell);
 			}
 			row++;
 		}
 	}
 
-	private void writeData(WritableSheet sheet, int col, int row, Object data) throws RowsExceededException,
+	private void writer(WritableSheet sheet, int col, int row, Object data) throws RowsExceededException,
 			WriteException {
 		if (data == null) {
 			sheet.addCell(new Label(col, row, ""));
@@ -146,7 +146,7 @@ public class ExcelWriter {
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
 				WritableSheet sheet = workbook.getSheet(sheetIndex);
-				writeData(sheet, col, row, value);
+				writer(sheet, col, row, value);
 			}
 		});
 	}	
