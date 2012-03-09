@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.List;
 
-import jxl.read.biff.BiffException;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +18,7 @@ public class ExcelReaderTest {
 	}
 
 	@Test
-	public void testExcelImporterFile() throws BiffException, IOException {
+	public void testExcelImporterFile() throws IOException {
 		assertEquals("Company", importer.getSheetName(0));
 	}
 

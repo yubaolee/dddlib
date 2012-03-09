@@ -1,7 +1,7 @@
 package com.dayatang.excel;
 
-import jxl.write.WritableWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public interface ExcelWriterCallback {
-	void doInJxl(WritableWorkbook workbook) throws Exception;
+	void doInPoi(HSSFWorkbook workbook);
 }
