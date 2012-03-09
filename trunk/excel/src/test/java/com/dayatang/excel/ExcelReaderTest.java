@@ -7,35 +7,21 @@ import java.util.List;
 
 import jxl.read.biff.BiffException;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ExcelImporterTest {
+public class ExcelReaderTest {
 
-	private ExcelImporter importer;
+	private ExcelReader importer;
 	
 	@Before
 	public void setUp() throws Exception {
-		importer = new ExcelImporter(getClass().getResourceAsStream("/import.xls"));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		if (importer == null) {
-			return;
-		}
-		importer.close();
+		importer = ExcelReader.fromClasspath("/import.xls");
 	}
 
 	@Test
 	public void testExcelImporterFile() throws BiffException, IOException {
-		assertEquals("Company", importer.getWorkbook().getSheet(0).getName());
-	}
-
-	@Test
-	public void testExcelImporterInputStream() throws BiffException, IOException {
-		assertEquals("Company", importer.getWorkbook().getSheet(0).getName());
+		assertEquals("Company", importer.getSheetName(0));
 	}
 
 	@Test
@@ -55,5 +41,4 @@ public class ExcelImporterTest {
 		assertTrue(firstRow.length > 0);
 		assertEquals("suilink", firstRow[0]);
 	}
-
 }

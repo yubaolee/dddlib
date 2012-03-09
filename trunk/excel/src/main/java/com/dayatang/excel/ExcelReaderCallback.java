@@ -2,6 +2,6 @@ package com.dayatang.excel;
 
 import jxl.Workbook;
 
-public interface ExcelCallback<T> {
+public interface ExcelReaderCallback<T> {
 	T doInJxl(Workbook workbook);
 }
