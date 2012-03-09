@@ -140,7 +140,7 @@ public class ExcelReader {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public Object readCellValue(final int sheetIndex, final int row, final int col) throws IOException {
+	public Object readCellValue(final int sheetIndex, final int row, final int col) throws Exception {
 		return excelTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override
@@ -160,7 +160,7 @@ public class ExcelReader {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public Object readCellValue(final String sheetName, final int row, final int col) throws IOException {
+	public Object readCellValue(final String sheetName, final int row, final int col) throws Exception {
 		return excelTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override
@@ -178,7 +178,7 @@ public class ExcelReader {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public String getSheetName(final int sheetIndex) throws IOException {
+	public String getSheetName(final int sheetIndex) throws Exception {
 		return excelTemplate.execute(new ExcelReaderCallback<String>() {
 
 			@Override

@@ -1,11 +1,16 @@
 package com.dayatang.excel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -70,12 +75,36 @@ public class ExcelWriter {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
-			public void doInPoi(HSSFWorkbook workbook) {
+			public void doInPoi(HSSFWorkbook workbook) throws FileNotFoundException {
 				HSSFSheet sheet = workbook.getSheet(sheetName);
 				if (sheet == null) {
 					sheet = workbook.createSheet(sheetName);
 				}
 				write(sheet, rowFrom, colFrom, data);
+				exportTo(workbook, new FileOutputStream(System.getProperty("user.home")+File.separator+"test.xls"));
+			}
+
+			private void exportTo(HSSFWorkbook workbook, FileOutputStream fileOutputStream) {
+				FileOutputStream outputStream = null;  
+		        try {  
+		            outputStream = new FileOutputStream(System.getProperty("user.home")+File.separator+"test.xls");  
+		            workbook.write(outputStream);  
+		            outputStream.flush();  
+		            outputStream.close();  
+		        } catch (FileNotFoundException e) {  
+		            System.out.println(e);;  
+		        } catch (IOException e) {  
+		            System.out.println(e);;  
+		        } finally {  
+		            if (outputStream!=null) {  
+		                try {  
+		                    outputStream.close();  
+		                    outputStream = null;  
+		                } catch (IOException e) {  
+		                    System.out.println(e);;  
+		                }  
+		            }  
+		        }  				
 			}
 		});
 	}
@@ -88,7 +117,7 @@ public class ExcelWriter {
 	 * @param value
 	 * @throws Exception
 	 */
-	public void writeCellContents(final int sheetIndex, final int row, final int col, final Object value) throws Exception {
+	public void write(final int sheetIndex, final int row, final int col, final Object value) throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override
@@ -116,8 +145,10 @@ public class ExcelWriter {
 	}
 
 	private void write(HSSFSheet sheet, int rowIndex, int colIndex, Object data) {
+		System.out.println( rowIndex + ":" + colIndex + ":" + data);
 		HSSFRow row = sheet.createRow(rowIndex);
 		HSSFCell cell = row.createCell(colIndex);
+		//cell.setCellStyle(cellStyle);
 		setCellValue(cell, data);
 	}
 
@@ -127,17 +158,30 @@ public class ExcelWriter {
 			return;
 		}
 		if (data instanceof Number) {
-			cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
 			cell.setCellValue(((Number) data).doubleValue());
+			return;
 		} 
 		if (data instanceof Boolean) {
-			cell.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
 			cell.setCellValue(((Boolean) data).booleanValue());
+			return;
 		}
 		if (data instanceof Date) {
-			cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue((Date) data);
+			return;
 		}
 		cell.setCellValue(new HSSFRichTextString(data.toString()));
+	}
+	
+	private HSSFCellStyle getCellStyle(HSSFWorkbook workbook) {
+		 HSSFFont font = workbook.createFont();  
+	        // 把字体颜色设置为红色  
+	        font.setColor(HSSFFont.COLOR_NORMAL);  
+	        // 把字体设置为粗体  
+	        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);  
+	        // 创建格式  
+	        HSSFCellStyle cellStyle = workbook.createCellStyle();  
+	        // 把创建的字体付加于格式  
+	        cellStyle.setFont(font); 
+	        return cellStyle;
 	}
 }

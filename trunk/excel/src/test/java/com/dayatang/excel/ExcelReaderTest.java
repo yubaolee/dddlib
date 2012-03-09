@@ -18,7 +18,7 @@ public class ExcelReaderTest {
 	}
 
 	@Test
-	public void testExcelImporterFile() throws IOException {
+	public void testExcelImporterFile() throws Exception {
 		assertEquals("Company", importer.getSheetName(0));
 	}
 
