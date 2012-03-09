@@ -37,8 +37,8 @@ public class ExcelWriter {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public static ExcelWriter toOutputStream(OutputStream out) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.toOutputStream(out));
+	public static ExcelWriter to(OutputStream out) throws BiffException, IOException {
+		return new ExcelWriter(ExcelWriterTemplate.to(out));
 	}
 
 	/**
@@ -48,8 +48,18 @@ public class ExcelWriter {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public static ExcelWriter toFile(File file) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.toFile(file));
+	public static ExcelWriter to(File file) throws BiffException, IOException {
+		return new ExcelWriter(ExcelWriterTemplate.to(file));
+	}
+	
+	public ExcelWriter setTemplate(File templateFile) throws BiffException, IOException {
+		excelTemplate.setTemplate(templateFile);
+		return this;
+	}
+	
+	public ExcelWriter setTemplateFromInputStream(InputStream inputStream) throws BiffException, IOException {
+		excelTemplate.setTemplate(inputStream);
+		return this;
 	}
 
 	/**
@@ -66,7 +76,13 @@ public class ExcelWriter {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				write(workbook.getSheet(sheetIndex), rowFrom, colFrom, data);
+				WritableSheet sheet;
+				if (workbook.getNumberOfSheets() == 0) {
+					sheet = workbook.createSheet("sheet1", 0);
+				} else {
+					sheet = workbook.getSheet(sheetIndex);
+				}
+				write(sheet, rowFrom, colFrom, data);
 			}
 		});
 	}
@@ -85,10 +101,13 @@ public class ExcelWriter {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				System.out.println(sheetName);
-				System.out.println(workbook.getSheet(sheetName).getColumns());
-				System.out.println(workbook.getSheet(sheetName).getRows());
-				write(workbook.getSheet(sheetName), rowFrom, colFrom, data);
+				WritableSheet sheet;
+				if (workbook.getNumberOfSheets() == 0) {
+					sheet = workbook.createSheet(sheetName, 0);
+				} else {
+					sheet = workbook.getSheet(sheetName);
+				}
+				write(sheet, rowFrom, colFrom, data);
 			}
 		});
 	}
@@ -99,13 +118,13 @@ public class ExcelWriter {
 		for (Object[] dataRow : data) {
 			int col = colFrom;
 			for (Object dataCell : dataRow) {
-				write(sheet, col++, row, dataCell);
+				write(sheet, row, col++, dataCell);
 			}
 			row++;
 		}
 	}
 
-	private void write(WritableSheet sheet, int col, int row, Object data) throws RowsExceededException,
+	private void write(WritableSheet sheet, int row, int col, Object data) throws RowsExceededException,
 			WriteException {
 		if (data == null) {
 			sheet.addCell(new Label(col, row, ""));
@@ -143,37 +162,4 @@ public class ExcelWriter {
 			}
 		});
 	}	
-	
-	
-	public void createSheet(final String... sheetNames) throws Exception {
-		excelTemplate.execute(new ExcelWriterCallback() {
-			
-			@Override
-			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException, IOException {
-				for (int i = 0; i < sheetNames.length; i++) {
-					workbook.createSheet(sheetNames[i], i);
-				}
-			}
-		});
-	}
-	
-	public ExcelWriter setTemplateFromFile(File templateFile) throws BiffException, IOException {
-		excelTemplate.setTemplateFromFile(templateFile);
-		return this;
-	}
-	
-	public ExcelWriter setTemplateFromClasspath(String pathname) throws BiffException, IOException {
-		excelTemplate.setTemplateFromClasspath(pathname);
-		return this;
-	}
-	
-	public ExcelWriter setTemplateFromFileSystem(String pathname) throws BiffException, IOException {
-		excelTemplate.setTemplateFromFileSystem(pathname);
-		return this;
-	}
-	
-	public ExcelWriter setTemplateFromInputStream(InputStream inputStream) throws BiffException, IOException {
-		excelTemplate.setTemplateFromInputStream(inputStream);
-		return this;
-	}
 }
