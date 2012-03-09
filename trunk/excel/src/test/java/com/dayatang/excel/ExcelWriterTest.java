@@ -13,23 +13,24 @@ import org.junit.Test;
 
 public class ExcelWriterTest {
 
-	private String file;
+	private File file;
 	private ExcelWriter instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		file = getClass().getResource("/export.xls").getFile();
-		assertTrue(new File(file).exists());
-		instance = ExcelWriter.fromFileSystem(file);
+		String fileName = getClass().getResource("/export.xls").getFile();
+		file = new File(fileName);
+		instance = ExcelWriter.toFile(file).setTemplateFromClasspath("/import.xls");
 	}
 
 	@Test
 	public void testExportData() throws Exception {
 		List<Object[]> data = createData();
-		instance.createSheet("Company", "Dept", "Job", "Post", "Employee");
-		instance.writer("Company", 0, 0, data);
-		ExcelReader reader = ExcelReader.fromFileSystem(file);
-		String sn = reader.readCellContents("Company", 0, 2).toString();
+		//instance.createSheet("Company", "Dept", "Job", "Post", "Employee");
+		instance = ExcelWriter.toFile(file).setTemplateFromClasspath("/import.xls");
+		instance.write("Company", 0, 0, data);
+		ExcelReader reader = ExcelReader.fromFile(file);
+		String sn = reader.readCellValue("Company", 0, 2).toString();
 		assertEquals("dayatang", sn);
 	}
 

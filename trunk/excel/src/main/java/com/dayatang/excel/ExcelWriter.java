@@ -2,6 +2,7 @@ package com.dayatang.excel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
@@ -36,21 +37,10 @@ public class ExcelWriter {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public static ExcelWriter fromOutputStream(OutputStream out) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.fromOutputStream(out));
+	public static ExcelWriter toOutputStream(OutputStream out) throws BiffException, IOException {
+		return new ExcelWriter(ExcelWriterTemplate.toOutputStream(out));
 	}
 
-	/**
-	 * 从文件中生成ExcelWriter
-	 * @param pathname
-	 * @return
-	 * @throws BiffException
-	 * @throws IOException
-	 */
-	public static ExcelWriter fromFileSystem(String pathname) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.fromFileSystem(pathname));
-	}
-	
 	/**
 	 * 从文件中生成ExcelWriter
 	 * @param file
@@ -58,8 +48,8 @@ public class ExcelWriter {
 	 * @throws BiffException
 	 * @throws IOException
 	 */
-	public static ExcelWriter fromFile(File file) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.fromFile(file));
+	public static ExcelWriter toFile(File file) throws BiffException, IOException {
+		return new ExcelWriter(ExcelWriterTemplate.toFile(file));
 	}
 
 	/**
@@ -70,13 +60,13 @@ public class ExcelWriter {
 	 * @param data
 	 * @throws Exception
 	 */
-	public void writer(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data)
+	public void write(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data)
 			throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				writer(workbook.getSheet(sheetIndex), rowFrom, colFrom, data);
+				write(workbook.getSheet(sheetIndex), rowFrom, colFrom, data);
 			}
 		});
 	}
@@ -89,30 +79,33 @@ public class ExcelWriter {
 	 * @param data
 	 * @throws Exception
 	 */
-	public void writer(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data)
+	public void write(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data)
 			throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				writer(workbook.getSheet(sheetName), rowFrom, colFrom, data);
+				System.out.println(sheetName);
+				System.out.println(workbook.getSheet(sheetName).getColumns());
+				System.out.println(workbook.getSheet(sheetName).getRows());
+				write(workbook.getSheet(sheetName), rowFrom, colFrom, data);
 			}
 		});
 	}
 
-	private void writer(WritableSheet sheet, int rowFrom, int colFrom, List<Object[]> data)
+	private void write(WritableSheet sheet, int rowFrom, int colFrom, List<Object[]> data)
 			throws RowsExceededException, WriteException {
 		int row = rowFrom;
 		for (Object[] dataRow : data) {
 			int col = colFrom;
 			for (Object dataCell : dataRow) {
-				writer(sheet, col++, row, dataCell);
+				write(sheet, col++, row, dataCell);
 			}
 			row++;
 		}
 	}
 
-	private void writer(WritableSheet sheet, int col, int row, Object data) throws RowsExceededException,
+	private void write(WritableSheet sheet, int col, int row, Object data) throws RowsExceededException,
 			WriteException {
 		if (data == null) {
 			sheet.addCell(new Label(col, row, ""));
@@ -146,7 +139,7 @@ public class ExcelWriter {
 			@Override
 			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
 				WritableSheet sheet = workbook.getSheet(sheetIndex);
-				writer(sheet, col, row, value);
+				write(sheet, col, row, value);
 			}
 		});
 	}	
@@ -156,11 +149,31 @@ public class ExcelWriter {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
-			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
+			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException, IOException {
 				for (int i = 0; i < sheetNames.length; i++) {
 					workbook.createSheet(sheetNames[i], i);
 				}
 			}
 		});
+	}
+	
+	public ExcelWriter setTemplateFromFile(File templateFile) throws BiffException, IOException {
+		excelTemplate.setTemplateFromFile(templateFile);
+		return this;
+	}
+	
+	public ExcelWriter setTemplateFromClasspath(String pathname) throws BiffException, IOException {
+		excelTemplate.setTemplateFromClasspath(pathname);
+		return this;
+	}
+	
+	public ExcelWriter setTemplateFromFileSystem(String pathname) throws BiffException, IOException {
+		excelTemplate.setTemplateFromFileSystem(pathname);
+		return this;
+	}
+	
+	public ExcelWriter setTemplateFromInputStream(InputStream inputStream) throws BiffException, IOException {
+		excelTemplate.setTemplateFromInputStream(inputStream);
+		return this;
 	}
 }
