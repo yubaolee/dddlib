@@ -1,43 +1,35 @@
 package com.dayatang.excel;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
-
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ExcelExporterTest {
+public class ExcelWriterTest {
 
-	private ExcelExporter exporter;
+	private String file;
+	private ExcelWriter instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		String file = getClass().getResource("/export.xls").getFile();
-		exporter = new ExcelExporter(new File(file));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		exporter.close();
+		file = getClass().getResource("/export.xls").getFile();
+		assertTrue(new File(file).exists());
+		instance = ExcelWriter.fromFileSystem(file);
 	}
 
 	@Test
-	public void testExportData() throws RowsExceededException, WriteException {
+	public void testExportData() throws Exception {
 		List<Object[]> data = createData();
-		exporter.createSheet("Company", "Dept", "Job", "Post", "Employee");
-		exporter.exportData("Company", 0, 0, data);
-		WritableWorkbook workbook = exporter.getWorkbook();
-		String sn = workbook.getSheet("Company").getCell(0, 2).getContents();
+		instance.createSheet("Company", "Dept", "Job", "Post", "Employee");
+		instance.writerData("Company", 0, 0, data);
+		ExcelReader reader = ExcelReader.fromFileSystem(file);
+		String sn = reader.readCellContents("Company", 0, 2).toString();
 		assertEquals("dayatang", sn);
 	}
 
