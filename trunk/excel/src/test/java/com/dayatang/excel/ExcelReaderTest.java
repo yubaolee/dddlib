@@ -26,7 +26,7 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testGetDataIntIntIntInt() throws Exception {
-		List<Object[]> data = importer.getData(0, 1, 0, 6);
+		List<Object[]> data = importer.read(0, 1, 0, 6);
 		assertFalse(data.isEmpty());
 		Object[] firstRow = data.get(0);
 		assertTrue(firstRow.length > 0);
@@ -35,7 +35,7 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testGetDataStringIntIntInt() throws Exception {
-		List<Object[]> data = importer.getData("Company", 1, 0, 6);
+		List<Object[]> data = importer.read("Company", 1, 0, 6);
 		assertFalse(data.isEmpty());
 		Object[] firstRow = data.get(0);
 		assertTrue(firstRow.length > 0);
