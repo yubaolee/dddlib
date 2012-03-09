@@ -1,21 +1,15 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
-import jxl.read.biff.BiffException;
-import jxl.write.DateFormat;
-import jxl.write.DateTime;
-import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Excel书写类。向Excel文件中填写内容
@@ -25,41 +19,17 @@ import jxl.write.biff.RowsExceededException;
 public class ExcelWriter {
 	
 	private ExcelWriterTemplate excelTemplate;
-	
-	private ExcelWriter(ExcelWriterTemplate excelTemplate) {
-		this.excelTemplate = excelTemplate;
+
+	public ExcelWriter(File file) {
+		excelTemplate = new ExcelWriterTemplate(file);
 	}
 	
-	/**
-	 * 从输出流中生成ExcelWriter
-	 * @param out
-	 * @return
-	 * @throws BiffException
-	 * @throws IOException
-	 */
-	public static ExcelWriter to(OutputStream out) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.to(out));
+	public ExcelWriter(OutputStream out) {
+		excelTemplate = new ExcelWriterTemplate(out);
 	}
 
-	/**
-	 * 从文件中生成ExcelWriter
-	 * @param file
-	 * @return
-	 * @throws BiffException
-	 * @throws IOException
-	 */
-	public static ExcelWriter to(File file) throws BiffException, IOException {
-		return new ExcelWriter(ExcelWriterTemplate.to(file));
-	}
-	
-	public ExcelWriter setTemplate(File templateFile) throws BiffException, IOException {
-		excelTemplate.setTemplate(templateFile);
-		return this;
-	}
-	
-	public ExcelWriter setTemplateFromInputStream(InputStream inputStream) throws BiffException, IOException {
-		excelTemplate.setTemplate(inputStream);
-		return this;
+	public ExcelWriter(File file, OutputStream out) {
+		excelTemplate = new ExcelWriterTemplate(file, out);
 	}
 
 	/**
@@ -75,12 +45,12 @@ public class ExcelWriter {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
-			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				WritableSheet sheet;
+			public void doInPoi(HSSFWorkbook workbook) {
+				HSSFSheet sheet;
 				if (workbook.getNumberOfSheets() == 0) {
-					sheet = workbook.createSheet("sheet1", 0);
+					sheet = workbook.createSheet("sheet1");
 				} else {
-					sheet = workbook.getSheet(sheetIndex);
+					sheet = workbook.getSheetAt(sheetIndex);
 				}
 				write(sheet, rowFrom, colFrom, data);
 			}
@@ -100,48 +70,14 @@ public class ExcelWriter {
 		excelTemplate.execute(new ExcelWriterCallback() {
 			
 			@Override
-			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				WritableSheet sheet;
-				if (workbook.getNumberOfSheets() == 0) {
-					sheet = workbook.createSheet(sheetName, 0);
-				} else {
-					sheet = workbook.getSheet(sheetName);
+			public void doInPoi(HSSFWorkbook workbook) {
+				HSSFSheet sheet = workbook.getSheet(sheetName);
+				if (sheet == null) {
+					sheet = workbook.createSheet(sheetName);
 				}
 				write(sheet, rowFrom, colFrom, data);
 			}
 		});
-	}
-
-	private void write(WritableSheet sheet, int rowFrom, int colFrom, List<Object[]> data)
-			throws RowsExceededException, WriteException {
-		int row = rowFrom;
-		for (Object[] dataRow : data) {
-			int col = colFrom;
-			for (Object dataCell : dataRow) {
-				write(sheet, row, col++, dataCell);
-			}
-			row++;
-		}
-	}
-
-	private void write(WritableSheet sheet, int row, int col, Object data) throws RowsExceededException,
-			WriteException {
-		if (data == null) {
-			sheet.addCell(new Label(col, row, ""));
-		}
-		if (data instanceof String) {
-			sheet.addCell(new Label(col, row, (String) data));
-			return;
-		}
-		if (data instanceof Number) {
-			sheet.addCell(new jxl.write.Number(col, row, Double.parseDouble(data.toString())));
-			return;
-		}
-		if (data instanceof Date) {
-			sheet.addCell(new DateTime(col, row, (Date) data, new WritableCellFormat(new DateFormat("yyyy-MM-dd"))));
-			return;
-		}
-		sheet.addCell(new Label(col, row, (data == null ? "" : data.toString())));
 	}
 
 	/**
@@ -156,10 +92,52 @@ public class ExcelWriter {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override
-			public void doInJxl(WritableWorkbook workbook) throws RowsExceededException, WriteException {
-				WritableSheet sheet = workbook.getSheet(sheetIndex);
+			public void doInPoi(HSSFWorkbook workbook) {
+				HSSFSheet sheet;
+				if (workbook.getNumberOfSheets() == 0) {
+					sheet = workbook.createSheet("sheet1");
+				} else {
+					sheet = workbook.getSheetAt(sheetIndex);
+				}
 				write(sheet, col, row, value);
 			}
 		});
 	}	
+
+	private void write(HSSFSheet sheet, int rowFrom, int colFrom, List<Object[]> data) {
+		int row = rowFrom;
+		for (Object[] dataRow : data) {
+			int col = colFrom;
+			for (Object dataCell : dataRow) {
+				write(sheet, row, col++, dataCell);
+			}
+			row++;
+		}
+	}
+
+	private void write(HSSFSheet sheet, int rowIndex, int colIndex, Object data) {
+		HSSFRow row = sheet.createRow(rowIndex);
+		HSSFCell cell = row.createCell(colIndex);
+		setCellValue(cell, data);
+	}
+
+	private void setCellValue(HSSFCell cell, Object data) {
+		if (data == null) {
+			cell.setCellValue("");
+			return;
+		}
+		if (data instanceof Number) {
+			cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+			cell.setCellValue(((Number) data).doubleValue());
+		} 
+		if (data instanceof Boolean) {
+			cell.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+			cell.setCellValue(((Boolean) data).booleanValue());
+		}
+		if (data instanceof Date) {
+			cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+			cell.setCellValue((Date) data);
+		}
+		cell.setCellValue(new HSSFRichTextString(data.toString()));
+	}
 }
