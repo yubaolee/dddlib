@@ -2,7 +2,7 @@ package com.dayatang.excel;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,7 +14,8 @@ public class ExcelReaderTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		importer = ExcelReader.fromClasspath("/import.xls");
+		String excelFile = getClass().getResource("/import.xls").toURI().toURL().getFile();
+		importer = new ExcelReader(new File(excelFile));
 	}
 
 	@Test
