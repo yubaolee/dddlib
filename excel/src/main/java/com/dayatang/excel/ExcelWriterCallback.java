@@ -1,7 +1,7 @@
 package com.dayatang.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public interface ExcelWriterCallback {
-	void doInPoi(HSSFWorkbook workbook) throws Exception;
+	void doInPoi(Workbook workbook) throws Exception;
 }

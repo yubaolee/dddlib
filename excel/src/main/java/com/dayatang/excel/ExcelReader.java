@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * Excel读取工具
@@ -18,27 +18,15 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * 
  */
 public class ExcelReader {
+	
+	private ExcelReaderTemplate readerTemplate;
 
-	private ExcelReaderTemplate excelTemplate;
-
-	private ExcelReader(ExcelReaderTemplate excelTemplate) {
-		this.excelTemplate = excelTemplate;
+	public ExcelReader(InputStream in, Class<? extends Workbook> docType) {
+		readerTemplate = new ExcelReaderTemplate(in, docType);
 	}
-
-	public static ExcelReader fromInputStream(InputStream in) throws IOException {
-		return new ExcelReader(ExcelReaderTemplate.fromInputStream(in));
-	}
-
-	public static ExcelReader fromClasspath(String pathname) throws IOException {
-		return new ExcelReader(ExcelReaderTemplate.fromClasspath(pathname));
-	}
-
-	public static ExcelReader fromFileSystem(String pathname) throws IOException {
-		return new ExcelReader(ExcelReaderTemplate.fromFileSystem(pathname));
-	}
-
-	public static ExcelReader fromFile(File file) throws IOException {
-		return new ExcelReader(ExcelReaderTemplate.fromFile(file));
+	
+	public ExcelReader(File excelFile) {
+		readerTemplate = new ExcelReaderTemplate(excelFile);
 	}
 
 	/**
@@ -54,10 +42,10 @@ public class ExcelReader {
 	 */
 	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int colCount)
 			throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
+		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
-			public List<Object[]> doInPoi(HSSFWorkbook workbook) {
+			public List<Object[]> doInPoi(Workbook workbook) {
 				return read(workbook.getSheetAt(sheetIndex), rowFrom, colFrom, colCount).getData();
 			}
 		});
@@ -77,9 +65,9 @@ public class ExcelReader {
 	 */
 	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int rowCount,
 			final int colCount) throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
+		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 			@Override
-			public List<Object[]> doInPoi(HSSFWorkbook workbook) {
+			public List<Object[]> doInPoi(Workbook workbook) {
 				return read(workbook.getSheetAt(sheetIndex), rowFrom, colFrom, rowCount, colCount).getData();
 			}
 		});
@@ -98,10 +86,10 @@ public class ExcelReader {
 	 */
 	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int colCount)
 			throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
+		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
-			public List<Object[]> doInPoi(HSSFWorkbook workbook) {
+			public List<Object[]> doInPoi(Workbook workbook) {
 				return read(workbook.getSheet(sheetName), rowFrom, colFrom, colCount).getData();
 			}
 		});
@@ -121,10 +109,10 @@ public class ExcelReader {
 	 */
 	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int rowCount,
 			final int colCount) throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
+		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
-			public List<Object[]> doInPoi(HSSFWorkbook workbook) {
+			public List<Object[]> doInPoi(Workbook workbook) {
 				return read(workbook.getSheet(sheetName), rowFrom, colFrom, rowCount, colCount).getData();
 			}
 		});
@@ -141,10 +129,10 @@ public class ExcelReader {
 	 * @throws IOException
 	 */
 	public Object readCellValue(final int sheetIndex, final int row, final int col) throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<Object>() {
+		return readerTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override
-			public Object doInPoi(HSSFWorkbook workbook) {
+			public Object doInPoi(Workbook workbook) {
 				return getCellValue(workbook.getSheetAt(sheetIndex).getRow(row).getCell(col));
 			}
 		});
@@ -161,10 +149,10 @@ public class ExcelReader {
 	 * @throws IOException
 	 */
 	public Object readCellValue(final String sheetName, final int row, final int col) throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<Object>() {
+		return readerTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override
-			public Object doInPoi(HSSFWorkbook workbook) {
+			public Object doInPoi(Workbook workbook) {
 				return getCellValue(workbook.getSheet(sheetName).getRow(row).getCell(col));
 			}
 		});
@@ -179,10 +167,10 @@ public class ExcelReader {
 	 * @throws IOException
 	 */
 	public String getSheetName(final int sheetIndex) throws Exception {
-		return excelTemplate.execute(new ExcelReaderCallback<String>() {
+		return readerTemplate.execute(new ExcelReaderCallback<String>() {
 
 			@Override
-			public String doInPoi(HSSFWorkbook workbook) {
+			public String doInPoi(Workbook workbook) {
 				return workbook.getSheetAt(sheetIndex).getSheetName();
 			}
 		});
@@ -195,32 +183,32 @@ public class ExcelReader {
 	 * @param colTo
 	 * @return
 	 */
-	private SheetRange read(final HSSFSheet sheet, final int rowFrom, final int colFrom, final int rowCount,
+	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int rowCount,
 			final int colCount) {
 		int colTo = colFrom + colCount;
 		SheetRange result = new SheetRange(rowCount, colCount);
 		for (int rowIndex = rowFrom; rowIndex < rowCount; rowIndex++) {
-			HSSFRow row = sheet.getRow(rowIndex);
+			Row row = sheet.getRow(rowIndex);
 			for (int colIndex = colFrom; colIndex < colTo; colIndex++) {
-				HSSFCell cell = row.getCell(colIndex);
+				Cell cell = row.getCell(colIndex);
 				result.addData(getCellValue(cell));
 			}
 		}
 		return result;
 	}
 
-	private Object getCellValue(HSSFCell cell) {
+	private Object getCellValue(Cell cell) {
 		if (cell == null) {
 			return null;
 		}
 		switch (cell.getCellType()) {
-		case HSSFCell.CELL_TYPE_FORMULA:
+		case Cell.CELL_TYPE_FORMULA:
 			return cell.getStringCellValue();
-		case HSSFCell.CELL_TYPE_NUMERIC:
+		case Cell.CELL_TYPE_NUMERIC:
 			return cell.getNumericCellValue();
-		case HSSFCell.CELL_TYPE_STRING:
+		case Cell.CELL_TYPE_STRING:
 			return cell.getStringCellValue();
-		case HSSFCell.CELL_TYPE_BOOLEAN:
+		case Cell.CELL_TYPE_BOOLEAN:
 			return cell.getBooleanCellValue();
 		default:
 			return cell.getStringCellValue();
@@ -234,12 +222,12 @@ public class ExcelReader {
 	 * @param colTo
 	 * @return
 	 */
-	private SheetRange read(final HSSFSheet sheet, final int rowFrom, final int colFrom, final int colCount) {
+	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int colCount) {
 		int rowCount = getRowCount(sheet, rowFrom, colFrom, colFrom + colCount);
 		return read(sheet, rowFrom, colFrom, rowCount, colCount);
 	}
 
-	private int getRowCount(HSSFSheet sheet, int rowFrom, int colFrom, int colTo) {
+	private int getRowCount(Sheet sheet, int rowFrom, int colFrom, int colTo) {
 		int result = 0;
 		for (int rowIndex = rowFrom; rowIndex < sheet.getLastRowNum(); rowIndex++) {
 			boolean isBlank = true;

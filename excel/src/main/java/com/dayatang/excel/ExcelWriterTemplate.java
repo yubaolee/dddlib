@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * Excel模板类。用于执行打开和关闭工作簿等公共行为。
@@ -33,7 +34,7 @@ public class ExcelWriterTemplate {
 	}
 	
 	public void execute(ExcelWriterCallback callback) throws Exception {
-		HSSFWorkbook workbook;
+		Workbook workbook;
 		InputStream in = null;
 		if (file == null) {
 			workbook = new HSSFWorkbook();
