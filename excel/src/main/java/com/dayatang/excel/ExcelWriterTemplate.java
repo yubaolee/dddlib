@@ -1,7 +1,9 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -14,42 +16,31 @@ import org.apache.poi.ss.usermodel.Workbook;
  *
  */
 public class ExcelWriterTemplate {
-
-	private File file;
+	
+	private Workbook in;
 	private OutputStream out;
 
-	public ExcelWriterTemplate(File file) {
-		this.file = file;
+	public ExcelWriterTemplate(File outputFile) throws FileNotFoundException {
+		out = new FileOutputStream(outputFile);
 	}
 	
 	public ExcelWriterTemplate(OutputStream out) {
-		super();
 		this.out = out;
 	}
 
-	public ExcelWriterTemplate(File file, OutputStream out) {
-		super();
-		this.file = file;
-		this.out = out;
+	public void setSource(File sourceFile) throws FileNotFoundException, IOException {
+		in = WorkbookFactory.createWorkbook(sourceFile);
+	}
+	
+	public void setSource(InputStream in, Class<? extends Workbook> docType) throws IOException {
+		this.in = WorkbookFactory.createWorkbook(in, docType);
 	}
 	
 	public void execute(ExcelWriterCallback callback) throws Exception {
-		Workbook workbook;
-		InputStream in = null;
-		if (file == null) {
-			workbook = new HSSFWorkbook();
-		} else {
-			in = new FileInputStream(file);
-			workbook = new HSSFWorkbook(in);
+		if (in == null) {
+			in = new HSSFWorkbook();
 		}
-		try {
-			callback.doInPoi(workbook);
-		} finally {
-			if (in != null) {
-				in.close();
-			} else {
-				workbook.write(out);
-			}
-		}
+		callback.doInPoi(in);
+		in.write(out);
 	}
 }
