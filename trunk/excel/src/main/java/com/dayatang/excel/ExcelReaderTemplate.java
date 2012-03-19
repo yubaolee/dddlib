@@ -1,9 +1,9 @@
 package com.dayatang.excel;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -16,45 +16,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  */
 public class ExcelReaderTemplate {
+	private Workbook workbook;
 
-	private Class<? extends Workbook> docType = HSSFWorkbook.class;
-	
-	//代表Excel文件内容的输入流
-	private InputStream in;
-	
-	//执行Excel操作后是否需要关闭in
-	private boolean needCloseStream = false;
-
-	public ExcelReaderTemplate(File excelFile) {
+	public ExcelReaderTemplate(File excelFile) throws FileNotFoundException, IOException {
 		String extensionName = excelFile.getName();
 		if (extensionName.endsWith(".xlsx") || extensionName.endsWith(".XLSX")) {
-			docType = XSSFWorkbook.class;
+			workbook = new XSSFWorkbook(new FileInputStream(excelFile));
 		} else {
-			docType = HSSFWorkbook.class;
-		}
-		try {
-			in = new BufferedInputStream(new FileInputStream(excelFile));
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("File '" + excelFile.getAbsolutePath() + "' not found.");
+			workbook = new HSSFWorkbook(new FileInputStream(excelFile));
 		}
 	}
 
-	public ExcelReaderTemplate(InputStream in, Class<? extends Workbook> docType) {
-		this.in = new BufferedInputStream(in);
-		this.docType = docType;
-	}
-
-	public <T> T execute(ExcelReaderCallback<T> callback) throws Exception {
-		Workbook workbook;
+	public ExcelReaderTemplate(InputStream in, Class<? extends Workbook> docType) throws IOException {
 		if (docType == XSSFWorkbook.class) {
 			workbook = new XSSFWorkbook(in);
 		} else {
 			workbook = new HSSFWorkbook(in);
 		}
-		T result = callback.doInPoi(workbook);
-		if (needCloseStream) {
-			in.close();
-		}
-		return result;
+	}
+
+	public <T> T execute(ExcelReaderCallback<T> callback) throws Exception {
+		return callback.doInPoi(workbook);
 	}
 }

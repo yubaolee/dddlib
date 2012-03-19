@@ -1,6 +1,7 @@
 package com.dayatang.excel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -21,11 +22,11 @@ public class ExcelReader {
 	
 	private ExcelReaderTemplate readerTemplate;
 
-	public ExcelReader(InputStream in, Class<? extends Workbook> docType) {
+	public ExcelReader(InputStream in, Class<? extends Workbook> docType) throws IOException {
 		readerTemplate = new ExcelReaderTemplate(in, docType);
 	}
 	
-	public ExcelReader(File excelFile) {
+	public ExcelReader(File excelFile) throws FileNotFoundException, IOException {
 		readerTemplate = new ExcelReaderTemplate(excelFile);
 	}
 
