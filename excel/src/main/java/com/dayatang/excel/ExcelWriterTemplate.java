@@ -42,11 +42,14 @@ public class ExcelWriterTemplate {
 			in = new FileInputStream(file);
 			workbook = new HSSFWorkbook(in);
 		}
-		callback.doInPoi(workbook);
-		if (in != null) {
-			in.close();
-		} else {
-			workbook.write(out);
+		try {
+			callback.doInPoi(workbook);
+		} finally {
+			if (in != null) {
+				in.close();
+			} else {
+				workbook.write(out);
+			}
 		}
 	}
 }
