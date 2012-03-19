@@ -19,13 +19,16 @@ public class ExcelWriterTemplate {
 	
 	private Workbook in;
 	private OutputStream out;
+	private boolean needCloseStream;
 
 	public ExcelWriterTemplate(File outputFile) throws FileNotFoundException {
 		out = new FileOutputStream(outputFile);
+		needCloseStream = true;
 	}
 	
 	public ExcelWriterTemplate(OutputStream out) {
 		this.out = out;
+		needCloseStream = false;
 	}
 
 	public void setSource(File sourceFile) throws FileNotFoundException, IOException {
@@ -40,7 +43,13 @@ public class ExcelWriterTemplate {
 		if (in == null) {
 			in = new HSSFWorkbook();
 		}
-		callback.doInPoi(in);
-		in.write(out);
+		try {
+			callback.doInPoi(in);
+			in.write(out);
+		} finally {
+			if (needCloseStream) {
+				out.close();
+			}
+		}
 	}
 }
