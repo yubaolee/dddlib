@@ -89,6 +89,8 @@ public class ExcelWriter {
 					sheet = workbook.createSheet(sheetName);
 				}
 				write(sheet, rowFrom, colFrom, data);
+				
+				
 			}
 		});
 	}
@@ -102,7 +104,7 @@ public class ExcelWriter {
 	 * @param value
 	 * @throws Exception
 	 */
-	public void write(final int sheetIndex, final int row, final int col, final Object value) throws Exception {
+	public void write(final int sheetIndex, final int rowIndex, final int colIndex, final Object value) throws Exception {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override
@@ -113,26 +115,25 @@ public class ExcelWriter {
 				} else {
 					sheet = workbook.getSheetAt(sheetIndex);
 				}
-				write(sheet, row, col, value);
+				Row row = sheet.createRow(rowIndex);
+				Cell cell = row.createCell(colIndex);
+				setCellValue(cell, value);
 			}
 		});
 	}
 
 	private void write(Sheet sheet, int rowFrom, int colFrom, List<Object[]> data) {
-		int row = rowFrom;
+		int rowIndex = rowFrom;
 		for (Object[] dataRow : data) {
-			int col = colFrom;
+			Row row = sheet.createRow(rowIndex);
+			int colIndex = colFrom;
 			for (Object dataCell : dataRow) {
-				write(sheet, row, col++, dataCell);
+				Cell cell = row.createCell(colIndex);
+				setCellValue(cell, dataCell);
+				colIndex++;
 			}
-			row++;
+			rowIndex++;
 		}
-	}
-
-	private void write(Sheet sheet, int rowIndex, int colIndex, Object data) {
-		Row row = sheet.createRow(rowIndex);
-		Cell cell = row.createCell(colIndex);
-		setCellValue(cell, data);
 	}
 
 	private void setCellValue(Cell cell, Object data) {
