@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class ExcelWriter {
 
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private ExcelWriterTemplate excelTemplate;
 
 	public ExcelWriter(File outputFile) throws FileNotFoundException {
@@ -89,8 +90,6 @@ public class ExcelWriter {
 					sheet = workbook.createSheet(sheetName);
 				}
 				write(sheet, rowFrom, colFrom, data);
-				
-				
 			}
 		});
 	}
@@ -141,31 +140,27 @@ public class ExcelWriter {
 			cell.setCellValue("");
 			return;
 		}
-		if (data instanceof Number) {
-			cell.setCellValue(((Number) data).doubleValue());
+		if (data instanceof Date) {
+			cell.setCellValue((Date) data);
+			cell.setCellStyle(getDateStyle(DATE_FORMAT, cell.getRow().getSheet().getWorkbook()));
 			return;
 		}
 		if (data instanceof Boolean) {
 			cell.setCellValue(((Boolean) data).booleanValue());
 			return;
 		}
-		if (data instanceof Date) {
-			cell.setCellValue((Date) data);
+		if (data instanceof Number) {
+			cell.setCellValue(((Number) data).doubleValue());
 			return;
 		}
 		cell.setCellValue(data.toString());
 	}
 
-	private CellStyle getCellStyle(Workbook workbook) {
-		Font font = workbook.createFont();
-		// 把字体颜色设置为红色
-		font.setColor(Font.COLOR_NORMAL);
-		// 把字体设置为粗体
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		// 创建格式
-		CellStyle cellStyle = workbook.createCellStyle();
-		// 把创建的字体付加于格式
-		cellStyle.setFont(font);
-		return cellStyle;
+	private CellStyle getDateStyle(String dateFormat, Workbook workbook) {
+		DataFormat format = workbook.createDataFormat();
+		CellStyle result = workbook.createCellStyle();
+		result.setDataFormat(format.getFormat("yyyy-MM-dd"));
+		return result;
 	}
+
 }
