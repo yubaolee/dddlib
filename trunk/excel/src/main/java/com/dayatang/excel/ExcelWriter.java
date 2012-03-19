@@ -2,8 +2,8 @@ package com.dayatang.excel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
@@ -25,17 +25,23 @@ public class ExcelWriter {
 
 	private ExcelWriterTemplate excelTemplate;
 
-	public ExcelWriter(File file) {
-		excelTemplate = new ExcelWriterTemplate(file);
+	public ExcelWriter(File outputFile) throws FileNotFoundException {
+		excelTemplate = new ExcelWriterTemplate(outputFile);
 	}
 
 	public ExcelWriter(OutputStream out) {
 		excelTemplate = new ExcelWriterTemplate(out);
 	}
 
-	public ExcelWriter(File file, OutputStream out) {
-		excelTemplate = new ExcelWriterTemplate(file, out);
+	public void setSource(File sourceFile) throws FileNotFoundException, IOException {
+		excelTemplate.setSource(sourceFile);
 	}
+	
+	public void setSource(InputStream in, Class<? extends Workbook> docType) throws IOException {
+		excelTemplate.setSource(in, docType);
+	}
+	
+	
 
 	/**
 	 * 用一批数据填写指定工作表中的一个区域
@@ -83,33 +89,6 @@ public class ExcelWriter {
 					sheet = workbook.createSheet(sheetName);
 				}
 				write(sheet, rowFrom, colFrom, data);
-				exportTo(workbook, new FileOutputStream(System.getProperty("user.home") + File.separator + "test.xls"));
-			}
-
-			private void exportTo(Workbook workbook, FileOutputStream fileOutputStream) {
-				FileOutputStream outputStream = null;
-				try {
-					outputStream = new FileOutputStream(System.getProperty("user.home") + File.separator + "test.xls");
-					workbook.write(outputStream);
-					outputStream.flush();
-					outputStream.close();
-				} catch (FileNotFoundException e) {
-					System.out.println(e);
-					;
-				} catch (IOException e) {
-					System.out.println(e);
-					;
-				} finally {
-					if (outputStream != null) {
-						try {
-							outputStream.close();
-							outputStream = null;
-						} catch (IOException e) {
-							System.out.println(e);
-							;
-						}
-					}
-				}
 			}
 		});
 	}
@@ -134,7 +113,7 @@ public class ExcelWriter {
 				} else {
 					sheet = workbook.getSheetAt(sheetIndex);
 				}
-				write(sheet, col, row, value);
+				write(sheet, row, col, value);
 			}
 		});
 	}
@@ -151,10 +130,8 @@ public class ExcelWriter {
 	}
 
 	private void write(Sheet sheet, int rowIndex, int colIndex, Object data) {
-		System.out.println(rowIndex + ":" + colIndex + ":" + data);
 		Row row = sheet.createRow(rowIndex);
 		Cell cell = row.createCell(colIndex);
-		// cell.setCellStyle(cellStyle);
 		setCellValue(cell, data);
 	}
 
