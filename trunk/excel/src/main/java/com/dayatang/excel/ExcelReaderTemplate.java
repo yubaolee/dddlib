@@ -19,8 +19,8 @@ public class ExcelReaderTemplate {
 		workbook = WorkbookFactory.createWorkbook(excelFile);
 	}
 
-	public ExcelReaderTemplate(InputStream in, Class<? extends Workbook> docType) throws IOException {
-		workbook = WorkbookFactory.createWorkbook(in, docType);
+	public ExcelReaderTemplate(InputStream in, Version version) throws IOException {
+		workbook = WorkbookFactory.createWorkbook(in, version);
 	}
 
 	public <T> T execute(ExcelReaderCallback<T> callback) throws Exception {

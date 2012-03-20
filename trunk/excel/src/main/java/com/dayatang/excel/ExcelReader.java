@@ -22,8 +22,8 @@ public class ExcelReader {
 	
 	private ExcelReaderTemplate readerTemplate;
 
-	public ExcelReader(InputStream in, Class<? extends Workbook> docType) throws IOException {
-		readerTemplate = new ExcelReaderTemplate(in, docType);
+	public ExcelReader(InputStream in, Version version) throws IOException {
+		readerTemplate = new ExcelReaderTemplate(in, version);
 	}
 	
 	public ExcelReader(File excelFile) throws FileNotFoundException, IOException {

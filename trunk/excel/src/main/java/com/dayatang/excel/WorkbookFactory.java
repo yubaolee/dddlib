@@ -12,16 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class WorkbookFactory {
 	public static Workbook createWorkbook(File excelFile) throws FileNotFoundException, IOException {
-		String fileName = excelFile.getName().toLowerCase();
-		if (fileName.endsWith(".xlsx")) {
-			return new XSSFWorkbook(new FileInputStream(excelFile));
-		} else {
-			return new HSSFWorkbook(new FileInputStream(excelFile));
-		}
+		return createWorkbook(new FileInputStream(excelFile), Version.as(excelFile.getName()));
 	}
 	
-	public static Workbook createWorkbook(InputStream in, Class<? extends Workbook> docType) throws IOException {
-		if (docType == XSSFWorkbook.class) {
+	public static Workbook createWorkbook(InputStream in, Version version) throws IOException {
+		if (version == Version.XLSX) {
 			return new XSSFWorkbook(in);
 		} else {
 			return new HSSFWorkbook(in);
