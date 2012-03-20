@@ -35,8 +35,8 @@ public class ExcelWriterTemplate {
 		in = WorkbookFactory.createWorkbook(sourceFile);
 	}
 	
-	public void setSource(InputStream in, Class<? extends Workbook> docType) throws IOException {
-		this.in = WorkbookFactory.createWorkbook(in, docType);
+	public void setSource(InputStream in, Version version) throws IOException {
+		this.in = WorkbookFactory.createWorkbook(in, version);
 	}
 	
 	public void execute(ExcelWriterCallback callback) throws Exception {

@@ -38,8 +38,8 @@ public class ExcelWriter {
 		excelTemplate.setSource(sourceFile);
 	}
 	
-	public void setSource(InputStream in, Class<? extends Workbook> docType) throws IOException {
-		excelTemplate.setSource(in, docType);
+	public void setSource(InputStream in, Version version) throws IOException {
+		excelTemplate.setSource(in, version);
 	}
 	
 	
