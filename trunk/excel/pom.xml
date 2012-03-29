@@ -28,6 +28,14 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<testResources>
@@ -38,6 +46,6 @@
 		</testResources>
 	</build>
 	<properties>
-		<poi.version>3.7</poi.version>
+		<poi.version>3.8-beta5</poi.version>
 	</properties>
 </project>

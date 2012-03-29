@@ -11,6 +11,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Excel读取工具
@@ -19,7 +21,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  * 
  */
 public class ExcelReader {
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReader.class);
 	private ExcelReaderTemplate readerTemplate;
 
 	public ExcelReader(InputStream in, Version version) throws IOException {
@@ -202,9 +204,21 @@ public class ExcelReader {
 		if (cell == null) {
 			return null;
 		}
-		switch (cell.getCellType()) {
+		return getCellValue(cell, cell.getCellType());
+	}
+	
+	private Object getCellValue(Cell cell, int cellType) {
+		if (cell == null) {
+			return null;
+		}
+		switch (cellType) {
+		case Cell.CELL_TYPE_BLANK:
+			return null;
+		case Cell.CELL_TYPE_ERROR:
+			LOGGER.error("Error cell found. workbook: ", new Object[] {cell.getRow().getSheet().getWorkbook().toString(), 
+					cell.getRow().getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex()});
 		case Cell.CELL_TYPE_FORMULA:
-			return cell.getStringCellValue();
+			return getCellValue(cell, cell.getCachedFormulaResultType());
 		case Cell.CELL_TYPE_NUMERIC:
 			return cell.getNumericCellValue();
 		case Cell.CELL_TYPE_STRING:
@@ -212,9 +226,10 @@ public class ExcelReader {
 		case Cell.CELL_TYPE_BOOLEAN:
 			return cell.getBooleanCellValue();
 		default:
-			return cell.getStringCellValue();
+			return cell.getRichStringCellValue();
 		}
 	}
+	
 
 	/**
 	 * @param sheet
