@@ -27,9 +27,21 @@ public class ExcelReader {
 	public ExcelReader(InputStream in, Version version) throws IOException {
 		readerTemplate = new ExcelReaderTemplate(in, version);
 	}
-	
+
 	public ExcelReader(File excelFile) throws FileNotFoundException, IOException {
 		readerTemplate = new ExcelReaderTemplate(excelFile);
+	}
+	
+	public List<Object[]> read(final ReadingRange range) throws Exception {
+		
+		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
+
+			@Override
+			public List<Object[]> doInPoi(Workbook workbook) {
+				Sheet sheet = workbook.getSheetAt(range.getSheetIndex());
+				return read(sheet, range.getRowFrom(), range.getRowTo(), range.getColumns(), range.getDataTypes()).getData();
+			}
+		});
 	}
 
 	/**
@@ -43,8 +55,8 @@ public class ExcelReader {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int colCount)
-			throws Exception {
+	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int colCount) throws Exception {
+		
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
@@ -66,8 +78,7 @@ public class ExcelReader {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int rowCount,
-			final int colCount) throws Exception {
+	public List<Object[]> read(final int sheetIndex, final int rowFrom, final int colFrom, final int rowCount, final int colCount) throws Exception {
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 			@Override
 			public List<Object[]> doInPoi(Workbook workbook) {
@@ -87,8 +98,7 @@ public class ExcelReader {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int colCount)
-			throws Exception {
+	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int colCount) throws Exception {
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
@@ -110,8 +120,7 @@ public class ExcelReader {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int rowCount,
-			final int colCount) throws Exception {
+	public List<Object[]> read(final String sheetName, final int rowFrom, final int colFrom, final int rowCount, final int colCount) throws Exception {
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
 			@Override
@@ -186,8 +195,7 @@ public class ExcelReader {
 	 * @param colTo
 	 * @return
 	 */
-	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int rowCount,
-			final int colCount) {
+	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int rowCount, final int colCount) {
 		int colTo = colFrom + colCount;
 		SheetRange result = new SheetRange(rowCount, colCount);
 		for (int rowIndex = rowFrom; rowIndex < rowCount; rowIndex++) {
@@ -206,7 +214,7 @@ public class ExcelReader {
 		}
 		return getCellValue(cell, cell.getCellType());
 	}
-	
+
 	private Object getCellValue(Cell cell, int cellType) {
 		if (cell == null) {
 			return null;
@@ -215,9 +223,9 @@ public class ExcelReader {
 		case Cell.CELL_TYPE_BLANK:
 			return null;
 		case Cell.CELL_TYPE_ERROR:
-			LOGGER.error("Error cell found. workbook: {}, sheet: {}, row: {}, column: {}", 
-					new Object[] {cell.getRow().getSheet().getWorkbook().toString(), 
-					cell.getRow().getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex()});
+			LOGGER.error("Error cell found. workbook: {}, sheet: {}, row: {}, column: {}",
+					new Object[] { cell.getRow().getSheet().getWorkbook().toString(), cell.getRow().getSheet().getSheetName(), cell.getRowIndex(),
+							cell.getColumnIndex() });
 		case Cell.CELL_TYPE_FORMULA:
 			return getCellValue(cell, cell.getCachedFormulaResultType());
 		case Cell.CELL_TYPE_NUMERIC:
@@ -230,7 +238,6 @@ public class ExcelReader {
 			return cell.getRichStringCellValue();
 		}
 	}
-	
 
 	/**
 	 * @param sheet
@@ -259,5 +266,10 @@ public class ExcelReader {
 				return result;
 		}
 		return result;
+	}
+
+	private SheetRange read(Sheet sheetAt, int rowFrom, int rowTo, int[] columns, DataType[] dataTypes) {
+		
+		return null;
 	}
 }
