@@ -215,7 +215,8 @@ public class ExcelReader {
 		case Cell.CELL_TYPE_BLANK:
 			return null;
 		case Cell.CELL_TYPE_ERROR:
-			LOGGER.error("Error cell found. workbook: ", new Object[] {cell.getRow().getSheet().getWorkbook().toString(), 
+			LOGGER.error("Error cell found. workbook: {}, sheet: {}, row: {}, column: {}", 
+					new Object[] {cell.getRow().getSheet().getWorkbook().toString(), 
 					cell.getRow().getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex()});
 		case Cell.CELL_TYPE_FORMULA:
 			return getCellValue(cell, cell.getCachedFormulaResultType());
