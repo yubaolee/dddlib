@@ -12,11 +12,11 @@ public class ReadingRange {
 	
 	public ReadingRange(Builder builder) {
 		this.sheetIndex = builder.sheetIndex;
+		this.sheetName = builder.sheetName;
 		this.rowFrom = builder.rowFrom;
 		this.rowTo = builder.rowTo;
 		this.columns = builder.columns;
 		this.dataTypes = builder.dataTypes;
-		this.sheetName = builder.sheetName;
 	}
 	
 	public int getSheetIndex() {

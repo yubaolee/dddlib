@@ -22,32 +22,73 @@ public class ExcelReaderTest {
 	}
 
 	@Test
-	public void testGetDataIntIntIntInt() throws Exception {
+	public void testReadCellValueWithSheetIndex() throws Exception {
+		Date result = (Date) importer.readCellValue(0, 2, 3, DataType.DATE);
+		assertTrue(DateUtils.isSameDay(result, parseDate(8888, 1, 1)));
+	}
+
+	@Test
+	public void testReadCellValueWithSheetName() throws Exception {
+		Date result = (Date) importer.readCellValue("Company", 2, 3, DataType.DATE);
+		assertTrue(DateUtils.isSameDay(result, parseDate(8888, 1, 1)));
+	}
+	
+	
+	@Test
+	public void testReadColRange() throws Exception {
 		ReadingRange range = new ReadingRange.Builder(0, 1).colRange(0, 5)
 				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
 		List<Object[]> data = importer.read(range);
-		System.out.println(data.size());
-		Object[] firstRow = data.get(0);
-		assertTrue(firstRow.length > 0);
-		assertEquals("suilink", firstRow[0]);
-		Object[] lastRow = data.get(2);
-		assertTrue(DateUtils.isSameDay((Date)lastRow[2], parseDate(2007, 7, 1)));
+		assertEquals(3, data.size());
+		assertEquals("suilink", getData(data, 0, 0, String.class));
+		assertTrue(DateUtils.isSameDay(getData(data, 2, 2, Date.class), parseDate(2007, 7, 1)));
+	}
+	
+	@Test
+	public void testReadColumnNameRange() throws Exception {
+		ReadingRange range = new ReadingRange.Builder(0, 1).colRange("A", "F")
+				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
+		List<Object[]> data = importer.read(range);
+		assertEquals(3, data.size());
+		assertEquals("suilink", getData(data, 0, 0, String.class));
+		assertTrue(DateUtils.isSameDay(getData(data, 2, 2, Date.class), parseDate(2007, 7, 1)));
+	}
+
+	@Test
+	public void testReadColumns() throws Exception {
+		ReadingRange range = new ReadingRange.Builder(0, 1).columns(0, 3)
+				.colTypes(DataType.STRING, DataType.DATE).build();
+		List<Object[]> data = importer.read(range);
+		assertEquals(3, data.size());
+		assertEquals("suilink", getData(data, 0, 0, String.class));
+		assertTrue(DateUtils.isSameDay(getData(data, 2, 1, Date.class), parseDate(8888, 1, 1)));
+	}
+
+	@Test
+	public void testReadColumnNamess() throws Exception {
+		ReadingRange range = new ReadingRange.Builder(0, 1).columns("A", "D")
+				.colTypes(DataType.STRING, DataType.DATE).build();
+		List<Object[]> data = importer.read(range);
+		assertEquals(3, data.size());
+		assertEquals("suilink", getData(data, 0, 0, String.class));
+		assertTrue(DateUtils.isSameDay(getData(data, 2, 1, Date.class), parseDate(8888, 1, 1)));
+	}
+	
+	@Test
+	public void testReadFixedRows() throws Exception {
+		ReadingRange range = new ReadingRange.Builder(0, 1).rowTo(2).colRange(0, 5)
+				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
+		assertEquals(2, importer.read(range).size());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> T getData(List<Object[]> data, int row, int column, Class<T> clazz) {
+		return (T) data.get(row)[column];
 	}
 
 	private Date parseDate(int year, int month, int date) {
 		Calendar result = Calendar.getInstance();
 		result.set(year, month - 1, date);
 		return result.getTime();
-	}
-
-	@Test
-	public void testGetDataStringIntIntInt() throws Exception {
-		ReadingRange range = new ReadingRange.Builder("Company", 1).colRange(0, 5)
-				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
-		List<Object[]> data = importer.read(range);
-		assertFalse(data.isEmpty());
-		Object[] firstRow = data.get(0);
-		assertTrue(firstRow.length > 0);
-		assertEquals("suilink", firstRow[0]);
 	}
 }
