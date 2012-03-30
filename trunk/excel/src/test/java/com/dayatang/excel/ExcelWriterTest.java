@@ -32,7 +32,7 @@ public class ExcelWriterTest {
 		List<Object[]> data = createData();
 		instance.write("Company", 0, 0, data);
 		ExcelReader reader = new ExcelReader(outputFile);
-		String sn = reader.readCellValue("Company", 2, 0).toString();
+		String sn = reader.readCellValue("Company", 2, 0, DataType.STRING).toString();
 		assertEquals("dayatang", sn);
 	}
 
