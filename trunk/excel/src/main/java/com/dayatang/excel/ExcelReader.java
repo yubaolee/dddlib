@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +40,7 @@ public class ExcelReader {
 			@Override
 			public List<Object[]> doInPoi(Workbook workbook) {
 				Sheet sheet = workbook.getSheetAt(range.getSheetIndex());
-				return read(sheet, range.getRowFrom(), range.getRowTo(), range.getColumns(), range.getDataTypes()).getData();
+				return read(sheet, range.getRowFrom(), range.getRowTo(), range.getColumns(), range.getDataTypes());
 			}
 		});
 	}
@@ -82,6 +83,10 @@ public class ExcelReader {
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 			@Override
 			public List<Object[]> doInPoi(Workbook workbook) {
+				
+				
+				
+				
 				return read(workbook.getSheetAt(sheetIndex), rowFrom, colFrom, rowCount, colCount).getData();
 			}
 		});
@@ -188,37 +193,14 @@ public class ExcelReader {
 		});
 	}
 
-	/**
-	 * @param sheet
-	 * @param row
-	 * @param colFrom
-	 * @param colTo
-	 * @return
-	 */
-	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int rowCount, final int colCount) {
-		int colTo = colFrom + colCount;
-		SheetRange result = new SheetRange(rowCount, colCount);
-		for (int rowIndex = rowFrom; rowIndex < rowCount; rowIndex++) {
-			Row row = sheet.getRow(rowIndex);
-			for (int colIndex = colFrom; colIndex < colTo; colIndex++) {
-				Cell cell = row.getCell(colIndex);
-				result.addData(getCellValue(cell));
-			}
-		}
-		return result;
-	}
-
 	private Object getCellValue(Cell cell) {
-		if (cell == null) {
+		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 			return null;
 		}
 		return getCellValue(cell, cell.getCellType());
 	}
 
 	private Object getCellValue(Cell cell, int cellType) {
-		if (cell == null) {
-			return null;
-		}
 		switch (cellType) {
 		case Cell.CELL_TYPE_BLANK:
 			return null;
@@ -237,6 +219,25 @@ public class ExcelReader {
 		default:
 			return cell.getRichStringCellValue();
 		}
+	}
+
+	private Object getCellValue(Cell cell, DataType dataType) {
+		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			return null;
+		}
+		if (dataType == DataType.BOOLEAN) {
+			return cell.getBooleanCellValue();
+		}
+		if (dataType == DataType.DATE) {
+			return cell.getDateCellValue();
+		}
+		if (dataType == DataType.NUMERIC) {
+			return cell.getStringCellValue();
+		}
+		if (dataType == DataType.STRING) {
+			return cell.getStringCellValue();
+		}
+		return null;
 	}
 
 	/**
@@ -268,8 +269,55 @@ public class ExcelReader {
 		return result;
 	}
 
-	private SheetRange read(Sheet sheetAt, int rowFrom, int rowTo, int[] columns, DataType[] dataTypes) {
-		
-		return null;
+	/**
+	 * @param sheet
+	 * @param row
+	 * @param colFrom
+	 * @param colTo
+	 * @return
+	 */
+	private SheetRange read(final Sheet sheet, final int rowFrom, final int colFrom, final int rowCount, final int colCount) {
+		int colTo = colFrom + colCount;
+		SheetRange result = new SheetRange(rowCount, colCount);
+		for (int rowIndex = rowFrom; rowIndex < rowCount; rowIndex++) {
+			Row row = sheet.getRow(rowIndex);
+			for (int colIndex = colFrom; colIndex < colTo; colIndex++) {
+				Cell cell = row.getCell(colIndex);
+				result.addData(getCellValue(cell));
+			}
+		}
+		return result;
+	}
+
+	private List<Object[]> read(Sheet sheet, int rowFrom, int rowTo, int[] columns, DataType[] dataTypes) {
+		List<Object[]> results = new ArrayList<Object[]>();
+		int colCount = columns.length;
+		int lastRow = rowTo < 0 ? getLastRow(sheet, rowFrom, columns) : rowTo;
+		for (int rowIndex = rowFrom; rowIndex <= lastRow; rowIndex++) {
+			Row row = sheet.getRow(rowIndex);
+			Object[] rowData = new Object[colCount];
+			for (int i = 0; i < colCount; i++) {
+				Cell cell = row.getCell(columns[i], Row.CREATE_NULL_AS_BLANK);
+				rowData[i] = dataTypes == null ?  getCellValue(cell) : getCellValue(cell, dataTypes[i]);
+			}
+			results.add(rowData);
+		}
+		return results;
+	}
+
+	private int getLastRow(Sheet sheet, int rowFrom, int[] columns) {
+		int rowIndex = rowFrom;
+		int lastRow = sheet.getLastRowNum();
+		while(rowIndex <= lastRow) {
+			Row row = sheet.getRow(rowIndex);
+			for (int colIndex : columns) {
+				if (row.getCell(colIndex, Row.CREATE_NULL_AS_BLANK).getCellType() != Cell.CELL_TYPE_BLANK) {
+					rowIndex++;
+					break;
+				}
+			}
+			return rowIndex;
+		}
+		return lastRow;
 	}
 }
