@@ -36,7 +36,7 @@ public class ExcelReaderTest {
 	
 	@Test
 	public void testReadColRange() throws Exception {
-		ReadingRange range = new ReadingRange.Builder(0, 1).colRange(0, 5)
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).colRange(0, 5)
 				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
@@ -46,7 +46,7 @@ public class ExcelReaderTest {
 	
 	@Test
 	public void testReadColumnNameRange() throws Exception {
-		ReadingRange range = new ReadingRange.Builder(0, 1).colRange("A", "F")
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).colRange("A", "F")
 				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
@@ -56,7 +56,7 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testReadColumns() throws Exception {
-		ReadingRange range = new ReadingRange.Builder(0, 1).columns(0, 3)
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns(0, 3)
 				.colTypes(DataType.STRING, DataType.DATE).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
@@ -66,7 +66,7 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testReadColumnNamess() throws Exception {
-		ReadingRange range = new ReadingRange.Builder(0, 1).columns("A", "D")
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns("A", "D")
 				.colTypes(DataType.STRING, DataType.DATE).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
@@ -76,7 +76,7 @@ public class ExcelReaderTest {
 	
 	@Test
 	public void testReadFixedRows() throws Exception {
-		ReadingRange range = new ReadingRange.Builder(0, 1).rowTo(2).colRange(0, 5)
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).rowTo(2).colRange(0, 5)
 				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
 		assertEquals(2, importer.read(range).size());
 	}
