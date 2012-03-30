@@ -1,8 +1,11 @@
 package com.dayatang.excel;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ReadingRange {
 
 	private int sheetIndex;
+	private String sheetName;
 	private int rowFrom, rowTo = -1;
 	private int[] columns;
 	private DataType[] dataTypes;
@@ -13,10 +16,15 @@ public class ReadingRange {
 		this.rowTo = builder.rowTo;
 		this.columns = builder.columns;
 		this.dataTypes = builder.dataTypes;
+		this.sheetName = builder.sheetName;
 	}
 	
 	public int getSheetIndex() {
 		return sheetIndex;
+	}
+
+	public String getSheetName() {
+		return sheetName;
 	}
 
 	public int getRowFrom() {
@@ -36,7 +44,8 @@ public class ReadingRange {
 	}
 
 	public static class Builder {
-		private int sheetIndex;
+		private int sheetIndex = -1;
+		private String sheetName;
 		private int rowFrom, rowTo = -1;
 		private int[] columns;
 		private DataType[] dataTypes;
@@ -45,8 +54,18 @@ public class ReadingRange {
 			if (rowFrom < 0) {
 				throw new IllegalArgumentException("First row is less than 0!");
 			}
-			this.sheetIndex = sheetIndex;
 			this.rowFrom = rowFrom;
+			this.sheetIndex = sheetIndex;
+			sheetName = null;
+		}
+		
+		public Builder(String sheetName, int rowFrom) {
+			if (rowFrom < 0) {
+				throw new IllegalArgumentException("First row is less than 0!");
+			}
+			this.rowFrom = rowFrom;
+			this.sheetName = sheetName;
+			sheetIndex = -1;
 		}
 		
 		public Builder rowTo(int rowTo) {
@@ -109,12 +128,15 @@ public class ReadingRange {
 			return results;
 		}
 
-		public Builder colTypes(DataType[] dataTypes) {
+		public Builder colTypes(DataType... dataTypes) {
 			this.dataTypes = dataTypes;
 			return this;
 		}
 		
 		public ReadingRange build() {
+			if (sheetIndex < 0 && StringUtils.isEmpty(sheetName)) {
+				throw new IllegalArgumentException("Sheet name or index needed!");
+			}
 			if (columns == null || columns.length == 0) {
 				throw new IllegalArgumentException("Need one column at least!");
 			}
