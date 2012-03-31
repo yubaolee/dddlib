@@ -93,9 +93,6 @@ public class ExcelReader {
 			Object[] rowData = new Object[colCount];
 			for (int i = 0; i < colCount; i++) {
 				Cell cell = row.getCell(columnIndexes[i], Row.CREATE_NULL_AS_BLANK);
-				System.out.println(columnIndexes.length);
-				System.out.println(columnTypes.length);
-				System.out.println(i);
 				rowData[i] = getCellValue(cell, columnTypes[i]);
 			}
 			results.add(rowData);
@@ -105,6 +102,10 @@ public class ExcelReader {
 
 	private Object getCellValue(Cell cell, DataType dataType) {
 		try{
+			if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+				LOGGER.error("Error cell, row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
+				return null;
+			}
 			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 				return null;
 			}
