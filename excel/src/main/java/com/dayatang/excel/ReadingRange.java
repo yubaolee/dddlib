@@ -7,16 +7,16 @@ public class ReadingRange {
 	private int sheetIndex;
 	private String sheetName;
 	private int rowFrom, rowTo = -1;
-	private int[] columns;
-	private DataType[] dataTypes;
+	private int[] columnIndexes;
+	private DataType[] columnTypes;
 	
 	public ReadingRange(Builder builder) {
 		this.sheetIndex = builder.sheetIndex;
 		this.sheetName = builder.sheetName;
 		this.rowFrom = builder.rowFrom;
 		this.rowTo = builder.rowTo;
-		this.columns = builder.columns;
-		this.dataTypes = builder.dataTypes;
+		this.columnIndexes = builder.columnIndexes;
+		this.columnTypes = builder.columnTypes;
 	}
 	
 	public int getSheetIndex() {
@@ -35,21 +35,20 @@ public class ReadingRange {
 		return rowTo;
 	}
 
-	public int[] getColumns() {
-		return columns;
+	public int[] getColumnIndexes() {
+		return columnIndexes;
 	}
 
-	public DataType[] getDataTypes() {
-		return dataTypes;
+	public DataType[] getColumnTypes() {
+		return columnTypes;
 	}
 
 	public static class Builder {
 		private int sheetIndex = -1;
 		private String sheetName;
 		private int rowFrom = -1, rowTo = -1;
-		private int[] columns;
-		private DataType[] dataTypes;
-		private DataType dataType;
+		private int[] columnIndexes;
+		private DataType[] columnTypes;
 
 		public Builder sheetAt(int sheetIndex) {
 			this.sheetIndex = sheetIndex;
@@ -72,32 +71,45 @@ public class ReadingRange {
 			this.rowTo = rowTo;
 			return this;
 		}
-		
-		public Builder colRange(int colFrom, int colTo) {
-			if (colFrom < 0) {
-				throw new IllegalArgumentException("First column is less than 0!");
+
+
+		public Builder columns(int[] columnIndexes, DataType[] columnTypes) {
+			if (columnIndexes == null || columnTypes == null) {
+				throw new IllegalArgumentException("The columns and types can not be null!");
 			}
-			if (colTo < colFrom) {
-				throw new IllegalArgumentException("Last column is less than first column!");
+			if (columnIndexes.length != columnTypes.length) {
+				throw new IllegalArgumentException("The count of columns and types is not equals!");
 			}
-			int length = colTo - colFrom + 1;
-			columns = new int[length];
-			int colIndex = colFrom;
-			for (int i = 0; i < length; i++) {
-				columns[i] = colIndex++;
+			this.columnIndexes = columnIndexes;
+			this.columnTypes = columnTypes;
+			return this;
+		}
+
+		public Builder columns(String[] columnLabels, DataType[] columnTypes) {
+			if (columnLabels == null || columnTypes == null) {
+				throw new IllegalArgumentException("The columns and types can not be null!");
 			}
+			if (columnLabels.length != columnTypes.length) {
+				throw new IllegalArgumentException("The count of columns and types is not equals!");
+			}
+			this.columnIndexes = convertColumnLabelToIndex(columnLabels);
+			this.columnTypes = columnTypes;
 			return this;
 		}
 		
-		public Builder colRange(String colFrom, String colTo) {
-			return colRange(convertCol(colFrom), convertCol(colTo));
+		private int[] convertColumnLabelToIndex(String[] columnLabels) {
+			int[] results = new int[columnLabels.length];
+			for (int i = 0; i < columnLabels.length; i++) {
+				results[i] = convertColumnLabelToIndex(columnLabels[i]);
+			}
+			return results;
 		}
 
-		private int convertCol(String column) {
-			if (column.length() > 2) {
+		private int convertColumnLabelToIndex(String columnLabel) {
+			if (columnLabel.length() > 2) {
 				throw new IllegalArgumentException("Column index too large!");
 			}
-			String theColumn = column.toUpperCase();
+			String theColumn = columnLabel.toUpperCase();
 			if (theColumn.length() == 1) {
 				int letter = theColumn.charAt(0);
 				return letter - 65;
@@ -105,34 +117,6 @@ public class ReadingRange {
 			int firstLetter = theColumn.charAt(0);
 			int lastLetter = theColumn.charAt(1);
 			return (firstLetter - 64) * 26 + lastLetter - 65;
-		}
-
-		public Builder columns(int... columns) {
-			this.columns = columns;
-			return this;
-		}
-
-		public Builder columns(String... columns) {
-			this.columns = convertCols(columns);
-			return this;
-		}
-		
-		private int[] convertCols(String[] columns) {
-			int[] results = new int[columns.length];
-			for (int i = 0; i < columns.length; i++) {
-				results[i] = convertCol(columns[i]);
-			}
-			return results;
-		}
-
-		public Builder colTypes(DataType... dataTypes) {
-			this.dataTypes = dataTypes;
-			return this;
-		}
-		
-		public Builder colType(DataType dataType) {
-			this.dataType = dataType;
-			return this;
 		}
 		
 		public ReadingRange build() {
@@ -145,17 +129,8 @@ public class ReadingRange {
 			if (rowTo >= 0 && rowTo < rowFrom) {
 				throw new IllegalArgumentException("Last row is less than first row!");
 			}
-			if (columns == null || columns.length == 0) {
+			if (columnIndexes == null || columnIndexes.length == 0) {
 				throw new IllegalArgumentException("Need one column at least!");
-			}
-			if (dataTypes != null && dataTypes.length != columns.length) {
-				throw new IllegalArgumentException("Data type count not equals to column count!");
-			}
-			if (dataTypes == null && dataType != null) {
-				dataTypes = new DataType[columns.length];
-				for (int i = 0; i < columns.length; i++) {
-					dataTypes[i] = dataType;
-				}
 			}
 			return new ReadingRange(this);
 		}
