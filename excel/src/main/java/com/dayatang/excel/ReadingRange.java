@@ -49,6 +49,7 @@ public class ReadingRange {
 		private int rowFrom = -1, rowTo = -1;
 		private int[] columns;
 		private DataType[] dataTypes;
+		private DataType dataType;
 
 		public Builder sheetAt(int sheetIndex) {
 			this.sheetIndex = sheetIndex;
@@ -129,6 +130,11 @@ public class ReadingRange {
 			return this;
 		}
 		
+		public Builder colType(DataType dataType) {
+			this.dataType = dataType;
+			return this;
+		}
+		
 		public ReadingRange build() {
 			if (sheetIndex < 0 && StringUtils.isEmpty(sheetName)) {
 				throw new IllegalArgumentException("Sheet name or index needed!");
@@ -144,6 +150,12 @@ public class ReadingRange {
 			}
 			if (dataTypes != null && dataTypes.length != columns.length) {
 				throw new IllegalArgumentException("Data type count not equals to column count!");
+			}
+			if (dataTypes == null && dataType != null) {
+				dataTypes = new DataType[columns.length];
+				for (int i = 0; i < columns.length; i++) {
+					dataTypes[i] = dataType;
+				}
 			}
 			return new ReadingRange(this);
 		}
