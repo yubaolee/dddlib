@@ -103,7 +103,7 @@ public class ExcelReader {
 	private Object getCellValue(Cell cell, DataType dataType) {
 		try{
 			if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
-				LOGGER.error("Error cell, row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
+				System.out.println("Error cell, row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
 				return null;
 			}
 			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
@@ -122,7 +122,7 @@ public class ExcelReader {
 				return cell.getStringCellValue();
 			}
 		} catch (IllegalStateException e) {
-			LOGGER.error(e.getLocalizedMessage() + ", row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
+			System.out.println(e.getLocalizedMessage() + ", row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
 			throw new RuntimeException(e);
 		}
 		return null;
