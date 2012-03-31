@@ -33,31 +33,12 @@ public class ExcelReaderTest {
 		assertTrue(DateUtils.isSameDay(result, parseDate(8888, 1, 1)));
 	}
 	
-	
-	@Test
-	public void testReadColRange() throws Exception {
-		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).colRange(0, 5)
-				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
-		List<Object[]> data = importer.read(range);
-		assertEquals(3, data.size());
-		assertEquals("suilink", getData(data, 0, 0, String.class));
-		assertTrue(DateUtils.isSameDay(getData(data, 2, 2, Date.class), parseDate(2007, 7, 1)));
-	}
-	
-	@Test
-	public void testReadColumnNameRange() throws Exception {
-		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).colRange("A", "F")
-				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
-		List<Object[]> data = importer.read(range);
-		assertEquals(3, data.size());
-		assertEquals("suilink", getData(data, 0, 0, String.class));
-		assertTrue(DateUtils.isSameDay(getData(data, 2, 2, Date.class), parseDate(2007, 7, 1)));
-	}
 
 	@Test
 	public void testReadColumns() throws Exception {
-		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns(0, 3)
-				.colTypes(DataType.STRING, DataType.DATE).build();
+		int[] columnIndexes = new int[] {0, 3};
+		DataType[] columnTypes = new DataType[] {DataType.STRING, DataType.DATE};
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns(columnIndexes, columnTypes).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
 		assertEquals("suilink", getData(data, 0, 0, String.class));
@@ -65,9 +46,10 @@ public class ExcelReaderTest {
 	}
 
 	@Test
-	public void testReadColumnNamess() throws Exception {
-		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns("A", "D")
-				.colTypes(DataType.STRING, DataType.DATE).build();
+	public void testReadColumnNames() throws Exception {
+		String[] columnLabels = new String[] {"A", "D"};
+		DataType[] columnTypes = new DataType[] {DataType.STRING, DataType.DATE};
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).columns(columnLabels, columnTypes).build();
 		List<Object[]> data = importer.read(range);
 		assertEquals(3, data.size());
 		assertEquals("suilink", getData(data, 0, 0, String.class));
@@ -76,8 +58,9 @@ public class ExcelReaderTest {
 	
 	@Test
 	public void testReadFixedRows() throws Exception {
-		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).rowTo(2).colRange(0, 5)
-				.colTypes(DataType.STRING, DataType.STRING, DataType.DATE, DataType.DATE, DataType.NUMERIC, DataType.STRING).build();
+		String[] columnLabels = new String[] {"A", "D"};
+		DataType[] columnTypes = new DataType[] {DataType.STRING, DataType.DATE};
+		ReadingRange range = new ReadingRange.Builder().sheetAt(0).rowFrom(1).rowTo(2).columns(columnLabels, columnTypes).build();
 		assertEquals(2, importer.read(range).size());
 	}
 	

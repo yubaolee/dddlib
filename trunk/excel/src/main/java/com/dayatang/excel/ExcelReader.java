@@ -39,7 +39,7 @@ public class ExcelReader {
 			@Override
 			public List<Object[]> doInPoi(Workbook workbook) {
 				Sheet sheet = range.getSheetIndex() < 0 ? workbook.getSheet(range.getSheetName()) : workbook.getSheetAt(range.getSheetIndex());
-				return readRange(sheet, range.getRowFrom(), range.getRowTo(), range.getColumns(), range.getDataTypes());
+				return readRange(sheet, range.getRowFrom(), range.getRowTo(), range.getColumnIndexes(), range.getColumnTypes());
 			}
 		});
 	}
@@ -84,65 +84,45 @@ public class ExcelReader {
 		});
 	}
 
-	private List<Object[]> readRange(Sheet sheet, int rowFrom, int rowTo, int[] columns, DataType[] dataTypes) {
+	private List<Object[]> readRange(Sheet sheet, int rowFrom, int rowTo, int[] columnIndexes, DataType[] columnTypes) {
 		List<Object[]> results = new ArrayList<Object[]>();
-		int colCount = columns.length;
+		int colCount = columnIndexes.length;
 		int lastRow = rowTo < 0 ? sheet.getLastRowNum() : rowTo;
 		for (int rowIndex = rowFrom; rowIndex <= lastRow; rowIndex++) {
 			Row row = sheet.getRow(rowIndex);
 			Object[] rowData = new Object[colCount];
 			for (int i = 0; i < colCount; i++) {
-				Cell cell = row.getCell(columns[i], Row.CREATE_NULL_AS_BLANK);
-				rowData[i] = dataTypes == null ?  getCellValue(cell) : getCellValue(cell, dataTypes[i]);
+				Cell cell = row.getCell(columnIndexes[i], Row.CREATE_NULL_AS_BLANK);
+				System.out.println(columnIndexes.length);
+				System.out.println(columnTypes.length);
+				System.out.println(i);
+				rowData[i] = getCellValue(cell, columnTypes[i]);
 			}
 			results.add(rowData);
 		}
 		return results;
 	}
 
-	private Object getCellValue(Cell cell) {
-		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-			return null;
-		}
-		return getCellValue(cell, cell.getCellType());
-	}
-
-	private Object getCellValue(Cell cell, int cellType) {
-		switch (cellType) {
-		case Cell.CELL_TYPE_BLANK:
-			return null;
-		case Cell.CELL_TYPE_ERROR:
-			LOGGER.error("Error cell found. workbook: {}, sheet: {}, row: {}, column: {}",
-					new Object[] { cell.getRow().getSheet().getWorkbook().toString(), cell.getRow().getSheet().getSheetName(), cell.getRowIndex(),
-							cell.getColumnIndex() });
-		case Cell.CELL_TYPE_FORMULA:
-			return getCellValue(cell, cell.getCachedFormulaResultType());
-		case Cell.CELL_TYPE_NUMERIC:
-			return cell.getNumericCellValue();
-		case Cell.CELL_TYPE_STRING:
-			return cell.getStringCellValue();
-		case Cell.CELL_TYPE_BOOLEAN:
-			return cell.getBooleanCellValue();
-		default:
-			return cell.getRichStringCellValue();
-		}
-	}
-
 	private Object getCellValue(Cell cell, DataType dataType) {
-		if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-			return null;
-		}
-		if (dataType == DataType.BOOLEAN) {
-			return cell.getBooleanCellValue();
-		}
-		if (dataType == DataType.DATE) {
-			return cell.getDateCellValue();
-		}
-		if (dataType == DataType.NUMERIC) {
-			return cell.getNumericCellValue();
-		}
-		if (dataType == DataType.STRING) {
-			return cell.getStringCellValue();
+		try{
+			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+				return null;
+			}
+			if (dataType == DataType.BOOLEAN) {
+				return cell.getBooleanCellValue();
+			}
+			if (dataType == DataType.DATE) {
+				return cell.getDateCellValue();
+			}
+			if (dataType == DataType.NUMERIC) {
+				return cell.getNumericCellValue();
+			}
+			if (dataType == DataType.STRING) {
+				return cell.getStringCellValue();
+			}
+		} catch (IllegalStateException e) {
+			LOGGER.error(e.getLocalizedMessage() + ", row: " + cell.getRowIndex() + ", column: " + cell.getColumnIndex());
+			throw new RuntimeException(e);
 		}
 		return null;
 	}
