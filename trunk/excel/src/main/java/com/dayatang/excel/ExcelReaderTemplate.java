@@ -21,7 +21,7 @@ public class ExcelReaderTemplate {
 		workbook = WorkbookFactory.createWorkbook(in, version);
 	}
 
-	public <T> T execute(ExcelReaderCallback<T> callback) throws Exception {
+	public <T> T execute(ExcelReaderCallback<T> callback) {
 		return callback.doInPoi(workbook);
 	}
 }
