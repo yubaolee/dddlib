@@ -3,7 +3,6 @@ package com.dayatang.excel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -21,9 +20,13 @@ public class ExcelWriterTemplate {
 	private OutputStream out;
 	private boolean needCloseStream;
 
-	public ExcelWriterTemplate(File outputFile) throws FileNotFoundException {
-		out = new FileOutputStream(outputFile);
-		needCloseStream = true;
+	public ExcelWriterTemplate(File outputFile) {
+		try {
+			out = new FileOutputStream(outputFile);
+			needCloseStream = true;
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("File " + outputFile.getPath() + " not exists.", e);
+		}
 	}
 	
 	public ExcelWriterTemplate(OutputStream out) {
@@ -31,11 +34,11 @@ public class ExcelWriterTemplate {
 		needCloseStream = false;
 	}
 
-	public void setSource(File sourceFile) throws FileNotFoundException, IOException {
+	public void setSource(File sourceFile) {
 		in = WorkbookFactory.createWorkbook(sourceFile);
 	}
 	
-	public void setSource(InputStream in, Version version) throws IOException {
+	public void setSource(InputStream in, Version version) {
 		this.in = WorkbookFactory.createWorkbook(in, version);
 	}
 	
