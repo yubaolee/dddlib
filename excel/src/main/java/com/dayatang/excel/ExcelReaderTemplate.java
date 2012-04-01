@@ -1,8 +1,6 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -15,11 +13,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class ExcelReaderTemplate {
 	private Workbook workbook;
 
-	public ExcelReaderTemplate(File excelFile) throws FileNotFoundException, IOException {
+	public ExcelReaderTemplate(File excelFile) {
 		workbook = WorkbookFactory.createWorkbook(excelFile);
 	}
 
-	public ExcelReaderTemplate(InputStream in, Version version) throws IOException {
+	public ExcelReaderTemplate(InputStream in, Version version) {
 		workbook = WorkbookFactory.createWorkbook(in, version);
 	}
 

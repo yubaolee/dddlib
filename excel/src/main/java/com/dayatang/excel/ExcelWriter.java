@@ -26,7 +26,7 @@ public class ExcelWriter {
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private ExcelWriterTemplate excelTemplate;
 
-	public ExcelWriter(File outputFile) throws FileNotFoundException {
+	public ExcelWriter(File outputFile) {
 		excelTemplate = new ExcelWriterTemplate(outputFile);
 	}
 

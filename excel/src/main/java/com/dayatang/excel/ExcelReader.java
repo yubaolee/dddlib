@@ -1,7 +1,6 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,8 +10,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Excel读取工具
@@ -21,14 +18,13 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ExcelReader {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReader.class);
 	private ExcelReaderTemplate readerTemplate;
 
-	public ExcelReader(InputStream in, Version version) throws IOException {
+	public ExcelReader(InputStream in, Version version) {
 		readerTemplate = new ExcelReaderTemplate(in, version);
 	}
 
-	public ExcelReader(File excelFile) throws FileNotFoundException, IOException {
+	public ExcelReader(File excelFile) {
 		readerTemplate = new ExcelReaderTemplate(excelFile);
 	}
 	
