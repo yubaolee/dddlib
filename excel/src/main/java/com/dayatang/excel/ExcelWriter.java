@@ -1,8 +1,6 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
@@ -34,11 +32,11 @@ public class ExcelWriter {
 		excelTemplate = new ExcelWriterTemplate(out);
 	}
 
-	public void setSource(File sourceFile) throws FileNotFoundException, IOException {
+	public void setSource(File sourceFile) {
 		excelTemplate.setSource(sourceFile);
 	}
 	
-	public void setSource(InputStream in, Version version) throws IOException {
+	public void setSource(InputStream in, Version version) {
 		excelTemplate.setSource(in, version);
 	}
 	
@@ -51,10 +49,8 @@ public class ExcelWriter {
 	 * @param rowFrom
 	 * @param colFrom
 	 * @param data
-	 * @throws Exception
 	 */
-	public void write(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data)
-			throws Exception {
+	public void write(final int sheetIndex, final int rowFrom, final int colFrom, final List<Object[]> data) {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override
@@ -77,14 +73,12 @@ public class ExcelWriter {
 	 * @param rowFrom
 	 * @param colFrom
 	 * @param data
-	 * @throws Exception
 	 */
-	public void write(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data)
-			throws Exception {
+	public void write(final String sheetName, final int rowFrom, final int colFrom, final List<Object[]> data) {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override
-			public void doInPoi(Workbook workbook) throws FileNotFoundException {
+			public void doInPoi(Workbook workbook) {
 				Sheet sheet = workbook.getSheet(sheetName);
 				if (sheet == null) {
 					sheet = workbook.createSheet(sheetName);
@@ -101,9 +95,8 @@ public class ExcelWriter {
 	 * @param row
 	 * @param col
 	 * @param value
-	 * @throws Exception
 	 */
-	public void write(final int sheetIndex, final int rowIndex, final int colIndex, final Object value) throws Exception {
+	public void write(final int sheetIndex, final int rowIndex, final int colIndex, final Object value) {
 		excelTemplate.execute(new ExcelWriterCallback() {
 
 			@Override

@@ -1,7 +1,6 @@
 package com.dayatang.excel;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class ExcelReader {
 		readerTemplate = new ExcelReaderTemplate(excelFile);
 	}
 	
-	public List<Object[]> read(final ReadingRange range) throws Exception {
+	public List<Object[]> read(final ReadingRange range) {
 		
 		return readerTemplate.execute(new ExcelReaderCallback<List<Object[]>>() {
 
@@ -47,10 +46,8 @@ public class ExcelReader {
 	 * @param row
 	 * @param col
 	 * @return
-	 * @throws BiffException
-	 * @throws IOException
 	 */
-	public Object readCellValue(final int sheetIndex, final int row, final int col, final DataType dataType) throws Exception {
+	public Object readCellValue(final int sheetIndex, final int row, final int col, final DataType dataType) {
 		return readerTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override
@@ -67,10 +64,8 @@ public class ExcelReader {
 	 * @param row
 	 * @param col
 	 * @return
-	 * @throws BiffException
-	 * @throws IOException
 	 */
-	public Object readCellValue(final String sheetName, final int row, final int col, final DataType dataType) throws Exception {
+	public Object readCellValue(final String sheetName, final int row, final int col, final DataType dataType) {
 		return readerTemplate.execute(new ExcelReaderCallback<Object>() {
 
 			@Override

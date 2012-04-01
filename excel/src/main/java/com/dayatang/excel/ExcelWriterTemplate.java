@@ -3,6 +3,7 @@ package com.dayatang.excel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -42,16 +43,22 @@ public class ExcelWriterTemplate {
 		this.in = WorkbookFactory.createWorkbook(in, version);
 	}
 	
-	public void execute(ExcelWriterCallback callback) throws Exception {
+	public void execute(ExcelWriterCallback callback) {
 		if (in == null) {
 			in = new HSSFWorkbook();
 		}
 		try {
 			callback.doInPoi(in);
 			in.write(out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		} finally {
 			if (needCloseStream) {
-				out.close();
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
