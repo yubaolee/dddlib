@@ -14,7 +14,7 @@ public class WorkbookFactory {
 	
 	public static Workbook createWorkbook(File excelFile) {
 		try {
-			return createWorkbook(new FileInputStream(excelFile), Version.as(excelFile.getName()));
+			return createWorkbook(new FileInputStream(excelFile), Version.of(excelFile.getName()));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("File " + excelFile.getPath() + " not exists.", e);
 		}

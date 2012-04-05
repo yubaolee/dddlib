@@ -4,7 +4,7 @@ public enum Version {
 	XLS,
 	XLSX;
 	
-	public static Version as(String filename) {
+	public static Version of(String filename) {
 		return filename.toLowerCase().endsWith("xslx") ? XLSX : XLS;
 	}
 }
