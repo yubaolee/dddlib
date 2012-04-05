@@ -35,11 +35,11 @@ public class ExcelWriterTemplate {
 		needCloseStream = false;
 	}
 
-	public void setSource(File sourceFile) {
-		in = WorkbookFactory.createWorkbook(sourceFile);
+	public void setTemplateFile(File templateFile) {
+		in = WorkbookFactory.createWorkbook(templateFile);
 	}
 	
-	public void setSource(InputStream in, Version version) {
+	public void setTemplateFile(InputStream in, Version version) {
 		this.in = WorkbookFactory.createWorkbook(in, version);
 	}
 	

@@ -32,12 +32,12 @@ public class ExcelWriter {
 		excelTemplate = new ExcelWriterTemplate(out);
 	}
 
-	public void setSource(File sourceFile) {
-		excelTemplate.setSource(sourceFile);
+	public void setTemplateFile(File templateFile) {
+		excelTemplate.setTemplateFile(templateFile);
 	}
 	
-	public void setSource(InputStream in, Version version) {
-		excelTemplate.setSource(in, version);
+	public void setTemplateFile(InputStream in, Version version) {
+		excelTemplate.setTemplateFile(in, version);
 	}
 	
 	
