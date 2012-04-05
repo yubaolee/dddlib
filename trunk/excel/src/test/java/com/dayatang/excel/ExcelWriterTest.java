@@ -24,7 +24,7 @@ public class ExcelWriterTest {
 		String inputFileName = getClass().getResource("/import.xls").getFile();
 		inputFile = new File(inputFileName);
 		instance = new ExcelWriter(outputFile);
-		instance.setSource(inputFile);
+		instance.setTemplateFile(inputFile);
 	}
 
 	@Test
