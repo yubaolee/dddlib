@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import javax.rules.StatefulRuleSession;
-import javax.rules.StatelessRuleSession;
-
 import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,44 +28,27 @@ public class DayatangRuleTest {
 	
 	@Test
 	public void stateless() throws Exception {
+		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
+
 		// Execute rule
-		StatelessRuleSession session = createStatelessRuleSession();
-		session.executeRules(Arrays.asList(chencao, xishi, yyang));
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Arrays.asList(chencao, xishi, yyang));
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
 		assertEquals(55, xishi.getRetireAge());
 		assertEquals(60, yyang.getRetireAge());
-		
-		//Release the resources
-		session.release();
-	}
-
-	private StatelessRuleSession createStatelessRuleSession() {
-		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		return ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
 	}
 
 	@Test
 	public void stateful() throws Exception {
+		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
+		
 		// Execute rule
-		StatefulRuleSession session = createStatefulRuleSession();
-		session.addObject(chencao);
-		session.addObject(xishi);
-		session.addObject(yyang);
-		session.executeRules();
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Arrays.asList(chencao, xishi, yyang));
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
 		assertEquals(55, xishi.getRetireAge());
 		assertEquals(60, yyang.getRetireAge());
-		
-		//Release the resources
-		session.release();
-	}
-
-	private StatefulRuleSession createStatefulRuleSession() {
-		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
-		return ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
 	}
 }

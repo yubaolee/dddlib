@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.rules.StatelessRuleSession;
-
 import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Test;
 
@@ -19,8 +17,7 @@ public class FooTest {
 	@Test
 	public void item1() throws Exception {
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		StatelessRuleSession statelessSession = ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
-		List<?> globalStatelessResults = statelessSession.executeRules(createParams());
+		List<?> globalStatelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), createParams());
 		for (Object object : globalStatelessResults) {
 			System.out.println(object);
 		}
