@@ -33,85 +33,52 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 	private RuleRuntime ruleRuntime;
 	
 
-	protected static Logger log = LoggerFactory.getLogger(StatefulRuleServiceJsr94.class);
-
-	public StatefulRuleServiceJsr94() {
-	}
+	protected static Logger LOGGER = LoggerFactory.getLogger(StatefulRuleServiceJsr94.class);
 
 	public StatefulRuleServiceJsr94(RuleServiceProvider ruleServiceProvider) {
-		setRuleServiceProvider(ruleServiceProvider);
+		this(ruleServiceProvider, null);
 	}
 
-	public void setRuleServiceProvider(RuleServiceProvider ruleServiceProvider) {
+	public StatefulRuleServiceJsr94(RuleServiceProvider ruleServiceProvider, Map properties) {
 		try {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
+			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(properties);
 			ruleRuntime = ruleServiceProvider.getRuleRuntime();
-			log.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
+			LOGGER.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
 	}
 
+	@Override
 	public void executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatefulRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatefulRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		executeRules(session, params);
 	}
 
+	@Override
 	public void executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatefulRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatefulRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		executeRules(session, params);
 	}
 
+	@Override
 	public void executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatefulRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatefulRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		executeRules(session, params);
 	}
 
+	@Override
 	public void executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatefulRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatefulRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		executeRules(session, params);
 	}
 
-	public StatefulRuleSession assembleRuleSession(InputStream ruleSource, Map executionSetProperties, Map sessionProperties) {
-		StatefulRuleSession result = null;
-		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-			ruleSource.close();
-			return result;
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatefulRuleSession assembleRuleSession(Reader ruleSource, Map executionSetProperties, Map sessionProperties) {
-		StatefulRuleSession result = null;
-		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-			ruleSource.close();
-			return result;
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatefulRuleSession assembleRuleSession(Object ruleSource, Map executionSetProperties, Map sessionProperties) {
-		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatefulRuleSession assembleRuleSession(String ruleSource, Map executionSetProperties, Map sessionProperties) {
-		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	private StatefulRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map sessionProperties) {
+	private StatefulRuleSession createRuleSession(RuleExecutionSet ruleExecutionSet, Map sessionProperties) {
 		try{
 			String packageName = ruleExecutionSet.getName();
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
@@ -121,37 +88,8 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 		}
 	}
 
-	private void executeRules(StatefulRuleSession statefulSession, List params) {
-		StopWatch watch = null;
-		if (log.isDebugEnabled()) {
-			watch = new StopWatch();
-			watch.start();
-		}
-
-		try{
-			statefulSession.addObjects(params);
-			statefulSession.executeRules();
-			statefulSession.release();
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-
-		if (log.isDebugEnabled()) {
-			watch.stop();
-			log.debug("Rule session Assembled in " + watch);
-			// for gc
-			watch = null;
-		}
-	}
-
 	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
-		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
@@ -180,5 +118,53 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		}
+	}
+
+	private void executeRules(StatefulRuleSession session, List params) {
+		StopWatch watch = null;
+		if (LOGGER.isDebugEnabled()) {
+			watch = new StopWatch();
+			watch.start();
+		}
+
+		try{
+			session.addObjects(params);
+			session.executeRules();
+		} catch (Exception e) {
+			throw new RuleRuntimeException(e);
+		} finally {
+			try {
+				session.release();
+			} catch (Exception e) {
+				throw new RuleRuntimeException("Cannot release rule session!!", e);
+			}
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			watch.stop();
+			LOGGER.debug("Rule session executed in " + watch);
+			// for gc
+			watch = null;
+		}
+	}
+
+	@Override
+	public void executeRules(String ruleSource, List params) {
+		executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public void executeRules(InputStream ruleSource, List params) {
+		executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public void executeRules(Reader ruleSource, List params) {
+		executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public void executeRules(Object ruleSource, List params) {
+		executeRules(ruleSource, null, null, params);
 	}
 }

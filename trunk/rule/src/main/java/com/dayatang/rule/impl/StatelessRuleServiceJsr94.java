@@ -33,145 +33,39 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	private RuleRuntime ruleRuntime;
 	
 
-	protected static Logger log = LoggerFactory.getLogger(StatelessRuleServiceJsr94.class);
-
-	public StatelessRuleServiceJsr94() {
-	}
+	protected static Logger LOGGER = LoggerFactory.getLogger(StatelessRuleServiceJsr94.class);
 
 	public StatelessRuleServiceJsr94(RuleServiceProvider ruleServiceProvider) {
-		setRuleServiceProvider(ruleServiceProvider);
+		this(ruleServiceProvider, null);
 	}
-
-	public void setRuleServiceProvider(RuleServiceProvider ruleServiceProvider) {
+	
+	public StatelessRuleServiceJsr94(RuleServiceProvider ruleServiceProvider, Map properties) {
 		try {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
-			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(null);
+			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(properties);
 			ruleRuntime = ruleServiceProvider.getRuleRuntime();
-			log.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
+			LOGGER.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
 		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
+			throw new RuleRuntimeException("Cannot create Rule Service!!", e);
 		}
 	}
 
+	@Override
 	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		return executeRules(session, params);
-	}
-
-	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
-		return executeRules(session, params);
-	}
-
-	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
-		return executeRules(session, params);
-	}
-
-	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
-		StatelessRuleSession session = assembleRuleSession(ruleSource, executionSetProperties, sessionProperties);
-		return executeRules(session, params);
-	}
-
-	public StatelessRuleSession assembleRuleSession(InputStream ruleSource, Map executionSetProperties, Map sessionProperties) {
-		StatelessRuleSession result = null;
-		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-			ruleSource.close();
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatelessRuleSession assembleRuleSession(Reader ruleSource, Map executionSetProperties, Map sessionProperties) {
-		StatelessRuleSession result = null;
-		try {
-			result = assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-			ruleSource.close();
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatelessRuleSession assembleRuleSession(Object ruleSource, Map executionSetProperties, Map sessionProperties) {
-		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	public StatelessRuleSession assembleRuleSession(String ruleSource, Map executionSetProperties, Map sessionProperties) {
-		try {
-			return assembleRuleSession(createRuleExecutionSet(ruleSource, executionSetProperties), sessionProperties);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	private StatelessRuleSession assembleRuleSession(RuleExecutionSet ruleExecutionSet, Map sessionProperties) {
-		try{
-			String packageName = ruleExecutionSet.getName();
-			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException(e);
-		}
-	}
-
-	private List executeRules(StatelessRuleSession statelessSession, List params) {
-		List result;
-		StopWatch watch = null;
-		if (log.isDebugEnabled()) {
-			watch = new StopWatch();
-			watch.start();
-		}
-
-		try{
-			result = statelessSession.executeRules(params);
-			statelessSession.release();
-		} catch (Exception e) {
-			throw new RuleRuntimeException(e);
-		}
-
-		if (log.isDebugEnabled()) {
-			watch.stop();
-			log.debug("Rule session Assembled in " + watch);
-			// for gc
-			watch = null;
-		}
-		
-		return result;
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
-		try {
-			RuleExecutionSet ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
-			System.out.println("+++++++++++++++++++++++++");
-			System.err.println(ruleExecutionSet.getName());
-			return ruleExecutionSet;
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
-		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	@Override
+	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
+		return executeRules(session, params);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(Reader ruleSource, Map executionSetProperties) {
@@ -184,11 +78,96 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
+	@Override
+	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
+		return executeRules(session, params);
+	}
+
+	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
+		try {
+			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
+		return executeRules(session, params);
+	}
+
 	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map executionSetProperties) {
 		try {
 			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
 		}
+	}
+
+	private StatelessRuleSession createRuleSession(RuleExecutionSet ruleExecutionSet, Map sessionProperties) {
+		try{
+			String packageName = ruleExecutionSet.getName();
+			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
+			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
+		}
+	}
+
+	private List executeRules(StatelessRuleSession session, List params) {
+		List results;
+		StopWatch watch = null;
+		if (LOGGER.isDebugEnabled()) {
+			watch = new StopWatch();
+			watch.start();
+		}
+
+		try{
+			results = session.executeRules(params);
+		} catch (Exception e) {
+			throw new RuleRuntimeException(e);
+		} finally {
+			try {
+				session.release();
+			} catch (Exception e) {
+				throw new RuleRuntimeException("Cannot release rule session!!", e);
+			}
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			watch.stop();
+			LOGGER.debug("Rule session executed in " + watch);
+			// for gc
+			watch = null;
+		}
+		
+		return results;
+	}
+
+	@Override
+	public List executeRules(String ruleSource, List params) {
+		return executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public List executeRules(InputStream ruleSource, List params) {
+		return executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public List executeRules(Reader ruleSource, List params) {
+		return executeRules(ruleSource, null, null, params);
+	}
+
+	@Override
+	public List executeRules(Object ruleSource, List params) {
+		return executeRules(ruleSource, null, null, params);
 	}
 }

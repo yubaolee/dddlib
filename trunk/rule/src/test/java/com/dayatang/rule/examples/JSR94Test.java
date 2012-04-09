@@ -3,12 +3,10 @@ package com.dayatang.rule.examples;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.rules.StatefulRuleSession;
-import javax.rules.StatelessRuleSession;
 
 import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Test;
@@ -18,19 +16,18 @@ import com.dayatang.rule.StatelessRuleService;
 import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class JSR94Test {
 
 	private String ruleDrl = "/rule/Person.drl";
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void stateless() throws Exception {
 		// Execute rule
-		List<Person> statelessList = new ArrayList<Person>();
-		statelessList.add(new Person(1L, "chencao"));
+		List<Person> params = new ArrayList<Person>();
+		params.add(new Person(1L, "chencao"));
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		StatelessRuleSession statelessSession = ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
-		List statelessResults = statelessSession.executeRules(statelessList);
+		List statelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), params);
 
 		// Validate
 		assertEquals(1, statelessResults.size());
@@ -43,39 +40,31 @@ public class JSR94Test {
 	public void stateful() throws Exception {
 		// Execute rule
 		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
-		StatefulRuleSession statefulSession = ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, null);
 		Person firstPerson = new Person(2L, "chencao");
-		statefulSession.addObject(firstPerson);
-		statefulSession.executeRules();
-
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Collections.singletonList(firstPerson));
 		// Validate
 		assertEquals(200, firstPerson.getId().longValue());
 		assertEquals("chencao changed", firstPerson.getName());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void globalAndFunction() throws Exception {
 
 		// Prepare global parameter
 		List globalList = new ArrayList();
-		Map map = new HashMap();
-		map.put("list", globalList);
+		Map sessionProperties = new HashMap();
+		sessionProperties.put("list", globalList);
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		StatelessRuleSession statelessSession = ruleService.assembleRuleSession(getClass().getResourceAsStream(ruleDrl), null, map);
-
 
 		// Execute rule
-		List globalParams = new ArrayList();
 		Person firstPerson = new Person(3L, "chencao");
-		globalParams.add(firstPerson);
-		statelessSession.executeRules(globalParams);
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, sessionProperties, Collections.singletonList(firstPerson));
 
 		// FirstPerson hasn't been changed
 		assertEquals(300, firstPerson.getId().longValue());
 
 		// Validate global
-		List global = (List) map.get("list");
+		List global = (List) sessionProperties.get("list");
 		assertEquals(2, global.size());
 		Person p1 = (Person) global.get(0);
 		assertEquals(300, p1.getId().longValue());
