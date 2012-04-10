@@ -35,10 +35,19 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 
 	protected static Logger LOGGER = LoggerFactory.getLogger(StatelessRuleServiceJsr94.class);
 
+	/**
+	 * 构造函数
+	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等
+	 */
 	public StatelessRuleServiceJsr94(RuleServiceProvider ruleServiceProvider) {
 		this(ruleServiceProvider, null);
 	}
 	
+	/**
+	 * 构造函数。
+	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等
+	 * @param properties 具体规则服务提供者所需要的额外属性
+	 */
 	public StatelessRuleServiceJsr94(RuleServiceProvider ruleServiceProvider, Map properties) {
 		try {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
@@ -51,10 +60,10 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	@Override
-	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
-		return executeRules(session, params);
+		return executeRules(session, objects);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
@@ -62,10 +71,10 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	@Override
-	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
-		return executeRules(session, params);
+		return executeRules(session, objects);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(Reader ruleSource, Map executionSetProperties) {
@@ -79,10 +88,10 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	@Override
-	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
-		return executeRules(session, params);
+		return executeRules(session, objects);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
@@ -96,10 +105,10 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 	}
 
 	@Override
-	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params) {
+	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
-		return executeRules(session, params);
+		return executeRules(session, objects);
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map executionSetProperties) {
@@ -121,7 +130,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 	}
 
-	private List executeRules(StatelessRuleSession session, List params) {
+	private List executeRules(StatelessRuleSession session, List objects) {
 		List results;
 		StopWatch watch = null;
 		if (LOGGER.isDebugEnabled()) {
@@ -130,7 +139,7 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		}
 
 		try{
-			results = session.executeRules(params);
+			results = session.executeRules(objects);
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		} finally {
