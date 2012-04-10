@@ -34,13 +34,11 @@ public class StatefulRuleTemplate {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
 			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(serviceProviderProperties);
 			ruleRuntime = ruleServiceProvider.getRuleRuntime();
+			this.ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 			LOGGER.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
 		} catch (Exception e) {
 			throw new RuleRuntimeException(e);
 		}
-
-		
-		this.ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		this.sessionProperties = sessionProperties;
 	}
 
