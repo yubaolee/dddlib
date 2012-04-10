@@ -30,7 +30,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params);
+	List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 	
 	/**
 	 * 执行规则并返回结果
@@ -41,7 +41,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params);
+	List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
@@ -52,7 +52,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params);
+	List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
@@ -63,7 +63,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params);
+	List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
 	 * 执行规则并返回结果
@@ -72,7 +72,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(String ruleSource, List params);
+	List executeRules(String ruleSource, List params);
 
 	
 	/**
@@ -82,7 +82,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(InputStream ruleSource, List params);
+	List executeRules(InputStream ruleSource, List params);
 
 	/**
 	 * 执行规则并返回结果
@@ -91,7 +91,7 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Reader ruleSource, List params);
+	List executeRules(Reader ruleSource, List params);
 
 	/**
 	 * 执行规则并返回结果
@@ -100,6 +100,6 @@ public interface StatelessRuleService extends Serializable {
 	 * @return 结果（包括参数）
 	 * @throws RuleRuntimeException
 	 */
-	public List executeRules(Object ruleSource, List params);
+	List executeRules(Object ruleSource, List params);
 
 }

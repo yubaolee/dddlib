@@ -167,4 +167,25 @@ public class StatefulRuleServiceJsr94 implements StatefulRuleService {
 	public void executeRules(Object ruleSource, List params) {
 		executeRules(ruleSource, null, null, params);
 	}
+
+	@Override
+	public StatefulRuleSession getRuleSession(Object ruleSource, Map executionSetProperties, Map sessionProperties) {
+		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
+		return createRuleSession(ruleExecutionSet, sessionProperties);
+	}
+
+	@Override
+	public LocalRuleExecutionSetProvider getRuleExecutionSetProvider() {
+		return ruleExecutionSetProvider;
+	}
+
+	@Override
+	public RuleRuntime getRuleRuntime() {
+		return ruleRuntime;
+	}
+
+	@Override
+	public RuleAdministrator getRuleAdministrator() {
+		return ruleAdministrator;
+	}
 }
