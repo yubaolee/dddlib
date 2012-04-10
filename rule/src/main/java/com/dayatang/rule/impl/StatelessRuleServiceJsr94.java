@@ -150,24 +150,4 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		
 		return results;
 	}
-
-	@Override
-	public List executeRules(String ruleSource, List params) {
-		return executeRules(ruleSource, null, null, params);
-	}
-
-	@Override
-	public List executeRules(InputStream ruleSource, List params) {
-		return executeRules(ruleSource, null, null, params);
-	}
-
-	@Override
-	public List executeRules(Reader ruleSource, List params) {
-		return executeRules(ruleSource, null, null, params);
-	}
-
-	@Override
-	public List executeRules(Object ruleSource, List params) {
-		return executeRules(ruleSource, null, null, params);
-	}
 }

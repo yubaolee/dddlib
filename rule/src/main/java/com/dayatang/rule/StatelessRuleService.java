@@ -65,41 +65,4 @@ public interface StatelessRuleService extends Serializable {
 	 */
 	List executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(String ruleSource, List params);
-
-	
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(InputStream ruleSource, List params);
-
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(Reader ruleSource, List params);
-
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(Object ruleSource, List params);
-
 }

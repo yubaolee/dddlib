@@ -31,7 +31,7 @@ public class DayatangRuleTest {
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
 
 		// Execute rule
-		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Arrays.asList(chencao, xishi, yyang));
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, Arrays.asList(chencao, xishi, yyang));
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
@@ -44,7 +44,7 @@ public class DayatangRuleTest {
 		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
 		
 		// Execute rule
-		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Arrays.asList(chencao, xishi, yyang));
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, Arrays.asList(chencao, xishi, yyang));
 
 		// Validate
 		assertEquals(60, chencao.getRetireAge());
