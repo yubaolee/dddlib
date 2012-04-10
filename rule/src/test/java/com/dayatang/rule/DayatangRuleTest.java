@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.rule.examples.Person;
-import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 public class DayatangRuleTest {
@@ -39,16 +38,4 @@ public class DayatangRuleTest {
 		assertEquals(60, yyang.getRetireAge());
 	}
 
-	@Test
-	public void stateful() throws Exception {
-		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
-		
-		// Execute rule
-		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, Arrays.asList(chencao, xishi, yyang));
-
-		// Validate
-		assertEquals(60, chencao.getRetireAge());
-		assertEquals(55, xishi.getRetireAge());
-		assertEquals(60, yyang.getRetireAge());
-	}
 }

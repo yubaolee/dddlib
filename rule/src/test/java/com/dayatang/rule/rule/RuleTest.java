@@ -8,9 +8,7 @@ import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.rule.StatefulRuleService;
 import com.dayatang.rule.StatelessRuleService;
-import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -32,16 +30,5 @@ public class RuleTest {
 		ruleService.executeRules(RuleTest.class.getResourceAsStream("/rule/example.drl"), null, map, new ArrayList());
 		System.out.println(globalMap.get("cc"));
 	}
-
-	@Test
-	public void stateful() throws Exception {
-		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
-		Map map = new HashMap();
-		Map globalMap = new HashMap();
-		map.put("map", globalMap);
-		ruleService.executeRules(RuleTest.class.getResourceAsStream("/rule/example.drl"), null, map, new ArrayList());
-		System.out.println(globalMap.get("cc"));
-	}
-	
 	
 }

@@ -11,9 +11,7 @@ import java.util.Map;
 import org.drools.jsr94.rules.RuleServiceProviderImpl;
 import org.junit.Test;
 
-import com.dayatang.rule.StatefulRuleService;
 import com.dayatang.rule.StatelessRuleService;
-import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -34,17 +32,6 @@ public class JSR94Test {
 
 		Person p = (Person) statelessResults.get(0);
 		assertEquals(100, p.getId().longValue());
-	}
-
-	@Test
-	public void stateful() throws Exception {
-		// Execute rule
-		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
-		Person firstPerson = new Person(2L, "chencao");
-		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, Collections.singletonList(firstPerson));
-		// Validate
-		assertEquals(200, firstPerson.getId().longValue());
-		assertEquals("chencao changed", firstPerson.getName());
 	}
 
 	@Test
