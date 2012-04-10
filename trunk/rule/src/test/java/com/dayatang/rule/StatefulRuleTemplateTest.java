@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.rule.examples.Person;
-import com.dayatang.rule.impl.StatefulRuleServiceJsr94;
 
 public class StatefulRuleTemplateTest {
 	
@@ -31,9 +30,8 @@ public class StatefulRuleTemplateTest {
 	}
 
 	private StatefulRuleTemplate createStatefulRuleTemplate() {
-		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
 		InputStream ruleSource = getClass().getResourceAsStream(ruleDrl);
-		StatefulRuleTemplate result = new StatefulRuleTemplate(ruleService, ruleSource, null, null);
+		StatefulRuleTemplate result = new StatefulRuleTemplate(new RuleServiceProviderImpl(), null, ruleSource, null, null);
 		return result;
 	}
 
