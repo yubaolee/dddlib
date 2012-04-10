@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.List;
 import java.util.Map;
 
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
-import javax.rules.StatefulRuleSession;
+import javax.rules.StatelessRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
@@ -18,13 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 有状态规则服务模板类。负责创建StatefulRuleSession,执行规则和关闭StatefulRuleSession。
- * 建立这个类的目的，一是消除了客户代码自行创建StatefulRuleSession的必要性，二是为了防止客户代码执行规则之后忘记释放StatefulRuleSession。
+ * 无状态规则服务模板类。负责创建StatelessRuleSession,执行规则和关闭StatelessRuleSession。
+ * 建立这个类的目的，一是消除了客户代码自行创建StatelessRuleSession的必要性，二是为了防止客户代码执行规则之后忘记释放StatelessRuleSession。
  * @author yyang <a href="mailto:gdyangyu@gmail.com">杨宇</a>
  *
  */
 @SuppressWarnings("rawtypes")
-public class StatefulRuleTemplate {
+public class StatelessRuleTemplate {
 
 	private RuleAdministrator ruleAdministrator;
 	private LocalRuleExecutionSetProvider ruleExecutionSetProvider;
@@ -33,7 +34,7 @@ public class StatefulRuleTemplate {
 	private RuleExecutionSet ruleExecutionSet;
 	private Map sessionProperties;
 	
-	protected static Logger LOGGER = LoggerFactory.getLogger(StatefulRuleTemplate.class);
+	protected static Logger LOGGER = LoggerFactory.getLogger(StatelessRuleTemplate.class);
 
 	/**
 	 * 构造函数
@@ -43,7 +44,7 @@ public class StatefulRuleTemplate {
 	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
 	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 */
-	public StatefulRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, 
+	public StatelessRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, 
 			Object ruleSource, Map executionSetProperties, Map sessionProperties) {
 		try {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
@@ -80,27 +81,27 @@ public class StatefulRuleTemplate {
 		}
 	}
 
-	public void execute(StatefulRuleCallback callback) throws Exception {
-		StatefulRuleSession session = createStatefulRuleSession();
+	public List execute(StatelessRuleCallback callback) throws Exception {
+		StatelessRuleSession session = createStatelessRuleSession();
 		try {
-			callback.doInRuleSession(session);
+			return callback.doInRuleSession(session);
 		} finally {
-			releaseStatefulRuleSession(session);
+			releaseStatelessRuleSession(session);
 		}
 	}
 
-	private StatefulRuleSession createStatefulRuleSession() {
+	private StatelessRuleSession createStatelessRuleSession() {
 		try{
 			String packageName = ruleExecutionSet.getName();
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatefulRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
+			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
 		}
 	}
 
-	private void releaseStatefulRuleSession(StatefulRuleSession session) {
+	private void releaseStatelessRuleSession(StatelessRuleSession session) {
 		try {
 			session.release();
 		} catch (Exception e) {
