@@ -3,7 +3,9 @@ package com.dayatang.rule;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.rules.StatelessRuleSession;
@@ -59,6 +61,27 @@ public class StatelessRuleTemplateTest {
 		assertEquals(55, xishi.getRetireAge());
 		assertEquals(60, yyang.getRetireAge());
 		
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void testExecuteManyTimes() throws Exception {
+		List results = instance.execute(new StatelessRuleCallback() {
+			
+			@Override
+			public List doInRuleSession(StatelessRuleSession session) throws Exception {
+				List ret = new ArrayList();
+				ret.addAll(session.executeRules(Arrays.asList(chencao, xishi)));
+				ret.addAll(session.executeRules(Collections.singletonList(yyang)));
+				return ret;
+			}
+		});
+
+		// Validate
+		assertTrue(results.containsAll(Arrays.asList(chencao, xishi, yyang)));
+		assertEquals(60, chencao.getRetireAge());
+		assertEquals(55, xishi.getRetireAge());
+		assertEquals(60, yyang.getRetireAge());
 	}
 
 }
