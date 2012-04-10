@@ -71,10 +71,6 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		return executeRules(session, objects);
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(String ruleSource, Map executionSetProperties) {
-		return createRuleExecutionSet(new StringReader(ruleSource), executionSetProperties);
-	}
-
 	@Override
 	public List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
@@ -82,31 +78,11 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 		return executeRules(session, objects);
 	}
 
-	private RuleExecutionSet createRuleExecutionSet(Reader ruleSource, Map executionSetProperties) {
-		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@Override
 	public List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List objects) {
 		RuleExecutionSet ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		StatelessRuleSession session = createRuleSession(ruleExecutionSet, sessionProperties);
 		return executeRules(session, objects);
-	}
-
-	private RuleExecutionSet createRuleExecutionSet(InputStream ruleSource, Map executionSetProperties) {
-		try {
-			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
@@ -118,9 +94,24 @@ public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 
 	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map executionSetProperties) {
 		try {
+			if (ruleSource instanceof String) {
+				Reader reader = new StringReader((String) ruleSource);
+				return ruleExecutionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
+			}
+			if (ruleSource instanceof Reader) {
+				Reader reader = (Reader) ruleSource;
+				return ruleExecutionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
+			}
+			if (ruleSource instanceof InputStream) {
+				InputStream in = (InputStream) ruleSource;
+				return ruleExecutionSetProvider.createRuleExecutionSet(in, executionSetProperties);
+			}
 			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
