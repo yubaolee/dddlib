@@ -7,40 +7,58 @@ import java.io.StringReader;
 import java.util.Map;
 
 import javax.rules.RuleRuntime;
+import javax.rules.RuleServiceProvider;
 import javax.rules.StatefulRuleSession;
 import javax.rules.admin.LocalRuleExecutionSetProvider;
+import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("rawtypes")
 public class StatefulRuleTemplate {
 
-	private StatefulRuleService ruleService;
+	private RuleAdministrator ruleAdministrator;
+	private LocalRuleExecutionSetProvider ruleExecutionSetProvider;
+	private RuleRuntime ruleRuntime;
+
 	private RuleExecutionSet ruleExecutionSet;
 	private Map sessionProperties;
+	
+	protected static Logger LOGGER = LoggerFactory.getLogger(StatefulRuleTemplate.class);
 
-	public StatefulRuleTemplate(StatefulRuleService ruleService, Object ruleSource, Map executionSetProperties, Map sessionProperties) {
-		this.ruleService = ruleService;
+	public StatefulRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, Object ruleSource, Map executionSetProperties, Map sessionProperties) {
+		try {
+			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
+			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(serviceProviderProperties);
+			ruleRuntime = ruleServiceProvider.getRuleRuntime();
+			LOGGER.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
+		} catch (Exception e) {
+			throw new RuleRuntimeException(e);
+		}
+
+		
 		this.ruleExecutionSet = createRuleExecutionSet(ruleSource, executionSetProperties);
 		this.sessionProperties = sessionProperties;
 	}
 
 	private RuleExecutionSet createRuleExecutionSet(Object ruleSource, Map executionSetProperties) {
-		LocalRuleExecutionSetProvider executionSetProvider = ruleService.getRuleExecutionSetProvider();
 		try {
 			if (ruleSource instanceof String) {
 				Reader reader = new StringReader((String) ruleSource);
-				return executionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
+				return ruleExecutionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
 			}
 			if (ruleSource instanceof Reader) {
 				Reader reader = (Reader) ruleSource;
-				return executionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
+				return ruleExecutionSetProvider.createRuleExecutionSet(reader, executionSetProperties);
 			}
 			if (ruleSource instanceof InputStream) {
 				InputStream in = (InputStream) ruleSource;
-				return executionSetProvider.createRuleExecutionSet(in, executionSetProperties);
+				return ruleExecutionSetProvider.createRuleExecutionSet(in, executionSetProperties);
 			}
-			return executionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+			return ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
 
 		} catch (RuleExecutionSetCreateException e) {
 			throw new UnSupportedRuleFormatException(e);
@@ -61,8 +79,8 @@ public class StatefulRuleTemplate {
 	private StatefulRuleSession createStatefulRuleSession() {
 		try{
 			String packageName = ruleExecutionSet.getName();
-			ruleService.getRuleAdministrator().registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatefulRuleSession) ruleService.getRuleRuntime().createRuleSession(packageName, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
+			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
+			return (StatefulRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
