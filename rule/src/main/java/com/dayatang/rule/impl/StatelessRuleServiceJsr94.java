@@ -23,6 +23,11 @@ import com.dayatang.rule.RuleRuntimeException;
 import com.dayatang.rule.StatelessRuleService;
 import com.dayatang.rule.UnSupportedRuleFormatException;
 
+/**
+ * 无状态规则服务的实现类，用JSR94实现。
+ * @author yyang <a href="mailto:gdyangyu@gmail.com">杨宇</a>
+ *
+ */
 @SuppressWarnings("rawtypes")
 public class StatelessRuleServiceJsr94 implements StatelessRuleService {
 
