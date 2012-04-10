@@ -27,7 +27,7 @@ public class JSR94Test {
 		List<Person> params = new ArrayList<Person>();
 		params.add(new Person(1L, "chencao"));
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		List statelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), params);
+		List statelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, params);
 
 		// Validate
 		assertEquals(1, statelessResults.size());
@@ -41,7 +41,7 @@ public class JSR94Test {
 		// Execute rule
 		StatefulRuleService ruleService = new StatefulRuleServiceJsr94(new RuleServiceProviderImpl());
 		Person firstPerson = new Person(2L, "chencao");
-		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), Collections.singletonList(firstPerson));
+		ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, Collections.singletonList(firstPerson));
 		// Validate
 		assertEquals(200, firstPerson.getId().longValue());
 		assertEquals("chencao changed", firstPerson.getName());

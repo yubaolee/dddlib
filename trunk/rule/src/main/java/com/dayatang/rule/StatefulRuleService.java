@@ -71,42 +71,6 @@ public interface StatefulRuleService extends Serializable {
 	void executeRules(Object ruleSource, Map executionSetProperties, Map sessionProperties, List params);
 
 	/**
-	 * 执行规则
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	void executeRules(String ruleSource, List params);
-	
-	/**
-	 * 执行规则
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	void executeRules(InputStream ruleSource, List params);
-
-	/**
-	 * 执行规则
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	void executeRules(Reader ruleSource, List params);
-
-	/**
-	 * 执行规则
-	 * @param ruleSource 规则源
-	 * @param params 参数
-	 * @return 结果（包括参数）
-	 * @throws RuleRuntimeException
-	 */
-	void executeRules(Object ruleSource, List params);
-
-	/**
 	 * 获得有状态规则会话。由客户代码负责释放该会话。
 	 * @param ruleSource 规则源
 	 * @param executionSetProperties 规则的属性Map(source=drl/xml dsl=java.io.Reader)
