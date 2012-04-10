@@ -22,10 +22,10 @@ public class JSR94Test {
 	@Test
 	public void stateless() throws Exception {
 		// Execute rule
-		List<Person> params = new ArrayList<Person>();
-		params.add(new Person(1L, "chencao"));
+		List<Person> objects = new ArrayList<Person>();
+		objects.add(new Person(1L, "chencao"));
 		StatelessRuleService ruleService = new StatelessRuleServiceJsr94(new RuleServiceProviderImpl());
-		List statelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, params);
+		List statelessResults = ruleService.executeRules(getClass().getResourceAsStream(ruleDrl), null, null, objects);
 
 		// Validate
 		assertEquals(1, statelessResults.size());
