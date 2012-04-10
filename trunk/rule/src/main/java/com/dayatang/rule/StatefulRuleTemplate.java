@@ -17,6 +17,12 @@ import javax.rules.admin.RuleExecutionSetCreateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 有状态规则服务模板类。负责创建StatefulRuleSession,执行规则和关闭StatefulRuleSession。
+ * 建立这个类的目的，一是消除了客户代码自行创建StatefulRuleSession的必要性，二是为了防止客户代码执行规则之后忘记释放StatefulRuleSession。
+ * @author yyang <a href="mailto:gdyangyu@gmail.com">杨宇</a>
+ *
+ */
 @SuppressWarnings("rawtypes")
 public class StatefulRuleTemplate {
 
