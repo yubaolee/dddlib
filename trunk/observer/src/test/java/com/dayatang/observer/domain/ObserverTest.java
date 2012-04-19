@@ -47,7 +47,7 @@ public class ObserverTest {
 	public void setUp() {
 		session = sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(session);
+		repository = new EntityRepositoryHibernate(sessionFactory);
 		AbstractEntity.setRepository(repository);
 		observer_1 = createMotherObserver(false);
 		observer_1.setSubjectKeys(Collections.singleton("BABY-SUBJECT"));

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
@@ -32,33 +32,25 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
 	
 	@Inject
-	private Session session; 
+	private SessionFactory sessionFactory;
 
 
 	public EntityRepositoryHibernate() {
-		super();
 	}
 
-	public EntityRepositoryHibernate(Session session) {
-		super();
-		setSession(session);
+	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
-	/**
-	 * @return the session
-	 */
-	public Session getSession() {
-		if (session == null) {
-			session = InstanceFactory.getInstance(Session.class);
+	public SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
+			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
 		}
-		return session;
+		return sessionFactory;
 	}
 
-	/**
-	 * @param session the session to set
-	 */
-	public void setSession(Session session) {
-		this.session = session;
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	/*
@@ -67,7 +59,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		getSession().saveOrUpdate(entity);
+		getSessionFactory().getCurrentSession().saveOrUpdate(entity);
 		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return entity;
 	}
@@ -78,7 +70,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	 */
 	@Override
 	public void remove(Entity entity) {
-		getSession().delete(entity);
+		getSessionFactory().getCurrentSession().delete(entity);
 		LOGGER.info("remove a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 	}
 
@@ -98,7 +90,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T get(final Class<T> clazz, final Serializable id) {
-		return (T) getSession().get(clazz, id);
+		return (T) getSessionFactory().getCurrentSession().get(clazz, id);
 	}
 	
 	/*
@@ -108,19 +100,19 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T load(final Class<T> clazz, final Serializable id) {
-		return (T) getSession().load(clazz, id);
+		return (T) getSessionFactory().getCurrentSession().load(clazz, id);
 	}
 
 	@Override
 	public <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
-		session.evict(entity);
+		getSessionFactory().getCurrentSession().evict(entity);
 		return get(clazz, entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getSession().createCriteria(clazz).list();
+		return getSessionFactory().getCurrentSession().createCriteria(clazz).list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,7 +123,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		LOGGER.info("QueryString: '" + queryString + "'");
 		List<Object> params = translator.getParams();
 		LOGGER.info("params: " + StringUtils.join(params, ", "));
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (int i = 0; i < params.size(); i++) {
 			query.setParameter(i, params.get(i));
 		}
@@ -145,7 +137,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Object[] params, final Class<T> resultClass) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
 		}
@@ -155,7 +147,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Map<String, Object> params, final Class<T> resultClass) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
@@ -165,7 +157,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Object[] params, final Class<T> resultClass) {
-		Query query = getSession().getNamedQuery(queryName);
+		Query query = getSessionFactory().getCurrentSession().getNamedQuery(queryName);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
 		}
@@ -175,7 +167,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params, final Class<T> resultClass) {
-		Query query = getSession().getNamedQuery(queryName);
+		Query query = getSessionFactory().getCurrentSession().getNamedQuery(queryName);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
@@ -201,7 +193,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		for (String propName : settings.getExcludedProperties()) {
 			theExample.excludeProperty(propName);
 		}
-		return getSession().createCriteria(settings.getEntityClass()).add(theExample).list();
+		return getSessionFactory().getCurrentSession().createCriteria(settings.getEntityClass()).add(theExample).list();
 	}
 
 	@Override
@@ -213,7 +205,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
 		}
@@ -223,7 +215,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
@@ -232,7 +224,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@Override
 	public void executeUpdate(final String queryString, final Object[] params) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
 		}
@@ -241,7 +233,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	@Override
 	public void executeUpdate(final String queryString, final Map<String, Object> params) {
-		Query query = getSession().createQuery(queryString);
+		Query query = getSessionFactory().getCurrentSession().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
 		}
