@@ -291,14 +291,14 @@ public class QuerySettingsTest {
 
 	@Test
 	public void testInEntity() {
-		Set<Long> params = new HashSet<Long>();
-		params.add(male.getId());
-		params.add(female.getId());
-		settings.in("id", params);
+		Set<DictionaryCategory> params = new HashSet<DictionaryCategory>();
+		params.add(education);
+		params.add(gender);
+		settings.in("category", params);
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(male));
 		assertTrue(results.contains(female));
-		assertFalse(results.contains(undergraduate));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
