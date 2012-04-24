@@ -22,13 +22,7 @@ import com.dayatang.utils.Assert;
  */
 public class MemCachedBasedCache implements Cache {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6808451597098234796L;
-
-	private static final Logger logger = LoggerFactory
-			.getLogger(MemCachedBasedCache.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemCachedBasedCache.class);
 
 	private MemCachedClient mcc;
 
