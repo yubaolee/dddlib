@@ -694,7 +694,7 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<spring.version>3.1.1.RELEASE</spring.version>
 		<tapestry.version>5.3.2</tapestry.version>
-		<hibernate.version>3.6.7.Final</hibernate.version>
+		<hibernate.version>3.6.10.Final</hibernate.version>
 		<!-- Database settings, default to H2 database -->
 		<dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
 		<dbunit.dataTypeFactoryName>org.dbunit.ext.h2.H2DataTypeFactory</dbunit.dataTypeFactoryName>
