@@ -10,6 +10,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
@@ -18,12 +21,14 @@ import com.dayatang.domain.QuerySettings;
 import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
 
 /**
- * 通用仓储接口的Hibernate实现。
+ * 通用仓储接口的JPA实现。
  * 
  * @author yyang
  * 
  */
 public class EntityRepositoryJpa implements EntityRepository {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryJpa.class);
 
 	@Inject
 	@PersistenceContext
@@ -49,7 +54,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@Override
 	public <T extends Entity> T save(T entity) {
 		T result = getEntityManager().merge(entity);
-		getEntityManager().flush();
+		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return result;
 	}
 
@@ -60,7 +65,7 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@Override
 	public void remove(Entity entity) {
 		getEntityManager().remove(get(entity.getClass(), entity.getId()));
-		getEntityManager().flush();
+		LOGGER.info("remove a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 	}
 
 	/*
@@ -210,6 +215,16 @@ public class EntityRepositoryJpa implements EntityRepository {
 			entityManager = InstanceFactory.getInstance(EntityManager.class); 
 		}
 		return entityManager;
+	}
+
+	@Override
+	public void flush() {
+		getEntityManager().flush();		
+	}
+
+	@Override
+	public void refresh(Entity entity) {
+		getEntityManager().refresh(entity);
 	}
 
 }
