@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  *         2011-5-25
  */
+@SuppressWarnings("rawtypes")
 public class Assert {
 	/**
 	 * Assert a boolean expression, throwing
@@ -495,6 +496,7 @@ public class Assert {
 	 * @throws IllegalArgumentException
 	 *             if the classes are not assignable
 	 */
+	@SuppressWarnings("unchecked")
 	public static void isAssignable(Class superType, Class subType,
 			String message) {
 		notNull(superType, "Type to check against must not be null");
