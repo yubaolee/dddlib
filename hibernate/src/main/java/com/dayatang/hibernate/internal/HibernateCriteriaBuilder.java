@@ -28,7 +28,7 @@ public class HibernateCriteriaBuilder {
 		for (Map.Entry<String, String> aliasEntry : settings.getAliases().entrySet()) {
 			result.createAlias(aliasEntry.getKey(), aliasEntry.getValue());
 		}
-		HibernateCriterionConverter converter = HibernateCriterionConverter.getInstance();
+		HibernateCriterionConverter converter = new HibernateCriterionConverter();
 		for (QueryCriterion criterion : settings.getCriterions()) {
 			Criterion hibernateCriterion = converter.convert(criterion, result);
 			if (hibernateCriterion != null) {
