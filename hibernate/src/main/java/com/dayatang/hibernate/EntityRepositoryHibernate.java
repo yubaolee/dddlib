@@ -239,4 +239,14 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		}
 		query.executeUpdate();
 	}
+
+	@Override
+	public void flush() {
+		getSessionFactory().getCurrentSession().flush();
+	}
+
+	@Override
+	public void refresh(Entity entity) {
+		getSessionFactory().getCurrentSession().refresh(entity);
+	}
 }

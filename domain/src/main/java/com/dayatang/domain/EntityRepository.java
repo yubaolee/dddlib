@@ -163,4 +163,15 @@ public interface EntityRepository {
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
 	 */
 	void executeUpdate(String queryString, Map<String, Object> params);
+	
+	/**
+	 * 将内存中的持久化对象状态即时写入数据库
+	 */
+	void flush();
+	
+	/**
+	 * 使用数据库中的最新数据更新参数entity的状态
+	 * @param entity
+	 */
+	void refresh(Entity entity);
 }
