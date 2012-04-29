@@ -19,8 +19,7 @@ public class DateUtils {
 
 	private static final int MONTHS_IN_A_YEAR = 12;
 
-	private static final int[] daysInMonth = new int[] { 31, 28, 31, 30, 31,
-			30, 31, 31, 30, 31, 30, 31 };
+	//private static final int[] daysInMonth = new int[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 	/**
 	 * 最小日期，设定为1000年1月1日
