@@ -47,15 +47,6 @@ import com.dayatang.domain.internal.StartsWithTextCriterion;
  */
 public class HibernateCriterionConverter {
 	
-	private static HibernateCriterionConverter instance;
-	
-	public static synchronized HibernateCriterionConverter getInstance() {
-		if (instance == null) {
-			instance = new HibernateCriterionConverter();
-		}
-		return instance;
-	}
-	
 	public Criterion convert(QueryCriterion criterion, Criteria criteria) {
 		if (criterion instanceof EqCriterion) {
 			Property property = Property.forName(((EqCriterion) criterion).getPropName());
