@@ -16,7 +16,7 @@ import com.dayatang.domain.internal.*;
 
 public class QueryTranslator {
 
-	private QuerySettings<? extends Entity> settings;
+	private QuerySettings<?> settings;
 
 	private String queryString = "";
 
@@ -30,7 +30,7 @@ public class QueryTranslator {
 		return params;
 	}
 
-	public QueryTranslator(QuerySettings<? extends Entity> settings) {
+	public QueryTranslator(QuerySettings<?> settings) {
 		this.settings = settings;
 		prepare();
 	}

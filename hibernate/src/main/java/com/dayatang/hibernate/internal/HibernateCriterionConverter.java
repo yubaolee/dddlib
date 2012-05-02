@@ -175,19 +175,4 @@ public class HibernateCriterionConverter {
 		}
 		return null;
 	}
-
-	private Property getPath(String propName, Criteria criteria) {
-		String[] nameExpr = propName.split("\\.");
-		if (nameExpr.length < 2) {
-			return Property.forName(propName);
-		}
-		try {
-			//criteria.
-			criteria.createAlias(nameExpr[0], nameExpr[0]);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Property.forName(propName);
-	}
-
  }
