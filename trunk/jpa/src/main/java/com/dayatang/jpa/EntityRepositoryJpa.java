@@ -26,6 +26,7 @@ import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
  * @author yyang
  * 
  */
+@SuppressWarnings("unchecked")
 public class EntityRepositoryJpa implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryJpa.class);
@@ -102,14 +103,12 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return get(clazz, entity.getId());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(final Class<T> clazz) {
 		String queryString = "select o from " + clazz.getName() + " as o"; 
 		return getEntityManager().createQuery(queryString).getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
 		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.getInstance().createCriteriaQuery(settings, getEntityManager());
@@ -121,7 +120,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Object[] params, final Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
@@ -131,7 +129,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Map<String, Object> params, final Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
@@ -141,7 +138,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Object[] params, final Class<T> resultClass) {
 		Query query = getEntityManager().createNamedQuery(queryName);
@@ -151,7 +147,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params, final Class<T> resultClass) {
 		Query query = getEntityManager().createNamedQuery(queryName);
@@ -172,9 +167,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T  getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
+	public <T> T  getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
@@ -182,9 +176,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 		return (T) query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T  getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
+	public <T> T  getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));

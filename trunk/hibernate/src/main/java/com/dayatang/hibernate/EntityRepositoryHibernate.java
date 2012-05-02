@@ -28,6 +28,7 @@ import com.dayatang.hibernate.internal.QueryTranslator;
  * @author yyang
  * 
  */
+@SuppressWarnings("unchecked")
 public class EntityRepositoryHibernate implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
@@ -92,7 +93,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	 * (non-Javadoc)
 	 * @see com.dayatang.domain.EntityRepository#get(java.io.Serializable)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T get(final Class<T> clazz, final Serializable id) {
 		return (T) getSession().get(clazz, id);
@@ -102,7 +102,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	 * (non-Javadoc)
 	 * @see com.dayatang.domain.EntityRepository#load(java.io.Serializable)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T load(final Class<T> clazz, final Serializable id) {
 		return (T) getSession().load(clazz, id);
@@ -114,13 +113,11 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return get(clazz, entity.getId());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> findAll(Class<T> clazz) {
 		return getSession().createCriteria(clazz).list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
 		QueryTranslator translator = new QueryTranslator(settings);
@@ -139,7 +136,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Object[] params, final Class<T> resultClass) {
 		Query query = getSession().createQuery(queryString);
@@ -149,7 +145,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> find(final String queryString, final Map<String, Object> params, final Class<T> resultClass) {
 		Query query = getSession().createQuery(queryString);
@@ -159,7 +154,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Object[] params, final Class<T> resultClass) {
 		Query query = getSession().getNamedQuery(queryName);
@@ -169,7 +163,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params, final Class<T> resultClass) {
 		Query query = getSession().getNamedQuery(queryName);
@@ -179,7 +172,6 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity, E extends T> List<T> findByExample(final E example, final ExampleSettings<T> settings) {
 		Example theExample = Example.create(example);
@@ -207,9 +199,8 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return list.isEmpty() ? null : list.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
+	public <T> T getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
 		Query query = getSession().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query = query.setParameter(i, params[i]);
@@ -217,9 +208,8 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		return (T) query.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
+	public <T> T getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
 		Query query = getSession().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));

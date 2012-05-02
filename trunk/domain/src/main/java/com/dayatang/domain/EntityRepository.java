@@ -70,7 +70,7 @@ public interface EntityRepository {
 	
 	/**
 	 * 根据指定的条件查找实体
-	 * @param <T> 实体类型
+	 * @param <T> 结果类型
 	 * @param settings 查询的条件及排序信息
 	 * @return 符合条件的实体集合
 	 */
@@ -128,7 +128,7 @@ public interface EntityRepository {
 	
 	/**
 	 * 根据查询设置返回单一结果
-	 * @param <T>
+	 * @param <T> 结果类型
 	 * @param settings
 	 * @return
 	 */
@@ -136,19 +136,23 @@ public interface EntityRepository {
 	
 	/**
 	 * 根据查询语句和指定的参数访问仓储，返回单一结果。
+	 * @param <T> 结果类型
 	 * @param queryString 访问仓储的DSL语句，采用JPA QL的语义，但不一定用JPA实现。
 	 * @param params 查询参数，以定位参数的形式代入queryString中的问号占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 查询的单一结果
 	 */
-	<T extends Entity> T getSingleResult(String queryString, Object[] params, Class<T> resultClass);
+	<T> T getSingleResult(String queryString, Object[] params, Class<T> resultClass);
 	
 	/**
 	 * 根据查询语句和指定的参数访问仓储，返回单一结果。
+	 * @param <T> 结果类型
 	 * @param queryString 访问仓储的DSL语句，采用JPA QL的语义，但不一定用JPA实现。
 	 * @param params 查询参数，以命名参数的形式代入queryString中的占位符
+	 * @param resultClass 查询目标对象的类
 	 * @return 查询的单一结果
 	 */
-	<T extends Entity> T getSingleResult(String queryString, Map<String, Object> params, Class<T> resultClass);
+	<T> T getSingleResult(String queryString, Map<String, Object> params, Class<T> resultClass);
 	
 	/**
 	 * 执行更新仓储的操作。
