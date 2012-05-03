@@ -7,38 +7,50 @@ public class DataPage<T> {
 	private List<T> pageData = new ArrayList<T>();
 	private int pageIndex;
 	private int pageSize;
-	private int pageCount;
-	private long dataTotalSize;
+	private long resultCount;
+
+	public DataPage(List<T> pageData, int pageIndex, int pageSize, long resultCount) {
+		super();
+		this.pageData = pageData;
+		this.pageIndex = pageIndex;
+		this.pageSize = pageSize;
+		this.resultCount = resultCount;
+	}
+
 	public List<T> getPageData() {
 		return pageData;
 	}
+
 	public void setPageData(List<T> pageData) {
 		this.pageData = pageData;
 	}
+
 	public int getPageIndex() {
 		return pageIndex;
 	}
+
 	public void setPageIndex(int pageIndex) {
 		this.pageIndex = pageIndex;
 	}
+
 	public int getPageSize() {
 		return pageSize;
 	}
+
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
 	public int getPageCount() {
-		return pageCount;
+		return (int) Math.ceil(resultCount / (pageSize * 1.0));
 	}
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
+
+	public long getResultCount() {
+		return resultCount;
 	}
-	public long getDataTotalSize() {
-		return dataTotalSize;
+
+	public void setResultCount(long resultCount) {
+		this.resultCount = resultCount;
 	}
-	public void setDataTotalSize(long dataTotalSize) {
-		this.dataTotalSize = dataTotalSize;
-	}
-	
-	
+
 }
