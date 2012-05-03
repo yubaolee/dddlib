@@ -23,7 +23,8 @@ import com.dayatang.domain.QuerySettings;
 @Entity
 @Table(name = "dictionaries")
 @NamedQueries( {
-		@NamedQuery(name = "findByCategory", query = "select o from Dictionary as o where o.disabled = false and o.category = :category"),
+		@NamedQuery(name = "findByCategory", query = "select o from Dictionary as o where o.disabled = false and o.category = :category order by o.sortOrder"),
+		@NamedQuery(name = "findByCategoryArrayParams", query = "select o from Dictionary as o where o.disabled = false and o.category = ? order by o.sortOrder"),
 		@NamedQuery(name = "findByCategoryAndCode", query = "select o from Dictionary as o where o.disabled = false and o.category = ? and o.code = ?") })
 public class Dictionary extends AbstractEntity {
 

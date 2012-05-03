@@ -3,10 +3,12 @@
  */
 package com.dayatang.jpa;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -29,6 +31,7 @@ import org.junit.Test;
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.QuerySettings;
 
@@ -53,6 +56,10 @@ public class RepositoryJpaTest {
 	private Dictionary male;
 
 	private Dictionary undergraduate;
+	
+	private Dictionary graduate;
+	
+	private Dictionary associate;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -74,7 +81,9 @@ public class RepositoryJpaTest {
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
 		male = createDictionary("01", "男", gender, 100, "01");
-		undergraduate = createDictionary("01", "本科", education, 200, "05");
+		undergraduate = createDictionary("01", "本科", education, 100, "05");
+		graduate = createDictionary("02", "研究生", education, 200, "05");
+		associate = createDictionary("03", "专科", education, 300, "05");
 	}
 
 	@After
@@ -119,6 +128,16 @@ public class RepositoryJpaTest {
 	@Test
 	public void testLoad() {
 		assertEquals(male.getId(), repository.load(Dictionary.class, male.getId()).getId());
+	}
+
+	@Test
+	public void testFindAllDataPage() {
+		DataPage<Dictionary> results = repository.findAll(Dictionary.class, 1, 2);
+		assertThat(1, is(results.getPageIndex()));
+		assertThat(2, is(results.getPageSize()));
+		assertThat(2, is(results.getPageCount()));
+		assertThat(4L, is(results.getResultCount()));
+		assertThat(2, is(results.getPageData().size()));
 	}
 
 	@Test
@@ -240,6 +259,67 @@ public class RepositoryJpaTest {
 			assertEquals(description, dictionary.getDescription());
 		}
 	}
+	
+	@Test
+	public void testFindQueryStringArrayParamsDataPage() {
+		String queryString = "select o from  Dictionary o where o.category = ?";
+		Object[] params = new Object[] { education };
+		DataPage<Dictionary> results = repository.find(queryString, params, 1, 2, Dictionary.class);
+		assertThat(1, is(results.getPageIndex()));
+		assertThat(2, is(results.getPageSize()));
+		assertThat(2, is(results.getPageCount()));
+		assertThat(3L, is(results.getResultCount()));
+		assertThat(2, is(results.getPageData().size()));
+		assertTrue(results.getPageData().contains(undergraduate));
+		assertTrue(results.getPageData().contains(graduate));
+		assertFalse(results.getPageData().contains(associate));
+	}
+
+	@Test
+	public void testFindQueryStringMapParamsDataPage() {
+		String queryString = "select o from  Dictionary o where o.category = :category";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("category", education);
+		DataPage<Dictionary> results = repository.find(queryString, params, 2, 2, Dictionary.class);
+		assertThat(2, is(results.getPageIndex()));
+		assertThat(2, is(results.getPageSize()));
+		assertThat(2, is(results.getPageCount()));
+		assertThat(3L, is(results.getResultCount()));
+		assertThat(1, is(results.getPageData().size()));
+		assertFalse(results.getPageData().contains(undergraduate));
+		assertFalse(results.getPageData().contains(graduate));
+		assertTrue(results.getPageData().contains(associate));
+	}
+
+
+	@Test
+	public void testFindNamedQueryArrayParamsDataPage() {
+		DataPage<Dictionary> results = repository.findByNamedQuery("findByCategoryArrayParams", new Object[] {education}, 1, 2, Dictionary.class);
+		assertThat(1, is(results.getPageIndex()));
+		assertThat(2, is(results.getPageSize()));
+		assertThat(2, is(results.getPageCount()));
+		assertThat(3L, is(results.getResultCount()));
+		assertThat(2, is(results.getPageData().size()));
+		assertTrue(results.getPageData().contains(undergraduate));
+		assertTrue(results.getPageData().contains(graduate));
+		assertFalse(results.getPageData().contains(associate));
+	}
+
+	@Test
+	public void testFindNamedQueryMapParamsDataPage() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("category", education);
+		DataPage<Dictionary> results = repository.findByNamedQuery("findByCategory", params, 2, 2, Dictionary.class);
+		assertThat(2, is(results.getPageIndex()));
+		assertThat(2, is(results.getPageSize()));
+		assertThat(2, is(results.getPageCount()));
+		assertThat(3L, is(results.getResultCount()));
+		assertThat(1, is(results.getPageData().size()));
+		assertFalse(results.getPageData().contains(undergraduate));
+		assertFalse(results.getPageData().contains(graduate));
+		assertTrue(results.getPageData().contains(associate));
+	}
+	
 
 	private DictionaryCategory createCategory(String name, int sortOrder) {
 		DictionaryCategory category = new DictionaryCategory();
