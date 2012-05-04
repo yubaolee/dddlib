@@ -1,6 +1,8 @@
 package com.dayatang.commons.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +19,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
 
 
 @Entity
@@ -177,8 +178,9 @@ public class Dictionary extends AbstractEntity {
 	}
 
 	public static List<Dictionary> findByCategory(DictionaryCategory category) {
-		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", category).asc("sortOrder");
-		return getRepository().find(settings);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("category", category);
+		return getRepository().findByNamedQuery("findByCategory", params, Dictionary.class);
 	}
 
 	@Override
