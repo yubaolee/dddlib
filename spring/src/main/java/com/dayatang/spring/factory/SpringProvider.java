@@ -59,4 +59,9 @@ public class SpringProvider implements InstanceProvider {
 	public <T> T getInstance(Class<T> beanClass, String beanName) {
 		return (T) applicationContext.getBean(beanName, beanClass);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getByBeanName(String beanName) {
+		return (T) applicationContext.getBean(beanName);
+	}
 }
