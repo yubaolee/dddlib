@@ -10,10 +10,11 @@ import com.dayatang.spring.factory.SpringProvider;
 
 public abstract class PureSpringTestCase {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(PureSpringTestCase.class);
+	private static final Logger logger = LoggerFactory.getLogger(PureSpringTestCase.class);
 
 	protected static boolean alreadyInit = false;
+
+	private SpringProvider provider;
 
 	protected String[] springXmlPath() {
 		return new String[] { "classpath:spring/*.xml" };
@@ -25,13 +26,21 @@ public abstract class PureSpringTestCase {
 			if (logger.isDebugEnabled()) {
 				logger.debug("初始化Spring上下文。");
 			}
-			InstanceFactory.setInstanceProvider(new SpringProvider(
-					springXmlPath()));
+			provider = new SpringProvider(springXmlPath());
+			InstanceFactory.setInstanceProvider(provider);
 			alreadyInit = true;
 		}
 	}
 
 	@After
 	public void teardown() {
+	}
+
+	public <T> T getBean(Class<T> beanClass) {
+		return InstanceFactory.getInstance(beanClass);
+	}
+
+	public <T> T getBean(String beanName) {
+		return provider.getByBeanName(beanName);
 	}
 }
