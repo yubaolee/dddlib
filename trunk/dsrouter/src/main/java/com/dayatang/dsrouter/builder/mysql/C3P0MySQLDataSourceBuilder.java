@@ -18,7 +18,7 @@ public class C3P0MySQLDataSourceBuilder extends AbstractMySQLDataSourceBuilder {
 	 */
 	private static final long serialVersionUID = -3878478941903135678L;
 
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(C3P0MySQLDataSourceBuilder.class);
 
 	private static final String PROP_FILE = "datasource-default-properties-c3p0.properties";
@@ -32,6 +32,7 @@ public class C3P0MySQLDataSourceBuilder extends AbstractMySQLDataSourceBuilder {
 		try {
 			defaultProp.load(defaultPropIns);
 		} catch (IOException e) {
+			error("initial properties error!!");
 			System.err.println("initial properties error!!");
 			e.printStackTrace();
 			System.exit(1);
@@ -66,6 +67,12 @@ public class C3P0MySQLDataSourceBuilder extends AbstractMySQLDataSourceBuilder {
 	@Override
 	protected Properties getDefaultProp() {
 		return defaultProp;
+	}
+
+	private static void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 
 }

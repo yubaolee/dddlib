@@ -3,11 +3,9 @@ package com.dayatang.dsrouter.builder.mysql;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.logicalcobwebs.proxool.ProxoolDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,7 @@ public class ProxoolMySQLDataSourceBuilder extends
 	 */
 	private static final long serialVersionUID = 701803034236511465L;
 
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ProxoolMySQLDataSourceBuilder.class);
 
 	private static final String PROP_FILE = "datasource-default-properties-c3p0.properties";
@@ -40,6 +38,7 @@ public class ProxoolMySQLDataSourceBuilder extends
 		try {
 			defaultProp.load(defaultPropIns);
 		} catch (IOException e) {
+			error("initial properties error!!");
 			System.err.println("initial properties error!!");
 			e.printStackTrace();
 			System.exit(1);
@@ -74,6 +73,12 @@ public class ProxoolMySQLDataSourceBuilder extends
 	@Override
 	protected String getUserProperty() {
 		return "user";
+	}
+
+	private static void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 
 }

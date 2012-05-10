@@ -18,8 +18,7 @@ public abstract class AbstractDataSourceBuilder implements DataSourceBuilder {
 	 */
 	private static final long serialVersionUID = -5389391685137579724L;
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(AbstractDataSourceBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataSourceBuilder.class);
 
 	protected abstract Class<? extends DataSource> getDataSourceClass();
 
@@ -46,16 +45,9 @@ public abstract class AbstractDataSourceBuilder implements DataSourceBuilder {
 		DataSource dataSource = null;
 		try {
 			dataSource = getDataSourceClass().newInstance();
-
+			debug("准备为【{}】构建数据源，prop=【{}】", new Object[] { getDataSourceClass(), prop });
 			// dataSource = new ComboPooledDataSource();
-
-			if (logger.isDebugEnabled()) {
-				logger.debug("准备为【{}】构建数据源，prop=【{}】", new Object[] {
-						getDataSourceClass(), prop });
-			}
-
 			assembleProps(dataSource, prop);
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -63,20 +55,12 @@ public abstract class AbstractDataSourceBuilder implements DataSourceBuilder {
 	}
 
 	@Override
-	public DataSource buildDataSource(String url, String username,
-			String password, Properties prop) {
+	public DataSource buildDataSource(String url, String username, String password, Properties prop) {
 		DataSource dataSource = null;
 		try {
 			dataSource = getDataSourceClass().newInstance();
-
+			debug("准备为【{}】构建数据源，url=【{}】，username=【{}】，password=【****】", new Object[] { getDataSourceClass(), url, username });
 			// dataSource = new ComboPooledDataSource();
-
-			if (logger.isDebugEnabled()) {
-				logger.debug(
-						"准备为【{}】构建数据源，url=【{}】，username=【{}】，password=【****】",
-						new Object[] { getDataSourceClass(), url, username });
-			}
-
 			assembleBasicProp(dataSource, url, username, password);
 
 			if (prop == null) {
@@ -91,40 +75,30 @@ public abstract class AbstractDataSourceBuilder implements DataSourceBuilder {
 		return dataSource;
 	}
 
-	protected void assembleBasicProp(DataSource dataSource, String url,
-			String username, String password) throws IllegalAccessException,
+	protected void assembleBasicProp(DataSource dataSource, String url, String username, String password) throws IllegalAccessException,
 			InvocationTargetException {
-		if (logger.isDebugEnabled()) {
-			logger.debug(
-					"正在为数据源【{}】组装基础属性driverClass=【{}】，jdbcUrl=【{}】，user=【{}】，password=【****】",
-					new Object[] { getDataSourceClass(),
-							getDriverClass(url).getName(), getJdbcUrl(url),
-							username });
-		}
+		debug("正在为数据源【{}】组装基础属性driverClass=【{}】，jdbcUrl=【{}】，user=【{}】，password=【****】", new Object[] { getDataSourceClass(),
+				getDriverClass(url).getName(), getJdbcUrl(url), username });
 
-		BeanUtils.setProperty(dataSource, getDriverProperty(),
-				getDriverClass(url).getName());
-		BeanUtils
-				.setProperty(dataSource, getJdbcUrlProperty(), getJdbcUrl(url));
+		BeanUtils.setProperty(dataSource, getDriverProperty(), getDriverClass(url).getName());
+		BeanUtils.setProperty(dataSource, getJdbcUrlProperty(), getJdbcUrl(url));
 		BeanUtils.setProperty(dataSource, getUserProperty(), username);
 		BeanUtils.setProperty(dataSource, getPasswordProperty(), password);
 	}
 
-	private void assembleProps(DataSource dataSource, Properties prop)
-			throws IllegalAccessException, InvocationTargetException {
+	private void assembleProps(DataSource dataSource, Properties prop) throws IllegalAccessException, InvocationTargetException {
 		if (prop != null) {
 			Set<Object> propKeySet = prop.keySet();
 			for (Object proKey : propKeySet) {
-
-				if (logger.isDebugEnabled()) {
-					logger.debug("正在为数据源【{}】组装可选属性【{}】=【{}】", new Object[] {
-							dataSource, proKey.toString(), prop.get(proKey) });
-				}
-
-				BeanUtils.setProperty(dataSource, proKey.toString(),
-						prop.get(proKey));
+				debug("正在为数据源【{}】组装可选属性【{}】=【{}】", new Object[] { dataSource, proKey.toString(), prop.get(proKey) });
+				BeanUtils.setProperty(dataSource, proKey.toString(), prop.get(proKey));
 			}
 		}
 	}
 
+	private void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
 }

@@ -17,7 +17,7 @@ public abstract class AbstractMySQLDataSourceBuilder extends
 	private static final long serialVersionUID = 7520434282533167135L;
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractMySQLDataSourceBuilder.class);
 
 	@Override
