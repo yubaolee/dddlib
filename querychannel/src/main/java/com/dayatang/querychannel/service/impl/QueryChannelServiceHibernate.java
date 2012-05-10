@@ -168,33 +168,20 @@ public class QueryChannelServiceHibernate implements QueryChannelService {
 	}
 
 	private long countSizeInSession(final String queryStr, final Object[] params) {
-
-		long totalCount = 0;
-
-		String countQueryString = "";
-		boolean containGroup = false;
-
-		int groupIndex = queryStr.toLowerCase().indexOf(" group by ");
-		if (groupIndex != -1) {// 用了group by 则计算group by记录的数量
-			containGroup = true;
-			countQueryString = removeOrders(queryStr);
+		if (containGroupBy(queryStr)) {
+			List<Long> rows = createQuery(removeOrders(queryStr), params).list();
+			return rows == null ? 0 : rows.size();
 		} else {
-			countQueryString = buildCountQueryStr(queryStr);
+			List<Long> rows = createQuery(buildCountQueryStr(queryStr), params).list();
+			return rows == null || rows.isEmpty() ? 0 : rows.get(0);
 		}
-
-		Query query = createQuery(countQueryString, params);
-
-		if (containGroup) {
-			totalCount = query.list().size();
-		} else {
-			List<Long> count = query.list();
-			if (!count.isEmpty()) {
-				totalCount = count.get(0);
-			}
-		}
-		return totalCount;
 	}
 
+	private boolean containGroupBy(String hql) {
+		return hql.toLowerCase().indexOf(" group by ") > -1;
+	}
+	
+	
 	@Override
 	public <T> T querySingleResult(final String queryStr, final Object[] params) {
 		Query query = createQuery(queryStr, params);

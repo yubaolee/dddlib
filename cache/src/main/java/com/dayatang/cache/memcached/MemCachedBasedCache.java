@@ -22,7 +22,7 @@ import com.dayatang.utils.Assert;
  */
 public class MemCachedBasedCache implements Cache {
 
-	private static final Logger logger = LoggerFactory.getLogger(MemCachedBasedCache.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MemCachedBasedCache.class);
 
 	private MemCachedClient mcc;
 
@@ -43,11 +43,7 @@ public class MemCachedBasedCache implements Cache {
 	public Object get(String key) {
 		init();
 		Object obj = mcc.get(key);
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("命中缓存：{}，key：{}", new Object[] { (obj != null), key });
-		}
-
+		debug("命中缓存：{}，key：{}", new Object[] { (obj != null), key });
 		return obj;
 	}
 
@@ -59,17 +55,13 @@ public class MemCachedBasedCache implements Cache {
 	public void put(String key, Object value) {
 		init();
 		mcc.set(key, value);
-		if (logger.isDebugEnabled()) {
-			logger.debug("缓存数据，key：{}", key);
-		}
+		debug("缓存数据，key：{}", key);
 	}
 
 	public void put(String key, Object value, Date expiry) {
 		init();
 		mcc.set(key, value, expiry);
-		if (logger.isDebugEnabled()) {
-			logger.debug("缓存数据，key：{}，过期日期：{}", key, expiry);
-		}
+		debug("缓存数据，key：{}，过期日期：{}", key, expiry);
 	}
 
 	public void put(String key, Object value, long living) {
@@ -82,9 +74,7 @@ public class MemCachedBasedCache implements Cache {
 	public boolean remove(String key) {
 		init();
 		boolean result = mcc.delete(key);
-		if (logger.isDebugEnabled()) {
-			logger.debug("删除缓存，key：{}", key);
-		}
+		debug("删除缓存，key：{}", key);
 		return result;
 	}
 
@@ -137,17 +127,15 @@ public class MemCachedBasedCache implements Cache {
 		// mcc.setCompressEnable(true);
 		// mcc.setCompressThreshold(64 * 1024);
 
-		if (logger.isInfoEnabled()) {
-			Map map = mcc.stats(servers);
-			Set keys = map.keySet();
-			if (keys.size() == 0) {
-				logger.error("客户端创建遇到错误，无法创建。");
-			}
-			for (Object key : keys) {
-				// logger.info("客户端创建完成。key = 【{}】， status = 【{}】", key, map
-				// .get(key));
-				logger.info("客户端创建完成。key = 【{}】", key);
-			}
+		Map map = mcc.stats(servers);
+		Set keys = map.keySet();
+		if (keys.size() == 0) {
+			error("客户端创建遇到错误，无法创建。");
+		}
+		for (Object key : keys) {
+			// logger.info("客户端创建完成。key = 【{}】， status = 【{}】", key, map
+			// .get(key));
+			info("客户端创建完成。key = 【{}】", key);
 		}
 
 	}
@@ -262,14 +250,12 @@ public class MemCachedBasedCache implements Cache {
 		}
 		Assert.notEmpty(servers);
 
-		if (logger.isInfoEnabled()) {
-			for (String server : servers) {
-				logger.info("准备为Memcached服务器{}创建客户端...", server);
-				logger.info("最小连接数为：{}", minConn);
-				logger.info("最大接数为：{}", maxConn);
-				logger.info("初始化连接数为：{}", initConn);
-				logger.info("连接超时时间为：{}毫秒", connectTimeout);
-			}
+		for (String server : servers) {
+			info("准备为Memcached服务器{}创建客户端...", server);
+			info("最小连接数为：{}", minConn);
+			info("最大接数为：{}", maxConn);
+			info("初始化连接数为：{}", initConn);
+			info("连接超时时间为：{}毫秒", connectTimeout);
 		}
 		prepareClient();
 		// if (logger.isDebugEnabled()) {
@@ -277,6 +263,24 @@ public class MemCachedBasedCache implements Cache {
 		// }
 		initialized = true;
 
+	}
+
+	private void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
+
+	private void info(String message, Object... params) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info(message, params);
+		}
+	}
+
+	private void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 
 }
