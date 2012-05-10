@@ -12,19 +12,15 @@ import org.slf4j.LoggerFactory;
 
 import com.dayatang.dsmonitor.datasource.GeminiConnection;
 
-public abstract class AbstractGeminiConnectionTimeoutMonitor implements
-		ConnectionMonitor {
+public abstract class AbstractGeminiConnectionTimeoutMonitor implements ConnectionMonitor {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(AbstractGeminiConnectionTimeoutMonitor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractGeminiConnectionTimeoutMonitor.class);
 
 	private static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-	private static Set<GeminiConnection> aliveConnections = Collections
-			.synchronizedSet(new HashSet<GeminiConnection>());
+	private static Set<GeminiConnection> aliveConnections = Collections.synchronizedSet(new HashSet<GeminiConnection>());
 
-	private static Set<GeminiConnection> closedTimeoutConnections = Collections
-			.synchronizedSet(new HashSet<GeminiConnection>());
+	private static Set<GeminiConnection> closedTimeoutConnections = Collections.synchronizedSet(new HashSet<GeminiConnection>());
 
 	/**
 	 * 单位：毫秒，默认10000毫秒，即10s
@@ -37,27 +33,15 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements
 		if (isTimeout(connection)) {
 			closedTimeoutConnections.add(connection);
 		}
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("关闭数据库连接HashCode【{}】，创建时间【{}】，耗时【{}】", new Object[] {
-					connection.hashCode(),
-					DateFormatUtils.format(connection.getCreationTime(),
-							DATE_PATTERN), connection.getStopWatch() });
-		}
+		debug("关闭数据库连接HashCode【{}】，创建时间【{}】，耗时【{}】", connection.hashCode(), formatTime(connection.getCreationTime()), connection.getStopWatch());
 
 		aliveConnections.remove(connection);
 	}
 
 	public void openConnection(Connection conn) throws SQLException {
 		GeminiConnection connection = (GeminiConnection) conn;
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("开启数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】", new Object[] {
-					connection.hashCode(),
-					connection.getMetaData().getURL(),
-					DateFormatUtils.format(connection.getCreationTime(),
-							DATE_PATTERN) });
-		}
+		debug("开启数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】", connection.hashCode(), connection.getMetaData().getURL(),
+				formatTime(connection.getCreationTime()));
 
 		aliveConnections.add(connection);
 	}
@@ -68,7 +52,7 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 单位：毫秒，默认10000毫秒，即10s
 	 * 
@@ -124,4 +108,14 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements
 	}
 
 	public abstract void monitor();
+
+	private void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
+
+	private String formatTime(long date) {
+		return DateFormatUtils.format(date, DATE_PATTERN);
+	}
 }

@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PropertiesUtil {
 
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(PropertiesUtil.class);
 
 	private static Configuration config = null;
@@ -47,18 +47,16 @@ public class PropertiesUtil {
 			JDBC_DATABSE_NAME = getProperty("jdbc.databaseName");
 			INIT_SQL_FILE = getProperty("init.sql.file");
 
-			if (logger.isInfoEnabled()) {
-				logger.info("JDBC_DRIVER = {}", PropertiesUtil.JDBC_DRIVER);
-				logger.info("JDBC_URL = {}", PropertiesUtil.JDBC_URL);
-				logger.info("JDBC_USERNAME = {}", PropertiesUtil.JDBC_USERNAME);
-				logger.info("JDBC_PASSWD = {}", PropertiesUtil.JDBC_PASSWD);
-				logger.info("JDBC_HOST_NAME = {}",PropertiesUtil.JDBC_HOST_NAME);
-				logger.info("JDBC_DATABSE_NAME = {}",PropertiesUtil.JDBC_DATABSE_NAME);
-				logger.info("INIT_SQL_FILE = {}", PropertiesUtil.INIT_SQL_FILE);
-			}
+				info("JDBC_DRIVER = {}", PropertiesUtil.JDBC_DRIVER);
+				info("JDBC_URL = {}", PropertiesUtil.JDBC_URL);
+				info("JDBC_USERNAME = {}", PropertiesUtil.JDBC_USERNAME);
+				info("JDBC_PASSWD = {}", PropertiesUtil.JDBC_PASSWD);
+				info("JDBC_HOST_NAME = {}",PropertiesUtil.JDBC_HOST_NAME);
+				info("JDBC_DATABSE_NAME = {}",PropertiesUtil.JDBC_DATABSE_NAME);
+				info("INIT_SQL_FILE = {}", PropertiesUtil.INIT_SQL_FILE);
 
 		} catch (ConfigurationException e) {
-			logger.error("initial properties error!! ",e);	
+			error("initial properties error!! ",e);	
 			System.exit(1);
 		}
 	}
@@ -70,6 +68,18 @@ public class PropertiesUtil {
 	public static String getProperty(String file, String key) throws Exception {
 		Configuration config = new PropertiesConfiguration(file);
 		return config.getString(key);
+	}
+
+	private static void info(String message, Object... params) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info(message, params);
+		}
+	}
+
+	private static void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 
 }

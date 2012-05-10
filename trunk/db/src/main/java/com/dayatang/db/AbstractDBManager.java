@@ -13,12 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractDBManager implements DBManager {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5544581304658865155L;
-
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AbstractDBManager.class);
 
 
@@ -35,7 +30,7 @@ public abstract class AbstractDBManager implements DBManager {
 		try {
 			this.driverClass = (Class<Driver>) Class.forName(PropertiesUtil.JDBC_DRIVER);
 		} catch (ClassNotFoundException e) {
-			logger.error("initial driver class error!!");
+			error("initial driver class error!!");
 			System.exit(1);
 		}
 	}
@@ -94,6 +89,12 @@ public abstract class AbstractDBManager implements DBManager {
 
 	public void setDatabaseName(String databaseName) {
 		this.databaseName = databaseName;
+	}
+
+	private void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 
 }

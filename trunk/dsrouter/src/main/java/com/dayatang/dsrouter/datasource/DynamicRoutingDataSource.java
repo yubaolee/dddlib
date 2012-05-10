@@ -151,15 +151,15 @@ public class DynamicRoutingDataSource extends AbstractDataSource {
 		}
 	}
 
-	private void warn(String message, Object... params) {
-		if (LOGGER.isWarnEnabled()) {
-			LOGGER.warn(message, params);
-		}
-	}
-
 	private void info(String message, Object... params) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info(message, params);
+		}
+	}
+
+	private void warn(String message, Object... params) {
+		if (LOGGER.isWarnEnabled()) {
+			LOGGER.warn(message, params);
 		}
 	}
 

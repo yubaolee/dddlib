@@ -6,12 +6,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DBManagerUtils {
 	
-	public static Log logger = LogFactory.getLog(DBManagerUtils.class);
+	public static Logger LOGGER = LoggerFactory.getLogger(DBManagerUtils.class);
 	
 	/**
 	 * 从数据库中获取所有表的集合
@@ -86,7 +86,7 @@ public class DBManagerUtils {
 			if(rs != null)
 				rs.clearWarnings();
 		} catch (Exception e) {
-			logger.error("colseRs() ",e);
+			error("colseRs() ",e);
 		}
 	}
 
@@ -190,5 +190,11 @@ public class DBManagerUtils {
 		fileName.append(c.get(Calendar.MILLISECOND));
 		
 		return fileName.toString();
+	}
+
+	private static void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
+		}
 	}
 }

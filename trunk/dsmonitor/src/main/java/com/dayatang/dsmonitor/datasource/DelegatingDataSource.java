@@ -80,7 +80,6 @@ public class DelegatingDataSource implements DataSource {
 	// Implementation of JDBC 4.0's Wrapper interface
 	// ---------------------------------------------------------------------
 
-	@SuppressWarnings("unchecked")
 	public <T> T unwrap(Class<T> iface) throws SQLException {
 		return getTargetDataSource().unwrap(iface);
 	}
