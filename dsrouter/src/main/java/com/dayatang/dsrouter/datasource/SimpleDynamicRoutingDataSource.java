@@ -14,8 +14,7 @@ import com.dayatang.dsrouter.context.memory.ContextHolder;
 
 public class SimpleDynamicRoutingDataSource extends AbstractDataSource {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(SimpleDynamicRoutingDataSource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDynamicRoutingDataSource.class);
 
 	private DataSource defaultDataSource;
 
@@ -39,26 +38,16 @@ public class SimpleDynamicRoutingDataSource extends AbstractDataSource {
 
 	public void afterPropertiesSet() throws Exception {
 		if (defaultDataSource != null) {
-
-			if (logger.isDebugEnabled()) {
-				logger.debug("设置默认数据源【{}】", defaultDataSource);
-			}
-
+			debug("设置默认数据源【{}】", defaultDataSource);
 		}
 	}
 
 	protected DataSource determineTargetDataSource() {
 		try {
-			DataSource ds = getDataSource();
-			if (ds == null) {
-				ds = defaultDataSource;
-			}
-			return ds;
+			return getDataSource();
 		} catch (Exception ex) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("获取数据源发生异常，使用默认数据源【{}】", defaultDataSource);
-				logger.warn("异常为：" + ex);
-			}
+			warn("获取数据源发生异常，使用默认数据源【{}】", defaultDataSource);
+			LOGGER.warn("异常为：" + ex);
 			return defaultDataSource;
 		}
 
@@ -70,36 +59,36 @@ public class SimpleDynamicRoutingDataSource extends AbstractDataSource {
 		DataSource dataSource = dataSourceMapping.get(dataSourceKey);
 
 		if (dataSource == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("系统中不存在 dataSourceKey=【{}】对应的数据源，使用默认数据源【{}】",
-						dataSourceKey, defaultDataSource);
-			}
-			dataSource = defaultDataSource;
-		} else {
-			if (logger.isDebugEnabled()) {
-				logger.debug("系统中已存在 dataSourceKey=【{}】对应的数据源【{}】。",
-						dataSourceKey, dataSource);
-			}
+			debug("系统中不存在 dataSourceKey=【{}】对应的数据源，使用默认数据源【{}】", dataSourceKey, defaultDataSource);
+			return defaultDataSource;
 		}
-
+		debug("系统中已存在 dataSourceKey=【{}】对应的数据源【{}】。", dataSourceKey, dataSource);
 		return dataSource;
 	}
 
 	public Connection getConnection() throws SQLException {
-		DataSource ds = (DataSource) determineTargetDataSource();
+		DataSource ds = determineTargetDataSource();
 		Connection connection = ds.getConnection();
-		if (logger.isDebugEnabled()) {
-			// 注意：当使用c3p0的时候 不能在此处调用conn.getMetaData()方法 否则读写分离失效
-			// logger.debug("获取的连接对象为【{}】", connection.getMetaData().getURL());
-		}
+		// 注意：当使用c3p0的时候 不能在此处调用conn.getMetaData()方法 否则读写分离失效
+		// debug("获取的连接对象为【{}】", connection.getMetaData().getURL());
 		return connection;
 	}
 
-	public Connection getConnection(String username, String password)
-			throws SQLException {
-		Connection connection = determineTargetDataSource().getConnection(
-				username, password);
+	public Connection getConnection(String username, String password) throws SQLException {
+		Connection connection = determineTargetDataSource().getConnection(username, password);
 		return connection;
+	}
+
+	private void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
+
+	private void warn(String message, Object... params) {
+		if (LOGGER.isWarnEnabled()) {
+			LOGGER.warn(message, params);
+		}
 	}
 
 }

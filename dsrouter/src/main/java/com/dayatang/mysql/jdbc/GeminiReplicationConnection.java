@@ -12,68 +12,54 @@ import com.mysql.jdbc.ReplicationConnection;
 
 public class GeminiReplicationConnection extends ReplicationConnection {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(GeminiReplicationConnection.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GeminiReplicationConnection.class);
 
-	public GeminiReplicationConnection(Properties masterProperties,
-			Properties slaveProperties) throws SQLException {
+	public GeminiReplicationConnection(Properties masterProperties, Properties slaveProperties) throws SQLException {
 		NonRegisteringDriver driver = new NonRegisteringDriver();
 
 		StringBuffer masterUrl = new StringBuffer("jdbc:mysql://");
 		StringBuffer slaveUrl = new StringBuffer("jdbc:mysql://");
 
-		String masterHost = masterProperties
-				.getProperty(NonRegisteringDriver.HOST_PROPERTY_KEY);
-
+		String masterHost = masterProperties.getProperty(NonRegisteringDriver.HOST_PROPERTY_KEY);
 		if (masterHost != null) {
 			masterUrl.append(masterHost);
 		}
 
-		String slaveHost = slaveProperties
-				.getProperty(NonRegisteringDriver.HOST_PROPERTY_KEY);
-
+		String slaveHost = slaveProperties.getProperty(NonRegisteringDriver.HOST_PROPERTY_KEY);
 		if (slaveHost != null) {
 			slaveUrl.append(slaveHost);
 		}
 
-		String masterDb = masterProperties
-				.getProperty(NonRegisteringDriver.DBNAME_PROPERTY_KEY);
-
+		String masterDb = masterProperties.getProperty(NonRegisteringDriver.DBNAME_PROPERTY_KEY);
 		masterUrl.append("/");
-
 		if (masterDb != null) {
 			masterUrl.append(masterDb);
 		}
 
-		String slaveDb = slaveProperties
-				.getProperty(NonRegisteringDriver.DBNAME_PROPERTY_KEY);
-
+		String slaveDb = slaveProperties.getProperty(NonRegisteringDriver.DBNAME_PROPERTY_KEY);
 		slaveUrl.append("/");
-
 		if (slaveDb != null) {
 			slaveUrl.append(slaveDb);
 		}
 
 		slaveProperties.setProperty("roundRobinLoadBalance", "true");
 
-		this.masterConnection = (com.mysql.jdbc.Connection) driver.connect(
-				masterUrl.toString(), masterProperties);
+		this.masterConnection = (com.mysql.jdbc.Connection) driver.connect(masterUrl.toString(), masterProperties);
 
-		if (StringUtils.isBlank(slaveHost)
-				&& slaveUrl.toString().contains("///")) {
-
-			if (logger.isInfoEnabled()) {
-				logger
-						.info(" ----- the salveUrl contains the '///', that means there is no slaver, make slavesConnection = masterConnection --");
-			}
-
+		if (StringUtils.isBlank(slaveHost) && slaveUrl.toString().contains("///")) {
+			info(" ----- the salveUrl contains the '///', that means there is no slaver, make slavesConnection = masterConnection --");
 			slavesConnection = masterConnection;
 		} else {
-			this.slavesConnection = (com.mysql.jdbc.Connection) driver.connect(
-					slaveUrl.toString(), slaveProperties);
+			this.slavesConnection = (com.mysql.jdbc.Connection) driver.connect(slaveUrl.toString(), slaveProperties);
 			this.slavesConnection.setReadOnly(true);
 		}
 
 		this.currentConnection = this.masterConnection;
+	}
+
+	private void info(String message, Object... params) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info(message, params);
+		}
 	}
 }

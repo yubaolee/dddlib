@@ -5,9 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
-
-public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriver
-		implements java.sql.Driver {
+public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriver implements java.sql.Driver {
 	// ~ Static fields/initializers
 	// ---------------------------------------------
 
@@ -23,8 +21,7 @@ public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriv
 				DriverManager.deregisterDriver(d);
 			}
 
-			java.sql.DriverManager
-					.registerDriver(new GeminiNonRegisteringReplicationDriver());
+			java.sql.DriverManager.registerDriver(new GeminiNonRegisteringReplicationDriver());
 		} catch (Exception E) {
 			throw new RuntimeException("Can't register driver!");
 		}

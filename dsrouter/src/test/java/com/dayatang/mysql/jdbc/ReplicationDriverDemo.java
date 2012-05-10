@@ -11,17 +11,6 @@ public class ReplicationDriverDemo {
 		
 		GeminiReplicationDriver driver = new GeminiReplicationDriver();
 
-	    Properties props = new Properties();
-
-	    // We want this for failover on the slaves
-	    props.put("autoReconnect", "true");
-
-	    // We want to load balance between the slaves
-	    props.put("roundRobinLoadBalance", "true");
-
-	    props.put("user", "root");
-	    props.put("password", "123456");
-
 	    //
 	    // Looks like a normal MySQL JDBC url, with a
 	    // comma-separated list of hosts, the first
@@ -29,9 +18,7 @@ public class ReplicationDriverDemo {
 	    // of slaves that the driver will load balance against
 	    //
 
-	    Connection conn =
-	        driver.connect("jdbc:mysql://192.168.0.239/test",
-	            props);
+	    Connection conn = driver.connect("jdbc:mysql://192.168.0.239/test", dbProps());
 
 	    //
 	    // Perform read/write work on the master
@@ -57,4 +44,20 @@ public class ReplicationDriverDemo {
 	    }
 	    
 	  }
+	
+	private static Properties dbProps() {
+
+	    Properties props = new Properties();
+
+	    // We want this for failover on the slaves
+	    props.put("autoReconnect", "true");
+
+	    // We want to load balance between the slaves
+	    props.put("roundRobinLoadBalance", "true");
+
+	    props.put("user", "root");
+	    props.put("password", "123456");
+	    return props;
+		
+	}
 }
