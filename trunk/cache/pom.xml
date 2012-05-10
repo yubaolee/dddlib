@@ -59,6 +59,6 @@
 	</dependencies>
 
 	<properties>
-		<memcached.version>2.5.1</memcached.version>
+		<memcached.version>2.6.3</memcached.version>
 	</properties>
 </project>
