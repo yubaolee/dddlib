@@ -227,7 +227,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		}
 		Connection connection = null;
 		try {
-			connection = getConnection(dataSource);
+			connection = dataSource.getConnection();
 			createTableIfNotExists(connection);
 			properties = loadConfigFromDb(connection);
 			debug("Configuration info loaded from table '{}'", tableName);
@@ -261,7 +261,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	public void save() {
 		Connection connection = null;
 		try {
-			connection = getConnection(dataSource);
+			connection = dataSource.getConnection();
 			//String sql = String.format("DELETE FROM %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
 			String sql = "TRUNCATE TABLE " + tableName;
 			executeSqlUpdate(sql, connection);
@@ -288,10 +288,6 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 				throw new RuntimeException(e);
 			}
 		}
-	}
-
-	private Connection getConnection(DataSource dataSource) throws SQLException {
-		return dataSource.getConnection();
 	}
 
 	private int executeSqlUpdate(String sql, Connection connection) throws SQLException {
