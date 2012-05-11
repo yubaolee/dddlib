@@ -272,6 +272,39 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 				stmt.setString(2, (String) key);
 				stmt.executeUpdate();
 			}
+			stmt.close();
+		} catch (SQLException e) {
+			error("Access database failure!");
+			throw new RuntimeException(e);
+		}
+		finally {
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				error("Close database connection failure!");
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	public void save(Properties properties) {
+		Connection connection = null;
+		try {
+			connection = getConnection(dataSource);
+			String sql = String.format("UPDATE %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
+			System.out.println(sql);
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			for (Object key : properties.keySet()) {
+				System.out.println("key: " + key);
+				System.out.println("value: " + properties.getProperty((String) key));
+				
+				stmt.setString(1, properties.getProperty((String) key));
+				stmt.setString(2, (String) key);
+				stmt.executeUpdate();
+			}
+			stmt.close();
 		} catch (SQLException e) {
 			error("Access database failure!");
 			throw new RuntimeException(e);
@@ -300,6 +333,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		if (rs.next()) {
 			results.put(rs.getString(keyColumn), rs.getString(valueColumn));
 		}
+		rs.close();
 		return results;
 	}
 	
