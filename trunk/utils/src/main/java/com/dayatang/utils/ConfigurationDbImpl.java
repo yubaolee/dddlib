@@ -228,7 +228,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		Connection connection = null;
 		try {
 			connection = getConnection(dataSource);
-			//createTableIfNotExists(connection);
+			createTableIfNotExists(connection);
 			properties = executeSql("SELECT * FROM " + tableName, connection);
 			debug("Configuration info loaded from table '{}'", tableName);
 			return properties;
@@ -249,11 +249,9 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	}
 
 	//不同数据库的创建表语法不同，暂时希望用户在使用前先创建表
-	@SuppressWarnings("unused")
 	private void createTableIfNotExists(Connection connection) throws SQLException {
-		String sql = "CREATE TABLE IF NOT EXISTS " + tableName;
-		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.executeUpdate();
+		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
+		executeSqlUpdate(sql, connection);
 	}
 
 	/* (non-Javadoc)
@@ -266,10 +264,9 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			connection = getConnection(dataSource);
 			//String sql = String.format("DELETE FROM %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
 			String sql = "TRUNCATE TABLE " + tableName;
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.executeUpdate();
+			executeSqlUpdate(sql, connection);
 			sql = String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn);
-			stmt = connection.prepareStatement(sql);
+			PreparedStatement stmt = connection.prepareStatement(sql);
 			Properties properties = getProperties();
 			for (Object key : properties.keySet()) {
 				stmt.setString(1, (String) key);
@@ -297,6 +294,13 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		return dataSource.getConnection();
 	}
 
+	private int executeSqlUpdate(String sql, Connection connection) throws SQLException {
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		int result = stmt.executeUpdate();
+		stmt.close();
+		return result;
+	}
+
 	private Properties executeSql(String sql, Connection connection) throws SQLException {
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
@@ -305,6 +309,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			results.put(rs.getString(keyColumn), rs.getString(valueColumn));
 		}
 		rs.close();
+		stmt.close();
 		return results;
 	}
 	

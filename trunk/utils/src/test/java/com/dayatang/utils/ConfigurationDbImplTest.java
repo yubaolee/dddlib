@@ -7,9 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -31,7 +28,7 @@ public class ConfigurationDbImplTest {
 	@BeforeClass
 	public static void classSetUp() throws Exception {
 		dataSource = createDataSource();
-		createDbSchemaIfNotExists();
+		//createDbSchemaIfNotExists();
 	}
 
 	private static DataSource createDataSource() {
@@ -56,12 +53,6 @@ public class ConfigurationDbImplTest {
 		return result;
 	}
 
-	private static void createDbSchemaIfNotExists() throws SQLException {
-		Connection connection = dataSource.getConnection();
-		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
-		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.executeUpdate();
-	}
 
 	@Before
 	public void setUp() throws Exception {
