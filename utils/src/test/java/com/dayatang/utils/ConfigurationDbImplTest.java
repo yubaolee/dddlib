@@ -28,19 +28,20 @@ public class ConfigurationDbImplTest {
 	@BeforeClass
 	public static void classSetUp() throws Exception {
 		dataSource = createDataSource();
-		//createDbSchemaIfNotExists();
 	}
 
-	private static DataSource createDataSource() {
-		final ComboPooledDataSource result = new ComboPooledDataSource();
+	private static DataSource createDataSource() throws IOException {
+		Properties properties = new Properties();
+		properties.load(ConfigurationDbImplTest.class.getResourceAsStream("/jdbc.properties"));
+		ComboPooledDataSource result = new ComboPooledDataSource();
 		try {
-			result.setDriverClass("org.h2.Driver");
+			result.setDriverClass(properties.getProperty("jdbc.driverClassName"));
 		} catch (PropertyVetoException e) {
 			throw new RuntimeException("Cannot access JDBC Driver: org.h2.Driver", e);
 		}
-		result.setJdbcUrl("jdbc:h2:mem:testdb");
-		result.setUser("sa");
-		//result.setPassword(password);
+		result.setJdbcUrl(properties.getProperty("jdbc.url"));
+		result.setUser(properties.getProperty("jdbc.username"));
+		result.setPassword(properties.getProperty("jdbc.password"));
 		result.setMinPoolSize(10);
 		result.setMaxPoolSize(300);
 		result.setInitialPoolSize(10);
