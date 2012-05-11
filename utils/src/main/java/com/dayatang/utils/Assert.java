@@ -134,7 +134,7 @@ public class Assert {
 	 * @param message the exception message to display when the assertion failed
 	 */
 	public static void isEmpty(CharSequence text, String message) {
-		if (StringUtils.isEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -144,7 +144,7 @@ public class Assert {
 	 * @param text the character sequence to be checked
 	 */
 	public static void isEmpty(CharSequence text) {
-		if (StringUtils.isEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must be null or empty");
 		}
 	}
@@ -155,7 +155,7 @@ public class Assert {
 	 * @param message the exception message to display when the assertion failed
 	 */
 	public static void notEmpty(CharSequence text, String message) {
-		if (StringUtils.isNotEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -165,7 +165,7 @@ public class Assert {
 	 * @param text the character sequence to be checked
 	 */
 	public static void notEmpty(CharSequence text) {
-		if (StringUtils.isNotEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must not be null or empty");
 		}
 	}
@@ -176,7 +176,7 @@ public class Assert {
 	 * @param message the exception message to display when the assertion failed
 	 */
 	public static void isBlank(CharSequence text, String message) {
-		if (StringUtils.isBlank(text)) {
+		if (StringUtils.isNotBlank(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -186,7 +186,7 @@ public class Assert {
 	 * @param text the character sequence to be checked
 	 */
 	public static void isBlank(CharSequence text) {
-		if (StringUtils.isBlank(text)) {
+		if (StringUtils.isNotBlank(text)) {
 			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must be null or blank");
 		}
 	}
@@ -197,7 +197,7 @@ public class Assert {
 	 * @param message the exception message to display when the assertion failed
 	 */
 	public static void notBlank(CharSequence text, String message) {
-		if (StringUtils.isNotBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -207,7 +207,7 @@ public class Assert {
 	 * @param text the character sequence to be checked
 	 */
 	public static void notBlank(CharSequence text) {
-		if (StringUtils.isNotBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must not be null or blank");
 		}
 	}

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -30,7 +31,7 @@ public class ConfigurationDbImplTest {
 	@BeforeClass
 	public static void classSetUp() throws Exception {
 		dataSource = createDataSource();
-		initDB();
+		createDbSchemaIfNotExists();
 	}
 
 	private static DataSource createDataSource() {
@@ -54,25 +55,29 @@ public class ConfigurationDbImplTest {
 		result.setTestConnectionOnCheckout(false);
 		return result;
 	}
-	
-	private static void initDB() throws SQLException, IOException {
+
+	private static void createDbSchemaIfNotExists() throws SQLException {
 		Connection connection = dataSource.getConnection();
-		String sql = "CREATE TABLE " + TABLE_NAME + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
+		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.executeUpdate();
-		readConfig();
-	}
-
-	private static void readConfig() throws IOException {
-		Properties props = new Properties();
-		props.load(ConfigurationDbImplTest.class.getResourceAsStream("/conf.properties"));
-		ConfigurationDbImpl dbImpl = new ConfigurationDbImpl(dataSource, TABLE_NAME);
-		dbImpl.save(props);
 	}
 
 	@Before
 	public void setUp() throws Exception {
+		readConfigFromFile();
 		instance = new ConfigurationDbImpl(dataSource, TABLE_NAME);
+	}
+
+	private static void readConfigFromFile() throws IOException {
+		Properties props = new Properties();
+		props.load(new InputStreamReader(ConfigurationDbImplTest.class.getResourceAsStream("/conf.properties"), "UTF-8") );
+		ConfigurationDbImpl dbImpl = new ConfigurationDbImpl(dataSource, TABLE_NAME);
+		for (Object key : props.keySet()) {
+			dbImpl.setString((String) key, props.getProperty((String) key));
+		}
+		//dbImpl.setString("name", "张三");
+		dbImpl.save();
 	}
 
 	@After
