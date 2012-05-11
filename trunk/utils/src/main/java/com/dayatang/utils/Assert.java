@@ -127,6 +127,93 @@ public class Assert {
 		notNull(object,
 				"[Assertion failed] - this argument is required; it must not be null");
 	}
+	
+	/**
+	 * Assert that a character sequence is null or empty("" for example)
+	 * @param text the character sequence to be checked
+	 * @param message the exception message to display when the assertion failed
+	 */
+	public static void isEmpty(CharSequence text, String message) {
+		if (StringUtils.isEmpty(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is null or empty("" for example)
+	 * @param text the character sequence to be checked
+	 */
+	public static void isEmpty(CharSequence text) {
+		if (StringUtils.isEmpty(text)) {
+			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must be null or empty");
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is not null or empty("" for example)
+	 * @param text the character sequence to be checked
+	 * @param message the exception message to display when the assertion failed
+	 */
+	public static void notEmpty(CharSequence text, String message) {
+		if (StringUtils.isNotEmpty(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is not null or empty("" for example)
+	 * @param text the character sequence to be checked
+	 */
+	public static void notEmpty(CharSequence text) {
+		if (StringUtils.isNotEmpty(text)) {
+			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must not be null or empty");
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is null or blank("" for example)
+	 * @param text the character sequence to be checked
+	 * @param message the exception message to display when the assertion failed
+	 */
+	public static void isBlank(CharSequence text, String message) {
+		if (StringUtils.isBlank(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is null or blank("" or " " for example)
+	 * @param text the character sequence to be checked
+	 */
+	public static void isBlank(CharSequence text) {
+		if (StringUtils.isBlank(text)) {
+			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must be null or blank");
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is not null or blank("" or " " for example)
+	 * @param text the character sequence to be checked
+	 * @param message the exception message to display when the assertion failed
+	 */
+	public static void notBlank(CharSequence text, String message) {
+		if (StringUtils.isNotBlank(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	/**
+	 * Assert that a character sequence is not null or blank("" or " " for example)
+	 * @param text the character sequence to be checked
+	 */
+	public static void notBlank(CharSequence text) {
+		if (StringUtils.isNotBlank(text)) {
+			throw new IllegalArgumentException("[Assertion failed] - this CharSequence argument must not be null or blank");
+		}
+	}
+
+	
+	
 
 	/**
 	 * Assert that the given String is not empty; that is, it must not be
