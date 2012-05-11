@@ -229,7 +229,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		try {
 			connection = getConnection(dataSource);
 			createTableIfNotExists(connection);
-			properties = executeSql("SELECT * FROM " + tableName, connection);
+			properties = loadConfigFromDb(connection);
 			debug("Configuration info loaded from table '{}'", tableName);
 			return properties;
 		} catch (SQLException e) {
@@ -301,8 +301,8 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		return result;
 	}
 
-	private Properties executeSql(String sql, Connection connection) throws SQLException {
-		PreparedStatement stmt = connection.prepareStatement(sql);
+	private Properties loadConfigFromDb(Connection connection) throws SQLException {
+		PreparedStatement stmt = connection.prepareStatement("SELECT * FROM " + tableName);
 		ResultSet rs = stmt.executeQuery();
 		Properties results = new Properties();
 		while (rs.next()) {
