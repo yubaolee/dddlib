@@ -32,18 +32,16 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	
 	private DataSource dataSource;
 	private String tableName;
-	private String keyColumn;
-	private String valueColumn;
+	private static final String keyColumn = "KEY_COLUMN";
+	private static final String valueColumn = "VALUE_COLUMN";
 	private String prefix = "";
 	private Properties properties;
 	
 	
-	public ConfigurationDbImpl(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
+	public ConfigurationDbImpl(DataSource dataSource, String tableName) {
 		super();
 		this.dataSource = dataSource;
 		this.tableName = tableName;
-		this.keyColumn = keyColumn;
-		this.valueColumn = valueColumn;
 	}
 
 	/**
@@ -222,13 +220,6 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		setString(key, String.valueOf(value.getTime()));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#save()
-	 */
-	@Override
-	public void save() {
-	}
-
 	@Override
 	public Properties getProperties() {
 		if (properties != null) {
@@ -265,6 +256,38 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		stmt.executeUpdate();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.dayatang.utils.WritableConfiguration#save()
+	 */
+	@Override
+	public void save() {
+		Connection connection = null;
+		try {
+			connection = getConnection(dataSource);
+			String sql = String.format("UPDATE %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			Properties properties = getProperties();
+			for (Object key : properties.keySet()) {
+				stmt.setString(1, properties.getProperty((String) key));
+				stmt.setString(2, (String) key);
+				stmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			error("Access database failure!");
+			throw new RuntimeException(e);
+		}
+		finally {
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				error("Close database connection failure!");
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	private Connection getConnection(DataSource dataSource) throws SQLException {
 		return dataSource.getConnection();
 	}
@@ -279,6 +302,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		}
 		return results;
 	}
+	
 
 	@Override
 	public String toString() {
