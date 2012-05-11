@@ -1,21 +1,20 @@
 package com.dayatang.utils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * <P>ConfigurationFileImpl为读取/回写配置文件的工具类，一个实例大概对应了一个物理配置文件，可以使用
- * getXxx("aa.conf")，getXxx("/a/b","xx.conf") 获得/a/b/xx.conf配置文件。 具体配置大致采用
+ * <P>ConfigurationDbImpl为读取/回写配置信息的工具类，并将配置信息写入数据库， 具体配置大致采用
  * ConfigurationFileImpl.getXxx(key)的方式读取。</P>
  * <P>每个配置项用key --> value 的方式组织，推荐采用点分字符串的方式编制key部分。 usePrefix()激活
  * 配置项前缀功能，你可以通过usePrefix("xxx.xxx")设置某个具体实例的前缀。</P>
@@ -27,64 +26,24 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author yyang
  */
-public class ConfigurationFileImpl implements WritableConfiguration {
-	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
-	private URL fileUrl;
+public class ConfigurationDbImpl implements WritableConfiguration {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationDbImpl.class);
+	
+	private DataSource dataSource;
+	private String tableName;
+	private String keyColumn;
+	private String valueColumn;
 	private String prefix = "";
-	private Hashtable<String, String> hTable = null;
+	private Properties properties;
 	
-	/**
-	 * 从类路径读入配置文件
-	 * @param fileName
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromClasspath(final String fileName) {
-		URL url = ConfigurationFileImpl.class.getResource(fileName);
-		if (url == null) {
-			throw new RuntimeException("File " + fileName + " not found!");
-		}
-		return new ConfigurationFileImpl(url);
-	}
 	
-	/**
-	 * 从文件系统读入配置文件
-	 * @param pathname
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromFileSystem(final String pathname) {
-		return fromFileSystem(new File(pathname));
-	}
-	
-	/**
-	 * 从文件系统读入配置文件
-	 * @param dirPath
-	 * @param fileName
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromFileSystem(final String dirPath, final String fileName) {
-		if (StringUtils.isEmpty(dirPath)) {
-			return fromFileSystem(fileName);
-		}
-		return fromFileSystem(new File(dirPath, fileName));
-	}
-	
-	private static ConfigurationFileImpl fromFileSystem(final File file) {
-		if (!file.exists()) {
-			throw new RuntimeException("File " + file.getName() + " not found!");
-		}
-		if (!file.canRead()) {
-			throw new RuntimeException("File " + file.getName() + " is unreadable!");
-		}
-		try {
-			return new ConfigurationFileImpl(file.toURI().toURL());
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private ConfigurationFileImpl(final URL url) {
-		this.fileUrl = url;
-		loadFile();
+	public ConfigurationDbImpl(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
+		super();
+		this.dataSource = dataSource;
+		this.tableName = tableName;
+		this.keyColumn = keyColumn;
+		this.valueColumn = valueColumn;
 	}
 
 	/**
@@ -93,7 +52,7 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	 * @param prefix 如"com.dayatang.mes."
 	 */
 	public void usePrefix(final String prefix) {
-		if (StringUtils.isNotEmpty(prefix)) {
+		if (StringUtils.isNotBlank(prefix)) {
 			this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
 		}
 	}
@@ -103,14 +62,11 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	 */
 	@Override
 	public String getString(String key, String defaultValue) {
-		if (StringUtils.isEmpty(key)) {
-			throw new IllegalArgumentException("Key is null or empty!");
+		Assert.notBlank(key, "Key is null or empty!");
+		String result = (String) getProperties().get(key);
+		if (result == null) {
+			result = (String) getProperties().get(prefix + key);
 		}
-		String result = hTable.get(key);
-		if (result != null) {
-			return result;
-		}
-		result = hTable.get(prefix + key);
 		return result == null ? defaultValue : result;
 	}
 
@@ -127,10 +83,12 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	 */
 	@Override
 	public void setString(String key, String value) {
-		if (StringUtils.isEmpty(key)) {
-			throw new IllegalArgumentException("Key is null or empty!");
+		Assert.notBlank(key, "Key is null or empty!");
+		if (StringUtils.isBlank(value)) {
+			getProperties().remove(key);
+			return;
 		}
-		hTable.put(key, value == null ? "" : StringPropertyReplacer.replaceProperties(value));
+		getProperties().put(key, StringPropertyReplacer.replaceProperties(value));
 	}
 
 	/* (non-Javadoc)
@@ -239,7 +197,7 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	@Override
 	public Date getDate(String key, Date defaultValue) {
 		String dateAsLong = getString(key);
-		if (StringUtils.isEmpty(dateAsLong)) {
+		if (StringUtils.isBlank(dateAsLong)) {
 			return defaultValue;
 		}
 		return new Date(Long.parseLong(dateAsLong));
@@ -269,117 +227,73 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	 */
 	@Override
 	public void save() {
-		try {
-			File file = new File(fileUrl.getFile());
-			Properties props = pfu.unRectifyProperties(hTable);
-			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + fileUrl);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void store(Properties props, BufferedWriter out, String comments) throws IOException {
-		if (StringUtils.isNotEmpty(comments)) {
-			out.append("#" + comments);
-			out.newLine();
-		}
-		out.write("#" + new Date().toString());
-		out.newLine();
-		synchronized (this) {
-			for (Object propKey : props.keySet()) {
-				String key = convertString(propKey.toString(), true);
-				String value = convertString((String) props.get(propKey), false);
-				out.write(key + "=" + value);
-				out.newLine();
-			}
-			out.flush();
-		}
-		out.close();
-	}
-
-	private String convertString(String theString, boolean escapeSpace) {
-		int len = theString.length();
-		int bufLen = len * 2;
-		if (bufLen < 0) {
-			bufLen = Integer.MAX_VALUE;
-		}
-		StringBuilder outBuffer = new StringBuilder(bufLen);
-
-		for (int x = 0; x < len; x++) {
-			char aChar = theString.charAt(x);
-			// Handle common case first, selecting largest block that
-			// avoids the specials below
-			if ((aChar > 61) && (aChar < 127)) {
-				if (aChar == '\\') {
-					outBuffer.append('\\');
-					outBuffer.append('\\');
-					continue;
-				}
-				outBuffer.append(aChar);
-				continue;
-			}
-			switch (aChar) {
-			case ' ':
-				if (x == 0 || escapeSpace)
-					outBuffer.append('\\');
-				outBuffer.append(' ');
-				break;
-			case '\t':
-				outBuffer.append('\\');
-				outBuffer.append('t');
-				break;
-			case '\n':
-				outBuffer.append('\\');
-				outBuffer.append('n');
-				break;
-			case '\r':
-				outBuffer.append('\\');
-				outBuffer.append('r');
-				break;
-			case '\f':
-				outBuffer.append('\\');
-				outBuffer.append('f');
-				break;
-			case '=': // Fall through
-			case ':': // Fall through
-			case '#': // Fall through
-			case '!':
-				outBuffer.append('\\');
-				outBuffer.append(aChar);
-				break;
-			default:
-				outBuffer.append(aChar);
-			}
-		}
-		return outBuffer.toString();
-	}
-
-	URL getFileUrl() {
-		return fileUrl;
 	}
 
 	@Override
 	public Properties getProperties() {
+		if (properties != null) {
+			return properties;
+		}
+		Connection connection = null;
+		try {
+			connection = getConnection(dataSource);
+			//createTableIfNotExists(connection);
+			properties = executeSql("SELECT * FROM " + tableName, connection);
+			debug("Configuration info loaded from table '{}'", tableName);
+			return properties;
+		} catch (SQLException e) {
+			error("Access database failure!");
+			throw new RuntimeException(e);
+		}
+		finally {
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				error("Close database connection failure!");
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	//不同数据库的创建表语法不同，暂时希望用户在使用前先创建表
+	@SuppressWarnings("unused")
+	private void createTableIfNotExists(Connection connection) throws SQLException {
+		String sql = "CREATE TABLE IF NOT EXISTS " + tableName;
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.executeUpdate();
+	}
+
+	private Connection getConnection(DataSource dataSource) throws SQLException {
+		return dataSource.getConnection();
+	}
+
+	private Properties executeSql(String string, Connection connection) throws SQLException {
+		String sql = "SELECT * FROM " + tableName;
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
 		Properties results = new Properties();
-		results.putAll(this.hTable);
+		if (rs.next()) {
+			results.put(rs.getString(keyColumn), rs.getString(valueColumn));
+		}
 		return results;
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "{" + fileUrl + "}";
+		return getClass().getSimpleName();
 	}
 
-	private void loadFile() {
-		hTable = new Hashtable<String, String>();
-		Properties props = new Properties();
-		try {
-			if (fileUrl != null) {
-				props.load(fileUrl.openStream());
-				hTable = pfu.rectifyProperties(props);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot load config file: " + fileUrl, e);
+	private static void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
+
+	private static void error(String message, Object... params) {
+		if (LOGGER.isErrorEnabled()) {
+			LOGGER.error(message, params);
 		}
 	}
 }
