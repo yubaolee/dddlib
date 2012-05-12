@@ -31,15 +31,18 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationDbImpl.class);
 	
 	private DataSource dataSource;
-	private String tableName;
+	private String tableName = "SYS_CONFIG";
 	private static final String keyColumn = "KEY_COLUMN";
 	private static final String valueColumn = "VALUE_COLUMN";
 	private String prefix = "";
 	private Properties properties;
 	
 	
+	public ConfigurationDbImpl(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	public ConfigurationDbImpl(DataSource dataSource, String tableName) {
-		super();
 		this.dataSource = dataSource;
 		this.tableName = tableName;
 	}
@@ -260,8 +263,10 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	@Override
 	public void save() {
 		Connection connection = null;
+		
 		try {
 			connection = dataSource.getConnection();
+			connection.setAutoCommit(false);
 			//String sql = String.format("DELETE FROM %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
 			String sql = "TRUNCATE TABLE " + tableName;
 			executeSqlUpdate(sql, connection);
@@ -274,8 +279,14 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 				stmt.executeUpdate();
 			}
 			stmt.close();
+			connection.commit();
 		} catch (SQLException e) {
 			error("Access database failure!");
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new RuntimeException(e1);
+			}
 			throw new RuntimeException(e);
 		}
 		finally {
@@ -286,6 +297,8 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			} catch (SQLException e) {
 				error("Close database connection failure!");
 				throw new RuntimeException(e);
+			} finally {
+				connection = null;
 			}
 		}
 	}
