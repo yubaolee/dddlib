@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Date;
-import java.util.Properties;
+import java.util.Hashtable;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,14 +28,14 @@ public class ConfigurationFileImplTest {
 	@Test
 	public void testFromClasspath() {
 		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
-		assertTrue(instance.getProperties().size() > 0);
+		assertTrue(instance.getHashtable().size() > 0);
 	}
 
 	@Test
 	public void testFromPathname() {
 		String pathname = getClass().getResource("/conf.properties").getFile();
 		instance = ConfigurationFileImpl.fromFileSystem(pathname);
-		assertTrue(instance.getProperties().size() > 0);
+		assertTrue(instance.getHashtable().size() > 0);
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class ConfigurationFileImplTest {
 		String dir = file.getParent();
 		String fileName = file.getName();
 		instance = ConfigurationFileImpl.fromFileSystem(dir, fileName);
-		assertTrue(instance.getProperties().size() > 0);
+		assertTrue(instance.getHashtable().size() > 0);
 	}
 
 	@Test
@@ -177,8 +177,8 @@ public class ConfigurationFileImplTest {
 
 	@Test
 	public void testGetProperties() {
-		Properties properties = instance.getProperties();
-		assertEquals("15", properties.get("size"));
+		Hashtable<String, String> hTable = instance.getHashtable();
+		assertEquals("15", hTable.get("size"));
 	}
 
 }
