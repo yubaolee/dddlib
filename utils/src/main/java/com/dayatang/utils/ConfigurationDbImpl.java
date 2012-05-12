@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -31,7 +30,6 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationDbImpl.class);
 	
-	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private DataSource dataSource;
 	private String tableName = "SYS_CONFIG";
 	private static final String keyColumn = "KEY_COLUMN";
@@ -139,14 +137,13 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 	//从数据库中取得配置项，更新当前内存中的配置值。
 	public void refresh() {
 		hTable = new Hashtable<String, String>();
-		Properties properties = new Properties();
 		Connection connection = DataSourceUtils.getConnection(dataSource);
 		PreparedStatement stmt;
 		try {
 			stmt = connection.prepareStatement("SELECT * FROM " + tableName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				properties.put(rs.getString(keyColumn), rs.getString(valueColumn));
+				hTable.put(rs.getString(keyColumn), rs.getString(valueColumn));
 			}
 			rs.close();
 			stmt.close();
@@ -155,7 +152,6 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 			throw new RuntimeException("Read configuration from database failure!", e);
 		}
 		DataSourceUtils.releaseConnection(connection);
-		hTable = pfu.rectifyProperties(properties);
 		debug("Configuration info loaded from table '{}'", tableName);
 	}
 }
