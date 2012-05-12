@@ -27,12 +27,10 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author yyang
  */
-public class ConfigurationFileImpl implements WritableConfiguration {
+public class ConfigurationFileImpl extends AbstractConfiguration {
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private URL fileUrl;
-	private String prefix = "";
-	private Hashtable<String, String> hTable = null;
-	
+	private Hashtable<String, String> hTable;	
 	/**
 	 * 从类路径读入配置文件
 	 * @param fileName
@@ -84,184 +82,7 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 
 	private ConfigurationFileImpl(final URL url) {
 		this.fileUrl = url;
-		loadFile();
-	}
-
-	/**
-	 * 激活配置前缀功能
-	 * 
-	 * @param prefix 如"com.dayatang.mes."
-	 */
-	public void usePrefix(final String prefix) {
-		if (StringUtils.isNotEmpty(prefix)) {
-			this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public String getString(String key, String defaultValue) {
-		if (StringUtils.isEmpty(key)) {
-			throw new IllegalArgumentException("Key is null or empty!");
-		}
-		String result = hTable.get(key);
-		if (result != null) {
-			return result;
-		}
-		result = hTable.get(prefix + key);
-		return result == null ? defaultValue : result;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String)
-	 */
-	@Override
-	public String getString(String key) {
-		return getString(key, "");
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setString(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void setString(String key, String value) {
-		if (StringUtils.isEmpty(key)) {
-			throw new IllegalArgumentException("Key is null or empty!");
-		}
-		hTable.put(key, value == null ? "" : StringPropertyReplacer.replaceProperties(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String, int)
-	 */
-	@Override
-	public int getInt(String key, int defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Integer.parseInt(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String)
-	 */
-	@Override
-	public int getInt(String key) {
-		return getInt(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setInt(java.lang.String, int)
-	 */
-	@Override
-	public void setInt(String key, int value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String, long)
-	 */
-	@Override
-	public long getLong(String key, long defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Long.parseLong(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String)
-	 */
-	@Override
-	public long getLong(String key) {
-		return getLong(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setLong(java.lang.String, long)
-	 */
-	@Override
-	public void setLong(String key, long value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String, double)
-	 */
-	@Override
-	public double getDouble(String key, double defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Double.parseDouble(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String)
-	 */
-	@Override
-	public double getDouble(String key) {
-		return getDouble(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDouble(java.lang.String, double)
-	 */
-	@Override
-	public void setDouble(String key, double value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String, boolean)
-	 */
-	@Override
-	public boolean getBoolean(String key, boolean defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Boolean.parseBoolean(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String)
-	 */
-	@Override
-	public boolean getBoolean(String key) {
-		return getBoolean(key, false);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setBoolean(java.lang.String, boolean)
-	 */
-	@Override
-	public void setBoolean(String key, boolean value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String, java.util.Date)
-	 */
-	@Override
-	public Date getDate(String key, Date defaultValue) {
-		String dateAsLong = getString(key);
-		if (StringUtils.isEmpty(dateAsLong)) {
-			return defaultValue;
-		}
-		return new Date(Long.parseLong(dateAsLong));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String)
-	 */
-	@Override
-	public Date getDate(String key) {
-		return getDate(key, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDate(java.lang.String, java.util.Date)
-	 */
-	@Override
-	public void setDate(String key, Date value) {
-		if (value == null) {
-			setString(key, "");
-		}
-		setString(key, String.valueOf(value.getTime()));
+		refresh();
 	}
 
 	/* (non-Javadoc)
@@ -271,7 +92,7 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	public void save() {
 		try {
 			File file = new File(fileUrl.getFile());
-			Properties props = pfu.unRectifyProperties(hTable);
+			Properties props = pfu.unRectifyProperties(getHashtable());
 			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + fileUrl);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -359,18 +180,12 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 	}
 
 	@Override
-	public Properties getProperties() {
-		Properties results = new Properties();
-		results.putAll(this.hTable);
-		return results;
-	}
-
-	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "{" + fileUrl + "}";
 	}
 
-	private void loadFile() {
+	@Override
+	public void refresh() {
 		hTable = new Hashtable<String, String>();
 		Properties props = new Properties();
 		try {
@@ -381,5 +196,13 @@ public class ConfigurationFileImpl implements WritableConfiguration {
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot load config file: " + fileUrl, e);
 		}
+	}
+
+	@Override
+	public Hashtable<String, String> getHashtable() {
+		if (hTable == null) {
+			refresh();
+		}
+		return hTable;
 	}
 }

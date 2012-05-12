@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,16 +27,16 @@ import org.slf4j.LoggerFactory;
  * 
  * @author yyang
  */
-public class ConfigurationDbImpl implements WritableConfiguration {
+public class ConfigurationDbImpl extends AbstractConfiguration {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationDbImpl.class);
 	
+	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private DataSource dataSource;
 	private String tableName = "SYS_CONFIG";
 	private static final String keyColumn = "KEY_COLUMN";
 	private static final String valueColumn = "VALUE_COLUMN";
-	private String prefix = "";
-	private Properties properties;
+	private Hashtable<String, String> hTable;	
 	
 	
 	public ConfigurationDbImpl(DataSource dataSource) {
@@ -49,214 +48,17 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		this.tableName = tableName;
 	}
 
-	/**
-	 * 激活配置前缀功能
-	 * 
-	 * @param prefix 如"com.dayatang.mes."
-	 */
-	public void usePrefix(final String prefix) {
-		if (StringUtils.isNotBlank(prefix)) {
-			this.prefix = prefix.endsWith(".") ? prefix : prefix + ".";
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public String getString(String key, String defaultValue) {
-		Assert.notBlank(key, "Key is null or empty!");
-		String result = (String) getProperties().get(key);
-		if (result == null) {
-			result = (String) getProperties().get(prefix + key);
-		}
-		return result == null ? defaultValue : result;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String)
-	 */
-	@Override
-	public String getString(String key) {
-		return getString(key, "");
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setString(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void setString(String key, String value) {
-		Assert.notBlank(key, "Key is null or empty!");
-		if (StringUtils.isBlank(value)) {
-			getProperties().remove(key);
-			return;
-		}
-		getProperties().put(key, StringPropertyReplacer.replaceProperties(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String, int)
-	 */
-	@Override
-	public int getInt(String key, int defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Integer.parseInt(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String)
-	 */
-	@Override
-	public int getInt(String key) {
-		return getInt(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setInt(java.lang.String, int)
-	 */
-	@Override
-	public void setInt(String key, int value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String, long)
-	 */
-	@Override
-	public long getLong(String key, long defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Long.parseLong(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String)
-	 */
-	@Override
-	public long getLong(String key) {
-		return getLong(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setLong(java.lang.String, long)
-	 */
-	@Override
-	public void setLong(String key, long value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String, double)
-	 */
-	@Override
-	public double getDouble(String key, double defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Double.parseDouble(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String)
-	 */
-	@Override
-	public double getDouble(String key) {
-		return getDouble(key, 0);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDouble(java.lang.String, double)
-	 */
-	@Override
-	public void setDouble(String key, double value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String, boolean)
-	 */
-	@Override
-	public boolean getBoolean(String key, boolean defaultValue) {
-		String result = getString(key, String.valueOf(defaultValue));
-		return Boolean.parseBoolean(result);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String)
-	 */
-	@Override
-	public boolean getBoolean(String key) {
-		return getBoolean(key, false);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setBoolean(java.lang.String, boolean)
-	 */
-	@Override
-	public void setBoolean(String key, boolean value) {
-		setString(key, String.valueOf(value));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String, java.util.Date)
-	 */
-	@Override
-	public Date getDate(String key, Date defaultValue) {
-		String dateAsLong = getString(key);
-		if (StringUtils.isBlank(dateAsLong)) {
-			return defaultValue;
-		}
-		return new Date(Long.parseLong(dateAsLong));
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String)
-	 */
-	@Override
-	public Date getDate(String key) {
-		return getDate(key, null);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDate(java.lang.String, java.util.Date)
-	 */
-	@Override
-	public void setDate(String key, Date value) {
-		if (value == null) {
-			setString(key, "");
-		}
-		setString(key, String.valueOf(value.getTime()));
-	}
-
-	@Override
-	public Properties getProperties() {
-		if (properties != null && !properties.isEmpty()) {
-			return properties;
-		}
-		Connection connection = null;
-		try {
-			connection = dataSource.getConnection();
-			createTableIfNotExists(connection);
-			properties = loadConfigFromDb(connection);
-			debug("Configuration info loaded from table '{}'", tableName);
-			return properties;
-		} catch (SQLException e) {
-			error("Access database failure!");
-			throw new RuntimeException(e);
-		}
-		finally {
-			try {
-				if (connection != null && !connection.isClosed()) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				error("Close database connection failure!");
-				throw new RuntimeException(e);
-			}
-		}
-	}
-
 	//不同数据库的创建表语法不同，暂时希望用户在使用前先创建表
-	private void createTableIfNotExists(Connection connection) throws SQLException {
+	private void createTableIfNotExists(Connection connection) {
 		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
-		executeSqlUpdate(sql, connection);
+		try {
+			executeSqlUpdate(sql, connection);
+			connection.commit();
+		} catch (SQLException e) {
+			//connection.setReadOnly(true);
+			error("Could not create configurarion table", e);
+			throw new RuntimeException("Could not create configurarion table", e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -265,21 +67,18 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void save() {
-		Connection connection = null;
-		
+		Connection connection = DataSourceUtils.getConnection(dataSource);
 		try {
-			connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
-			
 			PreparedStatement queryStmt = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
 			PreparedStatement updateStmt = connection.prepareStatement(String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, valueColumn, keyColumn));
 			PreparedStatement insertStmt = connection.prepareStatement(String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn));
 			ResultSet rs = queryStmt.executeQuery();
-			Set<String> keys = new HashSet(properties.keySet());
+			Set<String> keys = new HashSet(hTable.keySet());
 			while (rs.next()) {
 				String key = rs.getString(keyColumn);
 				if (keys.contains(key)) {
-					updateStmt.setString(1, properties.getProperty(key));
+					updateStmt.setString(1, hTable.get(key));
 					updateStmt.setString(2, key);
 					updateStmt.executeUpdate();
 					keys.remove(key);
@@ -287,7 +86,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			}
 			for (String key : keys) {
 				insertStmt.setString(1, key);
-				insertStmt.setString(2, properties.getProperty(key));
+				insertStmt.setString(2, hTable.get(key));
 				insertStmt.executeUpdate();
 			}
 			rs.close();
@@ -296,7 +95,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			insertStmt.close();
 			connection.commit();
 		} catch (SQLException e) {
-			error("Access database failure!");
+			error("save configuration to database failure!");
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
@@ -304,18 +103,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 			}
 			throw new RuntimeException(e);
 		}
-		finally {
-			try {
-				if (connection != null && !connection.isClosed()) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				error("Close database connection failure!");
-				throw new RuntimeException(e);
-			} finally {
-				connection = null;
-			}
-		}
+		DataSourceUtils.releaseConnection(connection);
 	}
 
 	private int executeSqlUpdate(String sql, Connection connection) throws SQLException {
@@ -323,24 +111,6 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		int result = stmt.executeUpdate();
 		stmt.close();
 		return result;
-	}
-
-	private Properties loadConfigFromDb(Connection connection) throws SQLException {
-		PreparedStatement stmt = connection.prepareStatement("SELECT * FROM " + tableName);
-		ResultSet rs = stmt.executeQuery();
-		Properties results = new Properties();
-		while (rs.next()) {
-			results.put(rs.getString(keyColumn), rs.getString(valueColumn));
-		}
-		rs.close();
-		stmt.close();
-		return results;
-	}
-	
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
 	}
 
 	private static void debug(String message, Object... params) {
@@ -353,5 +123,39 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		if (LOGGER.isErrorEnabled()) {
 			LOGGER.error(message, params);
 		}
+	}
+
+	@Override
+	public Hashtable<String, String> getHashtable() {
+		if (hTable == null) {
+			Connection connection = DataSourceUtils.getConnection(dataSource);
+			createTableIfNotExists(connection);
+			refresh();
+			DataSourceUtils.releaseConnection(connection);
+		}
+		return hTable;
+	}
+
+	//从数据库中取得配置项，更新当前内存中的配置值。
+	public void refresh() {
+		hTable = new Hashtable<String, String>();
+		Properties properties = new Properties();
+		Connection connection = DataSourceUtils.getConnection(dataSource);
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement("SELECT * FROM " + tableName);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				properties.put(rs.getString(keyColumn), rs.getString(valueColumn));
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			error("Read configuration from database failure!");
+			throw new RuntimeException("Read configuration from database failure!", e);
+		}
+		DataSourceUtils.releaseConnection(connection);
+		hTable = pfu.rectifyProperties(properties);
+		debug("Configuration info loaded from table '{}'", tableName);
 	}
 }

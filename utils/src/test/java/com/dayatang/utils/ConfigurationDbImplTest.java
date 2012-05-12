@@ -8,6 +8,7 @@ import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -204,9 +205,9 @@ public class ConfigurationDbImplTest {
 	}
 
 	@Test
-	public void testGetProperties() {
-		Properties properties = instance.getProperties();
-		assertEquals("15", properties.get("size"));
+	public void testGetHashTable() {
+		Hashtable<String, String> hTable = instance.getHashtable();
+		assertEquals("15", hTable.get("size"));
 	}
 
 }

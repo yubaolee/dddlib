@@ -1,7 +1,7 @@
 package com.dayatang.utils;
 
 import java.util.Date;
-import java.util.Properties;
+import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,9 +25,9 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	@Override
 	public String getString(String key, String defaultValue) {
 		Assert.notBlank(key, "Key is null or empty!");
-		String result = (String) getProperties().get(key);
+		String result = getHashtable().get(key);
 		if (result == null) {
-			result = (String) getProperties().get(prefix + key);
+			result = (String) getHashtable().get(prefix + key);
 		}
 		return result == null ? defaultValue : result;
 	}
@@ -47,10 +47,10 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	public void setString(String key, String value) {
 		Assert.notBlank(key, "Key is null or empty!");
 		if (StringUtils.isBlank(value)) {
-			getProperties().remove(key);
+			getHashtable().remove(key);
 			return;
 		}
-		getProperties().put(key, StringPropertyReplacer.replaceProperties(value));
+		getHashtable().put(key, StringPropertyReplacer.replaceProperties(value));
 	}
 
 	/* (non-Javadoc)
@@ -59,7 +59,7 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	@Override
 	public int getInt(String key, int defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
-		return Integer.parseInt(result);
+		return StringUtils.isBlank(result) ? defaultValue : Integer.parseInt(result);
 	}
 
 	/* (non-Javadoc)
@@ -84,7 +84,7 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	@Override
 	public long getLong(String key, long defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
-		return Long.parseLong(result);
+		return StringUtils.isBlank(result) ? defaultValue : Long.parseLong(result);
 	}
 
 	/* (non-Javadoc)
@@ -109,7 +109,7 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	@Override
 	public double getDouble(String key, double defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
-		return Double.parseDouble(result);
+		return StringUtils.isBlank(result) ? defaultValue : Double.parseDouble(result);
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +134,7 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	@Override
 	public boolean getBoolean(String key, boolean defaultValue) {
 		String result = getString(key, String.valueOf(defaultValue));
-		return Boolean.parseBoolean(result);
+		return StringUtils.isBlank(result) ? defaultValue : Boolean.parseBoolean(result);
 	}
 
 	/* (non-Javadoc)
@@ -158,11 +158,8 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 	 */
 	@Override
 	public Date getDate(String key, Date defaultValue) {
-		String dateAsLong = getString(key);
-		if (StringUtils.isBlank(dateAsLong)) {
-			return defaultValue;
-		}
-		return new Date(Long.parseLong(dateAsLong));
+		String result = getString(key);
+		return StringUtils.isBlank(result) ? defaultValue : new Date(Long.parseLong(result));
 	}
 
 	/* (non-Javadoc)
@@ -184,7 +181,5 @@ public abstract class AbstractConfiguration implements WritableConfiguration {
 		setString(key, String.valueOf(value.getTime()));
 	}
 
-	@Override
-	public abstract Properties getProperties();
-
+	public abstract Hashtable<String, String> getHashtable();
 }
