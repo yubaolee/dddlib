@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -260,6 +262,7 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 	/* (non-Javadoc)
 	 * @see com.dayatang.utils.WritableConfiguration#save()
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void save() {
 		Connection connection = null;
@@ -267,18 +270,30 @@ public class ConfigurationDbImpl implements WritableConfiguration {
 		try {
 			connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
-			//String sql = String.format("DELETE FROM %s SET %s = ? WHERE %s = ?",  tableName, valueColumn, keyColumn);
-			String sql = "TRUNCATE TABLE " + tableName;
-			executeSqlUpdate(sql, connection);
-			sql = String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn);
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			Properties properties = getProperties();
-			for (Object key : properties.keySet()) {
-				stmt.setString(1, (String) key);
-				stmt.setString(2, properties.getProperty((String) key));
-				stmt.executeUpdate();
+			
+			PreparedStatement queryStmt = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+			PreparedStatement updateStmt = connection.prepareStatement(String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, valueColumn, keyColumn));
+			PreparedStatement insertStmt = connection.prepareStatement(String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn));
+			ResultSet rs = queryStmt.executeQuery();
+			Set<String> keys = new HashSet(properties.keySet());
+			while (rs.next()) {
+				String key = rs.getString(keyColumn);
+				if (keys.contains(key)) {
+					updateStmt.setString(1, properties.getProperty(key));
+					updateStmt.setString(2, key);
+					updateStmt.executeUpdate();
+					keys.remove(key);
+				}
 			}
-			stmt.close();
+			for (String key : keys) {
+				insertStmt.setString(1, key);
+				insertStmt.setString(2, properties.getProperty(key));
+				insertStmt.executeUpdate();
+			}
+			rs.close();
+			queryStmt.close();
+			updateStmt.close();
+			insertStmt.close();
 			connection.commit();
 		} catch (SQLException e) {
 			error("Access database failure!");
