@@ -50,6 +50,7 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 	private void createTableIfNotExists(Connection connection) {
 		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
 		try {
+			connection.setAutoCommit(false);
 			executeSqlUpdate(sql, connection);
 			connection.commit();
 		} catch (SQLException e) {
