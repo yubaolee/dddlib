@@ -100,16 +100,13 @@ public class ExcelReader {
 			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 				return null;
 			}
-			if (dataType == DataType.BOOLEAN) {
+			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 				return cell.getBooleanCellValue();
 			}
-			if (dataType == DataType.DATE) {
-				return cell.getDateCellValue();
+			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+				return dataType == DataType.DATE ? cell.getDateCellValue() : cell.getNumericCellValue();
 			}
-			if (dataType == DataType.NUMERIC) {
-				return cell.getNumericCellValue();
-			}
-			if (dataType == DataType.STRING) {
+			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				return cell.getStringCellValue();
 			}
 		} catch (IllegalStateException e) {
