@@ -18,19 +18,19 @@ import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
 
+import com.dayatang.utils.Assert;
+
 public class DelegatingConnection implements Connection {
 
 	protected Connection targetConnection;
 
-	public DelegatingConnection() {
+	public DelegatingConnection(Connection targetConnection) {
+		Assert.notNull(targetConnection, "'targetConnection' must not be null");
+		this.targetConnection = targetConnection;
 	}
 
 	public Connection getTargetConnection() {
 		return targetConnection;
-	}
-
-	public void setTargetConnection(Connection targetConnection) {
-		this.targetConnection = targetConnection;
 	}
 
 	public void clearWarnings() throws SQLException {

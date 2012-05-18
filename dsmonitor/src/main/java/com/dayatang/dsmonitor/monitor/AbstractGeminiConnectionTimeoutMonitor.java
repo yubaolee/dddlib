@@ -27,6 +27,14 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements Connecti
 	 */
 	private long timeout = 1000;
 
+	public void openConnection(Connection conn) throws SQLException {
+		GeminiConnection connection = (GeminiConnection) conn;
+		debug("开启数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】", connection.hashCode(), connection.getMetaData().getURL(),
+				formatTime(connection.getCreationTime()));
+	
+		aliveConnections.add(connection);
+	}
+
 	public void closeConnection(Connection conn) throws SQLException {
 		GeminiConnection connection = (GeminiConnection) conn;
 
@@ -36,14 +44,6 @@ public abstract class AbstractGeminiConnectionTimeoutMonitor implements Connecti
 		debug("关闭数据库连接HashCode【{}】，创建时间【{}】，耗时【{}】", connection.hashCode(), formatTime(connection.getCreationTime()), connection.getStopWatch());
 
 		aliveConnections.remove(connection);
-	}
-
-	public void openConnection(Connection conn) throws SQLException {
-		GeminiConnection connection = (GeminiConnection) conn;
-		debug("开启数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】", connection.hashCode(), connection.getMetaData().getURL(),
-				formatTime(connection.getCreationTime()));
-
-		aliveConnections.add(connection);
 	}
 
 	private boolean isTimeout(GeminiConnection conn) {

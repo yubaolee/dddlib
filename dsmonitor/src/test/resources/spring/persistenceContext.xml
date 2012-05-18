@@ -20,12 +20,12 @@
 	<!-- 此包装类为关键 -->
 	<bean id="myWrapperDataSource"
 	class="com.dayatang.dsmonitor.datasource.GeminiWrapperDataSource">
-		<property name="targetDataSource" ref="dataSource"></property>
-		<property name="monitors">
+		<constructor-arg index="0" ref="dataSource"/>
+		<constructor-arg index="1">
 			<set>
 				<ref bean="connectionMonitor" />
 			</set>
-		</property>
+		</constructor-arg>
 	</bean>
 
 	<bean id="dataSource"
