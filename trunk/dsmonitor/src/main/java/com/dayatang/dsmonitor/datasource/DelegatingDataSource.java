@@ -33,13 +33,6 @@ public class DelegatingDataSource implements DataSource {
 	 *            the target DataSource
 	 */
 	public DelegatingDataSource(DataSource targetDataSource) {
-		setTargetDataSource(targetDataSource);
-	}
-
-	/**
-	 * Set the target DataSource that this DataSource should delegate to.
-	 */
-	public void setTargetDataSource(DataSource targetDataSource) {
 		Assert.notNull(targetDataSource, "'targetDataSource' must not be null");
 		this.targetDataSource = targetDataSource;
 	}

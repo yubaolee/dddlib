@@ -9,10 +9,8 @@ import java.util.Set;
 import org.apache.commons.lang3.time.StopWatch;
 
 import com.dayatang.dsmonitor.monitor.ConnectionMonitor;
-import com.dayatang.utils.Assert;
 
-public class GeminiConnection extends DelegatingConnection implements
-		Connection {
+public class GeminiConnection extends DelegatingConnection {
 
 	private long creationTime;
 
@@ -24,13 +22,13 @@ public class GeminiConnection extends DelegatingConnection implements
 
 	public GeminiConnection(Connection targetConnection,
 			Set<ConnectionMonitor> monitors) throws SQLException {
-		Assert.notNull(targetConnection, "'targetConnection' must not be null");
+		super(targetConnection);
 		Exception exception = new Exception();
 		StackTraceElement[] stackTraceElements = exception.getStackTrace();
-		setTargetConnection(targetConnection);
-		setCreationTime(System.currentTimeMillis());
-		setStackTraceElements(stackTraceElements);
-		setMonitors(monitors);
+		//setCreationTime(System.currentTimeMillis());		//为了安全，不应该在构造函数中调用非final非private的方法。
+		this.creationTime = System.currentTimeMillis();
+		this.stackTraceElements = Arrays.copyOf(stackTraceElements, stackTraceElements.length);
+		this.monitors = monitors;
 		beginStopWatch();
 		notifyOpenConnection();
 	}
@@ -56,7 +54,7 @@ public class GeminiConnection extends DelegatingConnection implements
 		notifyCloseConnection();
 	}
 
-	public void beginStopWatch() {
+	public final void beginStopWatch() {
 		this.stopWatch = new StopWatch();
 		stopWatch.start();
 	}
@@ -89,8 +87,7 @@ public class GeminiConnection extends DelegatingConnection implements
 	}
 
 	public void setStackTraceElements(StackTraceElement[] stackTraceElements) {
-		this.stackTraceElements = Arrays.copyOf(stackTraceElements,
-				stackTraceElements.length);
+		this.stackTraceElements = Arrays.copyOf(stackTraceElements, stackTraceElements.length);
 	}
 
 	public StopWatch getStopWatch() {

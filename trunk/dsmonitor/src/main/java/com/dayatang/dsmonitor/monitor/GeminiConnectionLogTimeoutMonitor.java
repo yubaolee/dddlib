@@ -17,11 +17,8 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 
 	@Override
 	public void monitor() {
-		Set<GeminiConnection> closedTimeoutConnections = getClosedTimeoutConnections();
-		logConnections(closedTimeoutConnections, "已关闭的超时数据库连接");
-
-		Set<GeminiConnection> aliveTimeoutConnections = getAliveTimeoutConnections();
-		logConnections(aliveTimeoutConnections, "活动的超时数据库连接");
+		logConnections(getClosedTimeoutConnections(), "已关闭的超时数据库连接");
+		logConnections(getAliveTimeoutConnections(), "活动的超时数据库连接");
 	}
 
 	private void logConnections(Set<GeminiConnection> closedTimeoutConnections, String title) {
@@ -63,9 +60,7 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 	}
 
 	private void info(String message, Object... params) {
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info(message, params);
-		}
+		info(message, params);
 	}
 
 	private String formatTime(long date) {

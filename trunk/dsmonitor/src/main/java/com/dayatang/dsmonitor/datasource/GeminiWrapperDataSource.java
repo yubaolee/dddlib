@@ -5,11 +5,18 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
 import com.dayatang.dsmonitor.monitor.ConnectionMonitor;
 
 public class GeminiWrapperDataSource extends DelegatingDataSource {
 
 	private Set<ConnectionMonitor> monitors = new HashSet<ConnectionMonitor>();
+
+	public GeminiWrapperDataSource(DataSource targetDataSource, Set<ConnectionMonitor> monitors) {
+		super(targetDataSource);
+		this.monitors = monitors;
+	}
 
 	public Connection getConnection() throws SQLException {
 		Connection connection = super.getConnection();
