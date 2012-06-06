@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Dayatang Software Corp.
+Implementation-Title: domain
+Implementation-Version: 2.8-SNAPSHOT
+Implementation-Vendor-Id: com.dayatang.commons
+Class-Path: commons-lang3-3.1.jar commons-lang-2.6.jar
+Build-Jdk: 1.6.0_32
+Built-By: yyang
+Created-By: Maven Integration for Eclipse
+
