@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -18,14 +17,13 @@ import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 
 /**
- * 用户角色分配实体。表明用户user在机构organization中担任role角色。这是用户认证的核心对象。
+ * 用户角色分配实体。表明用户assignable在机构organization中担任role角色。这是用户认证的核心对象。
  * 
  * @author yyang
  * 
  */
 @Entity
-@Table(name = "role_assignments", 
-	uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id", "org_id"}))
+@Table(name = "role_assignments")
 @Cacheable
 public class RoleAssignment extends AbstractEntity {
 
@@ -33,8 +31,8 @@ public class RoleAssignment extends AbstractEntity {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@JoinColumn(name = "assignable_id", nullable = false)
+	private Assignable assignable;
 
 	@NotNull
 	@ManyToOne
@@ -45,18 +43,18 @@ public class RoleAssignment extends AbstractEntity {
 		super();
 	}
 
-	public RoleAssignment(User user, Role role) {
+	public RoleAssignment(Assignable assignable, Role role) {
 		super();
-		this.user = user;
+		this.assignable = assignable;
 		this.role = role;
 	}
 
-	public User getUser() {
-		return user;
+	public Assignable getAssignable() {
+		return assignable;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAssignable(Assignable assignable) {
+		this.assignable = assignable;
 	}
 
 	public Role getRole() {
@@ -67,14 +65,14 @@ public class RoleAssignment extends AbstractEntity {
 		this.role = role;
 	}
 
-	public static RoleAssignment get(User user, Role role) {
+	public static RoleAssignment get(Assignable assignable, Role role) {
 		return getRepository().getSingleResult(QuerySettings.create(RoleAssignment.class)
-				.eq("user", user).eq("role", role));
+				.eq("assignable", assignable).eq("role", role));
 	}
 	
-	public static List<RoleAssignment> findByUser(User user) {
+	public static List<RoleAssignment> findByAssignable(Assignable assignable) {
 		return getRepository().find(QuerySettings.create(RoleAssignment.class)
-				.eq("user", user));
+				.eq("assignable", assignable));
 	}
 	
 	public static List<RoleAssignment> findByRole(Role role) {
@@ -91,19 +89,19 @@ public class RoleAssignment extends AbstractEntity {
 			return false;
 		}
 		RoleAssignment that = (RoleAssignment) other;
-		return new EqualsBuilder().append(this.getUser(), that.getUser())
+		return new EqualsBuilder().append(this.getAssignable(), that.getAssignable())
 			.append(this.getRole(), that.getRole())
 			.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(user).append(role).toHashCode();
+		return new HashCodeBuilder().append(assignable).append(role).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(user).append(role).toString();
+		return new ToStringBuilder(this).append(assignable).append(role).toString();
 	}
 
 }

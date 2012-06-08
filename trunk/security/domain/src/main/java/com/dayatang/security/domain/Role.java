@@ -6,34 +6,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 
 @Entity
-@Table(name = "roles")
-@Cacheable
-public class Role extends AbstractEntity {
+@DiscriminatorValue("ROLE")
+public class Role extends Grantable {
 
 	private static final long serialVersionUID = 5429887402331650527L;
 
 	public static final long SYSTEM_ROLE_ID = 1L;
 	
-	@NotNull
-	@Column(nullable = false, unique = true)
-	private String name;
-
 	private String description;
 
 	@ManyToMany
@@ -44,15 +34,7 @@ public class Role extends AbstractEntity {
 	}
 
 	public Role(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	public String getDescription() {
@@ -130,15 +112,4 @@ public class Role extends AbstractEntity {
 		Role that = (Role) other;
 		return new EqualsBuilder().append(this.getName(), that.getName()).isEquals();
 	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(name).toHashCode();
-	}
-
-	@Override
-	public String toString() {
-		return name;
-	}
-
 }
