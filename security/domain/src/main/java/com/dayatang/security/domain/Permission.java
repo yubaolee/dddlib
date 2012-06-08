@@ -2,7 +2,6 @@ package com.dayatang.security.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,9 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
@@ -28,7 +27,7 @@ import com.dayatang.domain.QuerySettings;
 @Entity
 @Table(name = "permissions")
 @Cacheable
-public class Permission extends AbstractEntity implements Comparable<Permission> {
+public class Permission extends AbstractEntity {
 
 	private static final long serialVersionUID = 8083808914666752782L;
 
@@ -98,7 +97,6 @@ public class Permission extends AbstractEntity implements Comparable<Permission>
 
 	public List<Permission> getChildren() {
 		List<Permission> results = new ArrayList<Permission>(children);
-		Collections.sort(results);
 		return results;
 	}
 

@@ -4,34 +4,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "users")
-@Cacheable
-public class User extends AbstractEntity {
+@DiscriminatorValue("USER")
+public class User extends Assignable {
 
 	private static final long serialVersionUID = 5429887402331650527L;
-
-	@NotNull
-	@Column(nullable = false, unique = true)
-	private String username;
 
 	private String password;
 	
@@ -54,28 +39,11 @@ public class User extends AbstractEntity {
 	@Column(name = "account_disabled")
 	private boolean disabled = false;
 
-	public User() {
+	protected User() {
 	}
 
-	public User(String username) {
-		this.username = username;
-	}
-	
-	public User(String username, String password, String email, String mobile, String phoneNumber) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.mobile = mobile;
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	public User(String name) {
+		super(name);
 	}
 
 	public String getPassword() {
@@ -156,7 +124,7 @@ public class User extends AbstractEntity {
 
 	public Set<Role> getRoles() {
 		Set<Role> results = new HashSet<Role>();
-		for (RoleAssignment assignment : RoleAssignment.findByUser(this)) {
+		for (RoleAssignment assignment : RoleAssignment.findByAssignable(this)) {
 			results.add(assignment.getRole());
 		}
 		return results;
@@ -167,7 +135,7 @@ public class User extends AbstractEntity {
 	}
 	
 	public boolean isPermitted(Permission permission) {
-		List<RoleAssignment> assignments = RoleAssignment.findByUser(this);
+		List<RoleAssignment> assignments = RoleAssignment.findByAssignable(this);
 		for (RoleAssignment assignment : assignments) {
 			if (assignment.getRole().isGranted(permission)) {
 				return true;
@@ -178,7 +146,7 @@ public class User extends AbstractEntity {
 		
 	@Override
 	public void remove() {
-		for (RoleAssignment assignment : RoleAssignment.findByUser(this)) {
+		for (RoleAssignment assignment : RoleAssignment.findByAssignable(this)) {
 			assignment.remove();
 		}
 		super.remove();
@@ -222,16 +190,6 @@ public class User extends AbstractEntity {
 			return false;
 		}
 		User that = (User) other;
-		return new EqualsBuilder().append(this.getUsername(), that.getUsername()).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(username).toHashCode();
-	}
-
-	@Override
-	public String toString() {
-		return username;
+		return new EqualsBuilder().append(this.getName(), that.getName()).isEquals();
 	}
 }
