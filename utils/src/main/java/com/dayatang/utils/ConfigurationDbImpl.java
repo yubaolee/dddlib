@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -154,5 +156,14 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 		}
 		DataSourceUtils.releaseConnection(connection);
 		debug("Configuration info loaded from table '{}'", tableName);
+	}
+
+	@Override
+	public Properties getProperties() {
+		Properties results = new Properties();
+		for (Map.Entry<String, String> each : hTable.entrySet()) {
+			results.put(each.getKey(), each.getValue());
+		}
+		return results;
 	}
 }
