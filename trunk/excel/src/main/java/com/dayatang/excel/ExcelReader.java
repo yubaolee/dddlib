@@ -100,7 +100,7 @@ public class ExcelReader {
 			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
 				return null;
 			}
-			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 				return cell.getBooleanCellValue();
 			}
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
