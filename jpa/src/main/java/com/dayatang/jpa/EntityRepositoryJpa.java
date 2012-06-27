@@ -1,6 +1,7 @@
 package com.dayatang.jpa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +23,7 @@ import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
+import com.dayatang.jpa.internal.EntityUtils;
 import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
 
 /**
@@ -167,6 +172,26 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@Override
 	public <T extends Entity, E extends T> List<T> findByExample(final E example, final ExampleSettings<T> settings) {
+//		Map<String, Object> propValues = new EntityUtils(example).getPropValues();
+//		Map<String, Class<?>> propTypes = new EntityUtils(example).getPropTypes();
+//		
+//		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+//		CriteriaQuery<E> query = (CriteriaQuery<E>) criteriaBuilder.createQuery(example.getClass());
+//		Root<E> root = (Root<E>) query.from(example.getClass());
+//		query.distinct(true);
+//		query.select(root);
+//		List<Predicate> predicates = new ArrayList<Predicate>();
+//		for (String prop : propValues.keySet()) {
+//			if (settings.getExcludedProperties().contains(prop)) {
+//				continue;
+//			}
+//			Object value = propValues.get(prop);
+//			if (value != null) {
+//				predicates.add(criteriaBuilder.equal(root.get(prop), criteriaBuilder.parameter(propTypes.get(prop), value)));
+//			}
+//		}
+//		
+		
 		throw new RuntimeException("not implemented yet!");
 	}
 
