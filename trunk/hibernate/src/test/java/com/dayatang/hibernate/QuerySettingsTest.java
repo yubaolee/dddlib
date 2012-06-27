@@ -67,7 +67,7 @@ public class QuerySettingsTest {
 	public void setUp() {
 		session = sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(sessionFactory);
+		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);

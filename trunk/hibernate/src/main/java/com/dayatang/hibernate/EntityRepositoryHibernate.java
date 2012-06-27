@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,6 +13,7 @@ import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dayatang.IocException;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
@@ -34,9 +33,8 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
 
-	@Inject Session session;
+	private Session session;
 	
-	@Inject
 	private SessionFactory sessionFactory;
 
 
@@ -56,6 +54,9 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		if (sessionFactory == null) {
 			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
 		}
+		if (sessionFactory == null) {
+			throw new IocException("No service implements the interface org.hibernate.SessionFactory");
+		}
 		return sessionFactory;
 	}
 
@@ -65,9 +66,19 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	private Session getSession() {
 		if (session == null) {
+			session = InstanceFactory.getInstance(Session.class);
+		}
+		if (session == null) {
 			session = getSessionFactory().getCurrentSession();
 		}
+		if (session == null) {
+			throw new IocException("No service implements the interface org.hibernate.Session");
+		}
 		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
 	}
 
 	/*

@@ -72,7 +72,7 @@ public class RepositoryHibernateTest {
 	public void setUp() {
 		session = sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(sessionFactory);
+		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
