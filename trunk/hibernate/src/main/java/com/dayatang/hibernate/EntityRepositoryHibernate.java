@@ -65,7 +65,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	}
 
 	private Session getSession() {
-		if (session == null) {
+		if (session == null && InstanceFactory.isReady()) {
 			session = InstanceFactory.getInstance(Session.class);
 		}
 		if (session == null) {

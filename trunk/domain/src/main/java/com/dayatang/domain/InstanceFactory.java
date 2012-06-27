@@ -1,5 +1,7 @@
 package com.dayatang.domain;
 
+import com.dayatang.IocException;
+
 
 /**
  * 实例工厂类。通过它可以获得其管理的类的实例。 InstanceFactory向客户代码隐藏了IoC工厂的具体实现。在后台，它通过
@@ -37,6 +39,9 @@ public class InstanceFactory {
 	 * @return 类型为T的对象实例
 	 */
 	public static <T> T getInstance(Class<T> beanClass) {
+		if (notReady()) {
+			throw new IocException("No IoC provider exists!");
+		}
 		return getInstanceProvider().getInstance(beanClass);
 	}
 
@@ -52,6 +57,9 @@ public class InstanceFactory {
 	 * @return 类型为T的对象实例
 	 */
 	public static <T> T getInstance(Class<T> beanClass, String beanName) {
+		if (notReady()) {
+			throw new IocException("No IoC provider exists!");
+		}
 		return getInstanceProvider().getInstance(beanClass, beanName);
 	}
 	
@@ -62,5 +70,13 @@ public class InstanceFactory {
 	 */
 	private static InstanceProvider getInstanceProvider() {
 		return instanceProvider;
+	}
+	
+	public static boolean isReady() {
+		return instanceProvider == null ? false : true;
+	}
+	
+	private static boolean notReady() {
+		return instanceProvider == null;
 	}
 }
