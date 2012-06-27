@@ -33,6 +33,8 @@ import com.dayatang.hibernate.internal.QueryTranslator;
 public class EntityRepositoryHibernate implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
+
+	@Inject Session session;
 	
 	@Inject
 	private SessionFactory sessionFactory;
@@ -41,11 +43,16 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	public EntityRepositoryHibernate() {
 	}
 
+	public EntityRepositoryHibernate(Session session) {
+		super();
+		this.session = session;
+	}
+
 	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public SessionFactory getSessionFactory() {
+	private SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
 			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
 		}
@@ -57,7 +64,10 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	}
 
 	private Session getSession() {
-		return getSessionFactory().getCurrentSession();
+		if (session == null) {
+			session = getSessionFactory().getCurrentSession();
+		}
+		return session;
 	}
 
 	/*
