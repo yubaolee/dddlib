@@ -304,9 +304,9 @@ public class DateUtils {
 	public static Date parseDateTime(String timeString) {
 		try {
 			return org.apache.commons.lang3.time.DateUtils.parseDate(
-					timeString, new String[] { "yyyy-MM-dd hh:mm:ss",
-							"yyyy-M-d h:m:s", "yyyy-MM-dd h:m:s",
-							"yyyy-M-d hh:mm:ss" });
+					timeString, new String[] { "yyyy-MM-dd HH:mm:ss",
+							"yyyy-M-d H:m:s", "yyyy-MM-dd H:m:s",
+							"yyyy-M-d HH:mm:ss" });
 		} catch (ParseException e) {
 			return null;
 		}
