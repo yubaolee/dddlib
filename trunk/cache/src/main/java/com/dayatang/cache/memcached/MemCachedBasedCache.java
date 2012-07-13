@@ -22,7 +22,8 @@ import com.dayatang.utils.Assert;
  */
 public class MemCachedBasedCache implements Cache {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MemCachedBasedCache.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(MemCachedBasedCache.class);
 
 	private MemCachedClient mcc;
 
@@ -45,6 +46,13 @@ public class MemCachedBasedCache implements Cache {
 		Object obj = mcc.get(key);
 		debug("命中缓存：{}，key：{}", new Object[] { (obj != null), key });
 		return obj;
+	}
+
+	@Override
+	public Map<String, Object> get(String... keys) {
+		init();
+		Map<String, Object> map = mcc.getMulti(keys);
+		return map;
 	}
 
 	public boolean isKeyInCache(String key) {
@@ -110,6 +118,7 @@ public class MemCachedBasedCache implements Cache {
 		// it will wake up every x seconds and
 		// maintain the pool size
 		pool.setMaintSleep(30);
+//		pool.setBufferSize(1024);
 
 		// set some TCP settings
 		// disable nagle
