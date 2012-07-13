@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.dayatang.dsmonitor.datasource.GeminiConnection;
 
-public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionTimeoutMonitor {
+public class GeminiConnectionLogTimeoutMonitor extends
+		AbstractGeminiConnectionTimeoutMonitor {
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(GeminiConnectionLogTimeoutMonitor.class);
+	protected static final Logger LOGGER = LoggerFactory
+			.getLogger(GeminiConnectionLogTimeoutMonitor.class);
 
 	private static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
@@ -21,7 +23,8 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 		logConnections(getAliveTimeoutConnections(), "活动的超时数据库连接");
 	}
 
-	private void logConnections(Set<GeminiConnection> closedTimeoutConnections, String title) {
+	private void logConnections(Set<GeminiConnection> closedTimeoutConnections,
+			String title) {
 		if (closedTimeoutConnections.isEmpty()) {
 			info("没有【{}】，超时时间为：【{}】ms", title, getTimeout());
 			return;
@@ -29,7 +32,8 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 		info("=======================================================================================");
 		info("=======================================================================================");
 		info("=============                                                             =============");
-		info("=============            以下是{}，超时时间为：【{}】ms         =============", title, getTimeout());
+		info("=============            以下是{}，超时时间为：【{}】ms         =============",
+				title, getTimeout());
 		info("=============                                                             =============");
 		info("=======================================================================================");
 		info("=======================================================================================");
@@ -42,14 +46,16 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 	private void logConnection(GeminiConnection conn) {
 		try {
 			if (conn.isClosed()) {
-				info("数据库连接HashCode【{}】，创建时间【{}】，耗时【{}】",
-						conn.hashCode(), formatTime(conn.getCreationTime()), conn.getStopWatch());
+				info("数据库连接HashCode【{}】，创建时间【{}】，耗时【{}】", conn.hashCode(),
+						formatTime(conn.getCreationTime()), conn.getStopWatch());
 			} else {
-				info("数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】，耗时【{}】", conn.hashCode(), conn.getMetaData().getURL(),
+				info("数据库连接HashCode【{}】，URL=【{}】，创建时间【{}】，耗时【{}】",
+						conn.hashCode(), conn.getMetaData().getURL(),
 						formatTime(conn.getCreationTime()), conn.getStopWatch());
 			}
 
-			StackTraceElement[] stackTraceElements = conn.getStackTraceElements();
+			StackTraceElement[] stackTraceElements = conn
+					.getStackTraceElements();
 			info("调用堆栈为：");
 			for (StackTraceElement ste : stackTraceElements) {
 				info("     " + ste);
@@ -60,7 +66,7 @@ public class GeminiConnectionLogTimeoutMonitor extends AbstractGeminiConnectionT
 	}
 
 	private void info(String message, Object... params) {
-		info(message, params);
+		LOGGER.info(message, params);
 	}
 
 	private String formatTime(long date) {
