@@ -3,7 +3,9 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.commons.AbstractIntegrationTest;
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.commons.repository.HibernateUtils;
@@ -31,15 +34,15 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class QuerySettingsTest {
+public class QuerySettingsTest extends AbstractIntegrationTest {
 
 	private static SessionFactory sessionFactory;
 	
 	private Session session;
+	
+	Transaction tx;
 
-	private Transaction tx;
-
-	private static EntityRepositoryHibernate repository;
+	private EntityRepositoryHibernate repository;
 	
 	private QuerySettings<Dictionary> settings;
 
@@ -53,19 +56,25 @@ public class QuerySettingsTest {
 
 	private Dictionary undergraduate;
 
+
 	@BeforeClass
-	public static void setUpClass() throws Exception {
+	public static void classSetUp() throws Exception {
+		System.out.println("+++++++++++++++++++++");
+		AbstractIntegrationTest.classSetUp();
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass
-	public static void tearDownClass() {
+	public static void classTearDown() throws Exception {
 		sessionFactory.close();
+		AbstractIntegrationTest.classTearDown();
 	}
+	
 	
 	@Before
 	public void setUp() {
-		session = sessionFactory.getCurrentSession();
+		System.out.println("-----------------------");
+		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
@@ -80,7 +89,7 @@ public class QuerySettingsTest {
 	@After
 	public void tearDown() {
 		tx.rollback();
-		if (session.isOpen()) {
+		if (session != null && session.isOpen()) {
 			session.close();
 		}
 		AbstractEntity.setRepository(null);
