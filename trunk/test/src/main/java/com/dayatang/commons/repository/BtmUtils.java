@@ -1,7 +1,9 @@
-package com.dayatang.commons;
-
+package com.dayatang.commons.repository;
 
 import java.sql.SQLException;
+
+import javax.transaction.SystemException;
+import javax.transaction.Transaction;
 
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
@@ -11,8 +13,11 @@ import org.junit.BeforeClass;
 import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 
-public class AbstractIntegrationTest {
+public class BtmUtils {
 	
+	private BtmUtils() {
+	}
+
 	private static final String DB_NAME = "test-db";
 
     private static boolean setupDataSource = true;
@@ -20,7 +25,7 @@ public class AbstractIntegrationTest {
 	private static H2Server server = new H2Server();
 
 	@BeforeClass
-	public static void classSetUp() throws Exception {
+	public static void setupDataSource() throws Exception {
         if (setupDataSource) {
             server.start();
         	dataSource = setupPoolingDataSource();
@@ -28,7 +33,7 @@ public class AbstractIntegrationTest {
 	}
 
 	@AfterClass
-    public static void classTearDown() throws Exception {
+    public static void closeDataSource() throws Exception {
     	if (setupDataSource) {
     		if (dataSource != null) {
     			dataSource.close();
@@ -40,7 +45,7 @@ public class AbstractIntegrationTest {
     	}
     }
 
-	public static PoolingDataSource setupPoolingDataSource() {
+	private static PoolingDataSource setupPoolingDataSource() {
         PoolingDataSource pds = new PoolingDataSource();
         pds.setUniqueName("jdbc/testDS");
         pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
@@ -54,6 +59,14 @@ public class AbstractIntegrationTest {
         return pds;
     }
 
+	public static Transaction getTransaction() {
+		try {
+			return TransactionManagerServices.getTransactionManager().getTransaction();
+		} catch (SystemException e) {
+			throw new RuntimeException("Cannot get transaction", e);
+		}
+	}
+	
 	private static class H2Server {
 		private Server server;
 
@@ -83,4 +96,5 @@ public class AbstractIntegrationTest {
 			}
 		}
 	}
+
 }
