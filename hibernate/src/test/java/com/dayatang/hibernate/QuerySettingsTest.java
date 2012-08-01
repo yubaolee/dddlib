@@ -21,9 +21,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dayatang.commons.AbstractIntegrationTest;
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
@@ -34,7 +34,7 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class QuerySettingsTest extends AbstractIntegrationTest {
+public class QuerySettingsTest {
 
 	private static SessionFactory sessionFactory;
 	
@@ -59,21 +59,19 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 
 	@BeforeClass
 	public static void classSetUp() throws Exception {
-		System.out.println("+++++++++++++++++++++");
-		AbstractIntegrationTest.classSetUp();
+		BtmUtils.setupDataSource();
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass
 	public static void classTearDown() throws Exception {
 		sessionFactory.close();
-		AbstractIntegrationTest.classTearDown();
+		BtmUtils.closeDataSource();
 	}
 	
 	
 	@Before
 	public void setUp() {
-		System.out.println("-----------------------");
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate(session);
