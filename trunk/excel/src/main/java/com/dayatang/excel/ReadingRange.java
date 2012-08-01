@@ -72,7 +72,6 @@ public class ReadingRange {
 			return this;
 		}
 
-
 		public Builder columns(int[] columnIndexes, DataType[] columnTypes) {
 			if (columnIndexes == null || columnTypes == null) {
 				throw new IllegalArgumentException("The columns and types can not be null!");
@@ -86,15 +85,31 @@ public class ReadingRange {
 		}
 
 		public Builder columns(String[] columnLabels, DataType[] columnTypes) {
-			if (columnLabels == null || columnTypes == null) {
-				throw new IllegalArgumentException("The columns and types can not be null!");
+			return columns(convertColumnLabelToIndex(columnLabels), columnTypes);
+		}
+
+		public Builder columns(int columnFrom, int columnTo, DataType[] columnTypes) {
+			if (columnTo < columnFrom) {
+				throw new IllegalArgumentException("Last column is less than first column!");
 			}
-			if (columnLabels.length != columnTypes.length) {
+			this.columnIndexes = getColumnIndexes(columnFrom, columnTo);
+			if (columnIndexes.length != columnTypes.length) {
 				throw new IllegalArgumentException("The count of columns and types is not equals!");
 			}
-			this.columnIndexes = convertColumnLabelToIndex(columnLabels);
 			this.columnTypes = columnTypes;
 			return this;
+		}
+
+		private int[] getColumnIndexes(int columnFrom, int columnTo) {
+			int[] results = new int[columnTo - columnFrom + 1];
+			for (int i = 0; i < results.length; i++) {
+				results[i] = columnFrom + i;
+			}
+			return results;
+		}
+
+		public Builder columns(String columnFrom, String columnTo, DataType[] columnTypes) {
+			return columns(convertColumnLabelToIndex(columnFrom), convertColumnLabelToIndex(columnTo), columnTypes);
 		}
 		
 		private int[] convertColumnLabelToIndex(String[] columnLabels) {

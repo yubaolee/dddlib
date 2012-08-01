@@ -61,11 +61,28 @@ public class ReadingRangeTest {
 	}
 
 	@Test
-	public void testColumnNames() {
+	public void testColumnsByNames() {
 		columnsLabels = new String[] {"A", "C"};
 		columnTypes = new DataType[] {DataType.STRING, DataType.NUMERIC};
 		ReadingRange instance = builder.columns(columnsLabels, columnTypes).build();
 		assertArrayEquals(new int[] {0, 2}, instance.getColumnIndexes());
+		assertArrayEquals(columnTypes, instance.getColumnTypes());
+	}
+
+	@Test
+	public void testColumnRangeByIndex() {
+		columnTypes = new DataType[] {DataType.STRING, DataType.DATE, DataType.NUMERIC};
+		ReadingRange instance = builder.columns(0, 2, columnTypes).build();
+		assertArrayEquals(new int[] {0, 1, 2}, instance.getColumnIndexes());
+		assertArrayEquals(columnTypes, instance.getColumnTypes());
+	}
+
+	@Test
+	public void testColumnRangeByName() {
+		columnsLabels = new String[] {"A", "C"};
+		columnTypes = new DataType[] {DataType.STRING, DataType.DATE, DataType.NUMERIC};
+		ReadingRange instance = builder.columns("A", "C", columnTypes).build();
+		assertArrayEquals(new int[] {0, 1, 2}, instance.getColumnIndexes());
 		assertArrayEquals(columnTypes, instance.getColumnTypes());
 	}
 	
