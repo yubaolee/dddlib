@@ -3,9 +3,7 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -73,6 +71,7 @@ public class QuerySettingsTest {
 	@Before
 	public void setUp() {
 		session = sessionFactory.openSession();
+		
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);
