@@ -2,9 +2,6 @@ package com.dayatang.commons.repository;
 
 import java.sql.SQLException;
 
-import javax.transaction.SystemException;
-import javax.transaction.Transaction;
-
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
 import org.junit.AfterClass;
@@ -59,14 +56,6 @@ public class BtmUtils {
         return pds;
     }
 
-	public static Transaction getTransaction() {
-		try {
-			return TransactionManagerServices.getTransactionManager().getTransaction();
-		} catch (SystemException e) {
-			throw new RuntimeException("Cannot get transaction", e);
-		}
-	}
-	
 	private static class H2Server {
 		private Server server;
 
