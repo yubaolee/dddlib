@@ -3,10 +3,15 @@
  */
 package com.dayatang.hibernate;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +19,6 @@ import java.util.Map;
 
 import javax.validation.ValidationException;
 
-import org.dbunit.DatabaseUnitException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -26,6 +30,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
@@ -59,18 +64,20 @@ public class RepositoryHibernateTest {
 	private Dictionary associate;
 
 	@BeforeClass
-	public static void setUpClass() throws DatabaseUnitException, SQLException, Exception {
+	public static void setUpClass() throws Exception {
+		BtmUtils.setupDataSource();
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass
-	public static void tearDownClass() {
+	public static void tearDownClass() throws Exception {
 		sessionFactory.close();
+		BtmUtils.closeDataSource();
 	}
 	
 	@Before
 	public void setUp() {
-		session = sessionFactory.getCurrentSession();
+		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate(session);
 		AbstractEntity.setRepository(repository);

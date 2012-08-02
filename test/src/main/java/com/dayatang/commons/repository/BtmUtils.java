@@ -8,7 +8,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import bitronix.tm.TransactionManagerServices;
-import bitronix.tm.resource.jdbc.PoolingDataSource;
 
 public class BtmUtils {
 	
@@ -18,42 +17,25 @@ public class BtmUtils {
 	private static final String DB_NAME = "test-db";
 
     private static boolean setupDataSource = true;
-	private static PoolingDataSource dataSource;
 	private static H2Server server = new H2Server();
 
 	@BeforeClass
 	public static void setupDataSource() throws Exception {
         if (setupDataSource) {
             server.start();
-        	dataSource = setupPoolingDataSource();
+            String resourceConfFile = BtmUtils.class.getResource("/datasources.properties").toURI().getPath();
+            TransactionManagerServices.getConfiguration().setResourceConfigurationFilename(resourceConfFile);
+            TransactionManagerServices.getTransactionManager();
         }
 	}
 
 	@AfterClass
     public static void closeDataSource() throws Exception {
     	if (setupDataSource) {
-    		if (dataSource != null) {
-    			dataSource.close();
-    			dataSource = null;
-    		}
     		server.stop();
     		DeleteDbFiles.execute("~", DB_NAME, true);
     		TransactionManagerServices.getTransactionManager().shutdown();
     	}
-    }
-
-	private static PoolingDataSource setupPoolingDataSource() {
-        PoolingDataSource pds = new PoolingDataSource();
-        pds.setUniqueName("jdbc/testDS");
-        pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
-        pds.setMaxPoolSize(5);
-        pds.setAllowLocalTransactions(true);
-        pds.getDriverProperties().put("user", "sa");
-        pds.getDriverProperties().put("password", "");
-        pds.getDriverProperties().put("url", "jdbc:h2:tcp://localhost/~/" + DB_NAME);
-        pds.getDriverProperties().put("driverClassName", "org.h2.Driver");
-        pds.init();
-        return pds;
     }
 
 	private static class H2Server {

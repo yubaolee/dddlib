@@ -46,11 +46,6 @@
 			<artifactId>javassist</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
