@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
@@ -62,13 +63,15 @@ public class RepositoryJpaTest {
 	private Dictionary associate;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception {
+		BtmUtils.setupDataSource();
 		emf = Persistence.createEntityManagerFactory("default");
 	}
 
 	@AfterClass
-	public static void tearDownClass() {
+	public static void tearDownClass() throws Exception {
 		emf.close();
+		BtmUtils.closeDataSource();
 	}
 
 	@Before
