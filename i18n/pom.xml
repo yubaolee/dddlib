@@ -4,15 +4,15 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>2.8</version>
+		<version>3.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-i18n</artifactId>
 	<packaging>jar</packaging>
 	<name>I18N Interface and Implements</name>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.8/i18n</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.8/i18n</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/i18n/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/i18n/</developerConnection>
 	</scm>
 
 	<dependencies>
