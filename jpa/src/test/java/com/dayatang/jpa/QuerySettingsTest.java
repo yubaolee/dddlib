@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.transaction.SystemException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,8 +22,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
+import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.QueryException;
@@ -55,13 +58,15 @@ public class QuerySettingsTest {
 	private Dictionary undergraduate;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception {
+		BtmUtils.setupDataSource();
 		emf = Persistence.createEntityManagerFactory("default");
 	}
 
 	@AfterClass
-	public static void tearDownClass() {
+	public static void tearDownClass() throws Exception {
 		emf.close();
+		BtmUtils.closeDataSource();
 	}
 
 	@Before
@@ -80,7 +85,7 @@ public class QuerySettingsTest {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws IllegalStateException, SystemException {
 		tx.rollback();
 		entityManager.close();
 		repository = null;
