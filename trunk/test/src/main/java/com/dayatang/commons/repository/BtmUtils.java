@@ -9,6 +9,11 @@ import org.junit.BeforeClass;
 
 import bitronix.tm.TransactionManagerServices;
 
+/**
+ * 通过开源JTA实现库BTM创建数据源并绑定到JNDI.
+ * @author yyang
+ *
+ */
 public class BtmUtils {
 	
 	private BtmUtils() {
@@ -16,26 +21,21 @@ public class BtmUtils {
 
 	private static final String DB_NAME = "test-db";
 
-    private static boolean setupDataSource = true;
 	private static H2Server server = new H2Server();
 
 	@BeforeClass
 	public static void setupDataSource() throws Exception {
-        if (setupDataSource) {
-            server.start();
-            String resourceConfFile = BtmUtils.class.getResource("/datasources.properties").toURI().getPath();
-            TransactionManagerServices.getConfiguration().setResourceConfigurationFilename(resourceConfFile);
-            TransactionManagerServices.getTransactionManager();
-        }
+        server.start();
+        String resourceConfFile = BtmUtils.class.getResource("/datasources.properties").toURI().getPath();
+        TransactionManagerServices.getConfiguration().setResourceConfigurationFilename(resourceConfFile);
+        TransactionManagerServices.getTransactionManager();
 	}
 
 	@AfterClass
     public static void closeDataSource() throws Exception {
-    	if (setupDataSource) {
-    		server.stop();
-    		DeleteDbFiles.execute("~", DB_NAME, true);
-    		TransactionManagerServices.getTransactionManager().shutdown();
-    	}
+		server.stop();
+		DeleteDbFiles.execute("~", DB_NAME, true);
+		TransactionManagerServices.getTransactionManager().shutdown();
     }
 
 	private static class H2Server {
