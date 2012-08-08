@@ -8,14 +8,14 @@ import org.apache.poi.ss.usermodel.DateUtil;
 public enum Version {
 	XLS {
 		@Override
-		public Date getDate(double value, boolean isDate1904) {
-			return HSSFDateUtil.getJavaDate(value, isDate1904);
+		public Date getDate(Double value, boolean isDate1904) {
+			return value == null ? null : HSSFDateUtil.getJavaDate(value, isDate1904);
 		}
 	},
 	XLSX {
 		@Override
-		public Date getDate(double value, boolean isDate1904) {
-			return DateUtil.getJavaDate(value, isDate1904);
+		public Date getDate(Double value, boolean isDate1904) {
+			return value == null ? null : DateUtil.getJavaDate(value, isDate1904);
 		}
 	};
 
@@ -23,5 +23,5 @@ public enum Version {
 		return filename.toLowerCase().endsWith("xslx") ? XLSX : XLS;
 	}
 
-	public abstract Date getDate(double value, boolean isDate1904);
+	public abstract Date getDate(Double value, boolean isDate1904);
 }
