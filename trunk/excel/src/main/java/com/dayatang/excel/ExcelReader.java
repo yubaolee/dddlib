@@ -188,16 +188,6 @@ public class ExcelReader {
 			this.rowTo = rowTo;
 			return this;
 		}
-		 
-		public Builder columnFrom(int columnFrom) {
-			this.columnFrom = columnFrom;
-			return this;
-		}
-		
-		public Builder columnTo(int columnTo) {
-			this.columnTo = columnTo;
-			return this;
-		}
 
 		public Builder columnRange(int columnFrom, int columnTo) {
 			if (columnTo < columnFrom) {
