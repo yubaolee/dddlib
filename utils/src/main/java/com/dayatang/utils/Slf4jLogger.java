@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class Slf4jLogger implements com.dayatang.utils.Logger {
 	private Logger logger;
 	
-	private Slf4jLogger(Logger logger) {
+	Slf4jLogger(Logger logger) {
 		this.logger = logger;
 	}
 
