@@ -23,7 +23,7 @@ import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
-import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
@@ -74,7 +74,7 @@ public class QuerySettingsTest {
 		
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate(session);
-		AbstractEntity.setRepository(repository);
+		AggregateRootEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
@@ -89,7 +89,7 @@ public class QuerySettingsTest {
 		if (session != null && session.isOpen()) {
 			session.close();
 		}
-		AbstractEntity.setRepository(null);
+		AggregateRootEntity.setRepository(null);
 	}
 
 	@Test

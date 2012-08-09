@@ -3,9 +3,6 @@
  */
 package com.dayatang.domain;
 
-import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +11,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
@@ -29,9 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 @MappedSuperclass
 public abstract class AbstractEntity implements Entity {
 
-	private static final long serialVersionUID = 2364892694478974374L;
-
-	private static EntityRepository repository;
+	private static final long serialVersionUID = 8882145540383345037L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -108,46 +102,6 @@ public abstract class AbstractEntity implements Entity {
 	
 	public void addValidationException(String message) {
 		validationMessageBuilder.append(message + System.getProperty("line.separator"));
-	}
-
-	public static EntityRepository getRepository() {
-		if (repository == null) {
-			repository = InstanceFactory.getInstance(EntityRepository.class);
-		}
-		return repository;
-	}
-
-	public static void setRepository(EntityRepository repository) {
-		AbstractEntity.repository = repository;
-	}
-
-	public void save() throws ValidationException {
-		validate();
-		getRepository().save(this);
-	}
-
-	public void remove() {
-		getRepository().remove(this);
-	}
-
-	public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
-		return getRepository().exists(clazz, id);
-	}
-
-	public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
-		return getRepository().get(clazz, id);
-	}
-
-	public static <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
-		return getRepository().getUnmodified(clazz, entity);
-	}
-
-	public static <T extends Entity> T load(Class<T> clazz, Serializable id) {
-		return getRepository().load(clazz, id);
-	}
-
-	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getRepository().find(QuerySettings.create(clazz));
 	}
 
 	@Override
