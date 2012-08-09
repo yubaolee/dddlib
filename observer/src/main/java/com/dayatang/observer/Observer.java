@@ -23,14 +23,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.AggregateRootEntity;
 
 @SuppressWarnings("rawtypes")
 @Entity
 @Table(name = "COMMONS_OBSERVER")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "OBSERVER_CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Observer<T extends Subject> extends AbstractEntity {
+public abstract class Observer<T extends Subject> extends AggregateRootEntity {
 
 	/**
 	 * 
@@ -70,7 +70,7 @@ public abstract class Observer<T extends Subject> extends AbstractEntity {
 	public abstract void process(T subject);
 
 	public static Observer get(Long id) {
-		return AbstractEntity.get(Observer.class, id);
+		return getRepository().get(Observer.class, id);
 	}
 
 	public static List<Observer> findBySubject(Subject subject) {

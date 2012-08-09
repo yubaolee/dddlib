@@ -26,7 +26,7 @@ import org.junit.Test;
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.commons.repository.BtmUtils;
-import com.dayatang.domain.AbstractEntity;
+import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
@@ -73,7 +73,7 @@ public class QuerySettingsTest {
 	public void setUp() {
 		entityManager = emf.createEntityManager();
 		repository = new EntityRepositoryJpa(entityManager);
-		AbstractEntity.setRepository(repository);
+		AggregateRootEntity.setRepository(repository);
 		tx = entityManager.getTransaction();
 		tx.begin();
 		settings = QuerySettings.create(Dictionary.class);
@@ -89,7 +89,7 @@ public class QuerySettingsTest {
 		tx.rollback();
 		entityManager.close();
 		repository = null;
-		AbstractEntity.setRepository(null);
+		AggregateRootEntity.setRepository(null);
 	}
 
 	@Test
