@@ -222,5 +222,4 @@ public class ValueTest {
 		value = new Value(DataType.DATE_TIME, "2000-01-01 00:12:00");
 		assertEquals(DateUtils.parseDate("2000-01-01 00:12:00", DATE_FORMAT), value.getRealValue());
 	}
-
 }

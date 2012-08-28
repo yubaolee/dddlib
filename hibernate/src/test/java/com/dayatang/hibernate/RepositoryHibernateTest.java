@@ -35,6 +35,7 @@ import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
 
 /**
@@ -78,8 +79,9 @@ public class RepositoryHibernateTest {
 	@Before
 	public void setUp() {
 		session = sessionFactory.openSession();
+		InstanceFactory.bind(Session.class, session);
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(session);
+		repository = new EntityRepositoryHibernate();
 		AggregateRootEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
