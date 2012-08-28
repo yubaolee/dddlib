@@ -28,6 +28,7 @@ import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
 
@@ -72,7 +73,8 @@ public class QuerySettingsTest {
 	@Before
 	public void setUp() {
 		entityManager = emf.createEntityManager();
-		repository = new EntityRepositoryJpa(entityManager);
+		InstanceFactory.bind(EntityManager.class, entityManager);
+		repository = new EntityRepositoryJpa();
 		AggregateRootEntity.setRepository(repository);
 		tx = entityManager.getTransaction();
 		tx.begin();
