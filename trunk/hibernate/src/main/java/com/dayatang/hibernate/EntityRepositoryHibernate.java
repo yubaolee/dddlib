@@ -33,52 +33,23 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
 
-	private Session session;
-	
-	private SessionFactory sessionFactory;
-
-
 	public EntityRepositoryHibernate() {
 	}
 
-	public EntityRepositoryHibernate(Session session) {
-		super();
-		this.session = session;
-	}
-
-	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
 	private Session getSession() {
-		if ((session == null || !session.isOpen())) {
-			try {
-				session = InstanceFactory.getInstance(Session.class);
-			} catch (IocInstanceNotFoundException e) {
-				session = getSessionFromFactory();
-			}
+		try {
+			return InstanceFactory.getInstance(Session.class);
+		} catch (IocInstanceNotFoundException e) {
+			SessionFactory sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
+			return sessionFactory.getCurrentSession();
 		}
-		return session;
-	}
-
-	private Session getSessionFromFactory() {
-		if (sessionFactory == null || sessionFactory.isClosed()) {
-			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
-		}
-		return sessionFactory.getCurrentSession();
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
+	 * 
+	 * @see
+	 * com.dayatang.domain.EntityRepository#save(com.dayatang.domain.Entity)
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
@@ -89,7 +60,9 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.dayatang.domain.EntityRepository#remove(com.dayatang.domain.Entity)
+	 * 
+	 * @see
+	 * com.dayatang.domain.EntityRepository#remove(com.dayatang.domain.Entity)
 	 */
 	@Override
 	public void remove(Entity entity) {
@@ -99,24 +72,27 @@ public class EntityRepositoryHibernate implements EntityRepository {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.dayatang.domain.EntityRepository#exists(java.io.Serializable)
 	 */
 	@Override
 	public <T extends Entity> boolean exists(final Class<T> clazz, final Serializable id) {
 		return get(clazz, id) != null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.dayatang.domain.EntityRepository#get(java.io.Serializable)
 	 */
 	@Override
 	public <T extends Entity> T get(final Class<T> clazz, final Serializable id) {
 		return (T) getSession().get(clazz, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.dayatang.domain.EntityRepository#load(java.io.Serializable)
 	 */
 	@Override
@@ -138,7 +114,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
 		QueryTranslator translator = new QueryTranslator(settings);
-		String queryString = translator.getQueryString(); 
+		String queryString = translator.getQueryString();
 		LOGGER.info("QueryString: '" + queryString + "'");
 		List<Object> params = translator.getParams();
 		LOGGER.info("params: " + StringUtils.join(params, ", "));
@@ -181,7 +157,8 @@ public class EntityRepositoryHibernate implements EntityRepository {
 	}
 
 	@Override
-	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params, final Class<T> resultClass) {
+	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params,
+			final Class<T> resultClass) {
 		Query query = getSession().getNamedQuery(queryName);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));

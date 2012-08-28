@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.hibernate.EntityRepositoryHibernate;
 import com.dayatang.observer.HibernateUtils;
 
@@ -46,8 +47,9 @@ public class ObserverTest {
 	@Before
 	public void setUp() {
 		session = sessionFactory.getCurrentSession();
+		InstanceFactory.bind(Session.class, session);
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(session);
+		repository = new EntityRepositoryHibernate();
 		AggregateRootEntity.setRepository(repository);
 		observer_1 = createMotherObserver(false);
 		observer_1.setSubjectKeys(Collections.singleton("BABY-SUBJECT"));

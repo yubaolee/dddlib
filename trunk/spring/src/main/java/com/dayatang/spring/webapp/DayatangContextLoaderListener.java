@@ -11,7 +11,7 @@ import com.dayatang.spring.factory.SpringProvider;
 
 public class DayatangContextLoaderListener extends ContextLoaderListener {
 
-	public void contextInitialized(ServletContextEvent  event) {
+	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext());
 		SpringProvider springProvider = new SpringProvider(applicationContext);
