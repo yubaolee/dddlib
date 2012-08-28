@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dayatang.IocInstanceNotFoundException;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
@@ -37,15 +39,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 	private EntityManager entityManager;
 
 	public EntityRepositoryJpa() {
-	}
-
-	public EntityRepositoryJpa(EntityManager entityManager) {
-		super();
-		this.entityManager = entityManager;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
 	}
 
 	/*
@@ -232,13 +225,6 @@ public class EntityRepositoryJpa implements EntityRepository {
 		query.executeUpdate();
 	}
 
-	private EntityManager getEntityManager() {
-		if (entityManager == null) {
-			entityManager = InstanceFactory.getInstance(EntityManager.class);
-		}
-		return entityManager;
-	}
-
 	@Override
 	public void flush() {
 		getEntityManager().flush();
@@ -310,6 +296,15 @@ public class EntityRepositoryJpa implements EntityRepository {
 		int resultCount = data.size();
 		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
+	}
+
+	private EntityManager getEntityManager() {
+		try {
+			return InstanceFactory.getInstance(EntityManager.class);
+		} catch (IocInstanceNotFoundException e) {
+			EntityManagerFactory entityManagerFactory = InstanceFactory.getInstance(EntityManagerFactory.class);
+			return entityManagerFactory.createEntityManager();
+		}
 	}
 
 }
