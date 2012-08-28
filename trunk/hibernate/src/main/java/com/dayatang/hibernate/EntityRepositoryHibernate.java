@@ -13,7 +13,7 @@ import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dayatang.IocException;
+import com.dayatang.IocInstanceNotFoundException;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.EntityRepository;
@@ -50,31 +50,26 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		this.sessionFactory = sessionFactory;
 	}
 
-	private SessionFactory getSessionFactory() {
-		if (sessionFactory == null) {
-			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
-		}
-		if (sessionFactory == null) {
-			throw new IocException("No service implements the interface org.hibernate.SessionFactory");
-		}
-		return sessionFactory;
-	}
-
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
 	private Session getSession() {
-		if ((session == null || !session.isOpen()) && InstanceFactory.isReady()) {
-			session = InstanceFactory.getInstance(Session.class);
-		}
-		if (session == null) {
-			session = getSessionFactory().getCurrentSession();
-		}
-		if (session == null) {
-			throw new IocException("No service implements the interface org.hibernate.Session");
+		if ((session == null || !session.isOpen())) {
+			try {
+				session = InstanceFactory.getInstance(Session.class);
+			} catch (IocInstanceNotFoundException e) {
+				session = getSessionFromFactory();
+			}
 		}
 		return session;
+	}
+
+	private Session getSessionFromFactory() {
+		if (sessionFactory == null || sessionFactory.isClosed()) {
+			sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
+		}
+		return sessionFactory.getCurrentSession();
 	}
 
 	public void setSession(Session session) {

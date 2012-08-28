@@ -1,6 +1,8 @@
 package com.dayatang.domain;
 
 import com.dayatang.IocException;
+import com.dayatang.IocInstanceNotFoundException;
+import com.dayatang.InstanceProviderNotFoundException;
 
 
 /**
@@ -30,7 +32,7 @@ public class InstanceFactory {
 	}
 
 	/**
-	 * 获取指定类型的对象实例。
+	 * 获取指定类型的对象实例。如果IoC容器没配置好或者IoC容器中找不到该类型的实例则抛出异常。
 	 * 
 	 * @param <T>
 	 *            对象的类型
@@ -39,14 +41,21 @@ public class InstanceFactory {
 	 * @return 类型为T的对象实例
 	 */
 	public static <T> T getInstance(Class<T> beanClass) {
-		if (notReady()) {
-			throw new IocException("No IoC provider exists!");
+		checkInstanceProviderExistance();
+		T result = null;
+		try {
+			result = getInstanceProvider().getInstance(beanClass);
+		} catch (Exception e) {
+			throw new IocException("IoC container exception!", e);
 		}
-		return getInstanceProvider().getInstance(beanClass);
+		if (result == null) {
+			throw new IocInstanceNotFoundException("There's not bean of type '" + beanClass + "' exists in IoC container!");
+		}
+		return result;
 	}
 
 	/**
-	 * 获取指定类型的对象实例。
+	 * 获取指定类型的对象实例。如果IoC容器没配置好或者IoC容器中找不到该实例则抛出异常。
 	 * 
 	 * @param <T>
 	 *            对象的类型
@@ -57,10 +66,17 @@ public class InstanceFactory {
 	 * @return 类型为T的对象实例
 	 */
 	public static <T> T getInstance(Class<T> beanClass, String beanName) {
-		if (notReady()) {
-			throw new IocException("No IoC provider exists!");
+		checkInstanceProviderExistance();
+		T result = null;
+		try {
+			result = getInstanceProvider().getInstance(beanClass, beanName);
+		} catch (Exception e) {
+			throw new IocException("IoC container exception!", e);
 		}
-		return getInstanceProvider().getInstance(beanClass, beanName);
+		if (result == null) {
+			throw new IocInstanceNotFoundException("There's not bean '" + beanName + "' of type '" + beanClass + "' exists in IoC container!");
+		}
+		return result;
 	}
 	
 	/**
@@ -71,12 +87,10 @@ public class InstanceFactory {
 	private static InstanceProvider getInstanceProvider() {
 		return instanceProvider;
 	}
-	
-	public static boolean isReady() {
-		return instanceProvider == null ? false : true;
-	}
-	
-	private static boolean notReady() {
-		return instanceProvider == null;
+
+	private static void checkInstanceProviderExistance() {
+		if (instanceProvider == null) {
+			throw new InstanceProviderNotFoundException("No IoC instance provider exists!");
+		}
 	}
 }
