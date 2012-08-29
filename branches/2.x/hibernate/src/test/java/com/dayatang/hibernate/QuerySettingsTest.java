@@ -24,6 +24,7 @@ import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
 
@@ -66,8 +67,9 @@ public class QuerySettingsTest {
 	@Before
 	public void setUp() {
 		session = sessionFactory.getCurrentSession();
+		InstanceFactory.bind(Session.class, session);
 		tx = session.beginTransaction();
-		repository = new EntityRepositoryHibernate(sessionFactory);
+		repository = new EntityRepositoryHibernate();
 		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);

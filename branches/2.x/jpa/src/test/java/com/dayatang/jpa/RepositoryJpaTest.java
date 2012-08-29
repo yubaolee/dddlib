@@ -33,6 +33,7 @@ import com.dayatang.commons.domain.DictionaryCategory;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
+import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
 
 /**
@@ -74,9 +75,10 @@ public class RepositoryJpaTest {
 	@Before
 	public void setUp() {
 		entityManager = emf.createEntityManager();
+		InstanceFactory.bind(EntityManager.class, entityManager);
 		tx = entityManager.getTransaction();
 		tx.begin();
-		repository = new EntityRepositoryJpa(entityManager);
+		repository = new EntityRepositoryJpa();
 		AbstractEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
