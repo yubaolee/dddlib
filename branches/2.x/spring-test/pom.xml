@@ -12,8 +12,8 @@
 	<description>Test classes for spring</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/spring-test/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/spring-test/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/spring-test/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/spring-test/</developerConnection>
 	</scm>
 
 	<dependencies>

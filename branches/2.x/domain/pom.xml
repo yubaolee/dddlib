@@ -12,8 +12,8 @@
 	<description> Common Domain APIs of dayatang.com. Includes interfaces and base	classes.</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/domain/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/domain/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/domain/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/domain/</developerConnection>
 	</scm>
 
 	<dependencies>

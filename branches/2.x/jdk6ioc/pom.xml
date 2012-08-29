@@ -12,8 +12,8 @@
 	<description>Implement IoC interface InstanceProvider with JDK6 ServiceLoader.</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/jdk6ioc/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/jdk6ioc/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/jdk6ioc/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/jdk6ioc/</developerConnection>
 	</scm>
 
 	<dependencies>

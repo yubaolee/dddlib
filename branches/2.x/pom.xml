@@ -72,8 +72,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/</developerConnection>
 	</scm>
 
 	<issueManagement>

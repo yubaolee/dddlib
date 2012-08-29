@@ -12,8 +12,8 @@
 	<description>Dayatang Persistence API implemented by JPA.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/jpa/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/jpa/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/jpa/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/jpa/</developerConnection>
 	</scm>
 
 	<dependencies>

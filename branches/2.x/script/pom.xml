@@ -12,8 +12,8 @@
 	<description> Dayatang Script Language API.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/script/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/script/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/script/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/script/</developerConnection>
 	</scm>
 	<dependencies>
 		<dependency>
