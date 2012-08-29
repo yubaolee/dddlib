@@ -12,8 +12,8 @@
 	<description> Common Observer.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/observer/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/observer/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/observer/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/observer/</developerConnection>
 	</scm>
 
 	<dependencies>

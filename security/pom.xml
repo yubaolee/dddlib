@@ -19,8 +19,8 @@
 
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/security/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/security/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/security/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/security/</developerConnection>
 	</scm>
 
 </project>

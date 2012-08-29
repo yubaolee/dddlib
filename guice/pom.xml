@@ -12,8 +12,8 @@
 	<description>Implement IoC interface InstanceProvider with Google Guice.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/guice/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/guice/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/guice/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/guice/</developerConnection>
 	</scm>
 
 	<dependencies>

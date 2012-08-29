@@ -12,8 +12,8 @@
 	<description>Dayatang Persistence API implemented by Hibernate.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/hibernate/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/hibernate/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/hibernate/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/hibernate/</developerConnection>
 	</scm>
 
 	<dependencies>

@@ -10,8 +10,8 @@
 	<name>Dayatang Commons QueryChannel Module</name>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/querychannel/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/querychannel/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/querychannel/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/querychannel/</developerConnection>
 	</scm>
 
 	<dependencies>

@@ -10,8 +10,8 @@
 	<name>Dayatang Commons Rule Module</name>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/rule/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/rule/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/rule/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/rule/</developerConnection>
 	</scm>
 
 	<build>
