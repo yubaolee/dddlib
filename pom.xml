@@ -373,8 +373,8 @@
 					<version>2.2.2</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<username>${scm.username}</username>
-						<password>${scm.password}</password>
+						<username>${google.scm.username}</username>
+						<password>${google.scm.password}</password>
 					</configuration>
 				</plugin>
 				<plugin>
