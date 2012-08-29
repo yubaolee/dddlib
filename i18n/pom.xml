@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>2.10-SNAPSHOT</version>
+		<version>2.9-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-i18n</artifactId>
 	<packaging>jar</packaging>
