@@ -30,8 +30,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
@@ -64,15 +63,13 @@ public class RepositoryJpaTest {
 	private Dictionary associate;
 
 	@BeforeClass
-	public static void setUpClass() throws Exception {
-		BtmUtils.setupDataSource();
+	public static void setUpClass() {
 		emf = Persistence.createEntityManagerFactory("default");
 	}
 
 	@AfterClass
-	public static void tearDownClass() throws Exception {
+	public static void tearDownClass() {
 		emf.close();
-		BtmUtils.closeDataSource();
 	}
 
 	@Before
@@ -82,7 +79,7 @@ public class RepositoryJpaTest {
 		tx = entityManager.getTransaction();
 		tx.begin();
 		repository = new EntityRepositoryJpa();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
 		male = createDictionary("01", "男", gender, 100, "01");
@@ -95,7 +92,7 @@ public class RepositoryJpaTest {
 	public void tearDown() {
 		tx.rollback();
 		entityManager.close();
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test

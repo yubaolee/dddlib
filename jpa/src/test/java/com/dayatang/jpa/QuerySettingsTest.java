@@ -14,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.transaction.SystemException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,11 +21,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryException;
@@ -59,15 +56,13 @@ public class QuerySettingsTest {
 	private Dictionary undergraduate;
 
 	@BeforeClass
-	public static void setUpClass() throws Exception {
-		BtmUtils.setupDataSource();
+	public static void setUpClass() {
 		emf = Persistence.createEntityManagerFactory("default");
 	}
 
 	@AfterClass
-	public static void tearDownClass() throws Exception {
+	public static void tearDownClass() {
 		emf.close();
-		BtmUtils.closeDataSource();
 	}
 
 	@Before
@@ -75,7 +70,7 @@ public class QuerySettingsTest {
 		entityManager = emf.createEntityManager();
 		InstanceFactory.bind(EntityManager.class, entityManager);
 		repository = new EntityRepositoryJpa();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		tx = entityManager.getTransaction();
 		tx.begin();
 		settings = QuerySettings.create(Dictionary.class);
@@ -87,11 +82,11 @@ public class QuerySettingsTest {
 	}
 
 	@After
-	public void tearDown() throws IllegalStateException, SystemException {
+	public void tearDown() {
 		tx.rollback();
 		entityManager.close();
 		repository = null;
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
