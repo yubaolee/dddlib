@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>2.9-SNAPSHOT</version>
+		<version>2.9</version>
 	</parent>
 	<artifactId>dayatang-commons-hibernate</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description>Dayatang Persistence API implemented by Hibernate.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/hibernate/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/hibernate/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.9/hibernate</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.9/hibernate</developerConnection>
 	</scm>
 
 	<dependencies>
