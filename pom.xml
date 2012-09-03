@@ -376,8 +376,8 @@
 					<version>2.2.2</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<username>${scm.username}</username>
-						<password>${scm.password}</password>
+						<username>${google.scm.username}</username>
+						<password>${google.scm.password}</password>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -495,8 +495,8 @@
 							<artifactId>maven-changelog-plugin</artifactId>
 							<version>2.2</version>
 							<configuration>
-								<username>${scm.username}</username>
-								<password>${scm.password}</password>
+								<username>${google.scm.username}</username>
+								<password>${google.scm.password}</password>
 								<outputEncoding>${project.build.sourceEncoding}</outputEncoding>
 							</configuration>
 						</plugin>
