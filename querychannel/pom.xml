@@ -3,15 +3,15 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.0</version>
+		<version>3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-querychannel</artifactId>
 	<packaging>jar</packaging>
 	<name>Dayatang Commons QueryChannel Module</name>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.0/querychannel</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.0/querychannel</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/querychannel/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/querychannel/</developerConnection>
 	</scm>
 
 	<dependencies>
