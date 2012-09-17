@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -33,10 +31,6 @@ import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
 public class EntityRepositoryJpa implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryJpa.class);
-
-	@Inject
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	public EntityRepositoryJpa() {
 	}
