@@ -43,6 +43,10 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
+		if (entity.getId() == null) {
+			getEntityManager().persist(entity);
+			return entity;
+		}
 		T result = getEntityManager().merge(entity);
 		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return result;
