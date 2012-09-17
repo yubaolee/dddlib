@@ -102,7 +102,7 @@ public class RepositoryJpaTest {
 	public void testAddAndRemove() {
 		Dictionary dictionary = new Dictionary("2001", "双硕士", gender);
 		Dictionary dictionary1 = repository.save(dictionary);
-		assertNull(dictionary.getId());
+		assertNotNull(dictionary.getId());
 		assertNotNull(dictionary1.getId());
 		repository.remove(dictionary1);
 		assertNull(repository.get(Dictionary.class, dictionary1.getId()));
