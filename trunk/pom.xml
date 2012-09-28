@@ -566,7 +566,7 @@
 		<jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
 		<jdbc.url><![CDATA[jdbc:h2:mem:testdb]]></jdbc.url>
 		<jdbc.username>sa</jdbc.username>
-		<jdbc.password />
+		<jdbc.password/>
 		<hibernate.query.substitutions>true 'Y', false 'N'</hibernate.query.substitutions>
 		<hibernate.cache.provider_class>org.hibernate.cache.EhCacheProvider</hibernate.cache.provider_class>
 		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
@@ -597,5 +597,6 @@
 		<module>dsmonitor</module>
 		<module>querychannel</module>
 		<module>dsrouter</module>
-	</modules>
+    <module>dsrouter2</module>
+  </modules>
 </project>
