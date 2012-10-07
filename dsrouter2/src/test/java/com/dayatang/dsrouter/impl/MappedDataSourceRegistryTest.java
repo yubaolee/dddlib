@@ -3,6 +3,9 @@ package com.dayatang.dsrouter.impl;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import javax.sql.DataSource;
 
 import org.junit.After;
@@ -49,5 +52,16 @@ public class MappedDataSourceRegistryTest {
 		assertTrue(instance.exists(tenantId));
 		instance.releaseDataSourceByTenantId(tenantId);
 		assertFalse(instance.exists(tenantId));
+	}
+	
+	@Test
+	public void testLastAccess() throws InterruptedException {
+		String tenantId = "abc";
+		assertNull(instance.getLastAccessTimeOfTenant(tenantId));
+		assertSame(dataSource, instance.getOrCreateDataSourceByTenantId(tenantId));
+		Date lastAccess = instance.getLastAccessTimeOfTenant(tenantId);
+		assertTrue(System.currentTimeMillis() - lastAccess.getTime() < 100);
+		TimeUnit.SECONDS.sleep(3);
+		assertTrue(System.currentTimeMillis() - lastAccess.getTime() > 3000);
 	}
 }

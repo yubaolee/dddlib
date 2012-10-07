@@ -1,5 +1,6 @@
 package com.dayatang.dsrouter.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	
 	private DataSourceCreator dataSourceCreator;
 	private Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
+	private Map<String, Date> lastAccess = new HashMap<String, Date>();
 
 	public void setDataSourceCreator(DataSourceCreator dataSourceCreator) {
 		this.dataSourceCreator = dataSourceCreator;
@@ -26,8 +28,9 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		DataSource result = dataSources.get(tenantId);
 		if (result == null) {
 			result = dataSourceCreator.createDataSource(tenantId);
+			dataSources.put(tenantId, result);
 		}
-		dataSources.put(tenantId, result);
+		lastAccess.put(tenantId, new Date());
 		return result;
 	}
 
@@ -51,6 +54,15 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 
 	public boolean exists(String tenantId) {
 		return dataSources.containsKey(tenantId);
+	}
+
+	/**
+	 * 租户最后访问数据库时间。记录这个时间是为了可以跟踪长时间没有数据库访问的租户，以便在必要时可以清除其数据源，节省服务器资源。
+	 * @param tenantId
+	 * @return
+	 */
+	public Date getLastAccessTimeOfTenant(String tenantId) {
+		return lastAccess.get(tenantId);
 	}
 
 	private void debug(String message, Object... params) {
