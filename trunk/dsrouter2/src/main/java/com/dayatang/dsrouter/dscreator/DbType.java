@@ -7,7 +7,7 @@ public enum DbType {
 		@Override
 		public String getJdbcUrl(String tenantId, Properties properties) {
 			// TODO 自动生成的方法存根
-			return null;
+			return String.format("http://");
 		}
 	},
 	ORACLE {
