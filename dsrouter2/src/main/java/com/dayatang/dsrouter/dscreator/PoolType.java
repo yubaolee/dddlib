@@ -72,6 +72,7 @@ public enum PoolType {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void printDsProps(DataSource result)
 			throws IllegalAccessException, InvocationTargetException {
 		try {
