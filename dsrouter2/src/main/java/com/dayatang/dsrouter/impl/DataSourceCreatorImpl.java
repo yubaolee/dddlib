@@ -23,13 +23,10 @@ public class DataSourceCreatorImpl implements DataSourceCreator {
 
 	@Override
 	public DataSource createDataSource(String tenantId) {
-		
 		try {
-			debug("准备为租户‘{}’构建数据源，数据库类型是{}，连接池类型是{}，属性=【{}】", tenantId, dbType, poolType, configuration.getProperties());
-			return poolType.getDataSourceClass();
-		} catch (InstantiationException e) {
-			throw new DataSourceCreationException(e);
-		} catch (IllegalAccessException e) {
+			debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {} properties is: {}", tenantId, dbType, poolType, configuration.getProperties());
+			return poolType.createDataSource(tenantId);
+		} catch (Exception e) {
 			throw new DataSourceCreationException(e);
 		}
 	}
