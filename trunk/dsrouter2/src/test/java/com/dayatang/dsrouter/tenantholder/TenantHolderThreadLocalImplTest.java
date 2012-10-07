@@ -1,10 +1,12 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.tenantholder;
 
 import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.dayatang.dsrouter.tenantholder.TenantHolderThreadLocalImpl;
 
 public class TenantHolderThreadLocalImplTest {
 	

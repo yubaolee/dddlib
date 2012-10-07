@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dsregistry;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +57,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 
 	/**
-	 * 租户最后访问数据库时间。记录这个时间是为了可以跟踪长时间没有数据库访问的租户，以便在必要时可以清除其数据源，节省服务器资源。
+	 * 锟解户锟斤拷锟斤拷锟斤拷锟斤拷菘锟绞憋拷洹ｏ拷锟铰硷拷锟斤拷时锟斤拷锟斤拷为锟剿匡拷锟皆革拷锟劫筹拷时锟斤拷没锟斤拷锟斤拷菘锟斤拷锟绞碉拷锟解户锟斤拷锟皆憋拷锟节憋拷要时锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷源锟斤拷锟斤拷省锟斤拷锟斤拷锟斤拷锟斤拷源锟斤拷
 	 * @param tenantId
 	 * @return
 	 */

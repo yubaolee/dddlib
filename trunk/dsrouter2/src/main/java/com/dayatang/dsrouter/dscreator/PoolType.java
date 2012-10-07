@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dscreator;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
