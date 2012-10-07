@@ -25,12 +25,16 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	
 	@Override
 	public DataSource getOrCreateDataSourceByTenantId(String tenantId) {
-		DataSource result = dataSources.get(tenantId);
-		if (result == null) {
-			result = dataSourceCreator.createDataSource(tenantId);
-			dataSources.put(tenantId, result);
-		}
 		lastAccess.put(tenantId, new Date());
+		DataSource result = dataSources.get(tenantId);
+		if (result != null) {
+			return result;
+		}
+		result = dataSourceCreator.createDataSource(tenantId);
+		dataSources.put(tenantId, result);
+		Date now = new Date();
+		lastAccess.put(tenantId, now);
+		debug("Create data source for tenant '{}' at {}", tenantId, now);
 		return result;
 	}
 
