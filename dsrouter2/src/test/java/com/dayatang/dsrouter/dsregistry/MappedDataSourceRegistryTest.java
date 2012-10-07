@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dsregistry;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -11,6 +11,9 @@ import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
+import com.dayatang.dsrouter.dsregistry.MappedDataSourceRegistry;
 
 public class MappedDataSourceRegistryTest {
 	

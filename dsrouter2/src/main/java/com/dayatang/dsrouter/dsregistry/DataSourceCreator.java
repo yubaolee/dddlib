@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dsregistry;
 
 import javax.sql.DataSource;
 

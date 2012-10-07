@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.tenantholder;
 
 import com.dayatang.dsrouter.TenantHolder;
 

@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dscreator;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,10 @@ import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.dayatang.dsrouter.dscreator.DataSourceCreatorImpl;
+import com.dayatang.dsrouter.dscreator.DbType;
+import com.dayatang.dsrouter.dscreator.PoolType;
 
 public class DataSourceCreatorImplTest {
 

@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dscreator;
 
 import javax.sql.DataSource;
 
@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
+import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
 import com.dayatang.utils.Configuration;
 import com.dayatang.utils.ConfigurationFileImpl;
 

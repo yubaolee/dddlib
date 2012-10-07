@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.impl;
+package com.dayatang.dsrouter.dscreator;
 
 public interface Constants {
 	static final String DB_CONF_FILE = "/jdbc.properties";
