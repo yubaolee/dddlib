@@ -5,10 +5,15 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dayatang.dsrouter.DataSourceRegistry;
 
 public class MappedDataSourceRegistry implements DataSourceRegistry {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(MappedDataSourceRegistry.class);
+	
 	private DataSourceCreator dataSourceCreator;
 	private Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
 
@@ -29,10 +34,16 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	//Clear/release all cached DataSource.
 	public void clear() {
 		dataSources.clear();
+		debug("All tenant datasource have been released!");
 	}
 
 	public int size() {
 		return dataSources.size();
 	}
 
+	private void debug(String message, Object... params) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(message, params);
+		}
+	}
 }
