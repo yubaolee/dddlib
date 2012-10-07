@@ -3,6 +3,7 @@ package com.dayatang.dsrouter.dscreator;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -26,9 +27,9 @@ public enum PoolType {
 			result.setDriverClass(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME));
 			DbType dbType = DbType.valueOf(properties.getProperty(Constants.DB_TYPE));
 			result.setJdbcUrl(dbType.getJdbcUrl(tenantId, properties));
-			debug("----------------jdbc url is: {}", result.getJdbcUrl());
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
+			//printDsProps(result);
 			return result;
 		}
 	},
@@ -44,6 +45,7 @@ public enum PoolType {
 			debug("----------------jdbc url is: {}", result.getDriverUrl());
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
+			//printDsProps(result);
 			return result;
 		}
 	};
@@ -67,6 +69,19 @@ public enum PoolType {
 	private static void fillProperties(DataSource dataSource, Properties properties) throws IllegalAccessException, InvocationTargetException {
 		for (Object key : properties.keySet()) {
 			BeanUtils.setProperty(dataSource, key.toString(), properties.get(key));
+		}
+	}
+
+	private static void printDsProps(DataSource result)
+			throws IllegalAccessException, InvocationTargetException {
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> dsProps = BeanUtils.describe(result);
+			for (String key : dsProps.keySet()) {
+				debug("----------------{}: {}", key, dsProps.get(key));
+			}
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
 		}
 	}
 
