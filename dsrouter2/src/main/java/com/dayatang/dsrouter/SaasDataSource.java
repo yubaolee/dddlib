@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-public class SaaSDataSource implements DataSource {
+public class SaasDataSource implements DataSource {
 
 	private TenantHolder tenantHolder;
 	private DataSourceRegistry dataSourceRegistry;
