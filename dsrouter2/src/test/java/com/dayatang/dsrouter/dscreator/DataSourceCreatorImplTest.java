@@ -27,7 +27,7 @@ public class DataSourceCreatorImplTest {
 
 	@Test
 	public void testCreateDataSource() {
-		String tenantId = "abc";
+		String tenantId = "a";
 		DataSource result = instance.createDataSource(tenantId);
 		assertEquals(DbType.MYSQL, instance.getDbType());
 		assertEquals(PoolType.C3P0, instance.getPoolType());
