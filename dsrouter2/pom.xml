@@ -8,8 +8,8 @@
 	</parent>
 	<artifactId>dayatang-commons-dsrouter2</artifactId>
 	<packaging>jar</packaging>
-	<name>Dayatang Datasource Router classes for spring</name>
-	<description>Datasource Router classes for spring</description>
+	<name>Dayatang Datasource for SaaS</name>
+	<description>Dayatang Datasource for SaaS</description>
 
 	<scm>
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/dsrouter/</connection>
@@ -39,6 +39,11 @@
 			<artifactId>proxool-cglib</artifactId>
 			<optional>true</optional>
 		</dependency>
+                <dependency>
+                    <groupId>commons-dbcp</groupId>
+                    <artifactId>commons-dbcp</artifactId>
+                    <optional>true</optional>
+                </dependency>
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
