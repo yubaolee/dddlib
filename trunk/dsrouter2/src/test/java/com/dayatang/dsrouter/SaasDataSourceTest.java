@@ -13,16 +13,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SaaSDataSourceTest {
+public class SaasDataSourceTest {
 	
-	private SaaSDataSource instance;
+	private SaasDataSource instance;
 	private TenantHolder tenantHolder; 
 	private DataSourceRegistry dataSourceRegistry;
 	private DataSource actualDataSource;
 
 	@Before
 	public void setUp() throws Exception {
-		instance = new SaaSDataSource();
+		instance = new SaasDataSource();
 		tenantHolder = mock(TenantHolder.class);
 		instance.setTenantHolder(tenantHolder);
 		dataSourceRegistry = mock(DataSourceRegistry.class);
