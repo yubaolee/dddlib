@@ -2,6 +2,7 @@ package com.dayatang.dsrouter.dscreator;
 
 public interface Constants {
 	static final String DB_CONF_FILE = "/jdbc.properties";
+	static final String DB_MAPPING_FILE = "/db-mapping.properties";
 	static final String DB_TYPE = "db.type";
 	static final String POOL_TYPE = "pool.type";
 	static final String DB_MAPPING_STRATEGY = "db.mapping.strategy";

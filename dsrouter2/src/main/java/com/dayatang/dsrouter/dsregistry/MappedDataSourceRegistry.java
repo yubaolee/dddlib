@@ -57,7 +57,6 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 
 	/**
-	 * �⻧��������ݿ�ʱ�䡣��¼���ʱ����Ϊ�˿��Ը��ٳ�ʱ��û����ݿ���ʵ��⻧���Ա��ڱ�Ҫʱ������������Դ����ʡ��������Դ��
 	 * @param tenantId
 	 * @return
 	 */
