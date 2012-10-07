@@ -65,9 +65,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>dayatang-commons-spring-test</artifactId>
-			<version>${project.parent.version}</version>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
