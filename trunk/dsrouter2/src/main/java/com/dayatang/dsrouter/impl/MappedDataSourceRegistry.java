@@ -32,13 +32,25 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 
 	//Clear/release all cached DataSource.
-	public void clear() {
+	public void releaseAllDataSources() {
 		dataSources.clear();
 		debug("All tenant datasource have been released!");
 	}
 
 	public int size() {
 		return dataSources.size();
+	}
+
+	public void releaseDataSourceByTenantId(String tenantId) {
+		DataSource dataSource = dataSources.remove(tenantId);
+		if (dataSource != null) {
+			dataSource = null;
+			debug("Data source of tenant '" + tenantId + "' released!");
+		}
+	}
+
+	public boolean exists(String tenantId) {
+		return dataSources.containsKey(tenantId);
 	}
 
 	private void debug(String message, Object... params) {

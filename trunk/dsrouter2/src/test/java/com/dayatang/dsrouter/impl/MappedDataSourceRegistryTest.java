@@ -38,7 +38,16 @@ public class MappedDataSourceRegistryTest {
 		assertSame(dataSource, instance.getOrCreateDataSourceByTenantId(tenantId));
 		verify(dataSourceCreator, never()).createDataSource(tenantId);
 		assertEquals(1, instance.size());
-		instance.clear();
+		instance.releaseAllDataSources();
 		assertEquals(0, instance.size());
+	}
+	
+	@Test
+	public void testReleaseDataSourceByTenantId() {
+		String tenantId = "abc";
+		assertSame(dataSource, instance.getOrCreateDataSourceByTenantId(tenantId));
+		assertTrue(instance.exists(tenantId));
+		instance.releaseDataSourceByTenantId(tenantId);
+		assertFalse(instance.exists(tenantId));
 	}
 }
