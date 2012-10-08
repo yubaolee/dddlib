@@ -14,10 +14,10 @@ public class DbMapper {
 		configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
 	}
 
-	public String getProperty(String tenantId) {
-		String result = configuration.getString(tenantId);
+	public String getProperty(String tenant) {
+		String result = configuration.getString(tenant);
 		if (StringUtils.isBlank(result)) {
-			throw new DataSourceCreationException("There's not db mapping for tenant '" + tenantId + "'");
+			throw new DataSourceCreationException("There's not db mapping for tenant '" + tenant + "'");
 		}
 		return result;
 	}

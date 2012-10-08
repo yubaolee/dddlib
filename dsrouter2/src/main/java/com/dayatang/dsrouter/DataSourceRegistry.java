@@ -4,6 +4,6 @@ import javax.sql.DataSource;
 
 public interface DataSourceRegistry {
 
-	DataSource getOrCreateDataSourceByTenantId(String tenantId);
+	DataSource getOrCreateDataSourceByTenant(String tenant);
 
 }

@@ -7,15 +7,15 @@ public class TenantHolderThreadLocalImpl implements TenantHolder {
 	private static final ThreadLocal<String> context = new ThreadLocal<String>();
 	
 	@Override
-	public String getTenantId() {
+	public String getTenant() {
 		return context.get();
 	}
 	
-	public void setTenantId(String tenantId) {
-		context.set(tenantId);
+	public void setTenant(String tenant) {
+		context.set(tenant);
 	}
 
-	public void removeTenantId() {
+	public void removeTenant() {
 		context.remove();
 	}
 	

@@ -23,10 +23,10 @@ public class DataSourceCreatorImpl implements DataSourceCreator {
 	}
 
 	@Override
-	public DataSource createDataSource(String tenantId) {
+	public DataSource createDataSource(String tenant) {
 		try {
-			debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {} properties is: {}", tenantId, dbType, poolType, configuration.getProperties());
-			return poolType.createDataSource(tenantId);
+			debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {} properties is: {}", tenant, dbType, poolType, configuration.getProperties());
+			return poolType.createDataSource(tenant);
 		} catch (Exception e) {
 			throw new DataSourceCreationException(e);
 		}

@@ -18,12 +18,12 @@ public enum PoolType {
 	
 	C3P0 {
 		@Override
-		public DataSource createDataSource(String tenantId) throws InstantiationException,
+		public DataSource createDataSource(String tenant) throws InstantiationException,
 				IllegalAccessException, InvocationTargetException, PropertyVetoException {
 			ComboPooledDataSource result =  ComboPooledDataSource.class.newInstance();
 			fillProperties(result, properties);
 			result.setDriverClass(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME));
-			result.setJdbcUrl(getUrl(tenantId));
+			result.setJdbcUrl(getUrl(tenant));
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
 			//printDsProps(result);
@@ -32,12 +32,12 @@ public enum PoolType {
 	},
 	PROXOOL {
 		@Override
-		public DataSource createDataSource(String tenantId) throws InstantiationException,
+		public DataSource createDataSource(String tenant) throws InstantiationException,
 				IllegalAccessException, InvocationTargetException {
 			ProxoolDataSource result = ProxoolDataSource.class.newInstance();
 			fillProperties(result, properties);
                         result.setDriver(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME));
-                        result.setDriverUrl(getUrl(tenantId));
+                        result.setDriverUrl(getUrl(tenant));
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
 			//printDsProps(result);
@@ -47,12 +47,12 @@ public enum PoolType {
  	},
 	COMMONS_DBCP {
 		@Override
-		public DataSource createDataSource(String tenantId) throws InstantiationException,
+		public DataSource createDataSource(String tenant) throws InstantiationException,
 				IllegalAccessException, InvocationTargetException {
 			BasicDataSource result = BasicDataSource.class.newInstance();
 			fillProperties(result, properties);
 			result.setDriverClassName(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME));
-			result.setUrl(getUrl(tenantId));
+			result.setUrl(getUrl(tenant));
 			debug("----------------jdbc url is: {}", result.getUrl());
 			result.setUsername(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
@@ -65,7 +65,7 @@ public enum PoolType {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PoolType.class);
 	private static Properties properties = getPoolProperties();
 	
-	public abstract DataSource createDataSource(String tenantId)
+	public abstract DataSource createDataSource(String tenant)
 			throws InstantiationException, IllegalAccessException, InvocationTargetException, PropertyVetoException;
 
 	private static Properties getPoolProperties() {
@@ -84,9 +84,9 @@ public enum PoolType {
 		}
 	}
         
-       private static String getUrl(String tenantId) {
+       private static String getUrl(String tenant) {
             DbType dbType = DbType.valueOf(properties.getProperty(Constants.DB_TYPE));
-            return dbType.getJdbcUrl(tenantId, properties);
+            return dbType.getJdbcUrl(tenant, properties);
         }
 
 	@SuppressWarnings("unused")

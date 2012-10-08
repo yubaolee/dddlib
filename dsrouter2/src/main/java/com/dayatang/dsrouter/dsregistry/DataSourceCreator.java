@@ -4,6 +4,6 @@ import javax.sql.DataSource;
 
 public interface DataSourceCreator {
 
-	DataSource createDataSource(String tenantId);
+	DataSource createDataSource(String tenant);
 
 }
