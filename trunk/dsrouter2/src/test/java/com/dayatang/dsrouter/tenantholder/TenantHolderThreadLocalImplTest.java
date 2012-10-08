@@ -23,12 +23,12 @@ public class TenantHolderThreadLocalImplTest {
 
 	@Test
 	public void test() {
-		assertNull(instance.getTenantId());
-		String tenantId = "abc";
-		instance.setTenantId(tenantId);
-		assertEquals(tenantId, instance.getTenantId());
-		instance.removeTenantId();
-		assertNull(instance.getTenantId());
+		assertNull(instance.getTenant());
+		String tenant = "abc";
+		instance.setTenant(tenant);
+		assertEquals(tenant, instance.getTenant());
+		instance.removeTenant();
+		assertNull(instance.getTenant());
 	}
 
 }

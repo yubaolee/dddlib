@@ -61,7 +61,7 @@ public class SaasDataSource implements DataSource {
 	}
 
 	private DataSource getActualDataSource() {
-		return dataSourceRegistry.getOrCreateDataSourceByTenantId(tenantHolder.getTenantId());
+		return dataSourceRegistry.getOrCreateDataSourceByTenant(tenantHolder.getTenant());
 	}
 	
 }

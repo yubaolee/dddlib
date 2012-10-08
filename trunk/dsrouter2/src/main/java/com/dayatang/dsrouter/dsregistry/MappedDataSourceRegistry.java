@@ -24,17 +24,17 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 	
 	@Override
-	public DataSource getOrCreateDataSourceByTenantId(String tenantId) {
-		lastAccess.put(tenantId, new Date());
-		DataSource result = dataSources.get(tenantId);
+	public DataSource getOrCreateDataSourceByTenant(String tenant) {
+		lastAccess.put(tenant, new Date());
+		DataSource result = dataSources.get(tenant);
 		if (result != null) {
 			return result;
 		}
-		result = dataSourceCreator.createDataSource(tenantId);
-		dataSources.put(tenantId, result);
+		result = dataSourceCreator.createDataSource(tenant);
+		dataSources.put(tenant, result);
 		Date now = new Date();
-		lastAccess.put(tenantId, now);
-		debug("Create data source for tenant '{}' at {}", tenantId, now);
+		lastAccess.put(tenant, now);
+		debug("Create data source for tenant '{}' at {}", tenant, now);
 		return result;
 	}
 
@@ -48,24 +48,24 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		return dataSources.size();
 	}
 
-	public void releaseDataSourceByTenantId(String tenantId) {
-		DataSource dataSource = dataSources.remove(tenantId);
+	public void releaseDataSourceByTenant(String tenant) {
+		DataSource dataSource = dataSources.remove(tenant);
 		if (dataSource != null) {
 			dataSource = null;
-			debug("Data source of tenant '" + tenantId + "' released!");
+			debug("Data source of tenant '" + tenant + "' released!");
 		}
 	}
 
-	public boolean exists(String tenantId) {
-		return dataSources.containsKey(tenantId);
+	public boolean exists(String tenant) {
+		return dataSources.containsKey(tenant);
 	}
 
 	/**
-	 * @param tenantId
+	 * @param tenant
 	 * @return
 	 */
-	public Date getLastAccessTimeOfTenant(String tenantId) {
-		return lastAccess.get(tenantId);
+	public Date getLastAccessTimeOfTenant(String tenant) {
+		return lastAccess.get(tenant);
 	}
 
 	private void debug(String message, Object... params) {
