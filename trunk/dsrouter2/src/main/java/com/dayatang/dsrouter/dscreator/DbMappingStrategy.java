@@ -2,12 +2,17 @@ package com.dayatang.dsrouter.dscreator;
 
 import java.util.Properties;
 
+/**
+ * 租户数据库映射策略。
+ * @author yyang
+ *
+ */
 public enum DbMappingStrategy {
 	DB_NAME {
 
 		@Override
 		public String getDbName(String tenant, Properties properties) {
-			return dbMapper.getProperty(tenant);
+			return dbMapper.getMappingValue(tenant);
 		}
 
 	},
@@ -15,7 +20,7 @@ public enum DbMappingStrategy {
 
 		@Override
 		public String getHost(String tenant, Properties properties) {
-			return dbMapper.getProperty(tenant);
+			return dbMapper.getMappingValue(tenant);
 		}
 
 	},
@@ -23,7 +28,7 @@ public enum DbMappingStrategy {
 
 		@Override
 		public String getPort(String tenant, Properties properties) {
-			return dbMapper.getProperty(tenant);
+			return dbMapper.getMappingValue(tenant);
 		}
 
 	},
@@ -31,7 +36,7 @@ public enum DbMappingStrategy {
 
 		@Override
 		public String getSchema(String tenant, Properties properties) {
-			return dbMapper.getProperty(tenant);
+			return dbMapper.getMappingValue(tenant);
 		}
 
 	},
@@ -39,7 +44,7 @@ public enum DbMappingStrategy {
 
 		@Override
 		public String getInstanceName(String tenant, Properties properties) {
-			return dbMapper.getProperty(tenant);
+			return dbMapper.getMappingValue(tenant);
 		}
 
 	};

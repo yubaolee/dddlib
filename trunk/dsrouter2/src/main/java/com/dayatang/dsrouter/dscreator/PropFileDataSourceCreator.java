@@ -9,7 +9,7 @@ import com.dayatang.utils.ConfigurationFileImpl;
 import com.dayatang.utils.Slf4jLogger;
 
 /**
- * 
+ * 基于属性文件的数据源创建器实现。
  * @author yyang
  *
  */
