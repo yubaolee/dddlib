@@ -3,6 +3,11 @@ package com.dayatang.dsrouter.dscreator;
 import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 数据库服务器类型
+ * @author yyang
+ *
+ */
 public enum DbType {
 	MYSQL {
 		@Override

@@ -1,5 +1,10 @@
 package com.dayatang.dsrouter;
 
+/**
+ * 数据源创建异常。
+ * @author yyang
+ *
+ */
 public class DataSourceCreationException extends RuntimeException {
 
 	private static final long serialVersionUID = -4211956277706156746L;

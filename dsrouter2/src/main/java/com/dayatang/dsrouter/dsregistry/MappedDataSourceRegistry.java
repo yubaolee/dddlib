@@ -9,6 +9,11 @@ import javax.sql.DataSource;
 import com.dayatang.dsrouter.DataSourceRegistry;
 import com.dayatang.utils.Slf4jLogger;
 
+/**
+ * 用内存中的Map来保存、注册租户数据源的数据源注册表实现。
+ * @author yyang
+ *
+ */
 public class MappedDataSourceRegistry implements DataSourceRegistry {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(MappedDataSourceRegistry.class);
