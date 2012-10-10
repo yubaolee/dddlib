@@ -67,4 +67,14 @@ public class MappedDataSourceRegistryTest {
 		TimeUnit.SECONDS.sleep(3);
 		assertTrue(System.currentTimeMillis() - lastAccess.getTime() > 3000);
 	}
+	
+	@Test
+	public void testRegisterTenantDataSource() {
+		String tenant = "abc";
+		assertFalse(instance.exists(tenant));
+		instance.registerTenantDataSource(tenant, dataSource);
+		assertTrue(instance.exists(tenant));
+		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		verify(dataSourceCreator, never()).createDataSource(tenant);
+	}
 }
