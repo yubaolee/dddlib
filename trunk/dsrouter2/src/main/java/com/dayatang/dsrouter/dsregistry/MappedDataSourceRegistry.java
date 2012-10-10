@@ -38,6 +38,10 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		return result;
 	}
 
+	public void registerTenantDataSource(String tenant, DataSource dataSource) {
+		dataSources.put(tenant, dataSource);
+	}
+
 	//Clear/release all cached DataSource.
 	public void releaseAllDataSources() {
 		dataSources.clear();
