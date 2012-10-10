@@ -6,14 +6,12 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.dayatang.dsrouter.DataSourceRegistry;
+import com.dayatang.utils.Slf4jLogger;
 
 public class MappedDataSourceRegistry implements DataSourceRegistry {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MappedDataSourceRegistry.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.of(MappedDataSourceRegistry.class);
 	
 	private DataSourceCreator dataSourceCreator;
 	private Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
@@ -34,7 +32,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		dataSources.put(tenant, result);
 		Date now = new Date();
 		lastAccess.put(tenant, now);
-		debug("Create data source for tenant '{}' at {}", tenant, now);
+		LOGGER.debug("Create data source for tenant '{}' at {}", tenant, now);
 		return result;
 	}
 
@@ -45,7 +43,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	//Clear/release all cached DataSource.
 	public void releaseAllDataSources() {
 		dataSources.clear();
-		debug("All tenant datasource have been released!");
+		LOGGER.debug("All tenant datasource have been released!");
 	}
 
 	public int size() {
@@ -56,7 +54,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		DataSource dataSource = dataSources.remove(tenant);
 		if (dataSource != null) {
 			dataSource = null;
-			debug("Data source of tenant '" + tenant + "' released!");
+			LOGGER.debug("Data source of tenant '" + tenant + "' released!");
 		}
 	}
 
@@ -72,9 +70,4 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		return lastAccess.get(tenant);
 	}
 
-	private void debug(String message, Object... params) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(message, params);
-		}
-	}
 }
