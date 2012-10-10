@@ -6,6 +6,7 @@ public interface Constants {
 	static final String DB_TYPE = "db.type";
 	static final String POOL_TYPE = "pool.type";
 	static final String DB_MAPPING_STRATEGY = "db.mapping.strategy";
+	static final String DATASOURCE_CLASS_NAME="dataSource.className";
 	static final String JDBC_DRIVER_CLASS_NAME = "jdbc.driverClassName";
 	static final String JDBC_URL = "jdbc.url";
 	static final String JDBC_HOST = "jdbc.host";
