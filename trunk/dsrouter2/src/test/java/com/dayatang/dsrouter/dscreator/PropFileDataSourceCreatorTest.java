@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.dscreator.PropFileDataSourceCreator;
-import com.dayatang.dsrouter.dscreator.DbType;
 import com.dayatang.dsrouter.dscreator.PoolType;
 
 public class PropFileDataSourceCreatorTest {
@@ -30,7 +29,6 @@ public class PropFileDataSourceCreatorTest {
 		String tenant = "xyz";
 		DataSource result = instance.createDataSource(tenant);
 		assertNotNull(result);
-		assertEquals(DbType.MYSQL, instance.getDbType());
 		assertEquals(PoolType.C3P0, instance.getPoolType());
 	}
 

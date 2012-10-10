@@ -59,8 +59,7 @@ public enum PoolType {
 			//printDsProps(result);
 			return result;
 		}
-	}
-        ;
+	};
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PoolType.class);
 	private static Properties properties = getPoolProperties();

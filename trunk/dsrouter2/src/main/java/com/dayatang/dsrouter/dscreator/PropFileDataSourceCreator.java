@@ -13,31 +13,31 @@ import com.dayatang.utils.ConfigurationFileImpl;
 public class PropFileDataSourceCreator implements DataSourceCreator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropFileDataSourceCreator.class);
-	private DbType dbType;
 	private PoolType poolType;
-	private Configuration configuration = ConfigurationFileImpl.fromClasspath("/ds-config.properties");
 	
 	public PropFileDataSourceCreator() {
-		dbType = DbType.valueOf(configuration.getString("db.type"));
-		poolType = PoolType.valueOf(configuration.getString("pool.type"));
 	}
 
 	@Override
 	public DataSource createDataSource(String tenant) {
 		try {
-			debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {} properties is: {}", tenant, dbType, poolType, configuration.getProperties());
-			return poolType.createDataSource(tenant);
+			debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {}", tenant, poolType);
+			return getPoolType().createDataSource(tenant);
 		} catch (Exception e) {
 			throw new DataSourceCreationException(e);
 		}
 	}
 
-	public DbType getDbType() {
-		return dbType;
+	public PoolType getPoolType() {
+		if (poolType == null) {
+			Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+			poolType = PoolType.valueOf(configuration.getString("pool.type"));
+		}
+		return poolType;
 	}
 
-	public PoolType getPoolType() {
-		return poolType;
+	public void setPoolType(PoolType poolType) {
+		this.poolType = poolType;
 	}
 
 	private void debug(String message, Object... params) {
