@@ -6,15 +6,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.dsrouter.tenantholder.TenantHolderThreadLocalImpl;
+import com.dayatang.dsrouter.tenantholder.ThreadLocalTenantHolder;
 
-public class TenantHolderThreadLocalImplTest {
+public class ThreadLocalTenantHolderTest {
 	
-	private TenantHolderThreadLocalImpl instance;
+	private ThreadLocalTenantHolder instance;
 
 	@Before
 	public void setUp() throws Exception {
-		instance = new TenantHolderThreadLocalImpl();
+		instance = new ThreadLocalTenantHolder();
 	}
 
 	@After
