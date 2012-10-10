@@ -2,7 +2,7 @@ package com.dayatang.dsrouter.tenantholder;
 
 import com.dayatang.dsrouter.TenantHolder;
 
-public class TenantHolderThreadLocalImpl implements TenantHolder {
+public class ThreadLocalTenantHolder implements TenantHolder {
 	
 	private static final ThreadLocal<String> context = new ThreadLocal<String>();
 	
