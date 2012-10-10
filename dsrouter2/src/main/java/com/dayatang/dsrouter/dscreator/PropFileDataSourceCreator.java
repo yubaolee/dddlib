@@ -8,6 +8,11 @@ import com.dayatang.utils.Configuration;
 import com.dayatang.utils.ConfigurationFileImpl;
 import com.dayatang.utils.Slf4jLogger;
 
+/**
+ * 
+ * @author yyang
+ *
+ */
 public class PropFileDataSourceCreator implements DataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(PropFileDataSourceCreator.class);
@@ -29,7 +34,7 @@ public class PropFileDataSourceCreator implements DataSourceCreator {
 	public PoolType getPoolType() {
 		if (poolType == null) {
 			Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
-			poolType = PoolType.valueOf(configuration.getString("pool.type"));
+			poolType = PoolType.valueOf(configuration.getString(Constants.POOL_TYPE));
 		}
 		return poolType;
 	}
