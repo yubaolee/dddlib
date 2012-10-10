@@ -8,17 +8,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.dsrouter.dscreator.DataSourceCreatorImpl;
+import com.dayatang.dsrouter.dscreator.PropFileDataSourceCreator;
 import com.dayatang.dsrouter.dscreator.DbType;
 import com.dayatang.dsrouter.dscreator.PoolType;
 
-public class DataSourceCreatorImplTest {
+public class PropFileDataSourceCreatorTest {
 
-	private DataSourceCreatorImpl instance;
+	private PropFileDataSourceCreator instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = new DataSourceCreatorImpl();
+		instance = new PropFileDataSourceCreator();
 	}
 
 	@After
