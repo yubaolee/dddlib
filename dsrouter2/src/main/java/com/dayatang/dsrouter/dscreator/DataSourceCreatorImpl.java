@@ -15,7 +15,7 @@ public class DataSourceCreatorImpl implements DataSourceCreator {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceCreatorImpl.class);
 	private DbType dbType;
 	private PoolType poolType;
-	private Configuration configuration = ConfigurationFileImpl.fromClasspath("/jdbc.properties");
+	private Configuration configuration = ConfigurationFileImpl.fromClasspath("/ds-config.properties");
 	
 	public DataSourceCreatorImpl() {
 		dbType = DbType.valueOf(configuration.getString("db.type"));
