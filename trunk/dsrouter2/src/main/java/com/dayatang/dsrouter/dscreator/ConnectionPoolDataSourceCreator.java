@@ -26,7 +26,7 @@ public class ConnectionPoolDataSourceCreator implements DataSourceCreator {
 	public DataSource createDataSourceForTenant(String tenant) {
 		try {
 			LOGGER.debug("Prepare to create Datasource for tenant {}, Pool type is: {}", tenant, connectionPoolType);
-			return getPoolType().createDataSource(tenant);
+			return getPoolType().createDataSource(tenant, getConfiguration().getProperties());
 		} catch (Exception e) {
 			throw new DataSourceCreationException(e);
 		}
@@ -34,7 +34,7 @@ public class ConnectionPoolDataSourceCreator implements DataSourceCreator {
 
 	public ConnectionPoolType getPoolType() {
 		if (connectionPoolType == null) {
-			connectionPoolType = ConnectionPoolType.valueOf(getConfiguration().getString(Constants.POOL_TYPE));
+			connectionPoolType = ConnectionPoolType.valueOf(getConfiguration().getString(Constants.CONNECTION_POOL_TYPE));
 		}
 		return connectionPoolType;
 	}

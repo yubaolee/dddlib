@@ -83,24 +83,7 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>none</exclude>
-					</excludes>
-					<includes>
-						<include>none</include>
-					</includes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<properties>
-		<maven.test.skip>true</maven.test.skip>
 
 		<rep.jdbc.driverClassName>org.beyond.gemini.mysql.jdbc.GeminiReplicationDriver</rep.jdbc.driverClassName>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>

@@ -25,7 +25,7 @@ public interface Constants {
 	/**
 	 * 数据库连接池类型
 	 */
-	static final String POOL_TYPE = "connection.pool.type";
+	static final String CONNECTION_POOL_TYPE = "connection.pool.type";
 	
 	/**
 	 * 租户数据库映射策略
