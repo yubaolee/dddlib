@@ -21,7 +21,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  * @author yyang
  *
  */
-public enum PoolType {
+public enum ConnectionPoolType {
 	
 	C3P0 {
 		@Override
@@ -69,7 +69,7 @@ public enum PoolType {
 		}
 	};
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(PoolType.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConnectionPoolType.class);
 	private static Properties properties = getPoolProperties();
 	
 	public abstract DataSource createDataSource(String tenant)
@@ -78,7 +78,7 @@ public enum PoolType {
 	private static Properties getPoolProperties() {
 		Properties results = new Properties();
 		try {
-			results.load(PoolType.class.getResourceAsStream(Constants.DB_CONF_FILE));
+			results.load(ConnectionPoolType.class.getResourceAsStream(Constants.DB_CONF_FILE));
 		} catch (IOException e) {
 			throw new DataSourceCreationException("Cannot read DB configuration file! please check it's existence and format.", e);
 		}
