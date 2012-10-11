@@ -36,12 +36,12 @@ public class MappedDataSourceRegistryTest {
 	}
 
 	@Test
-	public void testGetOrCreateDataSourceByTenant() {
+	public void testGetDataSourceOfTenant() {
 		String tenant = "abc";
-		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator).createDataSource(tenant);
 		reset(dataSourceCreator);
-		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator, never()).createDataSource(tenant);
 		assertEquals(1, instance.size());
 		instance.releaseAllDataSources();
@@ -51,7 +51,7 @@ public class MappedDataSourceRegistryTest {
 	@Test
 	public void testReleaseDataSourceByTenant() {
 		String tenant = "abc";
-		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		assertTrue(instance.exists(tenant));
 		instance.releaseDataSourceByTenant(tenant);
 		assertFalse(instance.exists(tenant));
@@ -61,7 +61,7 @@ public class MappedDataSourceRegistryTest {
 	public void testLastAccess() throws InterruptedException {
 		String tenant = "abc";
 		assertNull(instance.getLastAccessTimeOfTenant(tenant));
-		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		Date lastAccess = instance.getLastAccessTimeOfTenant(tenant);
 		assertTrue(System.currentTimeMillis() - lastAccess.getTime() < 100);
 		TimeUnit.SECONDS.sleep(3);
@@ -74,7 +74,7 @@ public class MappedDataSourceRegistryTest {
 		assertFalse(instance.exists(tenant));
 		instance.registerTenantDataSource(tenant, dataSource);
 		assertTrue(instance.exists(tenant));
-		assertSame(dataSource, instance.getOrCreateDataSourceByTenant(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator, never()).createDataSource(tenant);
 	}
 }

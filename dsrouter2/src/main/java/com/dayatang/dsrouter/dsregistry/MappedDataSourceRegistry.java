@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.sql.rowset.spi.SyncResolver;
 
 import com.dayatang.dsrouter.DataSourceRegistry;
 import com.dayatang.utils.Slf4jLogger;
@@ -19,15 +20,15 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(MappedDataSourceRegistry.class);
 	
 	private DataSourceCreator dataSourceCreator;
-	private Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
-	private Map<String, Date> lastAccess = new HashMap<String, Date>();
+	private static Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
+	private static Map<String, Date> lastAccess = new HashMap<String, Date>();
 
 	public void setDataSourceCreator(DataSourceCreator dataSourceCreator) {
 		this.dataSourceCreator = dataSourceCreator;
 	}
 	
 	@Override
-	public DataSource getOrCreateDataSourceByTenant(String tenant) {
+	public DataSource getDataSourceOfTenant(String tenant) {
 		lastAccess.put(tenant, new Date());
 		DataSource result = dataSources.get(tenant);
 		if (result != null) {
