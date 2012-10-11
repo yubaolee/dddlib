@@ -22,7 +22,7 @@ public class PropFileDataSourceCreator implements DataSourceCreator {
 	}
 
 	@Override
-	public DataSource createDataSource(String tenant) {
+	public DataSource createDataSourceForTenant(String tenant) {
 		try {
 			LOGGER.debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {}", tenant, poolType);
 			return getPoolType().createDataSource(tenant);

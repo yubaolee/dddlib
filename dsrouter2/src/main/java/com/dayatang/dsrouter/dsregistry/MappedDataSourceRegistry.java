@@ -35,7 +35,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		}
 		synchronized (this) {
 			if (!exists(tenant)) {
-				result = dataSourceCreator.createDataSource(tenant);
+				result = dataSourceCreator.createDataSourceForTenant(tenant);
 				dataSources.put(tenant, result);
 				Date now = new Date();
 				lastAccess.put(tenant, now);

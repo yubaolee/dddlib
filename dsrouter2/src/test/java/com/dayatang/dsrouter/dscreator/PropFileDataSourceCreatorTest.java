@@ -25,9 +25,9 @@ public class PropFileDataSourceCreatorTest {
 	}
 
 	@Test
-	public void testCreateDataSource() {
+	public void createDataSourceForTenant() {
 		String tenant = "xyz";
-		DataSource result = instance.createDataSource(tenant);
+		DataSource result = instance.createDataSourceForTenant(tenant);
 		assertNotNull(result);
 		assertEquals(PoolType.C3P0, instance.getPoolType());
 	}
