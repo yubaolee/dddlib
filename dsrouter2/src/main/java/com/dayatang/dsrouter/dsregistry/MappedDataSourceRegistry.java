@@ -33,34 +33,40 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		if (result != null) {
 			return result;
 		}
-		result = dataSourceCreator.createDataSource(tenant);
-		dataSources.put(tenant, result);
-		Date now = new Date();
-		lastAccess.put(tenant, now);
-		LOGGER.debug("Create data source for tenant '{}' at {}", tenant, now);
+		synchronized (this) {
+			if (!exists(tenant)) {
+				result = dataSourceCreator.createDataSource(tenant);
+				dataSources.put(tenant, result);
+				Date now = new Date();
+				lastAccess.put(tenant, now);
+				LOGGER.debug("Create data source for tenant '{}' at {}", tenant, now);
+			}
+		}
 		return result;
 	}
 
-	public void registerTenantDataSource(String tenant, DataSource dataSource) {
+	public void registerDataSourceForTenant(String tenant, DataSource dataSource) {
 		dataSources.put(tenant, dataSource);
 	}
 
-	//Clear/release all cached DataSource.
-	public void releaseAllDataSources() {
-		dataSources.clear();
-		LOGGER.debug("All tenant datasource have been released!");
-	}
-
-	public int size() {
-		return dataSources.size();
-	}
-
-	public void releaseDataSourceByTenant(String tenant) {
+	public void releaseDataSourceOfTenant(String tenant) {
 		DataSource dataSource = dataSources.remove(tenant);
 		if (dataSource != null) {
 			dataSource = null;
 			LOGGER.debug("Data source of tenant '" + tenant + "' released!");
 		}
+		lastAccess.remove(tenant);
+	}
+
+	//Clear/release all cached DataSource.
+	public void releaseAllDataSources() {
+		dataSources.clear();
+		lastAccess.clear();
+		LOGGER.debug("All tenant datasource have been released!");
+	}
+
+	public int size() {
+		return dataSources.size();
 	}
 
 	public boolean exists(String tenant) {

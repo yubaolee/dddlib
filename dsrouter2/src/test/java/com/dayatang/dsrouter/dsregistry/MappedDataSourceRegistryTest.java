@@ -20,24 +20,25 @@ public class MappedDataSourceRegistryTest {
 	private MappedDataSourceRegistry instance;
 	private DataSourceCreator dataSourceCreator;
 	private DataSource dataSource;
+	private String tenant = "abc";
 
 	@Before
 	public void setUp() throws Exception {
-		String tenant = "abc";
 		instance = new MappedDataSourceRegistry();
 		dataSourceCreator = mock(DataSourceCreator.class);
 		instance.setDataSourceCreator(dataSourceCreator);
 		dataSource = mock(DataSource.class);
 		when(dataSourceCreator.createDataSource(tenant)).thenReturn(dataSource);
+		instance.releaseAllDataSources();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		instance.releaseAllDataSources();
 	}
 
 	@Test
-	public void testGetDataSourceOfTenant() {
-		String tenant = "abc";
+	public void getDataSourceOfTenant() {
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator).createDataSource(tenant);
 		reset(dataSourceCreator);
@@ -49,32 +50,38 @@ public class MappedDataSourceRegistryTest {
 	}
 	
 	@Test
-	public void testReleaseDataSourceByTenant() {
-		String tenant = "abc";
+	public void registerDataSourceForTenant() {
+		assertFalse(instance.exists(tenant));
+		instance.registerDataSourceForTenant(tenant, dataSource);
+		assertTrue(instance.exists(tenant));
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
+		verify(dataSourceCreator, never()).createDataSource(tenant);
+	}
+	
+	@Test
+	public void releaseDataSourceOfTenant() {
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		assertTrue(instance.exists(tenant));
-		instance.releaseDataSourceByTenant(tenant);
+		instance.releaseDataSourceOfTenant(tenant);
 		assertFalse(instance.exists(tenant));
 	}
 	
 	@Test
-	public void testLastAccess() throws InterruptedException {
-		String tenant = "abc";
+	public void releaseAllDataSources() {
+		instance.registerDataSourceForTenant("abc", mock(DataSource.class));
+		instance.registerDataSourceForTenant("xyz", mock(DataSource.class));
+		assertEquals(2, instance.size());
+		instance.releaseAllDataSources();
+		assertTrue(instance.size() == 0);
+	}
+	
+	@Test
+	public void getLastAccessTimeOfTenant() throws InterruptedException {
 		assertNull(instance.getLastAccessTimeOfTenant(tenant));
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		Date lastAccess = instance.getLastAccessTimeOfTenant(tenant);
 		assertTrue(System.currentTimeMillis() - lastAccess.getTime() < 100);
-		TimeUnit.SECONDS.sleep(3);
-		assertTrue(System.currentTimeMillis() - lastAccess.getTime() > 3000);
-	}
-	
-	@Test
-	public void testRegisterTenantDataSource() {
-		String tenant = "abc";
-		assertFalse(instance.exists(tenant));
-		instance.registerTenantDataSource(tenant, dataSource);
-		assertTrue(instance.exists(tenant));
-		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
-		verify(dataSourceCreator, never()).createDataSource(tenant);
+		TimeUnit.SECONDS.sleep(1);
+		assertTrue(System.currentTimeMillis() - lastAccess.getTime() > 1000);
 	}
 }

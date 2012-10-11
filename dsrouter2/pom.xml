@@ -9,7 +9,7 @@
 	<artifactId>dayatang-commons-dsrouter2</artifactId>
 	<packaging>jar</packaging>
 	<name>Dayatang Datasource for SaaS</name>
-	<description>Dayatang Datasource for SaaS</description>
+	<description>A data source implement for SaaS, as a proxy, locate the actual backend data souce for a specular tenant. </description>
 
 	<scm>
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/dsrouter/</connection>
