@@ -13,12 +13,12 @@ import com.dayatang.utils.Slf4jLogger;
  * @author yyang
  *
  */
-public class PropFileDataSourceCreator implements DataSourceCreator {
+public class ConnectionPoolDataSourceCreator implements DataSourceCreator {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(PropFileDataSourceCreator.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConnectionPoolDataSourceCreator.class);
 	private PoolType poolType;
 	
-	public PropFileDataSourceCreator() {
+	public ConnectionPoolDataSourceCreator() {
 	}
 
 	@Override

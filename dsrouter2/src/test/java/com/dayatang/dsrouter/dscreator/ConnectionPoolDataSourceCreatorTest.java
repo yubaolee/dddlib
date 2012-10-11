@@ -8,16 +8,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.dsrouter.dscreator.PropFileDataSourceCreator;
+import com.dayatang.dsrouter.dscreator.ConnectionPoolDataSourceCreator;
 import com.dayatang.dsrouter.dscreator.PoolType;
 
-public class PropFileDataSourceCreatorTest {
+public class ConnectionPoolDataSourceCreatorTest {
 
-	private PropFileDataSourceCreator instance;
+	private ConnectionPoolDataSourceCreator instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = new PropFileDataSourceCreator();
+		instance = new ConnectionPoolDataSourceCreator();
 	}
 
 	@After
