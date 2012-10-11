@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
-import javax.sql.rowset.spi.SyncResolver;
 
 import com.dayatang.dsrouter.DataSourceRegistry;
 import com.dayatang.utils.Slf4jLogger;
