@@ -9,6 +9,6 @@ import javax.sql.DataSource;
  */
 public interface DataSourceRegistry {
 
-	DataSource getOrCreateDataSourceByTenant(String tenant);
+	DataSource getDataSourceOfTenant(String tenant);
 
 }

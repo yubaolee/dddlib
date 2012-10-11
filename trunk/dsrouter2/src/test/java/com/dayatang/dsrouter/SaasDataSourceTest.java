@@ -29,7 +29,7 @@ public class SaasDataSourceTest {
 		instance.setDataSourceRegistry(dataSourceRegistry);
 		actualDataSource = mock(DataSource.class);
 		when(tenantHolder.getTenant()).thenReturn("abc");
-		when(dataSourceRegistry.getOrCreateDataSourceByTenant("abc")).thenReturn(actualDataSource);
+		when(dataSourceRegistry.getDataSourceOfTenant("abc")).thenReturn(actualDataSource);
 	}
 
 	@After
