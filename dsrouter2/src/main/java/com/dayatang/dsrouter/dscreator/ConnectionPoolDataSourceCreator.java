@@ -16,7 +16,8 @@ import com.dayatang.utils.Slf4jLogger;
 public class ConnectionPoolDataSourceCreator implements DataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConnectionPoolDataSourceCreator.class);
-	private PoolType poolType;
+	private ConnectionPoolType connectionPoolType;
+	private Configuration configuration;
 	
 	public ConnectionPoolDataSourceCreator() {
 	}
@@ -24,23 +25,33 @@ public class ConnectionPoolDataSourceCreator implements DataSourceCreator {
 	@Override
 	public DataSource createDataSourceForTenant(String tenant) {
 		try {
-			LOGGER.debug("Prepare to create Datasource for tenant {}, DB type is: {}, Pool type is: {}", tenant, poolType);
+			LOGGER.debug("Prepare to create Datasource for tenant {}, Pool type is: {}", tenant, connectionPoolType);
 			return getPoolType().createDataSource(tenant);
 		} catch (Exception e) {
 			throw new DataSourceCreationException(e);
 		}
 	}
 
-	public PoolType getPoolType() {
-		if (poolType == null) {
-			Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
-			poolType = PoolType.valueOf(configuration.getString(Constants.POOL_TYPE));
+	public ConnectionPoolType getPoolType() {
+		if (connectionPoolType == null) {
+			connectionPoolType = ConnectionPoolType.valueOf(getConfiguration().getString(Constants.POOL_TYPE));
 		}
-		return poolType;
+		return connectionPoolType;
 	}
 
-	public void setPoolType(PoolType poolType) {
-		this.poolType = poolType;
+	public void setPoolType(ConnectionPoolType connectionPoolType) {
+		this.connectionPoolType = connectionPoolType;
+	}
+
+	public Configuration getConfiguration() {
+		if (configuration == null) {
+			configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+		}
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
 }
