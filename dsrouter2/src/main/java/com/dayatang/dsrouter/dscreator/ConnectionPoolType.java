@@ -33,7 +33,7 @@ public enum ConnectionPoolType {
 			LOGGER.debug("----------------jdbc url is: {}", result.getJdbcUrl());
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
-			// printDsProps(result);
+			//printDsProps(result);
 			return result;
 		}
 	},
@@ -47,7 +47,7 @@ public enum ConnectionPoolType {
 			result.setDriverUrl(getUrl(tenant, properties));
 			result.setUser(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
-			// printDsProps(result);
+			//printDsProps(result);
 			return result;
 		}
 
@@ -63,7 +63,7 @@ public enum ConnectionPoolType {
 			LOGGER.debug("----------------jdbc url is: {}", result.getUrl());
 			result.setUsername(properties.getProperty(Constants.JDBC_USERNAME));
 			result.setPassword(properties.getProperty(Constants.JDBC_PASSWORD));
-			// printDsProps(result);
+			//printDsProps(result);
 			return result;
 		}
 	};

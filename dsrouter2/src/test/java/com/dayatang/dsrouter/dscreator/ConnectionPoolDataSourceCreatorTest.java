@@ -15,6 +15,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dayatang.utils.Configuration;
+import com.dayatang.utils.ConfigurationFileImpl;
 
 public class ConnectionPoolDataSourceCreatorTest {
 
@@ -41,6 +42,7 @@ public class ConnectionPoolDataSourceCreatorTest {
 	@Test
 	public void createDataSourceForTenant() {
 		String tenant = "xyz";
+		instance.setConfiguration(ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE));
 		DataSource result = instance.createDataSourceForTenant(tenant);
 		assertNotNull(result);
 		assertEquals(ConnectionPoolType.C3P0, instance.getPoolType());
