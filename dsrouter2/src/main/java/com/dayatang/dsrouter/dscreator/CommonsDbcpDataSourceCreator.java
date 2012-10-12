@@ -15,8 +15,8 @@ public class CommonsDbcpDataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(CommonsDbcpDataSourceCreator.class);
 
-	public CommonsDbcpDataSourceCreator(Properties properties) {
-		super(properties);
+	public CommonsDbcpDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
+		super(urlTranslator, properties);
 	}
 
 	@Override

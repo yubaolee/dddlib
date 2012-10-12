@@ -7,56 +7,20 @@ import java.util.Properties;
  * @author yyang
  *
  */
-public enum DbMappingStrategy {
-	DB_NAME {
+public abstract class DbMappingStrategy {
 
-		@Override
-		public String getDbName(String tenant, Properties properties) {
-			return dbMapper.getMappingValue(tenant);
-		}
+	private DbMapper dbMapper;
 
-	},
-	HOST {
+	public DbMappingStrategy(DbMapper dbMapper) {
+		this.dbMapper = dbMapper;
+	}
 
-		@Override
-		public String getHost(String tenant, Properties properties) {
-			return dbMapper.getMappingValue(tenant);
-		}
-
-	},
-	PORT {
-
-		@Override
-		public String getPort(String tenant, Properties properties) {
-			return dbMapper.getMappingValue(tenant);
-		}
-
-	},
-	SCHEMA {
-
-		@Override
-		public String getSchema(String tenant, Properties properties) {
-			return dbMapper.getMappingValue(tenant);
-		}
-
-	},
-	INSTANCE {
-
-		@Override
-		public String getInstanceName(String tenant, Properties properties) {
-			return dbMapper.getMappingValue(tenant);
-		}
-
-	};
-
-	private static DbMapper dbMapper = createDbMapper();
+	public DbMapper getDbMapper() {
+		return dbMapper;
+	}
 
 	public String getPort(String tenant, Properties properties) {
 		return properties.getProperty(Constants.JDBC_PORT);
-	}
-
-	private static DbMapper createDbMapper() {
-		return new DbMapper();
 	}
 
 	public String getDbName(String tenant, Properties properties) {
