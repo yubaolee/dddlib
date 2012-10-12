@@ -81,7 +81,7 @@ public class MappedDataSourceRegistryTest {
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		Date lastAccess = instance.getLastAccessTimeOfTenant(tenant);
 		assertTrue(System.currentTimeMillis() - lastAccess.getTime() < 100);
-		TimeUnit.SECONDS.sleep(1);
+		TimeUnit.SECONDS.sleep(2);
 		assertTrue(System.currentTimeMillis() - lastAccess.getTime() > 1000);
 	}
 }
