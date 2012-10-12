@@ -2,20 +2,24 @@ package com.dayatang.dsrouter.dscreator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
+import com.dayatang.utils.Configuration;
 import com.dayatang.utils.Slf4jLogger;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class C3P0DataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(C3P0DataSourceCreator.class);
-	
-	public C3P0DataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
-		super(urlTranslator, properties);
+
+	public C3P0DataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
+		super(urlTranslator, configuration);
+	}
+
+	public C3P0DataSourceCreator(JdbcUrlTranslator urlTranslator) {
+		super(urlTranslator);
 	}
 
 	@Override

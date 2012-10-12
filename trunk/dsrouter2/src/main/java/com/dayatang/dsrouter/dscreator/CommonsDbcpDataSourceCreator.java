@@ -2,21 +2,25 @@ package com.dayatang.dsrouter.dscreator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
+import com.dayatang.utils.Configuration;
 import com.dayatang.utils.Slf4jLogger;
 
 public class CommonsDbcpDataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(CommonsDbcpDataSourceCreator.class);
 
-	public CommonsDbcpDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
-		super(urlTranslator, properties);
+	public CommonsDbcpDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
+		super(urlTranslator, configuration);
+	}
+
+	public CommonsDbcpDataSourceCreator(JdbcUrlTranslator urlTranslator) {
+		super(urlTranslator);
 	}
 
 	@Override

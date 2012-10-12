@@ -2,27 +2,32 @@ package com.dayatang.dsrouter.dscreator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.logicalcobwebs.proxool.ProxoolDataSource;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
+import com.dayatang.utils.Configuration;
 import com.dayatang.utils.Slf4jLogger;
 
 public class ProxoolDataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ProxoolDataSourceCreator.class);
 
-	public ProxoolDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
-		super(urlTranslator, properties);
+
+	public ProxoolDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
+		super(urlTranslator, configuration);
+	}
+
+	public ProxoolDataSourceCreator(JdbcUrlTranslator urlTranslator) {
+		super(urlTranslator);
 	}
 
 	@Override
 	protected DataSource createDataSource() {
 		try {
-			return BasicDataSource.class.newInstance();
+			return new ProxoolDataSource();
 		} catch (Exception e) {
 			String message = "Create Proxool data source failure.";
 			LOGGER.error(message, e);
