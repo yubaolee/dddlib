@@ -33,7 +33,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		if (result != null) {
 			return result;
 		}
-		synchronized (this) {
+		synchronized (dataSources) {
 			if (!exists(tenant)) {
 				result = dataSourceCreator.createDataSourceForTenant(tenant);
 				dataSources.put(tenant, result);
@@ -49,7 +49,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 		dataSources.put(tenant, dataSource);
 	}
 
-	public void releaseDataSourceOfTenant(String tenant) {
+	public synchronized void releaseDataSourceOfTenant(String tenant) {
 		DataSource dataSource = dataSources.remove(tenant);
 		if (dataSource != null) {
 			dataSource = null;
@@ -59,7 +59,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 
 	//Clear/release all cached DataSource.
-	public void releaseAllDataSources() {
+	public synchronized void releaseAllDataSources() {
 		dataSources.clear();
 		lastAccess.clear();
 		LOGGER.debug("All tenant datasource have been released!");
@@ -74,6 +74,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	}
 
 	/**
+	 * 获取每个租户的最后访问时间。
 	 * @param tenant
 	 * @return
 	 */
