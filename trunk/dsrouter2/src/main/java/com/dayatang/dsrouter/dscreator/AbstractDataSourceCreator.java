@@ -16,8 +16,8 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(AbstractDataSourceCreator.class);
 
-	protected Properties properties = new Properties();
 	private JdbcUrlTranslator urlTranslator;
+	protected Properties properties = new Properties();
 
 	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
 		this.properties = properties;
