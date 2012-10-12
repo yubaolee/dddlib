@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.dscreator;
+package com.dayatang.dsrouter.urltranslator;
 
 import java.util.Properties;
 

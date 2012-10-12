@@ -2,7 +2,6 @@ package com.dayatang.dsrouter.urltranslator;
 
 import java.util.Properties;
 
-import com.dayatang.dsrouter.dscreator.DbMappingStrategy;
 import com.dayatang.dsrouter.dscreator.JdbcUrlTranslator;
 
 public class OracleUrlTranslator implements JdbcUrlTranslator {
