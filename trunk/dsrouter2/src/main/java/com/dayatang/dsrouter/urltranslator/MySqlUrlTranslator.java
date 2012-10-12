@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.dayatang.dsrouter.dscreator.Constants;
+import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.dscreator.DbMappingStrategy;
 import com.dayatang.dsrouter.dscreator.JdbcUrlTranslator;
 

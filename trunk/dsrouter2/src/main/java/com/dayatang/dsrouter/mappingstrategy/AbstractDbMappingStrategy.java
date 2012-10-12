@@ -2,7 +2,7 @@ package com.dayatang.dsrouter.mappingstrategy;
 
 import java.util.Properties;
 
-import com.dayatang.dsrouter.dscreator.Constants;
+import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.dscreator.DbMappingStrategy;
 
 /**
