@@ -1,8 +1,9 @@
-package com.dayatang.dsrouter.dscreator;
+package com.dayatang.dsrouter.dbmapper;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
+import com.dayatang.dsrouter.dscreator.Constants;
 import com.dayatang.utils.Configuration;
 import com.dayatang.utils.ConfigurationFileImpl;
 
@@ -11,11 +12,11 @@ import com.dayatang.utils.ConfigurationFileImpl;
  * @author yyang
  *
  */
-public class DbMapper {
+public class PropertiesFileDbMapper {
 
 	private Configuration configuration;
 	
-	public DbMapper() {
+	public PropertiesFileDbMapper() {
 		configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
 	}
 
