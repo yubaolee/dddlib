@@ -21,7 +21,7 @@ public class C3P0DataSourceCreator extends AbstractDataSourceCreator {
 	@Override
 	protected DataSource createDataSource() {
 		try {
-			return ComboPooledDataSource.class.newInstance();
+			return new ComboPooledDataSource();
 		} catch (Exception e) {
 			String message = "Create C3P0 data source failure.";
 			LOGGER.error(message, e);
