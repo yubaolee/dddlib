@@ -23,11 +23,6 @@ public interface Constants {
 	static final String DB_TYPE = "db.type";
 	
 	/**
-	 * 数据库连接池类型
-	 */
-	static final String CONNECTION_POOL_TYPE = "connection.pool.type";
-	
-	/**
 	 * 租户数据库映射策略
 	 */
 	static final String DB_MAPPING_STRATEGY = "db.mapping.strategy";
