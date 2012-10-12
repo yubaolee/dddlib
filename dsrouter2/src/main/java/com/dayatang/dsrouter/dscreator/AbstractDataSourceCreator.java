@@ -10,6 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import com.dayatang.dsrouter.DataSourceCreationException;
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
+import com.dayatang.utils.Configuration;
+import com.dayatang.utils.ConfigurationFileImpl;
 import com.dayatang.utils.Slf4jLogger;
 
 public abstract class AbstractDataSourceCreator implements DataSourceCreator {
@@ -17,11 +19,16 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(AbstractDataSourceCreator.class);
 
 	private JdbcUrlTranslator urlTranslator;
-	protected Properties properties = new Properties();
+	private Configuration configuration;
 
-	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
-		this.properties = properties;
+	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator) {
 		this.urlTranslator = urlTranslator;
+		this.configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+	}
+
+	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
+		this.urlTranslator = urlTranslator;
+		this.configuration = configuration;
 	}
 
 	public DataSource createDataSourceForTenant(String tenant) {
@@ -40,6 +47,7 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	protected abstract DataSource createDataSource();
 
 	private void fillProperties(DataSource dataSource) throws IllegalAccessException, InvocationTargetException {
+		Properties properties = configuration.getProperties();
 		for (Object key : properties.keySet()) {
 			BeanUtils.setProperty(dataSource, key.toString(), properties.get(key));
 		}
@@ -48,9 +56,9 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	private void fillStandardProperties(DataSource dataSource, String tenant) throws IllegalAccessException, InvocationTargetException {
 		Map<String, String> standardProperties = getStandardPropMappings();
 		for (Object key : standardProperties.keySet()) {
-			BeanUtils.setProperty(dataSource, standardProperties.get(key), properties.get(key));
+			BeanUtils.setProperty(dataSource, standardProperties.get(key), configuration.getString(key.toString()));
 		}
-		BeanUtils.setProperty(dataSource, standardProperties.get(Constants.JDBC_URL), urlTranslator.translateUrl(tenant, properties));
+		BeanUtils.setProperty(dataSource, standardProperties.get(Constants.JDBC_URL), urlTranslator.translateUrl(tenant, configuration.getProperties()));
 	}
 	
 	protected abstract Map<String, String> getStandardPropMappings();
