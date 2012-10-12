@@ -7,35 +7,15 @@ import java.util.Properties;
  * @author yyang
  *
  */
-public abstract class DbMappingStrategy {
+public interface DbMappingStrategy {
 
-	private DbMapper dbMapper;
+	String getPort(String tenant, Properties properties);
 
-	public DbMappingStrategy(DbMapper dbMapper) {
-		this.dbMapper = dbMapper;
-	}
+	String getDbName(String tenant, Properties properties);
 
-	public DbMapper getDbMapper() {
-		return dbMapper;
-	}
+	String getHost(String tenant, Properties properties);
 
-	public String getPort(String tenant, Properties properties) {
-		return properties.getProperty(Constants.JDBC_PORT);
-	}
+	String getSchema(String tenant, Properties properties);
 
-	public String getDbName(String tenant, Properties properties) {
-		return properties.getProperty(Constants.JDBC_DB_NAME);
-	}
-
-	public String getHost(String tenant, Properties properties) {
-		return properties.getProperty(Constants.JDBC_HOST);
-	}
-
-	public String getSchema(String tenant, Properties properties) {
-		return properties.getProperty(Constants.JDBC_SCHEMA);
-	}
-
-	public String getInstanceName(String tenant, Properties properties) {
-		return properties.getProperty(Constants.JDBC_INSTANCE);
-	}
+	String getInstanceName(String tenant, Properties properties);
 }
