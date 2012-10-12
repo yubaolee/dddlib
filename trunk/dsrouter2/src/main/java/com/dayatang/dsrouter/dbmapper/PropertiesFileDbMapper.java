@@ -16,15 +16,12 @@ public class PropertiesFileDbMapper {
 
 	private Configuration configuration;
 	
-	public PropertiesFileDbMapper(Configuration configuration) {
-		this.configuration = configuration;
+	public PropertiesFileDbMapper() {
+		configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
 	}
 
-	public Configuration getConfiguration() {
-		if (configuration == null) {
-			configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
-		}
-		return configuration;
+	public PropertiesFileDbMapper(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
 	public String getMappingValue(String tenant) {
