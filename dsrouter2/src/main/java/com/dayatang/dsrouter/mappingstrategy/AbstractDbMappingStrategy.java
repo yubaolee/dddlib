@@ -3,7 +3,7 @@ package com.dayatang.dsrouter.mappingstrategy;
 import java.util.Properties;
 
 import com.dayatang.dsrouter.Constants;
-import com.dayatang.dsrouter.dscreator.DbMappingStrategy;
+import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
 
 /**
  * 租户数据库映射策略。
