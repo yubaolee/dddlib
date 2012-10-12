@@ -14,8 +14,8 @@ public class C3P0DataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(C3P0DataSourceCreator.class);
 	
-	public C3P0DataSourceCreator(Properties properties) {
-		super(properties);
+	public C3P0DataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
+		super(urlTranslator, properties);
 	}
 
 	@Override

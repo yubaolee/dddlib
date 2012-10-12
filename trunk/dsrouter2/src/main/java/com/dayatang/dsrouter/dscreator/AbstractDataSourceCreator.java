@@ -19,18 +19,8 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	protected Properties properties = new Properties();
 	private JdbcUrlTranslator urlTranslator;
 
-	public AbstractDataSourceCreator(Properties properties) {
+	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
 		this.properties = properties;
-	}
-
-	public JdbcUrlTranslator getUrlTranslator() {
-		if (urlTranslator == null) {
-			throw new DataSourceCreationException(getClass() +  "'s urlTranslator not setted!");
-		}
-		return urlTranslator;
-	}
-
-	public void setUrlTranslator(JdbcUrlTranslator urlTranslator) {
 		this.urlTranslator = urlTranslator;
 	}
 
@@ -60,7 +50,7 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 		for (Object key : standardProperties.keySet()) {
 			BeanUtils.setProperty(dataSource, standardProperties.get(key), properties.get(key));
 		}
-		BeanUtils.setProperty(dataSource, standardProperties.get(Constants.JDBC_URL), getUrlTranslator().translateUrl(tenant, properties));
+		BeanUtils.setProperty(dataSource, standardProperties.get(Constants.JDBC_URL), urlTranslator.translateUrl(tenant, properties));
 	}
 	
 	protected abstract Map<String, String> getStandardPropMappings();

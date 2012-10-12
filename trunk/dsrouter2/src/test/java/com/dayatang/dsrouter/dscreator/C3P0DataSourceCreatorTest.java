@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class C3P0DataSourceCreatorTest {
@@ -21,10 +20,9 @@ public class C3P0DataSourceCreatorTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		properties = mock(Properties.class);
-		instance = new C3P0DataSourceCreator(properties);
 		urlTranslator = mock(JdbcUrlTranslator.class);
-		instance.setUrlTranslator(urlTranslator);
+		properties = mock(Properties.class);
+		instance = new C3P0DataSourceCreator(urlTranslator, properties);
 		dataSource = mock(DataSource.class);
 	}
 

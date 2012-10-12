@@ -15,8 +15,8 @@ public class ProxoolDataSourceCreator extends AbstractDataSourceCreator {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ProxoolDataSourceCreator.class);
 
-	public ProxoolDataSourceCreator(Properties properties) {
-		super(properties);
+	public ProxoolDataSourceCreator(JdbcUrlTranslator urlTranslator, Properties properties) {
+		super(urlTranslator, properties);
 	}
 
 	@Override
