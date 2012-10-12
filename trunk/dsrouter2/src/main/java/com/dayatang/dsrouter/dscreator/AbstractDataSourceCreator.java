@@ -65,12 +65,6 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	
 	protected abstract Map<String, String> getStandardPropMappings();
 
-	private String getUrl(String tenant) {
-		return getUrlTranslator().translateUrl(tenant, properties);
-		//DbType dbType = DbType.valueOf(properties.getProperty(Constants.DB_TYPE));
-		//return dbType.getJdbcUrl(tenant, properties);
-	}
-
 	@SuppressWarnings("unused")
 	private static void printDsProps(DataSource result) throws IllegalAccessException, InvocationTargetException {
 		try {

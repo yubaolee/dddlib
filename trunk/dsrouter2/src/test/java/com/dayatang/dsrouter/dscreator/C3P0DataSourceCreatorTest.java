@@ -12,9 +12,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.dayatang.utils.Configuration;
-import com.dayatang.utils.ConfigurationFileImpl;
-
 public class C3P0DataSourceCreatorTest {
 
 	private AbstractDataSourceCreator instance;
@@ -40,8 +37,8 @@ public class C3P0DataSourceCreatorTest {
 	public void createDataSourceForTenant() {
 		String tenant = "xyz";
 		when(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME)).thenReturn("com.mysql.jdbc.Driver");
-		when(properties.getProperty(Constants.JDBC_DRIVER_CLASS_NAME)).thenReturn("com.mysql.jdbc.Driver");
-		when(urlTranslator.translateUrl(tenant, properties)).thenReturn("mysql://localhost:3306/abc");
+		when(properties.getProperty(Constants.JDBC_URL)).thenReturn("com.mysql.jdbc.Driver");
+		when(urlTranslator.translateUrl(tenant, properties)).thenReturn("mysql://localhost:3306/test");
 		assertSame(dataSource, instance.createDataSourceForTenant(tenant));
 	}
 
