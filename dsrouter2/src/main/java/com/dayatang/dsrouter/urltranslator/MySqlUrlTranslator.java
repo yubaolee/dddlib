@@ -11,7 +11,7 @@ import com.dayatang.dsrouter.dscreator.JdbcUrlTranslator;
 public class MySqlUrlTranslator implements JdbcUrlTranslator {
 
 	private DbMappingStrategy mappingStrategy;
-	
+
 	public MySqlUrlTranslator(DbMappingStrategy mappingStrategy) {
 		this.mappingStrategy = mappingStrategy;
 	}
