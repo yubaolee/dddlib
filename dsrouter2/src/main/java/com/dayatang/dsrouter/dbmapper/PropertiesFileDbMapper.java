@@ -2,8 +2,8 @@ package com.dayatang.dsrouter.dbmapper;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.DataSourceCreationException;
-import com.dayatang.dsrouter.dscreator.Constants;
 import com.dayatang.utils.Configuration;
 import com.dayatang.utils.ConfigurationFileImpl;
 

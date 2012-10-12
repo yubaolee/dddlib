@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.dscreator;
+package com.dayatang.dsrouter;
 
 /**
  * 系统常量定义
