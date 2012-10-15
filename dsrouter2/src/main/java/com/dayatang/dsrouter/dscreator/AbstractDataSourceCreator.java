@@ -21,6 +21,7 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 
 	private JdbcUrlTranslator urlTranslator;
 	private Configuration configuration;
+	private DataSource dataSource;
 
 	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator) {
 		this.urlTranslator = urlTranslator;
@@ -32,12 +33,19 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 		this.configuration = configuration;
 	}
 
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
+	
 	public DataSource createDataSourceForTenant(String tenant) {
-		DataSource result = createDataSource();
+		if (dataSource == null) {
+			dataSource = createDataSource();
+		}
 		try {
-			fillProperties(result);
-			fillStandardProperties(result, tenant);
-			return result;
+			fillProperties(dataSource);
+			fillStandardProperties(dataSource, tenant);
+			return dataSource;
 		} catch (Exception e) {
 			String message = "Create data source failure.";
 			LOGGER.error(message, e);

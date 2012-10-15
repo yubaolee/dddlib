@@ -70,10 +70,10 @@ public interface Constants {
 	/**
 	 * JDBC用户名
 	 */
-	static final String JDBC_USERNAME = "db.username";
+	static final String JDBC_USERNAME = "jdbc.username";
 	
 	/**
 	 * JDBC口令
 	 */
-	static final String JDBC_PASSWORD = "db.password";
+	static final String JDBC_PASSWORD = "jdbc.password";
 }
