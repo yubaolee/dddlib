@@ -33,6 +33,7 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 		this.configuration = configuration;
 	}
 
+	//主要为了可测试性设置
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
