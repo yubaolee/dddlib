@@ -3,39 +3,49 @@ package com.dayatang.dsrouter.dscreator;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dayatang.dsrouter.Constants;
 import com.dayatang.utils.Configuration;
+import com.dayatang.utils.ConfigurationFileImpl;
+
 
 public class C3P0DataSourceCreatorTest {
 
 	private AbstractDataSourceCreator instance;
 	private JdbcUrlTranslator urlTranslator; 
-	private Configuration configuration;
-	private DataSource dataSource;
+	private Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+	private MockC3P0DataSource dataSource;
 	
 	@Before
 	public void setUp() throws Exception {
 		urlTranslator = mock(JdbcUrlTranslator.class);
-		configuration = mock(Configuration.class);
 		instance = new C3P0DataSourceCreator(urlTranslator, configuration);
-		dataSource = mock(DataSource.class);
+		dataSource = new MockC3P0DataSource();
+		instance.setDataSource(dataSource);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
-
 	@Test
-	public void createDataSourceForTenant() {
-		String tenant = "xyz";
+	public void createDataSourceForTenant() throws Exception {
+		String tenant = "abcd";
+		String url = "http://localhost:3306/testdb_abc";
+		when(urlTranslator.translateUrl(tenant, configuration.getProperties())).thenReturn(url);
+		DataSource result = instance.createDataSourceForTenant(tenant);
+		assertSame(dataSource, result);
+		assertEquals("com.mysql.jdbc.Driver", BeanUtils.getProperty(result, "driverClass"));
+		assertEquals(url, BeanUtils.getProperty(result, "jdbcUrl"));
+		assertEquals("root", BeanUtils.getProperty(result, "user"));
+		assertEquals("", BeanUtils.getProperty(result, "password"));
+		assertEquals("5", BeanUtils.getProperty(result, "minPoolSize"));
 	}
-
 }
