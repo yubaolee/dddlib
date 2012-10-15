@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.utils.Configuration;
 import com.dayatang.utils.ConfigurationFileImpl;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
 public class C3P0DataSourceCreatorTest {
@@ -21,13 +22,13 @@ public class C3P0DataSourceCreatorTest {
 	private AbstractDataSourceCreator instance;
 	private JdbcUrlTranslator urlTranslator; 
 	private Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
-	private MockC3P0DataSource dataSource;
+	private ComboPooledDataSource dataSource;
 	
 	@Before
 	public void setUp() throws Exception {
 		urlTranslator = mock(JdbcUrlTranslator.class);
 		instance = new C3P0DataSourceCreator(urlTranslator, configuration);
-		dataSource = new MockC3P0DataSource();
+		dataSource = new ComboPooledDataSource();
 		instance.setDataSource(dataSource);
 	}
 
@@ -38,7 +39,7 @@ public class C3P0DataSourceCreatorTest {
 	@Test
 	public void createDataSourceForTenant() throws Exception {
 		String tenant = "abcd";
-		String url = "http://localhost:3306/testdb_abc";
+		String url = "jdbc:mysql://localhost:3306/testdb_abc";
 		when(urlTranslator.translateUrl(tenant, configuration.getProperties())).thenReturn(url);
 		DataSource result = instance.createDataSourceForTenant(tenant);
 		assertSame(dataSource, result);
