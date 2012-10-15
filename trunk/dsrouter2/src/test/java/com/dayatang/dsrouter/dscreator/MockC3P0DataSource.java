@@ -27,6 +27,11 @@ import com.mchange.v2.log.MLevel;
 import com.mchange.v2.log.MLog;
 import com.mchange.v2.log.MLogger;
 
+/**
+ * 该类完全复制自C3P0的ComboPooledDataSource类。用于测试对C3P0连接池访问的正确性
+ * @author yyang
+ *
+ */
 public class MockC3P0DataSource extends AbstractPoolBackedDataSource implements PooledDataSource, Serializable, Referenceable {
     final static MLogger logger = MLog.getLogger( ComboPooledDataSource.class );
 
