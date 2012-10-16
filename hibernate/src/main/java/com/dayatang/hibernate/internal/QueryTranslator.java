@@ -166,12 +166,17 @@ public class QueryTranslator {
 			}
 			if (criterion instanceof AndCriterion) {
 				List<QueryCriterion> subCriterions = Arrays.asList(((AndCriterion) criterion).getCriterons());
-				results.addAll(getCriteriaElements(new HashSet<QueryCriterion>(subCriterions)));
+				List<String> subCriterionsStr = getCriteriaElements(new HashSet<QueryCriterion>(subCriterions));
+				results.add("(" + StringUtils.join(subCriterionsStr, " and ") + ")");
 			}
 			if (criterion instanceof OrCriterion) {
 				List<QueryCriterion> subCriterions = Arrays.asList(((OrCriterion) criterion).getCriterons());
 				List<String> subCriterionsStr = getCriteriaElements(new HashSet<QueryCriterion>(subCriterions));
 				results.add("(" + StringUtils.join(subCriterionsStr, " or ") + ")");
+			}
+			if (criterion instanceof NotCriterion) {
+				List<String> origCriterions = getCriteriaElements(Collections.singleton(((NotCriterion) criterion).getCriteron()));
+				results.add("not (" + StringUtils.join(origCriterions, " or ") + ")");
 			}
 		}
 		return results;
