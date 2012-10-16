@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>2.10</version>
+		<version>2.11-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-guice</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description>Implement IoC interface InstanceProvider with Google Guice.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.10/guice</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.10/guice</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/guice/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/guice/</developerConnection>
 	</scm>
 
 	<dependencies>
