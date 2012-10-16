@@ -406,7 +406,7 @@ public class QuerySettingsTest {
 		assertFalse(results.contains(undergraduate));
 	}
 
-	//@Test
+	@Test
 	public void testNot() {
 		settings.not(Criterions.eq("code", "01"));
 		List<Dictionary> results = repository.find(settings);
