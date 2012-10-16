@@ -4,9 +4,9 @@ import java.lang.reflect.Method;
 
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.hibernate.HibernateTransactionAdvisor;
-import org.apache.tapestry5.plastic.MethodAdvice;
+import org.apache.tapestry5.ioc.Invocation;
+import org.apache.tapestry5.ioc.MethodAdvice;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.plastic.MethodInvocation;
 
 import com.dayatang.annotations.Transactional;
 
@@ -20,7 +20,7 @@ public class HibernateTransactionAdvisorImpl implements HibernateTransactionAdvi
 	 * shared advice object.
 	 */
 	private final MethodAdvice advice = new MethodAdvice() {
-		public void advise(MethodInvocation invocation) {
+		public void advise(Invocation invocation) {
 			try {
 				invocation.proceed();
 			} catch (RuntimeException ex) {

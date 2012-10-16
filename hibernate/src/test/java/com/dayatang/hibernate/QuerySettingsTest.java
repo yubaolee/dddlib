@@ -21,9 +21,8 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryException;
@@ -38,10 +37,10 @@ public class QuerySettingsTest {
 	private static SessionFactory sessionFactory;
 	
 	private Session session;
-	
-	Transaction tx;
 
-	private EntityRepositoryHibernate repository;
+	private Transaction tx;
+
+	private static EntityRepositoryHibernate repository;
 	
 	private QuerySettings<Dictionary> settings;
 
@@ -55,28 +54,23 @@ public class QuerySettingsTest {
 
 	private Dictionary undergraduate;
 
-
 	@BeforeClass
-	public static void classSetUp() throws Exception {
-		BtmUtils.setupDataSource();
+	public static void setUpClass() throws Exception {
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass
-	public static void classTearDown() throws Exception {
+	public static void tearDownClass() {
 		sessionFactory.close();
-		BtmUtils.closeDataSource();
 	}
-	
 	
 	@Before
 	public void setUp() {
-		session = sessionFactory.openSession();
+		session = sessionFactory.getCurrentSession();
 		InstanceFactory.bind(Session.class, session);
-		
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
@@ -88,10 +82,10 @@ public class QuerySettingsTest {
 	@After
 	public void tearDown() {
 		tx.rollback();
-		if (session != null && session.isOpen()) {
+		if (session.isOpen()) {
 			session.close();
 		}
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test

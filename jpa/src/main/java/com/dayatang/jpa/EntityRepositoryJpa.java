@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -32,6 +34,10 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryJpa.class);
 
+	@Inject
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	public EntityRepositoryJpa() {
 	}
 
@@ -43,24 +49,9 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		if (isNew(entity)) {
-			getEntityManager().persist(entity);
-			return entity;
-		}
 		T result = getEntityManager().merge(entity);
 		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return result;
-	}
-	
-	private boolean isNew(Entity entity) {
-		Serializable id = entity.getId();
-		if (id == null) {
-			return true;
-		}
-		if (id instanceof Number) {
-			return ((Number) id).longValue() == 0;
-		}
-		return false;
 	}
 
 	/*
