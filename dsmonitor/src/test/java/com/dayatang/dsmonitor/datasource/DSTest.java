@@ -1,7 +1,5 @@
 package com.dayatang.dsmonitor.datasource;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,7 +23,7 @@ public class DSTest extends PureSpringTestCase {
 	@Test
 	public void testAppNotCloseConnection() throws InterruptedException {
 		Dao dao = InstanceFactory.getInstance(Dao.class, "baseDao");
-		List list = dao.listResultWithoutCloseConnection(
+		dao.listResultWithoutCloseConnection(
 				"from CommonsTestChild", new Object[] {});
 
 		Thread.sleep(12000);
