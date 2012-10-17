@@ -10,6 +10,7 @@
 			http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
 
+
 	<!--
 		bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -37,7 +38,7 @@
 	</bean>
 
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="myWrapperDataSource" />
 		<property name="configLocations">
 			<list>
@@ -51,16 +52,14 @@
 		to JTA)
 	-->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- 
 	<bean
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	 -->
 
 
 </beans>
