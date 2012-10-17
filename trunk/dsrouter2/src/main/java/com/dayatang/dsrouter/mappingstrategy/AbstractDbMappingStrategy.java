@@ -4,6 +4,8 @@ import java.util.Properties;
 
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
+import com.dayatang.utils.Assert;
+import com.dayatang.utils.Configuration;
 
 /**
  * 租户数据库映射策略。
@@ -12,14 +14,15 @@ import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
  */
 public abstract class AbstractDbMappingStrategy implements DbMappingStrategy {
 
-	private DbMapper dbMapper;
+	private Configuration configuration;
 
-	public AbstractDbMappingStrategy(DbMapper dbMapper) {
-		this.dbMapper = dbMapper;
+	public AbstractDbMappingStrategy(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
-	public DbMapper getDbMapper() {
-		return dbMapper;
+	public Configuration getConfiguration() {
+		Assert.notNull(configuration, "Mapping info not exists!");
+		return configuration;
 	}
 
 	public String getPort(String tenant, Properties properties) {

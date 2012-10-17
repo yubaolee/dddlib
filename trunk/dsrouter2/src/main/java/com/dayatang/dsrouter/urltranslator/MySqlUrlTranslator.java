@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.dscreator.JdbcUrlTranslator;
+import com.dayatang.utils.Assert;
 
 public class MySqlUrlTranslator implements JdbcUrlTranslator {
 
@@ -17,6 +18,7 @@ public class MySqlUrlTranslator implements JdbcUrlTranslator {
 
 	@Override
 	public String translateUrl(String tenant, Properties properties) {
+		Assert.notNull(mappingStrategy, "Mapping strategy not assigned!");
 		String result =  String.format("jdbc:mysql://%s:%s/%s", 
 				mappingStrategy.getHost(tenant, properties), 
 				mappingStrategy.getPort(tenant, properties), 

@@ -1,6 +1,5 @@
 package com.dayatang.dsrouter.mappingstrategy;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.util.Properties;
@@ -10,20 +9,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
+import com.dayatang.utils.Configuration;
+import com.dayatang.utils.ConfigurationFileImpl;
 
 public class DbNameBasedMappingStrategyTest {
 	
 	private DbNameBasedMappingStrategy instance;
-	private DbMapper dbMapper;
+	private Configuration configuration;
 	private String tenant = "abc";
 	private Properties properties = new Properties();
 	
 
 	@Before
 	public void setUp() throws Exception {
-		dbMapper = mock(DbMapper.class);
-		when(dbMapper.getMappingValue(tenant)).thenReturn("db_abc");
-		instance = new DbNameBasedMappingStrategy(dbMapper);
+		configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
+		instance = new DbNameBasedMappingStrategy(configuration);
 		properties.put(Constants.JDBC_HOST, "host");
 		properties.put(Constants.JDBC_PORT, "port");
 		properties.put(Constants.JDBC_DB_NAME, "dbname");
