@@ -176,7 +176,7 @@ public class QueryTranslator {
 			}
 			if (criterion instanceof NotCriterion) {
 				List<String> origCriterions = getCriteriaElements(Collections.singleton(((NotCriterion) criterion).getCriteron()));
-				results.add("not (" + StringUtils.join(origCriterions, " or ") + ")");
+				results.add("not (" + StringUtils.join(origCriterions, " and ") + ")");
 			}
 		}
 		return results;
