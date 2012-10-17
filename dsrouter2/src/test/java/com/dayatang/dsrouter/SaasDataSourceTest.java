@@ -13,22 +13,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantService;
+
 public class SaasDataSourceTest {
 	
 	private SaasDataSource instance;
-	private TenantHolder tenantHolder; 
+	private ThreadLocalTenantService tenantService; 
 	private DataSourceRegistry dataSourceRegistry;
 	private DataSource actualDataSource;
 
 	@Before
 	public void setUp() throws Exception {
 		instance = new SaasDataSource();
-		tenantHolder = mock(TenantHolder.class);
-		instance.setTenantHolder(tenantHolder);
+		tenantService = mock(ThreadLocalTenantService.class);
+		instance.setTenantService(tenantService);
 		dataSourceRegistry = mock(DataSourceRegistry.class);
 		instance.setDataSourceRegistry(dataSourceRegistry);
 		actualDataSource = mock(DataSource.class);
-		when(tenantHolder.getTenant()).thenReturn("abc");
+		when(tenantService.getTenant()).thenReturn("abc");
 		when(dataSourceRegistry.getDataSourceOfTenant("abc")).thenReturn(actualDataSource);
 	}
 

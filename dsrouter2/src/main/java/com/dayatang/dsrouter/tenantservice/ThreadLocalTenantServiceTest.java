@@ -1,4 +1,4 @@
-package com.dayatang.dsrouter.tenantholder;
+package com.dayatang.dsrouter.tenantservice;
 
 import static org.junit.Assert.*;
 
@@ -6,15 +6,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.dsrouter.tenantholder.ThreadLocalTenantHolder;
+import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantHolder;
 
-public class ThreadLocalTenantHolderTest {
+public class ThreadLocalTenantServiceTest {
 	
-	private ThreadLocalTenantHolder instance;
+	private ThreadLocalTenantService instance;
 
 	@Before
 	public void setUp() throws Exception {
-		instance = new ThreadLocalTenantHolder();
+		instance = new ThreadLocalTenantService();
 	}
 
 	@After
@@ -25,9 +25,9 @@ public class ThreadLocalTenantHolderTest {
 	public void test() {
 		assertNull(instance.getTenant());
 		String tenant = "abc";
-		instance.setTenant(tenant);
+		ThreadLocalTenantHolder.setTenant(tenant);
 		assertEquals(tenant, instance.getTenant());
-		instance.removeTenant();
+		ThreadLocalTenantHolder.removeTenant();
 		assertNull(instance.getTenant());
 	}
 
