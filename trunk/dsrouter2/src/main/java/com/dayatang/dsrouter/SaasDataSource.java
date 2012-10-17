@@ -13,11 +13,11 @@ import javax.sql.DataSource;
  */
 public class SaasDataSource implements DataSource {
 
-	private TenantHolder tenantHolder;
+	private TenantService tenantService;
 	private DataSourceRegistry dataSourceRegistry;
 	
-	public void setTenantHolder(TenantHolder tenantHolder) {
-		this.tenantHolder = tenantHolder;
+	public void setTenantService(TenantService tenantService) {
+		this.tenantService = tenantService;
 	}
 
 	public void setDataSourceRegistry(DataSourceRegistry dataSourceRegistry) {
@@ -66,7 +66,7 @@ public class SaasDataSource implements DataSource {
 	}
 
 	private DataSource getActualDataSource() {
-		return dataSourceRegistry.getDataSourceOfTenant(tenantHolder.getTenant());
+		return dataSourceRegistry.getDataSourceOfTenant(tenantService.getTenant());
 	}
 	
 }
