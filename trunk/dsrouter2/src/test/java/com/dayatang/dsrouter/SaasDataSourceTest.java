@@ -13,19 +13,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantService;
-
 public class SaasDataSourceTest {
 	
 	private SaasDataSource instance;
-	private ThreadLocalTenantService tenantService; 
+	private TenantService tenantService; 
 	private DataSourceRegistry dataSourceRegistry;
 	private DataSource actualDataSource;
 
 	@Before
 	public void setUp() throws Exception {
 		instance = new SaasDataSource();
-		tenantService = mock(ThreadLocalTenantService.class);
+		tenantService = mock(TenantService.class);
 		instance.setTenantService(tenantService);
 		dataSourceRegistry = mock(DataSourceRegistry.class);
 		instance.setDataSourceRegistry(dataSourceRegistry);
