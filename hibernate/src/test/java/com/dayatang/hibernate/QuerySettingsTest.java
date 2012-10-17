@@ -25,6 +25,7 @@ import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
+import com.dayatang.domain.QueryCriterion;
 import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
 
@@ -51,6 +52,8 @@ public class QuerySettingsTest {
 	private Dictionary male;
 
 	private Dictionary female;
+	
+	private Dictionary unknownGender;
 
 	private Dictionary undergraduate;
 
@@ -76,6 +79,7 @@ public class QuerySettingsTest {
 		education = createCategory("education", 2);
 		male = createDictionary("01", "男", gender, 100, "01");
 		female = createDictionary("02", "女", gender, 150, "01");
+		unknownGender = createDictionary("03", "未知", gender, 160, "01");
 		undergraduate = createDictionary("01", "本科", education, 200, "05");
 	}
 
@@ -198,7 +202,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeEq() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeEq("dictionaries", 2);
+		settings.sizeEq("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertFalse(results.contains(education));
@@ -207,7 +211,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeNotEq() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeNotEq("dictionaries", 2);
+		settings.sizeNotEq("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertFalse(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -243,7 +247,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeLe() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLe("dictionaries", 2);
+		settings.sizeLe("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -384,20 +388,23 @@ public class QuerySettingsTest {
 
 	@Test
 	public void testAnd() {
-		settings.and(Criterions.eq("code", "01"), Criterions.eq("category", gender));
+		QueryCriterion or = Criterions.or(Criterions.eq("code", "01"), Criterions.eq("code", "02"));
+		settings.and(or, Criterions.eq("category", gender));
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(male));
-		assertFalse(results.contains(female));
+		assertTrue(results.contains(female));
+		assertFalse(results.contains(unknownGender));
 		assertFalse(results.contains(undergraduate));
 	}
 
 	@Test
 	public void testOr() {
-		settings.or(Criterions.eq("text", "男"), Criterions.eq("sortOrder", 150));
+		QueryCriterion and = Criterions.and(Criterions.eq("code", "01"), Criterions.eq("category", gender));
+		settings.or(and, Criterions.eq("category", education));
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(male));
-		assertTrue(results.contains(female));
-		assertFalse(results.contains(undergraduate));
+		assertFalse(results.contains(female));
+		assertTrue(results.contains(undergraduate));
 	}
 
 	@Test
