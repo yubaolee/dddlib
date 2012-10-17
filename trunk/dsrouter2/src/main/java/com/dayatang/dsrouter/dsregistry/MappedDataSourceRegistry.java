@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.dayatang.dsrouter.DataSourceRegistry;
+import com.dayatang.utils.Assert;
 import com.dayatang.utils.Slf4jLogger;
 
 /**
@@ -28,6 +29,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	
 	@Override
 	public DataSource getDataSourceOfTenant(String tenant) {
+		Assert.notNull(tenant, "Tenant is null!");
 		lastAccess.put(tenant, new Date());
 		DataSource result = dataSources.get(tenant);
 		if (result != null) {
