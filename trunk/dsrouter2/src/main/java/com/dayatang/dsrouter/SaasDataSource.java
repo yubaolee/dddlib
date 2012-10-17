@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import com.dayatang.utils.Assert;
+
 /**
  * 用于SaaS的数据源实现。是本项目的中心类。它作为代理，自动为不同的租户分配不同的实际数据源。
  * @author yyang
@@ -66,6 +68,8 @@ public class SaasDataSource implements DataSource {
 	}
 
 	private DataSource getActualDataSource() {
+		Assert.notNull(dataSourceRegistry, "data source registry is null!");
+		Assert.notNull(tenantService, "Tenant service is null!");
 		return dataSourceRegistry.getDataSourceOfTenant(tenantService.getTenant());
 	}
 	
