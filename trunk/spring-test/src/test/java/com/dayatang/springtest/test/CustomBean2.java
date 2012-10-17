@@ -1,8 +1,6 @@
 package com.dayatang.springtest.test;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.dayatang.domain.InstanceFactory;
 

@@ -1,7 +1,6 @@
 package com.dayatang.springtest.test;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Service;
 
 //@Service("customBean")
 public class CustomBean implements InitializingBean {
