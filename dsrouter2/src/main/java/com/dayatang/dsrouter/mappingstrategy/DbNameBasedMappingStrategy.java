@@ -2,15 +2,18 @@ package com.dayatang.dsrouter.mappingstrategy;
 
 import java.util.Properties;
 
+import com.dayatang.utils.Configuration;
+
 public class DbNameBasedMappingStrategy extends AbstractDbMappingStrategy {
 
-	public DbNameBasedMappingStrategy(DbMapper dbMapper) {
-		super(dbMapper);
+	public DbNameBasedMappingStrategy(Configuration configuration) {
+		super(configuration);
 	}
+
 
 	@Override
 	public String getDbName(String tenant, Properties properties) {
-		return getDbMapper().getMappingValue(tenant);
+		return getConfiguration().getString(tenant);
 	}
 
 }
