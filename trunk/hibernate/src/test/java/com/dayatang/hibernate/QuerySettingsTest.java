@@ -13,7 +13,6 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -209,7 +208,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeEq() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeEq("dictionaries", 2);
+		settings.sizeEq("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertFalse(results.contains(education));
@@ -218,7 +217,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeNotEq() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeNotEq("dictionaries", 2);
+		settings.sizeNotEq("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertFalse(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -236,7 +235,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeGe() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeGe("dictionaries", 2);
+		settings.sizeGe("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertFalse(results.contains(education));
@@ -245,7 +244,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeLt() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLt("dictionaries", 2);
+		settings.sizeLt("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertFalse(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -254,7 +253,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeLe() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLe("dictionaries", 2);
+		settings.sizeLe("dictionaries", 3);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -297,7 +296,7 @@ public class QuerySettingsTest {
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(undergraduate));
 		
-		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "科");
+		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "���");
 		results = repository.find(settings);
 		assertFalse(results.contains(undergraduate));
 	}
