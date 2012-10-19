@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>dayatang-commons-security</artifactId>
 		<groupId>com.dayatang.commons</groupId>
-		<version>2.11</version>
+		<version>2.11-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-security-domain</artifactId>
 	<name>domain</name>
@@ -16,8 +16,8 @@
 
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.11/security/domain</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.11/security/domain</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/branches/2.x/security/domain</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/branches/2.x/security/domain</developerConnection>
 	</scm>
 
 	<dependencies>
