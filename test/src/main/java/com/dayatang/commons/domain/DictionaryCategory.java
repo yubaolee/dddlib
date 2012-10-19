@@ -9,15 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 
 @Entity
 @Table(name = "categories")
-public class DictionaryCategory extends AggregateRootEntity {
+public class DictionaryCategory extends AbstractEntity {
 
 	private static final long serialVersionUID = -2820088186350505379L;
 

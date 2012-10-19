@@ -1,31 +1,27 @@
 package com.dayatang.dsmonitor.dao.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.dayatang.dsmonitor.dao.Dao;
 
-@SuppressWarnings("rawtypes")
-public class HibernateDaoImpl implements Dao {
-	
-	@Inject
-	private SessionFactory sessionFactory;
-	
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	private Session getSession() {
-		return sessionFactory.openSession();
-	}
+public class HibernateDaoImpl extends HibernateDaoSupport implements Dao {
 
 	public List listResult(final String queryStr, final Object... values) {
-		return createQuery(queryStr, values).list();
+
+		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session arg0)
+					throws HibernateException, SQLException {
+				return createQuery(queryStr, values).list();
+			}
+		});
+
 	}
 
 	public List listResultWithoutCloseConnection(String queryStr,
