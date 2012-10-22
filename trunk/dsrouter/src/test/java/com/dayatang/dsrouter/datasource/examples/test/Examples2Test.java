@@ -1,20 +1,21 @@
 package com.dayatang.dsrouter.datasource.examples.test;
 
+import static org.junit.Assert.*;
 import java.sql.Connection;
+
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.dayatang.dsrouter.datasource.examples.CustomerContextHolder;
 import com.dayatang.dsrouter.datasource.examples.CustomerType;
 import com.dayatang.dsrouter.datasource.examples.Item;
 import com.dayatang.dsrouter.datasource.examples.TestTable;
 
-public class Examples2Test extends
-		AbstractDependencyInjectionSpringContextTests {
+public class Examples2Test extends AbstractJUnit4SpringContextTests {
 
 	private TestTable catalog;
 
@@ -44,7 +45,7 @@ public class Examples2Test extends
 	}
 
 	private void printConn() throws SQLException {
-		DataSource ds = (DataSource) getApplicationContext().getBean(
+		DataSource ds = (DataSource) applicationContext.getBean(
 				"dataSource");
 		Connection connection = ds.getConnection();
 		System.out.println(connection.getMetaData().getURL());
