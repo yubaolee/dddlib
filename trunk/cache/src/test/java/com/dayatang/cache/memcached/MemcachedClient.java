@@ -3,6 +3,7 @@ package com.dayatang.cache.memcached;
 import com.danga.MemCached.MemCachedClient;
 import com.danga.MemCached.SockIOPool;
 
+@SuppressWarnings("deprecation")
 public class MemcachedClient {
 	// create a static client as most installs only need
 	// a single instance
