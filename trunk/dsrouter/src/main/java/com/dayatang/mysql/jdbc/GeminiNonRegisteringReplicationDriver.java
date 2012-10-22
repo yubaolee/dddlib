@@ -2,8 +2,10 @@ package com.dayatang.mysql.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import com.mysql.jdbc.NonRegisteringDriver;
 
@@ -87,5 +89,10 @@ public class GeminiNonRegisteringReplicationDriver extends NonRegisteringDriver 
 		}
 
 		return new GeminiReplicationConnection(masterProps, slavesProps);
+	}
+
+	//For JDK 7 compatability
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return null;
 	}
 }

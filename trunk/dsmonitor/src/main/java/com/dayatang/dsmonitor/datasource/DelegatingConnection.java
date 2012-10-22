@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import com.dayatang.utils.Assert;
 
@@ -254,6 +255,29 @@ public class DelegatingConnection implements Connection {
 
 	public <T> T unwrap(Class<T> arg0) throws SQLException {
 		return targetConnection.unwrap(arg0);
+	}
+
+	//For JDK 7 compatability
+	public void setSchema(String schema) throws SQLException {
+	}
+
+	//For JDK 7 compatability
+	public String getSchema() throws SQLException {
+		return null;
+	}
+
+	//For JDK 7 compatability
+	public void abort(Executor executor) throws SQLException {
+	}
+
+	//For JDK 7 compatability
+	public void setNetworkTimeout(Executor executor, int milliseconds)
+			throws SQLException {
+	}
+
+	//For JDK 7 compatability
+	public int getNetworkTimeout() throws SQLException {
+		return 0;
 	}
 
 }

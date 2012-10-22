@@ -3,6 +3,8 @@ package com.dayatang.dsrouter;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -71,6 +73,11 @@ public class SaasDataSource implements DataSource {
 		Assert.notNull(dataSourceRegistry, "data source registry is null!");
 		Assert.notNull(tenantService, "Tenant service is null!");
 		return dataSourceRegistry.getDataSourceOfTenant(tenantService.getTenant());
+	}
+
+	//For JDK 7 compatability
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return null;
 	}
 	
 }
