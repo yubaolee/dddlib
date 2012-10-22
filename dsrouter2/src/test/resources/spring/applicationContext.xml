@@ -29,8 +29,10 @@
 	</bean>
 		
 	<bean id="mappingStrategy" class="com.dayatang.dsrouter.mappingstrategy.DbNameBasedMappingStrategy">
-	    <constructor-arg ref="dbMapper"/>
+	    <constructor-arg ref="mappingConfiguration"/>
 	</bean>
 	
-	<bean id="dbMapper" class="com.dayatang.dsrouter.dbmapper.PropertiesFileDbMapper"/>
+	<bean id="mappingConfiguration" class="com.dayatang.utils.ConfigurationFileImpl" factory-method="fromClasspath">
+	    <constructor-arg value="/tenant-db-mapping.properties"/>
+	</bean>
 </beans>
