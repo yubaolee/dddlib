@@ -30,7 +30,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	@Override
 	public DataSource getDataSourceOfTenant(String tenant) {
 		Assert.notNull(tenant, "Tenant is null!");
-		lastAccess.put(tenant, new Date());
+		recordLastAccessTimeOfTenant(tenant, new Date());
 		DataSource result = dataSources.get(tenant);
 		if (result != null) {
 			return result;
@@ -40,11 +40,15 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 				result = dataSourceCreator.createDataSourceForTenant(tenant);
 				dataSources.put(tenant, result);
 				Date now = new Date();
-				lastAccess.put(tenant, now);
+				recordLastAccessTimeOfTenant(tenant, now);
 				LOGGER.debug("Create data source for tenant '{}' at {}", tenant, now);
 			}
 		}
 		return result;
+	}
+
+	private void recordLastAccessTimeOfTenant(String tenant, Date accessTime) {
+		lastAccess.put(tenant, accessTime);
 	}
 
 	public void registerDataSourceForTenant(String tenant, DataSource dataSource) {
