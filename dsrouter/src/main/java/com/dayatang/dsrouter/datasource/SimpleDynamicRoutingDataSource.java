@@ -2,6 +2,7 @@ package com.dayatang.dsrouter.datasource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +90,11 @@ public class SimpleDynamicRoutingDataSource extends AbstractDataSource {
 		if (LOGGER.isWarnEnabled()) {
 			LOGGER.warn(message, params);
 		}
+	}
+
+	//For JDK 7 compatability
+	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return null;
 	}
 
 }
