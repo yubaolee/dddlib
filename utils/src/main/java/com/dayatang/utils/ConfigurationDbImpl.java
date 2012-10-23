@@ -12,9 +12,6 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * <P>ConfigurationDbImpl为读取/回写配置信息的工具类，并将配置信息写入数据库， 具体配置大致采用
  * ConfigurationFileImpl.getXxx(key)的方式读取。</P>
@@ -30,13 +27,13 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigurationDbImpl extends AbstractConfiguration {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationDbImpl.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationDbImpl.class);
 	
 	private DataSource dataSource;
 	private String tableName = "SYS_CONFIG";
-	private static final String keyColumn = "KEY_COLUMN";
-	private static final String valueColumn = "VALUE_COLUMN";
-	private Hashtable<String, String> hTable;	
+	private String keyColumn = "KEY_COLUMN";
+	private String valueColumn = "VALUE_COLUMN";
+	private Hashtable<String, String> hTable;
 	
 	
 	public ConfigurationDbImpl(DataSource dataSource) {
@@ -48,16 +45,23 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 		this.tableName = tableName;
 	}
 
+	public ConfigurationDbImpl(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
+		this.dataSource = dataSource;
+		this.tableName = tableName;
+		this.keyColumn = keyColumn;
+		this.valueColumn = valueColumn;
+	}
+
 	//不同数据库的创建表语法不同，暂时希望用户在使用前先创建表
 	private void createTableIfNotExists(Connection connection) {
-		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (KEY_COLUMN VARCHAR(255) PRIMARY KEY, VALUE_COLUMN VARCHAR(255))";
+		String sql = String.format("CREATE TABLE IF NOT EXISTS %s (%s VARCHAR(255) PRIMARY KEY, %s VARCHAR(255))", tableName, keyColumn, valueColumn);
 		try {
 			connection.setAutoCommit(false);
 			executeSqlUpdate(sql, connection);
 			connection.commit();
 		} catch (SQLException e) {
 			//connection.setReadOnly(true);
-			error("Could not create configurarion table", e);
+			LOGGER.error("Could not create configurarion table", e);
 			throw new RuntimeException("Could not create configurarion table", e);
 		}
 	}
@@ -68,13 +72,18 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void save() {
-		Connection connection = DataSourceUtils.getConnection(dataSource);
+		Connection connection = null;
+		PreparedStatement queryStmt = null;
+		PreparedStatement updateStmt = null;
+		PreparedStatement insertStmt = null;
+		ResultSet rs = null;
 		try {
+			connection = DataSourceUtils.getConnection(dataSource);
 			connection.setAutoCommit(false);
-			PreparedStatement queryStmt = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
-			PreparedStatement updateStmt = connection.prepareStatement(String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, valueColumn, keyColumn));
-			PreparedStatement insertStmt = connection.prepareStatement(String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn));
-			ResultSet rs = queryStmt.executeQuery();
+			queryStmt = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+			updateStmt = connection.prepareStatement(String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, valueColumn, keyColumn));
+			insertStmt = connection.prepareStatement(String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn));
+			rs = queryStmt.executeQuery();
 			Set<String> keys = new HashSet(hTable.keySet());
 			while (rs.next()) {
 				String key = rs.getString(keyColumn);
@@ -90,19 +99,58 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 				insertStmt.setString(2, hTable.get(key));
 				insertStmt.executeUpdate();
 			}
-			rs.close();
-			queryStmt.close();
-			updateStmt.close();
-			insertStmt.close();
 			connection.commit();
 		} catch (SQLException e) {
-			error("save configuration to database failure!");
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
 				throw new RuntimeException(e1);
 			}
+			LOGGER.error("save configuration to database failure!");
 			throw new RuntimeException(e);
+		}
+		finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					LOGGER.error("Could not close Resultset!");
+					throw new RuntimeException(e);
+				}
+			}
+			if (queryStmt != null) {
+				try {
+					queryStmt.close();
+				} catch (SQLException e) {
+					LOGGER.error("Could not close query statement!");
+					throw new RuntimeException(e);
+				}
+			}
+			if (updateStmt != null) {
+				try {
+					updateStmt.close();
+				} catch (SQLException e) {
+					LOGGER.error("Could not close update statement!");
+					throw new RuntimeException(e);
+				}
+			}
+			if (insertStmt != null) {
+				try {
+					insertStmt.close();
+				} catch (SQLException e) {
+					LOGGER.error("Could not close insert statement!");
+					throw new RuntimeException(e);
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					LOGGER.error("Could not close connection!");
+					throw new RuntimeException(e);
+				}
+			}
+		
 		}
 		DataSourceUtils.releaseConnection(connection);
 	}
@@ -112,18 +160,6 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 		int result = stmt.executeUpdate();
 		stmt.close();
 		return result;
-	}
-
-	private static void debug(String message, Object... params) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(message, params);
-		}
-	}
-
-	private static void error(String message, Object... params) {
-		if (LOGGER.isErrorEnabled()) {
-			LOGGER.error(message, params);
-		}
 	}
 
 	@Override
@@ -151,11 +187,11 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			error("Read configuration from database failure!");
+			LOGGER.error("Read configuration from database failure!");
 			throw new RuntimeException("Read configuration from database failure!", e);
 		}
 		DataSourceUtils.releaseConnection(connection);
-		debug("Configuration info loaded from table '{}'", tableName);
+		LOGGER.debug("Configuration info loaded from table '{}'", tableName);
 	}
 
 	@Override
