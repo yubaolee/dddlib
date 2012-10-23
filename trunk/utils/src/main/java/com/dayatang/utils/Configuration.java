@@ -111,16 +111,60 @@ public interface Configuration {
 	 * @return 参数key对应的键值。如果键值不存在则返回null。
 	 */
 	Date getDate(String key);
+
+	/**
+	 * 设置指定配置项的字符串型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setString(String key, String value);
+
+	/**
+	 * 设置指定配置项的整数型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setInt(String key, int value);
+
+	/**
+	 * 设置指定配置项的长整型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setLong(String key, long value);
+
+	/**
+	 * 设置指定配置项的双精度型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setDouble(String key, double value);
+
+	/**
+	 * 设置指定配置项的布尔型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setBoolean(String key, boolean value);
+
+	/**
+	 * 设置指定配置项的日期型键值
+	 * 
+	 * @param key 配置项的键
+	 * @param value 要配置的值
+	 */
+	void setDate(String key, Date value);
 	
 	/**
 	 * 获得所有属性
 	 * @return
 	 */
 	Properties getProperties();
-	
-	/**
-	 * 从持久化存储中读入配置信息，更新内存中的配置数据。
-	 */
-	void refresh();
+
 
 }

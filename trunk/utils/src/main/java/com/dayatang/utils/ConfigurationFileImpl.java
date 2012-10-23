@@ -66,7 +66,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		return fromFileSystem(new File(dirPath, fileName));
 	}
 	
-	private static ConfigurationFileImpl fromFileSystem(final File file) {
+	public static ConfigurationFileImpl fromFileSystem(final File file) {
 		if (!file.exists()) {
 			throw new RuntimeException("File " + file.getName() + " not found!");
 		}
@@ -78,6 +78,10 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static ConfigurationFileImpl fromUrl(final URL url) {
+		return new ConfigurationFileImpl(url);
 	}
 
 	private ConfigurationFileImpl(final URL url) {
@@ -189,7 +193,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		return pfu.unRectifyProperties(getHashtable());
 	}
 
-	@Override
+	//@Override
 	public void refresh() {
 		hTable = new Hashtable<String, String>();
 		Properties props = new Properties();
