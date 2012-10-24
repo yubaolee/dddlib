@@ -1,5 +1,7 @@
 package com.dayatang.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -60,14 +62,22 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 	public void load() {
 		hTable = new Hashtable<String, String>();
 		Properties props = new Properties();
+		InputStream in = null;
 		try {
-			if (url != null) {
-				props.load(url.openStream());
-				hTable = pfu.rectifyProperties(props);
-				LOGGER.debug("Load configuration from {} at {}", url, new Date());
-			}
-		} catch (Exception e) {
+			in = url.openStream();
+			props.load(in);
+			hTable = pfu.rectifyProperties(props);
+			LOGGER.debug("Load configuration from {} at {}", url, new Date());
+		} catch (IOException e) {
 			throw new RuntimeException("Cannot load config file: " + url, e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Cannot close input stream.", e);
+				}
+			}
 		}
 	}
 

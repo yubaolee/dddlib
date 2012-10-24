@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.Date;
@@ -105,14 +106,22 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 	public void load() {
 		hTable = new Hashtable<String, String>();
 		Properties props = new Properties();
+		InputStream in = null;
 		try {
-			if (file != null) {
-				props.load(new FileInputStream(file));
-				hTable = pfu.rectifyProperties(props);
-				LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
-			}
-		} catch (Exception e) {
+			in = new FileInputStream(file);
+			props.load(in);
+			hTable = pfu.rectifyProperties(props);
+			LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
+		} catch (IOException e) {
 			throw new RuntimeException("Cannot load config file: " + file, e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Cannot close input stream.", e);
+				}
+			}
 		}
 	}
 
