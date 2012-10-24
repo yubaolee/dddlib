@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.Hashtable;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -17,15 +17,6 @@ public class ConfigurationDbUtils {
 	private String tableName = "SYS_CONFIG";
 	private String keyColumn = "KEY_COLUMN";
 	private String valueColumn = "VALUE_COLUMN";
-	
-	public ConfigurationDbUtils(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
-	public ConfigurationDbUtils(DataSource dataSource, String tableName) {
-		this.dataSource = dataSource;
-		this.tableName = tableName;
-	}
 
 	public ConfigurationDbUtils(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
 		this.dataSource = dataSource;
@@ -42,7 +33,7 @@ public class ConfigurationDbUtils {
 	/* (non-Javadoc)
 	 * @see com.dayatang.utils.WritableConfiguration#save()
 	 */
-	public void save(Properties properties) {
+	public void save(Hashtable<String, String> hTable) {
 		createTableIfNotExists();
 		Connection connection = null;
 		PreparedStatement queryStmt = null;
@@ -56,19 +47,19 @@ public class ConfigurationDbUtils {
 			updateStmt = connection.prepareStatement(String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, valueColumn, keyColumn));
 			insertStmt = connection.prepareStatement(String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)",  tableName, keyColumn, valueColumn));
 			rs = queryStmt.executeQuery();
-			Set<Object> keys = properties.keySet();
+			Set<String> keys = hTable.keySet();
 			while (rs.next()) {
 				String key = rs.getString(keyColumn);
 				if (keys.contains(key)) {
-					updateStmt.setString(1, (String) properties.get(key));
+					updateStmt.setString(1, hTable.get(key));
 					updateStmt.setString(2, key);
 					updateStmt.executeUpdate();
 					keys.remove(key);
 				}
 			}
-			for (Object key : keys) {
-				insertStmt.setString(1, (String) key);
-				insertStmt.setString(2, (String) properties.get(key));
+			for (String key : keys) {
+				insertStmt.setString(1, key);
+				insertStmt.setString(2, hTable.get(key));
 				insertStmt.executeUpdate();
 			}
 			connection.commit();
@@ -124,12 +115,12 @@ public class ConfigurationDbUtils {
 		}
 	}
 
-	public Properties readProperties() {
+	public Hashtable<String, String> load() {
 		createTableIfNotExists();
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Properties results = new Properties();
+		Hashtable<String, String> results = new Hashtable<String, String>();
 		try {
 			connection = dataSource.getConnection();
 			stmt = connection.prepareStatement("SELECT * FROM " + tableName);
