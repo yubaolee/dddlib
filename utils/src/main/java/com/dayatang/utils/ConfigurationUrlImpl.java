@@ -43,18 +43,17 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 		load();
 	}
 
-	URL getUrl() {
-		return url;
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "{" + url + "}";
-	}
-
 	@Override
 	public Properties getProperties() {
 		return pfu.unRectifyProperties(getHashtable());
+	}
+
+	@Override
+	public Hashtable<String, String> getHashtable() {
+		if (hTable == null) {
+			load();
+		}
+		return hTable;
 	}
 
 	@Override
@@ -73,10 +72,7 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 	}
 
 	@Override
-	public Hashtable<String, String> getHashtable() {
-		if (hTable == null) {
-			load();
-		}
-		return hTable;
+	public String toString() {
+		return getClass().getSimpleName() + "{" + url + "}";
 	}
 }

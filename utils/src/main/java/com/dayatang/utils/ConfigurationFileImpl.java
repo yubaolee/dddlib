@@ -88,6 +88,34 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 		load();
 	}
 
+	@Override
+	public Hashtable<String, String> getHashtable() {
+		if (hTable == null) {
+			load();
+		}
+		return hTable;
+	}
+
+	@Override
+	public Properties getProperties() {
+		return pfu.unRectifyProperties(getHashtable());
+	}
+
+	@Override
+	public void load() {
+		hTable = new Hashtable<String, String>();
+		Properties props = new Properties();
+		try {
+			if (file != null) {
+				props.load(new FileInputStream(file));
+				hTable = pfu.rectifyProperties(props);
+				LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot load config file: " + file, e);
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see com.dayatang.utils.WritableConfiguration#save()
 	 */
@@ -181,33 +209,5 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "{" + file + "}";
-	}
-
-	@Override
-	public Properties getProperties() {
-		return pfu.unRectifyProperties(getHashtable());
-	}
-
-	@Override
-	public void load() {
-		hTable = new Hashtable<String, String>();
-		Properties props = new Properties();
-		try {
-			if (file != null) {
-				props.load(new FileInputStream(file));
-				hTable = pfu.rectifyProperties(props);
-				LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot load config file: " + file, e);
-		}
-	}
-
-	@Override
-	public Hashtable<String, String> getHashtable() {
-		if (hTable == null) {
-			load();
-		}
-		return hTable;
 	}
 }
