@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.1</version>
+		<version>3.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-observer</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description> Common Observer.</description>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.1/observer</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.1/observer</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/observer/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/observer/</developerConnection>
 	</scm>
 
 	<dependencies>
