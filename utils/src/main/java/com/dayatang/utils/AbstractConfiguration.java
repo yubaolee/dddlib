@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
 
-public abstract class AbstractConfiguration implements WritableConfiguration {
+public abstract class AbstractConfiguration implements Configuration {
 	private String prefix = "";
 
 	/**

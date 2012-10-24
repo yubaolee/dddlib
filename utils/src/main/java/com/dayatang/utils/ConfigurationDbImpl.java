@@ -19,7 +19,7 @@ import javax.sql.DataSource;
  * 
  * @author yyang
  */
-public class ConfigurationDbImpl extends AbstractConfiguration {
+public class ConfigurationDbImpl extends AbstractConfiguration implements WritableConfiguration {
 	
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationDbImpl.class);
 	
