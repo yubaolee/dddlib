@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dayatang.commons</groupId>
 	<artifactId>dayatang-commons-project</artifactId>
-	<version>3.1-SNAPSHOT</version>
+	<version>3.1</version>
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
 	<url>http://www.dayatang.com/projects/dddlib</url>
@@ -72,8 +72,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.1</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.1</developerConnection>
 	</scm>
 
 	<issueManagement>
@@ -566,7 +566,7 @@
 		<jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
 		<jdbc.url><![CDATA[jdbc:h2:mem:testdb]]></jdbc.url>
 		<jdbc.username>sa</jdbc.username>
-		<jdbc.password/>
+		<jdbc.password />
 		<hibernate.query.substitutions>true 'Y', false 'N'</hibernate.query.substitutions>
 		<hibernate.cache.provider_class>org.hibernate.cache.EhCacheProvider</hibernate.cache.provider_class>
 		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
