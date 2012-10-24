@@ -1,5 +1,6 @@
 package com.dayatang.utils;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
@@ -24,25 +25,21 @@ public class ConfigurationDbImpl extends AbstractConfiguration implements Writab
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationDbImpl.class);
 	
 	private ConfigurationDbUtils dbUtils;
-	private String tableName = "SYS_CONFIG";
-	private String keyColumn = "KEY_COLUMN";
-	private String valueColumn = "VALUE_COLUMN";
+	private static final String DEFAULT_TABLE_NAME = "SYS_CONFIG";
+	private static final String DEFAULT_KEY_COLUMN = "KEY_COLUMN";
+	private static final String DEFAULT_VALUE_COLUMN = "VALUE_COLUMN";
 	private Hashtable<String, String> hTable;
 	
 	
 	public ConfigurationDbImpl(DataSource dataSource) {
-		dbUtils = new ConfigurationDbUtils(dataSource, tableName, keyColumn, valueColumn);
+		this(dataSource, DEFAULT_TABLE_NAME, DEFAULT_KEY_COLUMN, DEFAULT_VALUE_COLUMN);
 	}
 
 	public ConfigurationDbImpl(DataSource dataSource, String tableName) {
-		this.tableName = tableName;
-		dbUtils = new ConfigurationDbUtils(dataSource, tableName, keyColumn, valueColumn);
+		this(dataSource, tableName, DEFAULT_KEY_COLUMN, DEFAULT_VALUE_COLUMN);
 	}
 
 	public ConfigurationDbImpl(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
-		this.tableName = tableName;
-		this.keyColumn = keyColumn;
-		this.valueColumn = valueColumn;
 		dbUtils = new ConfigurationDbUtils(dataSource, tableName, keyColumn, valueColumn);
 	}
 
@@ -66,7 +63,7 @@ public class ConfigurationDbImpl extends AbstractConfiguration implements Writab
 	@Override
 	public void load() {
 		hTable = dbUtils.load();
-		LOGGER.debug("Configuration info loaded from table '{}'", tableName);
+		LOGGER.debug("Configuration info loaded from database at {}", new Date());
 	}
 
 	@Override
