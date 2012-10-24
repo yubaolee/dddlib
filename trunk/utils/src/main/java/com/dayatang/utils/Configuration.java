@@ -165,11 +165,6 @@ public interface Configuration {
 	 * @return
 	 */
 	Properties getProperties();
-
-	/**
-	 * 将当前配置写入持久化源中
-	 */
-	void save();
 	
 	/**
 	 * 从持久化源中获取最新配置，更新当前设置

@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author yyang
  */
-public class ConfigurationFileImpl extends AbstractConfiguration {
+public class ConfigurationFileImpl extends AbstractConfiguration implements WritableConfiguration {
 	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationFileImpl.class);
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private File file;

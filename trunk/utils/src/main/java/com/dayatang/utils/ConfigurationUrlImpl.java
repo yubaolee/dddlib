@@ -1,16 +1,10 @@
 package com.dayatang.utils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Properties;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * <P>ConfigurationUrlImpl为读取远程配置文件的工具类，一个实例大概对应了一个远程配置文件，具体配置大致采用
@@ -31,6 +25,15 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 	private URL url;
 	private Hashtable<String, String> hTable;	
 	
+	public static ConfigurationUrlImpl fromUrl(final String url) {
+		try {
+			return new ConfigurationUrlImpl(new URL(url));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("URL " + url + " is malformed!" , e);
+		}
+	}
+	
 	public static ConfigurationUrlImpl fromUrl(final URL url) {
 		return new ConfigurationUrlImpl(url);
 	}
@@ -38,100 +41,6 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 	private ConfigurationUrlImpl(final URL url) {
 		this.url = url;
 		load();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#save()
-	 */
-	@Override
-	public void save() {
-		try {
-			File file = new File(url.getFile());
-			if (!file.exists() || !file.canWrite()) {
-				throw new UnsupportedOperationException("Persistence is not supported!");
-			}
-			Properties props = pfu.unRectifyProperties(getHashtable());
-			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + url);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void store(Properties props, BufferedWriter out, String comments) throws IOException {
-		if (StringUtils.isNotEmpty(comments)) {
-			out.append("#" + comments);
-			out.newLine();
-		}
-		out.write("#" + new Date().toString());
-		out.newLine();
-		synchronized (this) {
-			for (Object propKey : props.keySet()) {
-				String key = convertString(propKey.toString(), true);
-				String value = convertString((String) props.get(propKey), false);
-				out.write(key + "=" + value);
-				out.newLine();
-			}
-			out.flush();
-		}
-		out.close();
-		LOGGER.debug("Save configuration to {} at {}", url.getFile(), new Date());
-	}
-
-	private String convertString(String theString, boolean escapeSpace) {
-		int len = theString.length();
-		int bufLen = len * 2;
-		if (bufLen < 0) {
-			bufLen = Integer.MAX_VALUE;
-		}
-		StringBuilder outBuffer = new StringBuilder(bufLen);
-
-		for (int x = 0; x < len; x++) {
-			char aChar = theString.charAt(x);
-			// Handle common case first, selecting largest block that
-			// avoids the specials below
-			if ((aChar > 61) && (aChar < 127)) {
-				if (aChar == '\\') {
-					outBuffer.append('\\');
-					outBuffer.append('\\');
-					continue;
-				}
-				outBuffer.append(aChar);
-				continue;
-			}
-			switch (aChar) {
-			case ' ':
-				if (x == 0 || escapeSpace)
-					outBuffer.append('\\');
-				outBuffer.append(' ');
-				break;
-			case '\t':
-				outBuffer.append('\\');
-				outBuffer.append('t');
-				break;
-			case '\n':
-				outBuffer.append('\\');
-				outBuffer.append('n');
-				break;
-			case '\r':
-				outBuffer.append('\\');
-				outBuffer.append('r');
-				break;
-			case '\f':
-				outBuffer.append('\\');
-				outBuffer.append('f');
-				break;
-			case '=': // Fall through
-			case ':': // Fall through
-			case '#': // Fall through
-			case '!':
-				outBuffer.append('\\');
-				outBuffer.append(aChar);
-				break;
-			default:
-				outBuffer.append(aChar);
-			}
-		}
-		return outBuffer.toString();
 	}
 
 	URL getUrl() {
