@@ -65,7 +65,7 @@ public class ConfigurationUrlImpl extends AbstractConfiguration {
 			if (url != null) {
 				props.load(url.openStream());
 				hTable = pfu.rectifyProperties(props);
-				LOGGER.debug("Load configuration from {} at {}", url.getFile(), new Date());
+				LOGGER.debug("Load configuration from {} at {}", url, new Date());
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot load config file: " + url, e);
