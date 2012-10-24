@@ -2,6 +2,7 @@ package com.dayatang.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -194,7 +195,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		Properties props = new Properties();
 		try {
 			if (file != null) {
-				props.load(new FileReader(file));
+				props.load(new FileInputStream(file));
 				hTable = pfu.rectifyProperties(props);
 				LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
 			}
