@@ -130,11 +130,21 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 	 */
 	@Override
 	public void save() {
+		BufferedWriter out = null;
 		try {
 			Properties props = pfu.unRectifyProperties(getHashtable());
-			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + file);
+			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1));
+			store(props, out, "Config file for " + file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Cannot close input stream.", e);
+				}
+			}
 		}
 	}
 
@@ -154,7 +164,6 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 			}
 			out.flush();
 		}
-		out.close();
 		LOGGER.debug("Save configuration to {} at {}", file.getAbsolutePath(), new Date());
 	}
 
