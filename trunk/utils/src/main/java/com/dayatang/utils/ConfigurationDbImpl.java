@@ -167,14 +167,14 @@ public class ConfigurationDbImpl extends AbstractConfiguration {
 		if (hTable == null) {
 			Connection connection = DataSourceUtils.getConnection(dataSource);
 			createTableIfNotExists(connection);
-			refresh();
+			load();
 			DataSourceUtils.releaseConnection(connection);
 		}
 		return hTable;
 	}
 
 	//从数据库中取得配置项，更新当前内存中的配置值。
-	public void refresh() {
+	public void load() {
 		hTable = new Hashtable<String, String>();
 		Connection connection = DataSourceUtils.getConnection(dataSource);
 		PreparedStatement stmt;

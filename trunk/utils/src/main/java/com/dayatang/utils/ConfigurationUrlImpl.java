@@ -3,7 +3,6 @@ package com.dayatang.utils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -27,64 +26,18 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author yyang
  */
-public class ConfigurationFileImpl extends AbstractConfiguration {
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationFileImpl.class);
+public class ConfigurationUrlImpl extends AbstractConfiguration {
+	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationUrlImpl.class);
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
-	private File file;
+	private URL url;
 	private Hashtable<String, String> hTable;	
-	/**
-	 * 从类路径读入配置文件
-	 * @param fileName
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromClasspath(final String fileName) {
-		Assert.notBlank(fileName, String.format("File name %s is empty!", fileName));
-		URL url = ConfigurationFileImpl.class.getResource(fileName);
-		Assert.notNull(url, String.format("File {} not found!", fileName));
-		File file = new File(url.getFile());
-		return new ConfigurationFileImpl(file);
-	}
 	
-	/**
-	 * 从文件系统读入配置文件
-	 * @param pathname
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromFileSystem(final String pathname) {
-		Assert.notBlank(pathname, String.format("File name %s is empty!", pathname));
-		return fromFileSystem(new File(pathname));
-	}
-	
-	/**
-	 * 从文件系统读入配置文件
-	 * @param dirPath
-	 * @param fileName
-	 * @return
-	 */
-	public static ConfigurationFileImpl fromFileSystem(final String dirPath, final String fileName) {
-		Assert.notBlank(dirPath, String.format("Directory %s is empty!", dirPath));
-		Assert.notBlank(fileName, String.format("File name %s is empty!", fileName));
-		return fromFileSystem(new File(dirPath, fileName));
-	}
-	
-	public static ConfigurationFileImpl fromFileSystem(final File file) {
-		if (!file.exists()) {
-			throw new RuntimeException("File " + file.getName() + " not found!");
-		}
-		if (!file.canRead()) {
-			throw new RuntimeException("File " + file.getName() + " is unreadable!");
-		}
-		return new ConfigurationFileImpl(file);
+	public static ConfigurationUrlImpl fromUrl(final URL url) {
+		return new ConfigurationUrlImpl(url);
 	}
 
-	private ConfigurationFileImpl(final File file) {
-		this.file = file;
-		if (!file.exists()) {
-			throw new IllegalArgumentException(String.format("File $s not exists!", file.getAbsolutePath()));
-		}
-		if (!file.canRead()) {
-			throw new IllegalStateException("File " + file.getName() + " is unreadable!");
-		}
+	private ConfigurationUrlImpl(final URL url) {
+		this.url = url;
 		load();
 	}
 
@@ -94,8 +47,12 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 	@Override
 	public void save() {
 		try {
+			File file = new File(url.getFile());
+			if (!file.exists() || !file.canWrite()) {
+				throw new UnsupportedOperationException("Persistence is not supported!");
+			}
 			Properties props = pfu.unRectifyProperties(getHashtable());
-			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + file);
+			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + url);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -118,7 +75,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 			out.flush();
 		}
 		out.close();
-		LOGGER.debug("Save configuration to {} at {}", file.getAbsolutePath(), new Date());
+		LOGGER.debug("Save configuration to {} at {}", url.getFile(), new Date());
 	}
 
 	private String convertString(String theString, boolean escapeSpace) {
@@ -178,9 +135,13 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		return outBuffer.toString();
 	}
 
+	URL getUrl() {
+		return url;
+	}
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "{" + file + "}";
+		return getClass().getSimpleName() + "{" + url + "}";
 	}
 
 	@Override
@@ -193,13 +154,13 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		hTable = new Hashtable<String, String>();
 		Properties props = new Properties();
 		try {
-			if (file != null) {
-				props.load(new FileReader(file));
+			if (url != null) {
+				props.load(url.openStream());
 				hTable = pfu.rectifyProperties(props);
-				LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
+				LOGGER.debug("Load configuration from {} at {}", url.getFile(), new Date());
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Cannot load config file: " + file, e);
+			throw new RuntimeException("Cannot load config file: " + url, e);
 		}
 	}
 
