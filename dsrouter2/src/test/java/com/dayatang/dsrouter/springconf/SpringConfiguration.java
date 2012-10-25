@@ -44,8 +44,7 @@ public class SpringConfiguration {
 
 	@Bean
 	public DataSourceCreator dataSourceCreator() {
-		C3P0DataSourceCreator result = new C3P0DataSourceCreator(urlTranslator(), dsConfiguration());
-		return result;
+		return new C3P0DataSourceCreator(urlTranslator(), dsConfiguration());
 	}
 
 	@Bean
