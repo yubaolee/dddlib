@@ -18,16 +18,6 @@ public interface Constants {
 	static final String DB_MAPPING_FILE = "/tenant-db-mapping.properties";
 	
 	/**
-	 * 数据库服务器类型
-	 */
-	static final String DB_TYPE = "db.type";
-	
-	/**
-	 * 租户数据库映射策略
-	 */
-	static final String DB_MAPPING_STRATEGY = "db.mapping.strategy";
-	
-	/**
 	 * JDBC驱动类名
 	 */
 	static final String JDBC_DRIVER_CLASS_NAME = "jdbc.driverClassName";
