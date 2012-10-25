@@ -25,11 +25,9 @@ public class SaasDataSourceTest {
 	@Before
 	public void setUp() throws Exception {
 		ThreadLocalTenantHolder.removeTenant();
-		instance = new SaasDataSource();
 		tenantService = mock(TenantService.class);
-		instance.setTenantService(tenantService);
 		dataSourceRegistry = mock(DataSourceRegistry.class);
-		instance.setDataSourceRegistry(dataSourceRegistry);
+		instance = new SaasDataSource(tenantService, dataSourceRegistry);
 		actualDataSource = mock(DataSource.class);
 		when(tenantService.getTenant()).thenReturn("abc");
 		when(dataSourceRegistry.getDataSourceOfTenant("abc")).thenReturn(actualDataSource);

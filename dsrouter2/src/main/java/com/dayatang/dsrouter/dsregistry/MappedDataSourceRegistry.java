@@ -23,7 +23,7 @@ public class MappedDataSourceRegistry implements DataSourceRegistry {
 	private static Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
 	private static Map<String, Date> lastAccess = new HashMap<String, Date>();
 
-	public void setDataSourceCreator(DataSourceCreator dataSourceCreator) {
+	public MappedDataSourceRegistry(DataSourceCreator dataSourceCreator) {
 		this.dataSourceCreator = dataSourceCreator;
 	}
 	

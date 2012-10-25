@@ -19,12 +19,9 @@ public class SaasDataSource implements DataSource {
 
 	private TenantService tenantService;
 	private DataSourceRegistry dataSourceRegistry;
-	
-	public void setTenantService(TenantService tenantService) {
-		this.tenantService = tenantService;
-	}
 
-	public void setDataSourceRegistry(DataSourceRegistry dataSourceRegistry) {
+	public SaasDataSource(TenantService tenantService, DataSourceRegistry dataSourceRegistry) {
+		this.tenantService = tenantService;
 		this.dataSourceRegistry = dataSourceRegistry;
 	}
 

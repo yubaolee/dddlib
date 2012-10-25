@@ -1,7 +1,6 @@
 package com.dayatang.dsrouter;
 
-import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,11 +33,11 @@ public class SaasDataSourceIntegrationTest {
 
 	@After
 	public void tearDown() throws Exception {
+		InstanceFactory.setInstanceProvider(null);
 	}
 
-
 	@Test
-	public void testGetConnectionStringString() throws SQLException {
+	public void test() throws SQLException {
 		switchTenant("abc");
 		assertEquals("China Mobile", getDataFromDb());
 		switchTenant("xyz");

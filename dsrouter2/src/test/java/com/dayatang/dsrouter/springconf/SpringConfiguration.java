@@ -24,10 +24,7 @@ public class SpringConfiguration {
 	
 	@Bean
 	public DataSource dataSource() {
-		SaasDataSource result = new SaasDataSource();
-		result.setTenantService(tenantService());
-		result.setDataSourceRegistry(dataSourceRegistry());
-		return result;
+		return new SaasDataSource(tenantService(), dataSourceRegistry());
 	}
 
 	@Bean
@@ -37,9 +34,7 @@ public class SpringConfiguration {
 
 	@Bean
 	public DataSourceRegistry dataSourceRegistry() {
-		MappedDataSourceRegistry result = new MappedDataSourceRegistry();
-		result.setDataSourceCreator(dataSourceCreator());
-		return result;
+		return new MappedDataSourceRegistry(dataSourceCreator());
 	}
 
 	@Bean
