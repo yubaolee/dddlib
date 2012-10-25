@@ -33,10 +33,14 @@ public class SaasDataSourceIntegrationTest {
 
 	@Test
 	public void testGetConnectionStringString() throws SQLException {
-		ThreadLocalTenantHolder.setTenant("abc");
+		switchTenant("abc");
 		assertEquals("China Mobile", getDataFromDb());
-		ThreadLocalTenantHolder.setTenant("xyz");
+		switchTenant("xyz");
 		assertEquals("China Unicom", getDataFromDb());
+	}
+
+	private void switchTenant(String tenant) {
+		ThreadLocalTenantHolder.setTenant(tenant);
 	}
 
 	private String getDataFromDb() {
