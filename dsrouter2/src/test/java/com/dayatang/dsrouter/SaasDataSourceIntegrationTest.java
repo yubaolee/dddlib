@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.domain.InstanceFactory;
+import com.dayatang.dsrouter.springconf.SpringConfiguration;
 import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantHolder;
 import com.dayatang.spring.factory.SpringIocUtils;
 
@@ -22,7 +23,8 @@ public class SaasDataSourceIntegrationTest {
 	@Before
 	public void setUp() throws Exception {
 		clearTenantIfExisted();
-		SpringIocUtils.initInstanceProvider("spring/applicationContext.xml");
+		//SpringIocUtils.initInstanceProvider("spring/applicationContext.xml");
+		SpringIocUtils.initInstanceProvider(SpringConfiguration.class);
 		instance = InstanceFactory.getInstance(SaasDataSource.class);
 	}
 
