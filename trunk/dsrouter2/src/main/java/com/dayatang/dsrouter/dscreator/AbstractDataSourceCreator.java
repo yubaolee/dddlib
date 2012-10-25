@@ -17,7 +17,7 @@ import com.dayatang.utils.Slf4jLogger;
 
 public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 	
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(AbstractDataSourceCreator.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(AbstractDataSourceCreator.class);
 
 	private JdbcUrlTranslator urlTranslator;
 	private Configuration configuration;

@@ -17,7 +17,7 @@ import com.dayatang.utils.Slf4jLogger;
  */
 public class MappedDataSourceRegistry implements DataSourceRegistry {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(MappedDataSourceRegistry.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(MappedDataSourceRegistry.class);
 	
 	private DataSourceCreator dataSourceCreator;
 	private static Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
