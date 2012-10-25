@@ -21,8 +21,12 @@ public class SaasDataSourceIntegrationTest {
 
 	@Before
 	public void setUp() throws Exception {
+		clearTenantIfExisted();
 		SpringIocUtils.initInstanceProvider("spring/applicationContext.xml");
 		instance = InstanceFactory.getInstance(SaasDataSource.class);
+	}
+
+	private void clearTenantIfExisted() {
 		ThreadLocalTenantHolder.removeTenant();
 	}
 
@@ -50,6 +54,7 @@ public class SaasDataSourceIntegrationTest {
 			return useConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			try {
 				if (connection != null) {
@@ -57,11 +62,9 @@ public class SaasDataSourceIntegrationTest {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
-		
-		
-		return null;
 	}
 
 	private String useConnection(Connection connection) {
@@ -79,6 +82,7 @@ public class SaasDataSourceIntegrationTest {
 					stmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 		}
@@ -99,6 +103,7 @@ public class SaasDataSourceIntegrationTest {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 		}
