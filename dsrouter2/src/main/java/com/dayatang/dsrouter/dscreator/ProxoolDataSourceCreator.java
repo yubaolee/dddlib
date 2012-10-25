@@ -14,7 +14,7 @@ import com.dayatang.utils.Slf4jLogger;
 
 public class ProxoolDataSourceCreator extends AbstractDataSourceCreator {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ProxoolDataSourceCreator.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(ProxoolDataSourceCreator.class);
 
 
 	public ProxoolDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {

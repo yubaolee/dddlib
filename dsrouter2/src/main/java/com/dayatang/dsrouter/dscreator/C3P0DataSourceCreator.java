@@ -13,7 +13,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class C3P0DataSourceCreator extends AbstractDataSourceCreator {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(C3P0DataSourceCreator.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(C3P0DataSourceCreator.class);
 
 	public C3P0DataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
 		super(urlTranslator, configuration);

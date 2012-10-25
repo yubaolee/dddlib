@@ -14,7 +14,7 @@ import com.dayatang.utils.Slf4jLogger;
 
 public class CommonsDbcpDataSourceCreator extends AbstractDataSourceCreator {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(CommonsDbcpDataSourceCreator.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(CommonsDbcpDataSourceCreator.class);
 
 	public CommonsDbcpDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
 		super(urlTranslator, configuration);
