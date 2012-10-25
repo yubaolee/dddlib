@@ -24,9 +24,8 @@ public class MappedDataSourceRegistryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		instance = new MappedDataSourceRegistry();
 		dataSourceCreator = mock(DataSourceCreator.class);
-		instance.setDataSourceCreator(dataSourceCreator);
+		instance = new MappedDataSourceRegistry(dataSourceCreator);
 		dataSource = mock(DataSource.class);
 		when(dataSourceCreator.createDataSourceForTenant(tenant)).thenReturn(dataSource);
 		instance.releaseAllDataSources();
