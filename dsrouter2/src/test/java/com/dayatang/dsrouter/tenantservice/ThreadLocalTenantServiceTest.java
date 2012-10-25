@@ -13,11 +13,13 @@ public class ThreadLocalTenantServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		ThreadLocalTenantHolder.removeTenant();
 		instance = new ThreadLocalTenantService();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 
 	@Test

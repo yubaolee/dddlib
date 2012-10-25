@@ -5,8 +5,8 @@
 			http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 			
 	<bean id="dataSource" class="com.dayatang.dsrouter.SaasDataSource">
-	    <property name="tenantHolder">
-	        <bean class="com.dayatang.dsrouter.tenantholder.ThreadLocalTenantHolder"/>
+	    <property name="tenantService">
+	        <bean class="com.dayatang.dsrouter.tenantservice.ThreadLocalTenantService"/>
 	    </property>
 	    <property name="dataSourceRegistry" ref="dataSourceRegistry" />
 	</bean>
@@ -28,7 +28,7 @@
 	    <constructor-arg ref="mappingConfiguration"/>
 	</bean>
 	
-	<bean id="mappingConfiguration" class="com.dayatang.utils.ConfigurationUrlImpl" factory-method="fromClasspath">
+	<bean id="mappingConfiguration" class="com.dayatang.utils.ConfigurationUrlImpl" factory-method="fromUrl">
 	    <constructor-arg value="http://www.dayatang.com/tenant-db-mapping.properties"/>
 	</bean>
 		

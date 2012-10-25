@@ -7,7 +7,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 LOCK TABLES `users` WRITE;
-INSERT INTO `users` VALUES (1,'CMCC');
+INSERT INTO `users` VALUES (1,'China Mobile');
 UNLOCK TABLES;
 
 
@@ -21,6 +21,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 LOCK TABLES `users` WRITE;
-INSERT INTO `users` VALUES (1,'CUCC');
+INSERT INTO `users` VALUES (1,'China Unicom');
 UNLOCK TABLES;
 
