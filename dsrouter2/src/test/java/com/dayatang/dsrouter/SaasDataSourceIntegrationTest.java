@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class SaasDataSourceIntegrationTest {
 	}
 
 	@Test
-	public void test() throws SQLException {
+	public void test() throws Exception {
 		switchTenant("abc");
 		assertEquals("China Mobile", getDataFromDb());
 		switchTenant("xyz");
