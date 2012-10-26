@@ -2,6 +2,7 @@ package com.dayatang.domain.internal;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -15,28 +16,27 @@ public class NotInCriterion implements QueryCriterion {
 	
 	private String propName;
 
-	private Collection<? extends Object> value;
+	@SuppressWarnings("unchecked")
+	private Collection<? extends Object> value = Collections.EMPTY_SET;
 
 	public NotInCriterion(String propName, Collection<? extends Object> value) {
 		if (StringUtils.isEmpty(propName)) {
 			throw new QueryException("Property name is null!");
 		}
-		if (value == null || value.isEmpty()) {
-			throw new QueryException("Value collection is null or empty!");
-		}
 		this.propName = propName;
-		this.value = value;
+		if (value != null) {
+			this.value = value;
+		}
 	}
 	
 	public NotInCriterion(String propName, Object[] value) {
 		if (StringUtils.isEmpty(propName)) {
 			throw new QueryException("Property name is null!");
 		}
-		if (value == null || value.length == 0) {
-			throw new QueryException("Value array is null or empty!");
-		}
 		this.propName = propName;
-		this.value = Arrays.asList(value);
+		if (value != null && value.length > 0) {
+			this.value = Arrays.asList(value);
+		}
 	}
 
 	public String getPropName() {
