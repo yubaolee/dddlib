@@ -1,5 +1,7 @@
 package com.dayatang.jpa.internal;
 
+import java.util.Collection;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -173,13 +175,21 @@ public class JpaCriterionConverter {
 		}
 		if (criterion instanceof InCriterion) {
 			InCriterion theCriteron = (InCriterion) criterion;
+			Collection<? extends Object> value = theCriteron.getValue();
+			if (value == null || value.isEmpty()) {
+				return builder.isTrue(builder.literal(false));
+			}
 			Path path = getPropPath(root, theCriteron.getPropName());
-			return path.in(theCriteron.getValue());
+			return path.in(value);
 		}
 		if (criterion instanceof NotInCriterion) {
 			NotInCriterion theCriteron = (NotInCriterion) criterion;
+			Collection<? extends Object> value = theCriteron.getValue();
+			if (value == null || value.isEmpty()) {
+				return builder.isTrue(builder.literal(true));
+			}
 			Path path = getPropPath(root, theCriteron.getPropName());
-			return builder.not(path.in(theCriteron.getValue()));
+			return builder.not(path.in(value));
 		}
 		if (criterion instanceof IsNullCriterion) {
 			IsNullCriterion theCriteron = (IsNullCriterion) criterion;
