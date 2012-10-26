@@ -3,8 +3,11 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +30,6 @@ import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryCriterion;
-import com.dayatang.domain.QueryException;
 import com.dayatang.domain.QuerySettings;
 
 /**
@@ -325,8 +327,16 @@ public class QuerySettingsTest {
 		assertFalse(results.contains(undergraduate));
 	}
 
+	@Test
+	public void testInNull() {
+		Collection<Object> value = null;
+		settings.in("id", value);
+		List<Dictionary> results = repository.find(settings);
+		assertTrue(results.isEmpty());
+	}
+
 	@SuppressWarnings("unchecked")
-	@Test(expected = QueryException.class)
+	@Test
 	public void testInEmpty() {
 		settings.in("id", Collections.EMPTY_LIST);
 		List<Dictionary> results = repository.find(settings);
@@ -357,8 +367,16 @@ public class QuerySettingsTest {
 		assertTrue(results.contains(undergraduate));
 	}
 
+	@Test
+	public void testNotInNull() {
+		Collection<Object> value = null;
+		settings.notIn("id", value);
+		List<Dictionary> results = repository.find(settings);
+		assertFalse(results.isEmpty());
+	}
+
 	@SuppressWarnings("unchecked")
-	@Test(expected = QueryException.class)
+	@Test
 	public void testNotInEmpty() {
 		settings.notIn("id", Collections.EMPTY_LIST);
 		List<Dictionary> results = repository.find(settings);
