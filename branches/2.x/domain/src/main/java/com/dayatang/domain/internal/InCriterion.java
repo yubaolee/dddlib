@@ -32,9 +32,6 @@ public class InCriterion implements QueryCriterion {
 		if (StringUtils.isEmpty(propName)) {
 			throw new QueryException("Property name is null!");
 		}
-		if (value == null || value.length == 0) {
-			throw new QueryException("Value array is null or empty!");
-		}
 		this.propName = propName;
 		this.value = Arrays.asList(value);
 	}
