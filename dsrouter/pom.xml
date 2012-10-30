@@ -78,25 +78,8 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>none</exclude>
-					</excludes>
-					<includes>
-						<include>none</include>
-					</includes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<properties>
 		<maven.test.skip>true</maven.test.skip>
-
 		<rep.jdbc.driverClassName>org.beyond.gemini.mysql.jdbc.GeminiReplicationDriver</rep.jdbc.driverClassName>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
 		<jdbc.groupId>mysql</jdbc.groupId>
@@ -109,7 +92,7 @@
 		<!-- <jdbc.url><![CDATA[jdbc:mysql://localhost,127.0.0.1/test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url> -->
 		<pool1.jdbc.url><![CDATA[jdbc:mysql://localhost/test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></pool1.jdbc.url>
 		<pool2.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1/testdb?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></pool2.jdbc.url>
-		<jdbc.username>root</jdbc.username>
-		<jdbc.password>1234</jdbc.password>
+		<jdbc.username>${mysql.username}</jdbc.username>
+		<jdbc.password>${mysql.password}</jdbc.password>
 	</properties>
 </project>

@@ -11,8 +11,8 @@
 	<bean id="proxoolDefaultDataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property name="driver" value="${jdbc.driverClassName}" />
 		<property name="driverUrl" value="${pool1.jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="user" value="${mysql.username}" />
+		<property name="password" value="${mysql.password}" />
 		<!-- 空闲连接个数 默认为0 -->
 		<property name="prototypeCount" value="5" />
 		<!-- 最大连接个数 默认为15 -->
@@ -29,8 +29,8 @@
 		destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${pool2.jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="user" value="${mysql.username}" />
+		<property name="password" value="${mysql.password}" />
 		<!--连接池中保留的最小连接数。 -->
 		<property name="minPoolSize">
 			<value>5</value>
