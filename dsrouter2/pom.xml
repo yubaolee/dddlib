@@ -102,7 +102,7 @@
 						<inherited>false</inherited>
 						<configuration>
 							<fileset>
-								<basedir>src/test/resources/sql</basedir>
+								<basedir>${basedir}/target/test-classes/sql</basedir>
 							</fileset>
 						</configuration>
 					</execution>
