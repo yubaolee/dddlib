@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 public class ConfigurationDbUtils {
 	
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationDbUtils.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(ConfigurationDbUtils.class);
 	
 	private DataSource dataSource;
 	private String tableName = "SYS_CONFIG";

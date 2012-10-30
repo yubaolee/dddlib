@@ -22,7 +22,7 @@ import java.util.Properties;
  * @author yyang
  */
 public class ConfigurationUrlImpl extends AbstractConfiguration {
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationUrlImpl.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(ConfigurationUrlImpl.class);
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
 	private URL url;
 	private Hashtable<String, String> hTable;	
