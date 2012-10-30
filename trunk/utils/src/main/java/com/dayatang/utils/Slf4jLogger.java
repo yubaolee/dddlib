@@ -17,12 +17,12 @@ public class Slf4jLogger implements com.dayatang.utils.Logger {
 		this.logger = logger;
 	}
 
-	public static Slf4jLogger of(Class<?> clazz) {
+	public static Slf4jLogger getLogger(Class<?> clazz) {
 		Logger logger = LoggerFactory.getLogger(clazz);
 		return new Slf4jLogger(logger);
 	}
 
-	public static Slf4jLogger of(String name) {
+	public static Slf4jLogger getLogger(String name) {
 		Logger logger = LoggerFactory.getLogger(name);
 		return new Slf4jLogger(logger);
 	}

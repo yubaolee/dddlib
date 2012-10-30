@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  */
 public class ConfigurationDbImpl extends AbstractConfiguration implements WritableConfiguration {
 	
-	private static final Slf4jLogger LOGGER = Slf4jLogger.of(ConfigurationDbImpl.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(ConfigurationDbImpl.class);
 	
 	private ConfigurationDbUtils dbUtils;
 	private static final String DEFAULT_TABLE_NAME = "SYS_CONFIG";
