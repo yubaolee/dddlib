@@ -2,10 +2,11 @@ package com.dayatang.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Hashtable;
@@ -27,9 +28,10 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author yyang
  */
-public class ConfigurationFileImpl extends AbstractConfiguration {
+public class ConfigurationFileImpl extends AbstractConfiguration implements WritableConfiguration {
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(ConfigurationFileImpl.class);
 	private PropertiesFileUtils pfu = new PropertiesFileUtils("utf-8");
-	private URL fileUrl;
+	private File file;
 	private Hashtable<String, String> hTable;	
 	/**
 	 * 从类路径读入配置文件
@@ -37,11 +39,11 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 	 * @return
 	 */
 	public static ConfigurationFileImpl fromClasspath(final String fileName) {
+		Assert.notBlank(fileName, String.format("File name %s is empty!", fileName));
 		URL url = ConfigurationFileImpl.class.getResource(fileName);
-		if (url == null) {
-			throw new RuntimeException("File " + fileName + " not found!");
-		}
-		return new ConfigurationFileImpl(url);
+		Assert.notNull(url, String.format("File {} not found!", fileName));
+		File file = new File(url.getFile());
+		return new ConfigurationFileImpl(file);
 	}
 	
 	/**
@@ -50,6 +52,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 	 * @return
 	 */
 	public static ConfigurationFileImpl fromFileSystem(final String pathname) {
+		Assert.notBlank(pathname, String.format("File name %s is empty!", pathname));
 		return fromFileSystem(new File(pathname));
 	}
 	
@@ -60,29 +63,66 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 	 * @return
 	 */
 	public static ConfigurationFileImpl fromFileSystem(final String dirPath, final String fileName) {
-		if (StringUtils.isEmpty(dirPath)) {
-			return fromFileSystem(fileName);
-		}
+		Assert.notBlank(dirPath, String.format("Directory %s is empty!", dirPath));
+		Assert.notBlank(fileName, String.format("File name %s is empty!", fileName));
 		return fromFileSystem(new File(dirPath, fileName));
 	}
 	
-	private static ConfigurationFileImpl fromFileSystem(final File file) {
+	public static ConfigurationFileImpl fromFileSystem(final File file) {
 		if (!file.exists()) {
 			throw new RuntimeException("File " + file.getName() + " not found!");
 		}
 		if (!file.canRead()) {
 			throw new RuntimeException("File " + file.getName() + " is unreadable!");
 		}
-		try {
-			return new ConfigurationFileImpl(file.toURI().toURL());
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
+		return new ConfigurationFileImpl(file);
 	}
 
-	private ConfigurationFileImpl(final URL url) {
-		this.fileUrl = url;
-		refresh();
+	private ConfigurationFileImpl(final File file) {
+		this.file = file;
+		if (!file.exists()) {
+			throw new IllegalArgumentException(String.format("File $s not exists!", file.getAbsolutePath()));
+		}
+		if (!file.canRead()) {
+			throw new IllegalStateException("File " + file.getName() + " is unreadable!");
+		}
+		load();
+	}
+
+	@Override
+	public Hashtable<String, String> getHashtable() {
+		if (hTable == null) {
+			load();
+		}
+		return hTable;
+	}
+
+	@Override
+	public Properties getProperties() {
+		return pfu.unRectifyProperties(getHashtable());
+	}
+
+	@Override
+	public void load() {
+		hTable = new Hashtable<String, String>();
+		Properties props = new Properties();
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			props.load(in);
+			hTable = pfu.rectifyProperties(props);
+			LOGGER.debug("Load configuration from {} at {}", file.getAbsolutePath(), new Date());
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot load config file: " + file, e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Cannot close input stream.", e);
+				}
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -90,12 +130,21 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 	 */
 	@Override
 	public void save() {
+		BufferedWriter out = null;
 		try {
-			File file = new File(fileUrl.getFile());
 			Properties props = pfu.unRectifyProperties(getHashtable());
-			store(props, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1)), "Config file for " + fileUrl);
+			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), PropertiesFileUtils.ISO_8859_1));
+			store(props, out, "Config file for " + file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					throw new RuntimeException("Cannot close input stream.", e);
+				}
+			}
 		}
 	}
 
@@ -115,7 +164,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 			}
 			out.flush();
 		}
-		out.close();
+		LOGGER.debug("Save configuration to {} at {}", file.getAbsolutePath(), new Date());
 	}
 
 	private String convertString(String theString, boolean escapeSpace) {
@@ -175,34 +224,8 @@ public class ConfigurationFileImpl extends AbstractConfiguration {
 		return outBuffer.toString();
 	}
 
-	URL getFileUrl() {
-		return fileUrl;
-	}
-
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "{" + fileUrl + "}";
-	}
-
-	@Override
-	public void refresh() {
-		hTable = new Hashtable<String, String>();
-		Properties props = new Properties();
-		try {
-			if (fileUrl != null) {
-				props.load(fileUrl.openStream());
-				hTable = pfu.rectifyProperties(props);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot load config file: " + fileUrl, e);
-		}
-	}
-
-	@Override
-	public Hashtable<String, String> getHashtable() {
-		if (hTable == null) {
-			refresh();
-		}
-		return hTable;
+		return getClass().getSimpleName() + "{" + file + "}";
 	}
 }
