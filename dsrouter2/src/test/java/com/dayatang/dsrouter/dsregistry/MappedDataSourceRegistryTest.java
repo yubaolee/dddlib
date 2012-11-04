@@ -20,14 +20,18 @@ public class MappedDataSourceRegistryTest {
 	private MappedDataSourceRegistry instance;
 	private DataSourceCreator dataSourceCreator;
 	private DataSource dataSource;
+	private DataSource dataSource2;
 	private String tenant = "abc";
+	private String tenant2 = "xyz";
 
 	@Before
 	public void setUp() throws Exception {
 		dataSourceCreator = mock(DataSourceCreator.class);
 		instance = new MappedDataSourceRegistry(dataSourceCreator);
 		dataSource = mock(DataSource.class);
+		dataSource2 = mock(DataSource.class);
 		when(dataSourceCreator.createDataSourceForTenant(tenant)).thenReturn(dataSource);
+		when(dataSourceCreator.createDataSourceForTenant(tenant2)).thenReturn(dataSource2);
 		instance.releaseAllDataSources();
 	}
 
@@ -40,10 +44,15 @@ public class MappedDataSourceRegistryTest {
 	public void getDataSourceOfTenant() {
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator).createDataSourceForTenant(tenant);
+		assertSame(dataSource2, instance.getDataSourceOfTenant(tenant2));
+		verify(dataSourceCreator).createDataSourceForTenant(tenant2);
 		reset(dataSourceCreator);
 		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
 		verify(dataSourceCreator, never()).createDataSourceForTenant(tenant);
-		assertEquals(1, instance.size());
+		assertSame(dataSource2, instance.getDataSourceOfTenant(tenant2));
+		verify(dataSourceCreator, never()).createDataSourceForTenant(tenant2);
+		assertSame(dataSource, instance.getDataSourceOfTenant(tenant));
+		assertEquals(2, instance.size());
 		instance.releaseAllDataSources();
 		assertEquals(0, instance.size());
 	}
