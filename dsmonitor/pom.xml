@@ -71,6 +71,11 @@
 			<version>${jdbc.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<properties>
 		<quartz.version>1.6.1</quartz.version>
