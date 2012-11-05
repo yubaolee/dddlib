@@ -3,6 +3,7 @@ package com.dayatang.mysql.jdbc;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Enumeration;
 
 public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriver implements java.sql.Driver {
@@ -38,6 +39,12 @@ public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriv
 	 */
 	public GeminiReplicationDriver() throws SQLException {
 		// Required for Class.forName().newInstance()
+	}
+
+	//For JDK 7 compatability
+	public java.util.logging.Logger getParentLogger()
+			throws SQLFeatureNotSupportedException {
+		return null;
 	}
 
 }
