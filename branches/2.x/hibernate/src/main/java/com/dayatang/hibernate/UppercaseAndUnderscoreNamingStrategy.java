@@ -1,8 +1,8 @@
 package com.dayatang.hibernate;
 
-import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.util.StringHelper;
 import org.hibernate.AssertionFailure;
+import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.internal.util.StringHelper;
 
 /**
  * Hibernate映射命名策略类。将表名和列名设定为大写字母形式，如果表名或列名由多个单词组成，单词之间用下划线隔开。
