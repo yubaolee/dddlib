@@ -43,8 +43,13 @@ public abstract class AbstractEntityRepository implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		getSession().saveOrUpdate(entity);
-		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+		if (entity.isNew()) {
+			getSession().save(entity);
+			LOGGER.info("create a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+			return entity;
+		}
+		getSession().update(entity);
+		LOGGER.info("update a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return entity;
 	}
 

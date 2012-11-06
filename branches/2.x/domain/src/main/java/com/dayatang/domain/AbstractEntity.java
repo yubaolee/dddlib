@@ -81,8 +81,9 @@ public abstract class AbstractEntity implements Entity {
 		this.version = version;
 	}
 
+	@Override
 	public boolean isNew() {
-		return getId() == null;
+		return id == null || id.intValue() == 0;
 	}
 
 	
