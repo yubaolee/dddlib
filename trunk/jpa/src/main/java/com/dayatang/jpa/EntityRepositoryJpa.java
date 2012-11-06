@@ -43,24 +43,14 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 */
 	@Override
 	public <T extends Entity> T save(T entity) {
-		if (isNew(entity)) {
+		if (entity.isNew()) {
 			getEntityManager().persist(entity);
+			LOGGER.info("create a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 			return entity;
 		}
 		T result = getEntityManager().merge(entity);
-		LOGGER.info("save a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+		LOGGER.info("update a entity: " + entity.getClass() + "/" + entity.getId() + ".");
 		return result;
-	}
-	
-	private boolean isNew(Entity entity) {
-		Serializable id = entity.getId();
-		if (id == null) {
-			return true;
-		}
-		if (id instanceof Number) {
-			return ((Number) id).longValue() == 0;
-		}
-		return false;
 	}
 
 	/*
