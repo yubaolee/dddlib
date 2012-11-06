@@ -15,4 +15,10 @@ public interface Entity extends Serializable {
 	 * @return 实体实例的 Id.
 	 */
 	Serializable getId();
+	
+	/**
+	 * 是否新建实体（未持久化到数据库）
+	 * @return
+	 */
+	boolean isNew();
 }
