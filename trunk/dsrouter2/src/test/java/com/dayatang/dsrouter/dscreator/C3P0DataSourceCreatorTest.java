@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.configuration.Configuration;
-import com.dayatang.configuration.ConfigurationFileImpl;
+import com.dayatang.configuration.ConfigurationFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
@@ -21,7 +21,7 @@ public class C3P0DataSourceCreatorTest {
 
 	private AbstractDataSourceCreator instance;
 	private JdbcUrlTranslator urlTranslator; 
-	private Configuration configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+	private Configuration configuration = new ConfigurationFactory().fromClasspath(Constants.DB_CONF_FILE);
 	private ComboPooledDataSource dataSource;
 	
 	@Before

@@ -13,6 +13,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dayatang.configuration.impl.ConfigurationDbImpl;
+import com.dayatang.configuration.impl.ConfigurationFileImpl;
+import com.dayatang.configuration.impl.ConfigurationUrlImpl;
+
 public class ConfigurationFactoryTest {
 
 	private ConfigurationFactory instance;

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
-import com.dayatang.configuration.ConfigurationFileImpl;
+import com.dayatang.configuration.ConfigurationFactory;
 import com.dayatang.configuration.WritableConfiguration;
 
 public class SchemaBasedMappingStrategyTest {
@@ -22,7 +22,7 @@ public class SchemaBasedMappingStrategyTest {
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_MAPPING_FILE);
+		configuration = new ConfigurationFactory().fromClasspath(Constants.DB_MAPPING_FILE);
 		configuration.setString(tenant, "yyang");
 		instance = new SchemaBasedMappingStrategy(configuration);
 		properties.put(Constants.JDBC_HOST, "host");
