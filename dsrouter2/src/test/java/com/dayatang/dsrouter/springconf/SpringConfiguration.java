@@ -16,8 +16,7 @@ import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantService;
 import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
 import com.dayatang.dsrouter.urltranslator.MySqlUrlTranslator;
 import com.dayatang.configuration.Configuration;
-import com.dayatang.configuration.ConfigurationFileImpl;
-import com.dayatang.configuration.ConfigurationUrlImpl;
+import com.dayatang.configuration.ConfigurationFactory;
 
 @org.springframework.context.annotation.Configuration
 public class SpringConfiguration {
@@ -53,13 +52,18 @@ public class SpringConfiguration {
 	}
 
 	@Bean
+	public ConfigurationFactory configurationFactory() {
+		return new ConfigurationFactory();
+	}
+	
+	@Bean
 	public com.dayatang.configuration.Configuration mappingConfiguration() {
-		return ConfigurationUrlImpl.fromUrl("http://www.dayatang.com/tenant-db-mapping.properties");
+		return configurationFactory().fromUrl("http://www.dayatang.com/tenant-db-mapping.properties");
 	}
 
 	@Bean
 	public Configuration dsConfiguration() {
-		return ConfigurationFileImpl.fromClasspath("/ds-config.properties");
+		return configurationFactory().fromClasspath("/ds-config.properties");
 	}
 
 }

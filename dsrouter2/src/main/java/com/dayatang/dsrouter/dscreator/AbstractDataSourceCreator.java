@@ -12,7 +12,7 @@ import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.DataSourceCreationException;
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
 import com.dayatang.configuration.Configuration;
-import com.dayatang.configuration.ConfigurationFileImpl;
+import com.dayatang.configuration.ConfigurationFactory;
 import com.dayatang.utils.Slf4jLogger;
 
 public abstract class AbstractDataSourceCreator implements DataSourceCreator {
@@ -25,7 +25,7 @@ public abstract class AbstractDataSourceCreator implements DataSourceCreator {
 
 	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator) {
 		this.urlTranslator = urlTranslator;
-		this.configuration = ConfigurationFileImpl.fromClasspath(Constants.DB_CONF_FILE);
+		this.configuration = new ConfigurationFactory().fromClasspath(Constants.DB_CONF_FILE);
 	}
 
 	public AbstractDataSourceCreator(JdbcUrlTranslator urlTranslator, Configuration configuration) {
