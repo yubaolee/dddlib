@@ -1,9 +1,11 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.util.Date;
 import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.dayatang.utils.Assert;
 
 public abstract class AbstractConfiguration implements Configuration {
 	private String prefix = "";
@@ -20,7 +22,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String, java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getString(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public String getString(String key, String defaultValue) {
@@ -33,7 +35,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getString(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getString(java.lang.String)
 	 */
 	@Override
 	public String getString(String key) {
@@ -41,7 +43,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setString(java.lang.String, java.lang.String)
+	 * @see com.dayatang.configuration.WritableConfiguration#setString(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void setString(String key, String value) {
@@ -54,7 +56,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String, int)
+	 * @see com.dayatang.configuration.Configuration#getInt(java.lang.String, int)
 	 */
 	@Override
 	public int getInt(String key, int defaultValue) {
@@ -63,7 +65,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getInt(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getInt(java.lang.String)
 	 */
 	@Override
 	public int getInt(String key) {
@@ -71,7 +73,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setInt(java.lang.String, int)
+	 * @see com.dayatang.configuration.WritableConfiguration#setInt(java.lang.String, int)
 	 */
 	@Override
 	public void setInt(String key, int value) {
@@ -79,7 +81,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String, long)
+	 * @see com.dayatang.configuration.Configuration#getLong(java.lang.String, long)
 	 */
 	@Override
 	public long getLong(String key, long defaultValue) {
@@ -88,7 +90,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getLong(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getLong(java.lang.String)
 	 */
 	@Override
 	public long getLong(String key) {
@@ -96,7 +98,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setLong(java.lang.String, long)
+	 * @see com.dayatang.configuration.WritableConfiguration#setLong(java.lang.String, long)
 	 */
 	@Override
 	public void setLong(String key, long value) {
@@ -104,7 +106,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String, double)
+	 * @see com.dayatang.configuration.Configuration#getDouble(java.lang.String, double)
 	 */
 	@Override
 	public double getDouble(String key, double defaultValue) {
@@ -113,7 +115,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDouble(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getDouble(java.lang.String)
 	 */
 	@Override
 	public double getDouble(String key) {
@@ -121,7 +123,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDouble(java.lang.String, double)
+	 * @see com.dayatang.configuration.WritableConfiguration#setDouble(java.lang.String, double)
 	 */
 	@Override
 	public void setDouble(String key, double value) {
@@ -129,7 +131,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String, boolean)
+	 * @see com.dayatang.configuration.Configuration#getBoolean(java.lang.String, boolean)
 	 */
 	@Override
 	public boolean getBoolean(String key, boolean defaultValue) {
@@ -138,7 +140,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getBoolean(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getBoolean(java.lang.String)
 	 */
 	@Override
 	public boolean getBoolean(String key) {
@@ -146,7 +148,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setBoolean(java.lang.String, boolean)
+	 * @see com.dayatang.configuration.WritableConfiguration#setBoolean(java.lang.String, boolean)
 	 */
 	@Override
 	public void setBoolean(String key, boolean value) {
@@ -154,7 +156,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String, java.util.Date)
+	 * @see com.dayatang.configuration.Configuration#getDate(java.lang.String, java.util.Date)
 	 */
 	@Override
 	public Date getDate(String key, Date defaultValue) {
@@ -163,7 +165,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.Configuration#getDate(java.lang.String)
+	 * @see com.dayatang.configuration.Configuration#getDate(java.lang.String)
 	 */
 	@Override
 	public Date getDate(String key) {
@@ -171,7 +173,7 @@ public abstract class AbstractConfiguration implements Configuration {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#setDate(java.lang.String, java.util.Date)
+	 * @see com.dayatang.configuration.WritableConfiguration#setDate(java.lang.String, java.util.Date)
 	 */
 	@Override
 	public void setDate(String key, Date value) {

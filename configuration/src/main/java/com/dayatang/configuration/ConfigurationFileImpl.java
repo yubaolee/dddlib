@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +13,9 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.dayatang.utils.Assert;
+import com.dayatang.utils.Slf4jLogger;
 
 /**
  * <P>ConfigurationFileImpl为读取/回写配置文件的工具类，一个实例大概对应了一个物理配置文件，可以使用
@@ -126,7 +129,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#save()
+	 * @see com.dayatang.configuration.WritableConfiguration#save()
 	 */
 	@Override
 	public void save() {

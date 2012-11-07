@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dayatang.utils.DateUtils;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class ConfigurationDbImplTest {

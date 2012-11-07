@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.util.Date;
 import java.util.Properties;

@@ -1,8 +1,6 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import static org.junit.Assert.*;
-
-import java.io.File;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -10,42 +8,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dayatang.configuration.ConfigurationUrlImpl;
 import com.dayatang.utils.DateUtils;
 
-public class ConfigurationFileImplTest {
+public class ConfigurationUrlImplTest {
 
-	private ConfigurationFileImpl instance;
+	private ConfigurationUrlImpl instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
+		instance = ConfigurationUrlImpl.fromUrl("http://www.dayatang.com/conf.properties");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testFromClasspath() {
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
-		assertTrue(instance.getHashtable().size() > 0);
-	}
-
-	@Test
-	public void testFromPathname() {
-		String pathname = getClass().getResource("/conf.properties").getFile();
-		instance = ConfigurationFileImpl.fromFileSystem(pathname);
-		assertTrue(instance.getHashtable().size() > 0);
-	}
-
-	@Test
-	public void testFromDirAndFile() {
-		String pathname = getClass().getResource("/conf.properties").getFile();
-		File file = new File(pathname);
-		String dir = file.getParent();
-		String fileName = file.getName();
-		instance = ConfigurationFileImpl.fromFileSystem(dir, fileName);
-		assertTrue(instance.getHashtable().size() > 0);
 	}
 
 	@Test
@@ -167,13 +143,6 @@ public class ConfigurationFileImplTest {
 		assertEquals(newDate, instance.getDate("birthday"));
 	}
 
-	@Test
-	public void testSave() {
-		instance.setString("xyz", "yyyy-MM-dd");
-		instance.save();
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
-		assertEquals("yyyy-MM-dd", instance.getString("xyz"));
-	}
 
 	@Test
 	public void testGetProperties() {

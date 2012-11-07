@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
-import com.dayatang.utils.Configuration;
-import com.dayatang.utils.ConfigurationFileImpl;
+import com.dayatang.configuration.Configuration;
+import com.dayatang.configuration.ConfigurationFileImpl;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
