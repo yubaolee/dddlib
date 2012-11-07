@@ -5,7 +5,7 @@ import java.util.Properties;
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
 import com.dayatang.utils.Assert;
-import com.dayatang.utils.Configuration;
+import com.dayatang.configuration.Configuration;
 
 /**
  * 租户数据库映射策略。

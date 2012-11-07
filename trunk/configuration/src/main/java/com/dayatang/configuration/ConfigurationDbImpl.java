@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.util.Date;
 import java.util.Hashtable;
@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
+
+import com.dayatang.utils.Slf4jLogger;
 
 /**
  * <P>ConfigurationDbImpl为读取/回写配置信息的工具类，并将配置信息写入数据库， 具体配置大致采用
@@ -68,7 +70,7 @@ public class ConfigurationDbImpl extends AbstractConfiguration implements Writab
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#save()
+	 * @see com.dayatang.configuration.WritableConfiguration#save()
 	 */
 	@Override
 	public void save() {

@@ -1,6 +1,6 @@
 package com.dayatang.spring.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -9,10 +9,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.dayatang.commons.ioc.AbstractInstanceProviderTest;
 import com.dayatang.commons.ioc.MyService1;
 import com.dayatang.commons.ioc.Service;
+import com.dayatang.configuration.Configuration;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.InstanceProvider;
-import com.dayatang.spring.factory.SpringProvider;
-import com.dayatang.utils.Configuration;
 
 public class SpringProviderTest extends AbstractInstanceProviderTest {
 	

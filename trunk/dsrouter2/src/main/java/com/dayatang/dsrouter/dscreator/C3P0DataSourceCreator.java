@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.DataSourceCreationException;
-import com.dayatang.utils.Configuration;
+import com.dayatang.configuration.Configuration;
 import com.dayatang.utils.Slf4jLogger;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 

@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Properties;
+
+import com.dayatang.utils.Slf4jLogger;
 
 /**
  * <P>ConfigurationUrlImpl为读取远程配置文件的工具类，一个实例大概对应了一个远程配置文件，具体配置大致采用

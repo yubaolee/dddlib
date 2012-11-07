@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
-import com.dayatang.utils.Configuration;
-import com.dayatang.utils.ConfigurationFileImpl;
+import com.dayatang.configuration.Configuration;
+import com.dayatang.configuration.ConfigurationFileImpl;
 
 public class DbNameBasedMappingStrategyTest {
 	

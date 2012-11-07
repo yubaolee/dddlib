@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Hashtable;

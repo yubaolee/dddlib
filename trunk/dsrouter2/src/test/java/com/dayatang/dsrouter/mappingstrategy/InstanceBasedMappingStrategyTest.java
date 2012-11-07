@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.Constants;
-import com.dayatang.utils.ConfigurationFileImpl;
-import com.dayatang.utils.WritableConfiguration;
+import com.dayatang.configuration.ConfigurationFileImpl;
+import com.dayatang.configuration.WritableConfiguration;
 
 public class InstanceBasedMappingStrategyTest {
 	

@@ -1,4 +1,4 @@
-package com.dayatang.utils;
+package com.dayatang.configuration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,8 @@ import java.util.Hashtable;
 import java.util.Set;
 
 import javax.sql.DataSource;
+
+import com.dayatang.utils.Slf4jLogger;
 
 public class ConfigurationDbUtils {
 	
@@ -31,7 +33,7 @@ public class ConfigurationDbUtils {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.dayatang.utils.WritableConfiguration#save()
+	 * @see com.dayatang.configuration.WritableConfiguration#save()
 	 */
 	public void save(Hashtable<String, String> hTable) {
 		createTableIfNotExists();

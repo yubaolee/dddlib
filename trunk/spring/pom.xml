@@ -59,6 +59,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.dayatang.commons</groupId>
+			<artifactId>dayatang-commons-configuration</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>dayatang-commons-test</artifactId>
 			<version>${project.parent.version}</version>

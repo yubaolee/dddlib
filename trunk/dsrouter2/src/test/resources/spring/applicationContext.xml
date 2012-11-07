@@ -28,11 +28,11 @@
 	    <constructor-arg ref="mappingConfiguration"/>
 	</bean>
 	
-	<bean id="mappingConfiguration" class="com.dayatang.utils.ConfigurationUrlImpl" factory-method="fromUrl">
+	<bean id="mappingConfiguration" class="com.dayatang.configuration.ConfigurationUrlImpl" factory-method="fromUrl">
 	    <constructor-arg value="http://www.dayatang.com/tenant-db-mapping.properties"/>
 	</bean>
 		
-	<bean id="dsConfiguration" class="com.dayatang.utils.ConfigurationFileImpl" factory-method="fromClasspath">
+	<bean id="dsConfiguration" class="com.dayatang.configuration.ConfigurationFileImpl" factory-method="fromClasspath">
 	    <constructor-arg value="/ds-config.properties"/>
 	</bean>
 </beans>

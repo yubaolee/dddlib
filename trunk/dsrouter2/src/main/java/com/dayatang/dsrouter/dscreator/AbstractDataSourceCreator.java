@@ -11,8 +11,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import com.dayatang.dsrouter.Constants;
 import com.dayatang.dsrouter.DataSourceCreationException;
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
-import com.dayatang.utils.Configuration;
-import com.dayatang.utils.ConfigurationFileImpl;
+import com.dayatang.configuration.Configuration;
+import com.dayatang.configuration.ConfigurationFileImpl;
 import com.dayatang.utils.Slf4jLogger;
 
 public abstract class AbstractDataSourceCreator implements DataSourceCreator {

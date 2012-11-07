@@ -2,7 +2,7 @@ package com.dayatang.dsrouter.mappingstrategy;
 
 import java.util.Properties;
 
-import com.dayatang.utils.Configuration;
+import com.dayatang.configuration.Configuration;
 
 public class PortBasedMappingStrategy extends AbstractDbMappingStrategy {
 
