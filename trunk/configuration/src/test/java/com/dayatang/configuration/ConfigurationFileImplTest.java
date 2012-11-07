@@ -50,6 +50,14 @@ public class ConfigurationFileImplTest {
 	}
 
 	@Test
+	public void testFromFile() {
+		String pathname = getClass().getResource("/conf.properties").getFile();
+		File file = new File(pathname);
+		instance = ConfigurationFileImpl.fromFileSystem(file);
+		assertTrue(instance.getHashtable().size() > 0);
+	}
+
+	@Test
 	public void testUsePrefix() {
 		instance.usePrefix("org.dayatang");
 		assertTrue(instance.getBoolean("finished"));
