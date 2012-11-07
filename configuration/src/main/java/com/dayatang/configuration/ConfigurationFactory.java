@@ -36,7 +36,7 @@ public class ConfigurationFactory {
 		return ConfigurationFileImpl.fromFileSystem(dirPath, fileName);
 	}
 
-	public WritableConfiguration fromClasspath(File file) {
+	public WritableConfiguration fromFileSystem(File file) {
 		return ConfigurationFileImpl.fromFileSystem(file);
 	}
 
