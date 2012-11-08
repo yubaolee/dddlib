@@ -6,7 +6,6 @@ package com.dayatang.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.validation.ValidationException;
 
@@ -16,7 +15,6 @@ import javax.validation.ValidationException;
  * @author yang
  * 
  */
-@MappedSuperclass
 public abstract class AggregateRootEntity extends AbstractEntity {
 
 	private static final long serialVersionUID = 2364892694478974374L;
