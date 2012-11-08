@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Transient;
-import javax.validation.ValidationException;
 
 /**
  * 聚合的根实体。聚合中的其他实体和值对象，只能通过根实体访问和持久化
@@ -35,8 +34,7 @@ public abstract class AggregateRootEntity extends AbstractEntity {
 		AggregateRootEntity.repository = repository;
 	}
 
-	public void save() throws ValidationException {
-		validate();
+	public void save() {
 		getRepository().save(this);
 	}
 

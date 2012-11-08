@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.validation.ValidationException;
 
 /**
  * 基于JPA的聚合根实体
@@ -33,7 +32,7 @@ public abstract class JpaAggregateRootEntity extends AbstractEntity {
 		JpaAggregateRootEntity.entityManagerFactory = entityManagerFactory;
 	}
 
-	public void save() throws ValidationException {
+	public void save() {
 		getEntityManager().merge(this);
 	}
 
