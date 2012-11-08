@@ -134,4 +134,12 @@ public class InstanceFactory {
 	private static String toName(String className, String beanName) {
 		return className + ":" + beanName;
 	}
+	
+	/**
+	 * 判断是否已经初始化，也就是设置了InstanceProvider
+	 * @return
+	 */
+	public static boolean isInitialized() {
+		return instanceProvider != null;
+	}
 }
