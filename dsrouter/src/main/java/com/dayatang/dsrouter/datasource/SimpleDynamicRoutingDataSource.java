@@ -93,7 +93,8 @@ public class SimpleDynamicRoutingDataSource extends AbstractDataSource {
 	}
 
 	//For JDK 7 compatability
-	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public java.util.logging.Logger getParentLogger()
+			throws SQLFeatureNotSupportedException {
 		return null;
 	}
 

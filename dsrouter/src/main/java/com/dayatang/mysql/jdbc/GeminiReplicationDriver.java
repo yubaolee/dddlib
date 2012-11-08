@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Enumeration;
-import java.util.logging.Logger;
 
 public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriver implements java.sql.Driver {
 	// ~ Static fields/initializers
@@ -43,7 +42,8 @@ public class GeminiReplicationDriver extends GeminiNonRegisteringReplicationDriv
 	}
 
 	//For JDK 7 compatability
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public java.util.logging.Logger getParentLogger()
+			throws SQLFeatureNotSupportedException {
 		return null;
 	}
 

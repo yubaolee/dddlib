@@ -1,9 +1,10 @@
 package com.dayatang.spring.hibernate;
 
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.hibernate.AbstractEntityRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import com.dayatang.domain.InstanceFactory;
+import com.dayatang.hibernate.AbstractEntityRepository;
 
 public class EntityRepositoryHibernate extends AbstractEntityRepository {
 

@@ -24,5 +24,4 @@ public class ExcelReaderTemplate {
 	public <T> T execute(ExcelReaderCallback<T> callback) {
 		return callback.doInPoi(workbook);
 	}
-
 }

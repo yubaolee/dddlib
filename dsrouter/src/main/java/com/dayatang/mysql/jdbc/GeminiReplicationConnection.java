@@ -2,7 +2,6 @@ package com.dayatang.mysql.jdbc;
 
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.concurrent.Executor;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -56,29 +55,6 @@ public class GeminiReplicationConnection extends ReplicationConnection {
 		}
 
 		this.currentConnection = this.masterConnection;
-	}
-
-	//For JDK 7 compatability
-	public void setSchema(String schema) throws SQLException {
-	}
-
-	//For JDK 7 compatability
-	public String getSchema() throws SQLException {
-		return null;
-	}
-
-	//For JDK 7 compatability
-	public void abort(Executor executor) throws SQLException {
-	}
-
-	//For JDK 7 compatability
-	public void setNetworkTimeout(Executor executor, int milliseconds)
-			throws SQLException {
-	}
-
-	//For JDK 7 compatability
-	public int getNetworkTimeout() throws SQLException {
-		return 0;
 	}
 
 	private void info(String message, Object... params) {

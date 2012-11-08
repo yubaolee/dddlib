@@ -3,9 +3,7 @@
  */
 package com.dayatang.hibernate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,9 +22,8 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryCriterion;
@@ -41,10 +38,10 @@ public class QuerySettingsTest {
 	private static SessionFactory sessionFactory;
 	
 	private Session session;
-	
-	Transaction tx;
 
-	private EntityRepositoryHibernate repository;
+	private Transaction tx;
+
+	private static EntityRepositoryHibernate repository;
 	
 	private QuerySettings<Dictionary> settings;
 
@@ -60,28 +57,23 @@ public class QuerySettingsTest {
 
 	private Dictionary undergraduate;
 
-
 	@BeforeClass
-	public static void classSetUp() throws Exception {
-		BtmUtils.setupDataSource();
+	public static void setUpClass() throws Exception {
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
 	
 	@AfterClass
-	public static void classTearDown() throws Exception {
+	public static void tearDownClass() {
 		sessionFactory.close();
-		BtmUtils.closeDataSource();
 	}
-	
 	
 	@Before
 	public void setUp() {
-		session = sessionFactory.openSession();
+		session = sessionFactory.getCurrentSession();
 		InstanceFactory.bind(Session.class, session);
-		
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
@@ -94,10 +86,10 @@ public class QuerySettingsTest {
 	@After
 	public void tearDown() {
 		tx.rollback();
-		if (session != null && session.isOpen()) {
+		if (session.isOpen()) {
 			session.close();
 		}
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test
@@ -237,7 +229,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeGe() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeGe("dictionaries", 3);
+		settings.sizeGe("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertTrue(results.contains(gender));
 		assertFalse(results.contains(education));
@@ -246,7 +238,7 @@ public class QuerySettingsTest {
 	@Test
 	public void testSizeLt() {
 		QuerySettings<DictionaryCategory> settings = QuerySettings.create(DictionaryCategory.class);
-		settings.sizeLt("dictionaries", 3);
+		settings.sizeLt("dictionaries", 2);
 		List<DictionaryCategory> results = repository.find(settings);
 		assertFalse(results.contains(gender));
 		assertTrue(results.contains(education));
@@ -298,7 +290,7 @@ public class QuerySettingsTest {
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(undergraduate));
 		
-		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "���");
+		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "科");
 		results = repository.find(settings);
 		assertFalse(results.contains(undergraduate));
 	}

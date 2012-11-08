@@ -1,14 +1,9 @@
 package com.dayatang.hibernate;
 
-import com.dayatang.domain.DataPage;
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.ExampleSettings;
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.hibernate.internal.QueryTranslator;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,6 +11,13 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.dayatang.domain.DataPage;
+import com.dayatang.domain.Entity;
+import com.dayatang.domain.EntityRepository;
+import com.dayatang.domain.ExampleSettings;
+import com.dayatang.domain.QuerySettings;
+import com.dayatang.hibernate.internal.QueryTranslator;
 
 /**
  * 通用仓储接口的Hibernate实现。
@@ -26,7 +28,10 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("unchecked")
 public abstract class AbstractEntityRepository implements EntityRepository {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryHibernate.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEntityRepository.class);
+
+	public AbstractEntityRepository() {
+	}
 
 	protected abstract Session getSession();
 

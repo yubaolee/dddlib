@@ -1,15 +1,10 @@
 package com.dayatang.cache;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * 缓存接口
  * 
- * @author chencao
- * 
- */
-/**
  * @author chencao
  * 
  */
@@ -22,15 +17,6 @@ public interface Cache {
 	 * @return 缓存中的对象
 	 */
 	public Object get(String key);
-
-	/**
-	 * 根据指定key集合，从缓存中获取对象Map
-	 * 
-	 * @param keys
-	 *            对象的key集合
-	 * @return 缓存中的对象Map
-	 */
-	public Map<String, Object> get(String... keys);
 
 	/**
 	 * 把对象以key的形式放入缓存（同名key覆盖）

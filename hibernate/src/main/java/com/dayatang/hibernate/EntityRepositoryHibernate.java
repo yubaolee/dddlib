@@ -3,7 +3,7 @@ package com.dayatang.hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.dayatang.IocException;
+import com.dayatang.IocInstanceNotFoundException;
 import com.dayatang.domain.InstanceFactory;
 
 /**
@@ -21,7 +21,7 @@ public class EntityRepositoryHibernate extends AbstractEntityRepository {
 	protected Session getSession() {
 		try {
 			return InstanceFactory.getInstance(Session.class);
-		} catch (IocException e) {
+		} catch (IocInstanceNotFoundException e) {
 			SessionFactory sessionFactory = InstanceFactory.getInstance(SessionFactory.class);
 			return sessionFactory.getCurrentSession();
 		}

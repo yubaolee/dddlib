@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.2-SNAPSHOT</version>
+		<version>2.12</version>
 	</parent>
 	<artifactId>dayatang-commons-dsrouter</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description>Datasource Router classes for spring</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/dsrouter/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/dsrouter/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.12/dsrouter</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-2.12/dsrouter</developerConnection>
 	</scm>
 
 	<dependencies>
@@ -70,21 +70,32 @@
 			<version>${project.parent.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>none</exclude>
+					</excludes>
+					<includes>
+						<include>none</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<properties>
 		<maven.test.skip>true</maven.test.skip>
+
 		<rep.jdbc.driverClassName>org.beyond.gemini.mysql.jdbc.GeminiReplicationDriver</rep.jdbc.driverClassName>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
 		<jdbc.groupId>mysql</jdbc.groupId>
 		<jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
-		<jdbc.version>5.1.21</jdbc.version>
+		<jdbc.version>5.1.15</jdbc.version>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
 		<database-url-prefix><![CDATA[jdbc:mysql://localhost,127.0.0.1/]]></database-url-prefix>
 		<database-name><![CDATA[test]]></database-name>

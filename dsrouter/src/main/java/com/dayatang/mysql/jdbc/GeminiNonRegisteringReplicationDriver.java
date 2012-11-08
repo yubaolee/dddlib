@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.mysql.jdbc.NonRegisteringDriver;
 
@@ -92,7 +91,8 @@ public class GeminiNonRegisteringReplicationDriver extends NonRegisteringDriver 
 	}
 
 	//For JDK 7 compatability
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public java.util.logging.Logger getParentLogger()
+			throws SQLFeatureNotSupportedException {
 		return null;
 	}
 }

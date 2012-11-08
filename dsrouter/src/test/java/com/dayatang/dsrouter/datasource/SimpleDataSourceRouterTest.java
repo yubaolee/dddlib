@@ -82,7 +82,6 @@ public class SimpleDataSourceRouterTest extends PureSpringTestCase {
 		System.err.println(connection.getCatalog());
 
 		ResultSet rs = connection.createStatement().executeQuery("select 1=1");
-		rs.close();
 		// rs.next();
 		// System.err.println(rs.getString(1));
 	}

@@ -1,14 +1,12 @@
 package com.dayatang.spring.factory;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.dayatang.commons.ioc.MyService1;
 import com.dayatang.commons.ioc.MyService2;
 import com.dayatang.commons.ioc.MyService3;
 import com.dayatang.commons.ioc.Service;
 
-@Configuration
 public class SpringConfiguration {
 	
 	@Bean(name = "service1")
