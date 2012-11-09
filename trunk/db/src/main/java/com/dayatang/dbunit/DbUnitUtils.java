@@ -1,6 +1,7 @@
 package com.dayatang.dbunit;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.dbunit.database.DatabaseConnection;
@@ -31,36 +33,16 @@ import com.dayatang.JdbcConstants;
 
 
 /**
- * 功能描述:使用dbunit作单元测试,用于生成dataSet文件
- * 
- * <p>
- * 有三种生成方式:部分提取、全部提取和关联.
- * 
- * <p>
- * 运行main方法,即可全部提取到dataSet文件.
- * 
- * @author <a href="malto:chencao0524@gmail.com">陈操</a> Created on 2007-9-29
- * 
- * @version $LastChangedRevision$ $LastChangedBy$ $LastChangedDate$
- * 
+ * DBUnit实用工具类。用于的在数据库和XML数据文件之间的相互输入输出。
+ * @author yyang
+ *
  */
 public class DbUnitUtils {
 	
-	private static final String JDBC_PROP_FILE = "jdbc.properties";
-	private IDatabaseConnection connection;
 	private Properties jdbcProperties;
 	
-	public DbUnitUtils() {
-		this(JDBC_PROP_FILE);
-	}
-	
-	public DbUnitUtils(String jdbcFileInClasspath) {
-		this(readPropertiesFromClasspath(jdbcFileInClasspath));
-	}
-	
-	public DbUnitUtils(Properties jdbcProperties) {
-		this.jdbcProperties = jdbcProperties;
-		connection = createConnection();
+	public static DbUnitUtils configFromClasspath(String resourceFile) {
+		return new DbUnitUtils(readPropertiesFromClasspath(resourceFile));
 	}
 
 	private static Properties readPropertiesFromClasspath(String jdbcFileInClasspath) {
@@ -73,6 +55,24 @@ public class DbUnitUtils {
 		return properties;
 	}
 	
+	public static DbUnitUtils configFromFile(String configFile) {
+		return new DbUnitUtils(readPropertiesFromFile(configFile));
+	}
+
+	private static Properties readPropertiesFromFile(String configFile) {
+		Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream(new File(configFile)));
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot load properties from file " + configFile + ".", e);
+		}
+		return properties;
+	}
+		
+	private DbUnitUtils(Properties jdbcProperties) {
+		this.jdbcProperties = jdbcProperties;
+	}
+
 
 	public void importDataFromClasspath(String dataFile) {
 		InputStream in = getClass().getResourceAsStream(dataFile);
@@ -83,15 +83,27 @@ public class DbUnitUtils {
 		} catch (DataSetException e) {
 			throw new RuntimeException("Cannot load dataset from file " + dataFile + ".", e);
 		}
+		IDatabaseConnection connection = null;
 		try {
+			connection = createConnection();
 			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot clean data from or import data to database.", e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	public void exportData(String dir, String fileName) {
+		IDatabaseConnection connection = null;
 		try {
+			connection = createConnection();
 			ITableFilter filter = new DatabaseSequenceFilter(connection);
 			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
 			File parent = new File(dir);
@@ -102,13 +114,22 @@ public class DbUnitUtils {
 			FlatXmlDataSet.write(dataSet, out);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot export data.", e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	public void exportDtd(String dir, String fileName) {
-		ITableFilter filter;
+		IDatabaseConnection connection = null;
 		try {
-			filter = new DatabaseSequenceFilter(connection);
+			connection = createConnection();
+			ITableFilter filter = new DatabaseSequenceFilter(connection);
 			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
 			File parent = new File(dir);
 			if (!parent.exists()) {
@@ -118,6 +139,14 @@ public class DbUnitUtils {
 	        FlatDtdDataSet.write(dataSet, out);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot export DTD.", e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -125,15 +154,34 @@ public class DbUnitUtils {
 		InputStream in = getClass().getResourceAsStream(dataFile);
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
 		IDataSet dataSet = new StreamingDataSet(producer);
+		IDatabaseConnection connection = null;
 		try {
+			connection = createConnection();
 			DatabaseOperation.REFRESH.execute(connection, dataSet);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot refresh data.", e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	public IDataSet getDatasetFromFile(String dataFile) {
 		InputStream in = getClass().getResourceAsStream(dataFile);
+		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
+		try {
+			return new CachedDataSet(producer);
+		} catch (DataSetException e) {
+			throw new RuntimeException("Cannot get dataset.", e);
+		}
+	}
+
+	public IDataSet getDatasetFromInputStream(InputStream in) {
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
 		try {
 			return new CachedDataSet(producer);

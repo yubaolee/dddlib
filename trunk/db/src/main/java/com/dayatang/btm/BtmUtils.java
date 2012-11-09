@@ -20,11 +20,11 @@ public class BtmUtils {
 	 * @param resourceFile
 	 * @return
 	 */
-	public static BtmUtils readResourceConfigurationFromClasspath(String resourceFile) {
-		return new BtmUtils(getFileFromClasspath(resourceFile));
+	public static BtmUtils readConfigurationFromClasspath(String resourceFile) {
+		return new BtmUtils(getAbsolutePathOfClasspathResource(resourceFile));
 	}
 	
-	private static String getFileFromClasspath(String resourceFile) {
+	private static String getAbsolutePathOfClasspathResource(String resourceFile) {
 		URL url = BtmUtils.class.getResource(resourceFile);
 		if (url == null) {
 			throw new RuntimeException("File " + resourceFile + " does not exist!");
@@ -42,7 +42,7 @@ public class BtmUtils {
 	 * @param confFile
 	 * @return
 	 */
-	public static BtmUtils readResourceConfigurationFile(String confFile) {
+	public static BtmUtils readConfigurationFromFile(String confFile) {
 		return new BtmUtils(confFile);
 	}
 
@@ -50,18 +50,18 @@ public class BtmUtils {
 	private String confFile;
 	
 	public BtmUtils() {
-		confFile = DATASOURCE_CONF_FILE;
+		this(getAbsolutePathOfClasspathResource(DATASOURCE_CONF_FILE));
 	}
 
 	private BtmUtils(String confFile) {
 		this.confFile = confFile;
 	}
-
+	
 	/**
 	 * 根据数据源配置设置JNDI和事务管理器
 	 * @throws Exception
 	 */
-	public void setupDataSource() throws Exception {
+	public void setupDataSource() {
         TransactionManagerServices.getConfiguration().setResourceConfigurationFilename(confFile);
 	}
 
@@ -69,7 +69,7 @@ public class BtmUtils {
 	 * 关闭BTM服务并释放资源
 	 * @throws Exception
 	 */
-    public void closeDataSource() throws Exception {
+    public void closeDataSource() {
     	TransactionManagerServices.getConfiguration().shutdown();
     }
 
