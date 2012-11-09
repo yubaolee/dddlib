@@ -1,11 +1,12 @@
 package com.dayatang.hibernate;
 
+import javax.transaction.UserTransaction;
+
 import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.dayatang.btm.BtmUtils;
-import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.configuration.Configuration;
 import com.dayatang.configuration.ConfigurationFactory;
 import com.dayatang.h2.H2Server;
@@ -38,4 +39,8 @@ public class AbstractIntegrationTest {
 		System.out.println("关闭BTM和H2");
 	}
 
+	public UserTransaction getTransaction() {
+		return btmUtils.getTransaction();
+	}
+	
 }

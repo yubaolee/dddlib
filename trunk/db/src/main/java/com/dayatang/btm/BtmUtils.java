@@ -3,6 +3,8 @@ package com.dayatang.btm;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.transaction.UserTransaction;
+
 import bitronix.tm.TransactionManagerServices;
 
 /**
@@ -74,5 +76,9 @@ public class BtmUtils {
     	TransactionManagerServices.getTransactionManager().shutdown();
     	TransactionManagerServices.getConfiguration().shutdown();
     }
+
+	public UserTransaction getTransaction() {
+		return TransactionManagerServices.getTransactionManager();
+	}
 
 }

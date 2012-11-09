@@ -13,8 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import javax.transaction.UserTransaction;
+
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +34,7 @@ import com.dayatang.domain.QuerySettings;
  */
 public class QuerySettingsTest extends AbstractIntegrationTest {
 	
-
-	
-	private Session session;
-	
-	Transaction tx;
+	private UserTransaction tx;
 
 	private EntityRepositoryHibernate repository;
 	
@@ -58,11 +55,10 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 
 	
 	@Before
-	public void setUp() {
-		session = sessionFactory.openSession();
-		InstanceFactory.bind(Session.class, session);
-		
-		tx = session.beginTransaction();
+	public void setUp() throws Exception {
+		tx = getTransaction();
+		tx.begin();
+		InstanceFactory.bind(SessionFactory.class, sessionFactory);
 		repository = new EntityRepositoryHibernate();
 		AggregateRootEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
@@ -75,11 +71,8 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		tx.rollback();
-		if (session != null && session.isOpen()) {
-			session.close();
-		}
 		AggregateRootEntity.setRepository(null);
 	}
 
@@ -281,7 +274,7 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.contains(undergraduate));
 		
-		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "���");
+		settings = QuerySettings.create(Dictionary.class).startsWithText("text", "科");
 		results = repository.find(settings);
 		assertFalse(results.contains(undergraduate));
 	}
@@ -455,7 +448,7 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 		DictionaryCategory category = new DictionaryCategory();
 		category.setName(name);
 		category.setSortOrder(sortOrder);
-		session.persist(category);
+		repository.save(category);
 		return category;
 	}
 
@@ -464,7 +457,7 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 		Dictionary dictionary = new Dictionary(code, text, category);
 		dictionary.setSortOrder(sortOrder);
 		dictionary.setParentCode(parentCode);
-		session.persist(dictionary);
+		repository.save(dictionary);
 		return dictionary;
 	}
 }

@@ -1,4 +1,4 @@
-package com.dayatang.commons.repository;
+package com.dayatang.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -11,7 +11,8 @@ public class HibernateUtils {
 	private static Configuration cfg;
     private static SessionFactory sessionFactory = buildSessionFactory();
 
-    private static SessionFactory buildSessionFactory() {
+    @SuppressWarnings("deprecation")
+	private static SessionFactory buildSessionFactory() {
         try {
         	cfg = new Configuration()
         		.addAnnotatedClass(DictionaryCategory.class)

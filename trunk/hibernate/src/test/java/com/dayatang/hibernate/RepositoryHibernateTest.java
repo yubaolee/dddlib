@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.UserTransaction;
 import javax.validation.ValidationException;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +40,7 @@ import com.dayatang.domain.QuerySettings;
 public class RepositoryHibernateTest extends AbstractIntegrationTest {
 	
 	
-	private Session session;
-
-	private Transaction tx;
+	private UserTransaction tx;
 
 	private static EntityRepositoryHibernate repository;
 
@@ -59,10 +57,10 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 	private Dictionary associate;
 
 	@Before
-	public void setUp() {
-		session = sessionFactory.openSession();
-		InstanceFactory.bind(Session.class, session);
-		tx = session.beginTransaction();
+	public void setUp() throws Exception {
+		tx = getTransaction();
+		tx.begin();
+		InstanceFactory.bind(SessionFactory.class, sessionFactory);
 		repository = new EntityRepositoryHibernate();
 		AggregateRootEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
@@ -74,11 +72,8 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		tx.rollback();
-		if (session.isOpen()) {
-			session.close();
-		}
 		AggregateRootEntity.setRepository(null);
 	}
 
@@ -208,11 +203,12 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void testExecuteUpdateArrayParams() {
+	public void testExecuteUpdateArrayParams() throws Exception {
 		String description = "abcd";
 		String queryString = "update Dictionary o set o.description = ? where o.category = ?";
 		repository.executeUpdate(queryString, new Object[] { description, gender });
-		session.clear();
+		sessionFactory.getCurrentSession().clear();
+		//session.clear();
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.size() > 0);
@@ -229,7 +225,8 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 		params.put("category", gender);
 		params.put("description", description);
 		repository.executeUpdate(queryString, params);
-		session.clear();
+		sessionFactory.getCurrentSession().clear();
+		//session.clear();
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.size() > 0);
@@ -317,7 +314,7 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 		DictionaryCategory category = new DictionaryCategory();
 		category.setName(name);
 		category.setSortOrder(sortOrder);
-		session.persist(category);
+		repository.save(category);
 		return category;
 	}
 
@@ -326,7 +323,7 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 		Dictionary dictionary = new Dictionary(code, text, category);
 		dictionary.setSortOrder(sortOrder);
 		dictionary.setParentCode(parentCode);
-		session.persist(dictionary);
+		repository.save(dictionary);
 		return dictionary;
 	}
 }
