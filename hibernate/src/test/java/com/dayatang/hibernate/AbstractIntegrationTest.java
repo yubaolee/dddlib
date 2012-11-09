@@ -21,10 +21,10 @@ public class AbstractIntegrationTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		Configuration configuration = new ConfigurationFactory().fromClasspath(JdbcConstants.JDBC_CONFIG_FILE);
+		Configuration configuration = new ConfigurationFactory().fromClasspath("/jdbc.properties");
 		h2Server = new H2Server(configuration.getString("h2.db.dir"), configuration.getString("h2.db.file"));
 		h2Server.start();
-		btmUtils = BtmUtils.readConfigurationFromClasspath(JdbcConstants.JDBC_CONFIG_FILE);
+		btmUtils = BtmUtils.readConfigurationFromClasspath("/jdbc.properties");
 		btmUtils.setupDataSource();
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
