@@ -14,20 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.transaction.SystemException;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
@@ -37,9 +32,7 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class QuerySettingsTest {
-
-	private static EntityManagerFactory emf;
+public class QuerySettingsTest extends AbstractIntegrationTest {
 
 	private EntityManager entityManager;
 
@@ -58,18 +51,6 @@ public class QuerySettingsTest {
 	private Dictionary female;
 
 	private Dictionary undergraduate;
-
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		BtmUtils.setupDataSource();
-		emf = Persistence.createEntityManagerFactory("default");
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		emf.close();
-		BtmUtils.closeDataSource();
-	}
 
 	@Before
 	public void setUp() {
