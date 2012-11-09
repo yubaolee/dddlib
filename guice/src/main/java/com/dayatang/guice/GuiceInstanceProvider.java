@@ -9,19 +9,19 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 /**
- * 因命名不恰当，请改用SpringInstanceProvider。
+ * 实例提供者接口的Google Guice实现。
+ * 
  * @author yyang
  * 
  */
-@Deprecated
-public class GuiceProvider implements InstanceProvider {
+public class GuiceInstanceProvider implements InstanceProvider {
 	private Injector injector;
 
 	/**
 	 * 以一批guice模块初始化guice实例提供者。 
 	 * @param modules 一或多个guice模块
 	 */
-	public GuiceProvider(Module... modules) {
+	public GuiceInstanceProvider(Module... modules) {
 		injector = Guice.createInjector(modules);
 	}
 
@@ -29,7 +29,7 @@ public class GuiceProvider implements InstanceProvider {
 	 * 从Injector生成GuiceProvider
 	 * @param injector
 	 */
-	public GuiceProvider(Injector injector) {
+	public GuiceInstanceProvider(Injector injector) {
 		this.injector = injector;
 	}
 	
