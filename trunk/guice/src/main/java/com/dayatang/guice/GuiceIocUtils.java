@@ -9,6 +9,6 @@ public class GuiceIocUtils {
 	}
 
 	public static void initInstanceProvider(Module... modules) {
-		InstanceFactory.setInstanceProvider(new GuiceProvider(modules));
+		InstanceFactory.setInstanceProvider(new GuiceInstanceProvider(modules));
 	}
 }

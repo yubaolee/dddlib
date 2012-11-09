@@ -16,7 +16,7 @@ import com.google.inject.Module;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 
-public class GuiceProviderTest extends AbstractInstanceProviderTest {
+public class GuiceInstanceProviderTest extends AbstractInstanceProviderTest {
 
 	@Test
 	public void testConstructorFromModule() {
@@ -25,7 +25,7 @@ public class GuiceProviderTest extends AbstractInstanceProviderTest {
 
 	@Test
 	public void testConstructorFromInjector() {
-		provider = new GuiceProvider(createInjector());
+		provider = new GuiceInstanceProvider(createInjector());
 		assertEquals("I am Service 1", provider.getInstance(Service.class).sayHello());
 	}
 
@@ -48,6 +48,6 @@ public class GuiceProviderTest extends AbstractInstanceProviderTest {
 
 	@Override
 	protected InstanceProvider createInstanceProvider() {
-		return new GuiceProvider(createModule());
+		return new GuiceInstanceProvider(createModule());
 	}
 }
