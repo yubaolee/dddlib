@@ -6,6 +6,13 @@ import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
 
 public class H2Server {
+	
+	private static H2Server instance = new H2Server("h2-test-db");
+	
+	public static final H2Server getSingleton() {
+		return instance;
+	}
+	
 	private Server server;
 
 	private String dir;
