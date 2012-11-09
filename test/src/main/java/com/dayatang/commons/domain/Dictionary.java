@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 
 
 @Entity
@@ -27,7 +27,7 @@ import com.dayatang.domain.AggregateRootEntity;
 		@NamedQuery(name = "findByCategory", query = "select o from Dictionary as o where o.disabled = false and o.category = :category order by o.sortOrder"),
 		@NamedQuery(name = "findByCategoryArrayParams", query = "select o from Dictionary as o where o.disabled = false and o.category = ? order by o.sortOrder"),
 		@NamedQuery(name = "findByCategoryAndCode", query = "select o from Dictionary as o where o.disabled = false and o.category = ? and o.code = ?") })
-public class Dictionary extends AggregateRootEntity {
+public class Dictionary extends AbstractEntity {
 
 	private static final long serialVersionUID = 5429887402331650527L;
 	

@@ -12,7 +12,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.dayatang.dbunit.DataSetStrategy;
 import com.dayatang.dbunit.Dbunit;
 import com.dayatang.domain.InstanceFactory;
-import com.dayatang.spring.factory.SpringProvider;
+import com.dayatang.spring.factory.SpringInstanceProvider;;
 
 public abstract class AbstractIntegratedTestCase extends Dbunit {
 
@@ -27,7 +27,7 @@ public abstract class AbstractIntegratedTestCase extends Dbunit {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		InstanceFactory
-				.setInstanceProvider(new SpringProvider(springXmlPath()));
+				.setInstanceProvider(new SpringInstanceProvider(springXmlPath()));
 	}
 
 	private static String[] springXmlPath() {

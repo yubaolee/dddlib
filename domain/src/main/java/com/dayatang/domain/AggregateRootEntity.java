@@ -9,11 +9,13 @@ import java.util.List;
 import javax.persistence.Transient;
 
 /**
- * 聚合的根实体。聚合中的其他实体和值对象，只能通过根实体访问和持久化
+ * 
+ *  该对象将撤销，其持久化功能转移到AbstractEntity。因为Java的单根继承特性，使用本对象在现实中会导致一些局限。
  * 
  * @author yang
  * 
  */
+@Deprecated
 public abstract class AggregateRootEntity extends AbstractEntity {
 
 	private static final long serialVersionUID = 2364892694478974374L;

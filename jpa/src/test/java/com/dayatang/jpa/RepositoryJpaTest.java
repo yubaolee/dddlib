@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
 import com.dayatang.domain.InstanceFactory;
@@ -63,7 +63,7 @@ public class RepositoryJpaTest extends AbstractIntegrationTest {
 		tx = entityManager.getTransaction();
 		tx.begin();
 		repository = new EntityRepositoryJpa();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
 		male = createDictionary("01", "男", gender, 100, "01");
@@ -76,7 +76,7 @@ public class RepositoryJpaTest extends AbstractIntegrationTest {
 	public void tearDown() {
 		tx.rollback();
 		entityManager.close();
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test

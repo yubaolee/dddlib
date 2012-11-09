@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QueryCriterion;
@@ -60,7 +60,7 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 		tx.begin();
 		InstanceFactory.bind(SessionFactory.class, sessionFactory);
 		repository = new EntityRepositoryHibernate();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		settings = QuerySettings.create(Dictionary.class);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
@@ -73,7 +73,7 @@ public class QuerySettingsTest extends AbstractIntegrationTest {
 	@After
 	public void tearDown() throws Exception {
 		tx.rollback();
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 
 	@Test

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dayatang.domain.InstanceFactory;
-import com.dayatang.spring.factory.SpringProvider;
+import com.dayatang.spring.factory.SpringInstanceProvider;
 
 public abstract class PureSpringTestCase {
 
@@ -14,7 +14,7 @@ public abstract class PureSpringTestCase {
 
 	protected static boolean alreadyInit = false;
 
-	private SpringProvider provider;
+	private SpringInstanceProvider provider;
 
 	protected String[] springXmlPath() {
 		return new String[] { "classpath:spring/*.xml" };
@@ -26,7 +26,7 @@ public abstract class PureSpringTestCase {
 			if (logger.isDebugEnabled()) {
 				logger.debug("初始化Spring上下文。");
 			}
-			provider = new SpringProvider(springXmlPath());
+			provider = new SpringInstanceProvider(springXmlPath());
 			InstanceFactory.setInstanceProvider(provider);
 			alreadyInit = true;
 		}
