@@ -12,5 +12,5 @@ public interface JdbcConstants {
 	String JDBC_PASSWORD = "jdbc.password";
 	String JDBC_HOST_NAME = "jdbc.hostName";
 	String JDBC_DATABSE_NAME = "jdbc.databaseName";
-	String JDBC_CONFIG_FILE = "jdbc.properties";
+	String JDBC_CONFIG_FILE = "/jdbc.properties";
 }

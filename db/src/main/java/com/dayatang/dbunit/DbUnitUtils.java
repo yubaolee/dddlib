@@ -1,5 +1,6 @@
 package com.dayatang.dbunit;
 
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -10,7 +11,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CachedDataSet;
@@ -27,6 +27,7 @@ import org.xml.sax.InputSource;
 
 import com.dayatang.JdbcConstants;
 import com.dayatang.utils.PropertiesReader;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
 /**
@@ -149,10 +150,14 @@ public class DbUnitUtils {
 	}
 
 	private static DataSource createDataSource(Properties jdbcProperties) {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(jdbcProperties.getProperty(JdbcConstants.JDBC_DRIVER));
-		dataSource.setUrl(jdbcProperties.getProperty(JdbcConstants.JDBC_URL));
-		dataSource.setUsername(jdbcProperties.getProperty(JdbcConstants.JDBC_USERNAME));
+		ComboPooledDataSource dataSource = new ComboPooledDataSource();
+		try {
+			dataSource.setDriverClass(jdbcProperties.getProperty(JdbcConstants.JDBC_DRIVER));
+		} catch (PropertyVetoException e) {
+			throw new RuntimeException("Cannot create C3P0 data source", e);
+		}
+		dataSource.setJdbcUrl(jdbcProperties.getProperty(JdbcConstants.JDBC_URL));
+		dataSource.setUser(jdbcProperties.getProperty(JdbcConstants.JDBC_USERNAME));
 		dataSource.setPassword(jdbcProperties.getProperty(JdbcConstants.JDBC_PASSWORD));
 		return dataSource;
 	}

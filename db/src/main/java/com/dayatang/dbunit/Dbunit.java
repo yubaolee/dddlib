@@ -131,10 +131,7 @@ public class Dbunit {
 	}
 
 	private boolean isDataSetOK() {
-		if (getDataSetFilePaths().length > 0) {
-			return true;
-		}
-		return false;
+		return getDataSetFilePaths().length > 0;
 	}
 
 	/**
@@ -152,7 +149,6 @@ public class Dbunit {
 	 * @return 数据集路径数组
 	 */
 	protected String[] getDataSetFilePaths() {
-		// return new String[] { "dataset/empty.xml" };
 		return new String[] {};
 	}
 
