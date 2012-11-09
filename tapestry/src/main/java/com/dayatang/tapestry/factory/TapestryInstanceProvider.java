@@ -6,19 +6,18 @@ import org.apache.tapestry5.ioc.RegistryBuilder;
 import com.dayatang.domain.InstanceProvider;
 
 /**
- * 因命名不恰当，请改用TapestryInstanceProvider。
+ * IoC实例提供者接口InstanceProvider的TapestryIoC实现。
  * @author yyang
  *
  */
-@Deprecated
-public class TapestryProvider implements InstanceProvider {
+public class TapestryInstanceProvider implements InstanceProvider {
 	private Registry registry;
 
-	public TapestryProvider(Registry registry) {
+	public TapestryInstanceProvider(Registry registry) {
 		this.registry = registry;
 	}
 
-	public TapestryProvider(Class<?>... beanClasses) {
+	public TapestryInstanceProvider(Class<?>... beanClasses) {
 		RegistryBuilder builder = new RegistryBuilder();
 		builder.add(beanClasses);
 		registry = builder.build();
