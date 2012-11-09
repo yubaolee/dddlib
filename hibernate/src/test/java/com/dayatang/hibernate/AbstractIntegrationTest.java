@@ -34,6 +34,8 @@ public class AbstractIntegrationTest {
 		btmUtils.closeDataSource();
 		btmUtils = null;
 		h2Server.shutdown();
+		System.out.println("================================================");
+		System.out.println("关闭BTM和H2");
 	}
 
 }
