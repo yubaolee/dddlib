@@ -63,6 +63,7 @@ public class BtmUtils {
 	 */
 	public void setupDataSource() {
         TransactionManagerServices.getConfiguration().setResourceConfigurationFilename(confFile);
+        TransactionManagerServices.getTransactionManager();
 	}
 
 	/**
