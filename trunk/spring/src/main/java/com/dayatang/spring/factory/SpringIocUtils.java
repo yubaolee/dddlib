@@ -5,16 +5,16 @@ import com.dayatang.domain.InstanceProvider;
 
 public class SpringIocUtils {
 
-	private static final ThreadLocal<SpringProvider> providerHolder = new ThreadLocal<SpringProvider>();
+	private static final ThreadLocal<SpringInstanceProvider> providerHolder = new ThreadLocal<SpringInstanceProvider>();
 
 	public static void initInstanceProvider(Class<?>... annotatedClasses) {
 		InstanceFactory.setInstanceProvider(getInstanceProvider(annotatedClasses));
 	}
 
 	private static InstanceProvider getInstanceProvider(Class<?>[] annotatedClasses) {
-		SpringProvider result = providerHolder.get();
+		SpringInstanceProvider result = providerHolder.get();
 		if (result == null) {
-			result = new SpringProvider(annotatedClasses);
+			result = new SpringInstanceProvider(annotatedClasses);
 			providerHolder.set(result);
 		}
 		return result;
@@ -25,9 +25,9 @@ public class SpringIocUtils {
 	}
 
 	private static InstanceProvider getInstanceProvider(String... acFiles) {
-		SpringProvider result = providerHolder.get();
+		SpringInstanceProvider result = providerHolder.get();
 		if (result == null) {
-			result = new SpringProvider(acFiles);
+			result = new SpringInstanceProvider(acFiles);
 			providerHolder.set(result);
 		}
 		return result;
