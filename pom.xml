@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dayatang.commons</groupId>
 	<artifactId>dayatang-commons-project</artifactId>
-	<version>3.2-SNAPSHOT</version>
+	<version>3.2</version>
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
 	<url>http://www.dayatang.com/projects/dddlib</url>
@@ -73,8 +72,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.2</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.2</developerConnection>
 	</scm>
 
 	<issueManagement>
@@ -579,7 +578,7 @@
 		<hibernate.show_sql>true</hibernate.show_sql>
 		<hibernate.format_sql>true</hibernate.format_sql>
 		<mysql.username>root</mysql.username>
-		<mysql.password></mysql.password>
+		<mysql.password />
 	</properties>
 
 	<modules>
