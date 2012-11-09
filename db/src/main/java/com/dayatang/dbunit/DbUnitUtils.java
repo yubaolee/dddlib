@@ -20,7 +20,6 @@ import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.dbunit.dataset.stream.StreamingDataSet;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
@@ -34,6 +33,8 @@ import com.dayatang.JdbcConstants;
 
 /**
  * DBUnit实用工具类。用于的在数据库和XML数据文件之间的相互输入输出。
+ * XML数据文件只支持FlatXml格式，则数据库中的每行数据表示为一个XML元素，
+ * 每个列成为该元素的一个属性。
  * @author yyang
  *
  */
@@ -41,6 +42,11 @@ public class DbUnitUtils {
 	
 	private Properties jdbcProperties;
 	
+	/**
+	 * 从类路径属性文件中读入JDBC连接信息
+	 * @param resourceFile
+	 * @return
+	 */
 	public static DbUnitUtils configFromClasspath(String resourceFile) {
 		return new DbUnitUtils(readPropertiesFromClasspath(resourceFile));
 	}
@@ -55,6 +61,11 @@ public class DbUnitUtils {
 		return properties;
 	}
 	
+	/**
+	 * 从磁盘文件中读入JDBC连接信息
+	 * @param configFile
+	 * @return
+	 */
 	public static DbUnitUtils configFromFile(String configFile) {
 		return new DbUnitUtils(readPropertiesFromFile(configFile));
 	}
@@ -73,20 +84,15 @@ public class DbUnitUtils {
 		this.jdbcProperties = jdbcProperties;
 	}
 
-
-	public void importDataFromClasspath(String dataFile) {
-		InputStream in = getClass().getResourceAsStream(dataFile);
-		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
-		IDataSet dataSet;
-		try {
-			dataSet = new CachedDataSet(producer);
-		} catch (DataSetException e) {
-			throw new RuntimeException("Cannot load dataset from file " + dataFile + ".", e);
-		}
+	/**
+	 * 从XML数据文件中读入数据集，写入到数据库。数据库表中的原有数据将被清除。
+	 * @param flatXmlDataFile XML数据文件
+	 */
+	public void importDataFromClasspath(String flatXmlDataFile) {
 		IDatabaseConnection connection = null;
 		try {
 			connection = createConnection();
-			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+			DatabaseOperation.CLEAN_INSERT.execute(connection, getDatasetFromFile(flatXmlDataFile));
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot clean data from or import data to database.", e);
 		} finally {
@@ -100,12 +106,17 @@ public class DbUnitUtils {
 		}
 	}
 
+	/**
+	 * 将数据库中的数据导出到XML文件中。
+	 * @param dir 文件存放目录
+	 * @param fileName 生成的XML数据文件名。
+	 */
 	public void exportData(String dir, String fileName) {
 		IDatabaseConnection connection = null;
 		try {
 			connection = createConnection();
-			ITableFilter filter = new DatabaseSequenceFilter(connection);
-			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
+			IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
+					connection.createDataSet());
 			File parent = new File(dir);
 			if (!parent.exists()) {
 				parent.mkdirs();
@@ -125,12 +136,17 @@ public class DbUnitUtils {
 		}
 	}
 
+	/**
+	 * 读取数据库表结构，生成XML数据文件的DTD文件
+	 * @param dir 文件存放目录
+	 * @param fileName 生成的XML数据文件名。
+	 */
 	public void exportDtd(String dir, String fileName) {
 		IDatabaseConnection connection = null;
 		try {
 			connection = createConnection();
-			ITableFilter filter = new DatabaseSequenceFilter(connection);
-			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
+			IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
+					connection.createDataSet());
 			File parent = new File(dir);
 			if (!parent.exists()) {
 				parent.mkdirs();
@@ -150,8 +166,12 @@ public class DbUnitUtils {
 		}
 	}
 	
-	public void refreshData(String dataFile) {
-		InputStream in = getClass().getResourceAsStream(dataFile);
+	/**
+	 * 从XML数据文件中读入数据集，写入到数据库。数据库表中的原有数据将被清除。
+	 * @param flatXmlDataFile XML数据文件
+	 */
+	public void refreshData(String flatXmlDataFile) {
+		InputStream in = getClass().getResourceAsStream(flatXmlDataFile);
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
 		IDataSet dataSet = new StreamingDataSet(producer);
 		IDatabaseConnection connection = null;
@@ -170,18 +190,12 @@ public class DbUnitUtils {
 			}
 		}
 	}
-
-	public IDataSet getDatasetFromFile(String dataFile) {
-		InputStream in = getClass().getResourceAsStream(dataFile);
-		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
-		try {
-			return new CachedDataSet(producer);
-		} catch (DataSetException e) {
-			throw new RuntimeException("Cannot get dataset.", e);
-		}
+	
+	private IDataSet getDatasetFromFile(String flatXmlDataFile) {
+		return getDatasetFromInputStream(getClass().getResourceAsStream(flatXmlDataFile));
 	}
 
-	public IDataSet getDatasetFromInputStream(InputStream in) {
+	private IDataSet getDatasetFromInputStream(InputStream in) {
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
 		try {
 			return new CachedDataSet(producer);
