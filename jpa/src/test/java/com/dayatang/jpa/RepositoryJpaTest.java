@@ -19,18 +19,14 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.validation.ValidationException;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
@@ -41,9 +37,7 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class RepositoryJpaTest {
-
-	private static EntityManagerFactory emf;
+public class RepositoryJpaTest extends AbstractIntegrationTest {
 
 	private EntityManager entityManager;
 
@@ -62,18 +56,6 @@ public class RepositoryJpaTest {
 	private Dictionary graduate;
 	
 	private Dictionary associate;
-
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		BtmUtils.setupDataSource();
-		emf = Persistence.createEntityManagerFactory("default");
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		emf.close();
-		BtmUtils.closeDataSource();
-	}
 
 	@Before
 	public void setUp() {
