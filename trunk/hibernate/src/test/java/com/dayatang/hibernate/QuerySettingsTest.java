@@ -14,18 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
-import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.Criterions;
 import com.dayatang.domain.InstanceFactory;
@@ -36,9 +31,9 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class QuerySettingsTest {
+public class QuerySettingsTest extends AbstractIntegrationTest {
+	
 
-	private static SessionFactory sessionFactory;
 	
 	private Session session;
 	
@@ -61,18 +56,6 @@ public class QuerySettingsTest {
 	private Dictionary undergraduate;
 
 
-	@BeforeClass
-	public static void classSetUp() throws Exception {
-		BtmUtils.setupDataSource();
-		sessionFactory = HibernateUtils.getSessionFactory();
-	}
-	
-	@AfterClass
-	public static void classTearDown() throws Exception {
-		sessionFactory.close();
-		BtmUtils.closeDataSource();
-	}
-	
 	
 	@Before
 	public void setUp() {

@@ -20,18 +20,13 @@ import java.util.Map;
 import javax.validation.ValidationException;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
-import com.dayatang.commons.repository.BtmUtils;
-import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.domain.AggregateRootEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.ExampleSettings;
@@ -42,9 +37,8 @@ import com.dayatang.domain.QuerySettings;
  * 
  * @author yang
  */
-public class RepositoryHibernateTest {
-
-	private static SessionFactory sessionFactory;
+public class RepositoryHibernateTest extends AbstractIntegrationTest {
+	
 	
 	private Session session;
 
@@ -64,18 +58,6 @@ public class RepositoryHibernateTest {
 	
 	private Dictionary associate;
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		BtmUtils.setupDataSource();
-		sessionFactory = HibernateUtils.getSessionFactory();
-	}
-	
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		sessionFactory.close();
-		BtmUtils.closeDataSource();
-	}
-	
 	@Before
 	public void setUp() {
 		session = sessionFactory.openSession();
