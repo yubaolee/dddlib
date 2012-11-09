@@ -1,7 +1,6 @@
 package com.dayatang.dbunit;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,9 +9,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.Properties;
 
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
@@ -29,7 +27,7 @@ import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.operation.DatabaseOperation;
 import org.xml.sax.InputSource;
 
-import com.dayatang.db.PropertiesUtil;
+import com.dayatang.JdbcConstants;
 
 
 /**
@@ -48,62 +46,112 @@ import com.dayatang.db.PropertiesUtil;
  */
 public class DbUnitUtils {
 	
+	private static final String JDBC_PROP_FILE = "jdbc.properties";
 	private IDatabaseConnection connection;
+	private Properties jdbcProperties;
 	
-	public DbUnitUtils() throws Exception {
-		super();
+	public DbUnitUtils() {
+		this(JDBC_PROP_FILE);
+	}
+	
+	public DbUnitUtils(String jdbcFileInClasspath) {
+		this(readPropertiesFromClasspath(jdbcFileInClasspath));
+	}
+	
+	public DbUnitUtils(Properties jdbcProperties) {
+		this.jdbcProperties = jdbcProperties;
 		connection = createConnection();
 	}
-	
-	public void importData() throws DatabaseUnitException, SQLException, Exception {
-		InputStream in = getClass().getResourceAsStream("/sample-data.xml");
-		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
-		IDataSet dataSet = new CachedDataSet(producer);
-		DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-	}
 
-	public void exportData() throws Exception {
-		ITableFilter filter = new DatabaseSequenceFilter(connection);
-		IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
-		File dir = new File("target/dbunit");
-		if (!dir.exists()) {
-			dir.mkdirs();
+	private static Properties readPropertiesFromClasspath(String jdbcFileInClasspath) {
+		Properties properties = new Properties();
+		try {
+			properties.load(DbUnitUtils.class.getResourceAsStream(jdbcFileInClasspath));
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot load properties from file " + jdbcFileInClasspath + ".", e);
 		}
-		OutputStream out = new FileOutputStream("target/dbunit/export.xml");
-		FlatXmlDataSet.write(dataSet, out);
-	}
-
-	public void exportDtd() throws DataSetException, FileNotFoundException, IOException, SQLException {
-		ITableFilter filter = new DatabaseSequenceFilter(connection);
-		IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
-        Writer out = new OutputStreamWriter(new FileOutputStream("target/dataset.dtd"));
-        FlatDtdDataSet.write(dataSet, out);
-        //FlatDtdWriter datasetWriter = new FlatDtdWriter(out);
-        // datasetWriter.setContentModel(FlatDtdWriter.CHOICE);
-        // You could also use the sequence model which is the default
-        // datasetWriter.setContentModel(FlatDtdWriter.SEQUENCE);
-        //datasetWriter.write(dataSet);
+		return properties;
 	}
 	
-	public void refreshData() throws DatabaseUnitException, SQLException, FileNotFoundException {
-		InputStream in = getClass().getResourceAsStream("/sample-data.xml");
+
+	public void importDataFromClasspath(String dataFile) {
+		InputStream in = getClass().getResourceAsStream(dataFile);
+		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
+		IDataSet dataSet;
+		try {
+			dataSet = new CachedDataSet(producer);
+		} catch (DataSetException e) {
+			throw new RuntimeException("Cannot load dataset from file " + dataFile + ".", e);
+		}
+		try {
+			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot clean data from or import data to database.", e);
+		}
+	}
+
+	public void exportData(String dir, String fileName) {
+		try {
+			ITableFilter filter = new DatabaseSequenceFilter(connection);
+			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
+			File parent = new File(dir);
+			if (!parent.exists()) {
+				parent.mkdirs();
+			}
+			OutputStream out = new FileOutputStream(new File(dir, fileName));
+			FlatXmlDataSet.write(dataSet, out);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot export data.", e);
+		}
+	}
+
+	public void exportDtd(String dir, String fileName) {
+		ITableFilter filter;
+		try {
+			filter = new DatabaseSequenceFilter(connection);
+			IDataSet dataSet = new FilteredDataSet(filter, connection.createDataSet());
+			File parent = new File(dir);
+			if (!parent.exists()) {
+				parent.mkdirs();
+			}
+	        Writer out = new OutputStreamWriter(new FileOutputStream(new File(dir, fileName)));
+	        FlatDtdDataSet.write(dataSet, out);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot export DTD.", e);
+		}
+	}
+	
+	public void refreshData(String dataFile) {
+		InputStream in = getClass().getResourceAsStream(dataFile);
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
 		IDataSet dataSet = new StreamingDataSet(producer);
-		DatabaseOperation.REFRESH.execute(connection, dataSet);
+		try {
+			DatabaseOperation.REFRESH.execute(connection, dataSet);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot refresh data.", e);
+		}
 	}
 
-	public IDataSet getDatasetFromFile() throws DataSetException {
-		InputStream in = getClass().getResourceAsStream("/sample-data.xml");
+	public IDataSet getDatasetFromFile(String dataFile) {
+		InputStream in = getClass().getResourceAsStream(dataFile);
 		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
-		IDataSet dataSet = new CachedDataSet(producer);
-		return dataSet;
+		try {
+			return new CachedDataSet(producer);
+		} catch (DataSetException e) {
+			throw new RuntimeException("Cannot get dataset.", e);
+		}
 	}
 	
-	private IDatabaseConnection createConnection() throws Exception {
-		Class.forName(PropertiesUtil.JDBC_DRIVER);
-		Connection jdbcConnection = DriverManager.getConnection(
-				PropertiesUtil.JDBC_URL, PropertiesUtil.JDBC_USERNAME,
-				PropertiesUtil.JDBC_PASSWD);
-		return new DatabaseConnection(jdbcConnection);
+	private IDatabaseConnection createConnection() {
+		try {
+			Class.forName(jdbcProperties.getProperty(JdbcConstants.JDBC_DRIVER));
+			Connection jdbcConnection = DriverManager.getConnection(
+					jdbcProperties.getProperty(JdbcConstants.JDBC_URL), 
+					jdbcProperties.getProperty(JdbcConstants.JDBC_USERNAME),
+					jdbcProperties.getProperty(JdbcConstants.JDBC_PASSWORD));
+			return new DatabaseConnection(jdbcConnection);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot create database connection.", e);
+		}
 	}
 }
