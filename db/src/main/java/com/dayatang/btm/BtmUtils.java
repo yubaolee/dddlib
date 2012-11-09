@@ -71,6 +71,7 @@ public class BtmUtils {
 	 * @throws Exception
 	 */
     public void closeDataSource() {
+    	TransactionManagerServices.getTransactionManager().shutdown();
     	TransactionManagerServices.getConfiguration().shutdown();
     }
 
