@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dayatang.commons</groupId>
 	<artifactId>dayatang-commons-project</artifactId>
-	<version>3.2</version>
+	<version>3.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Dayatang Commons Project</name>
 	<url>http://www.dayatang.com/projects/dddlib</url>
@@ -72,8 +72,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.2</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.2</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/</developerConnection>
 	</scm>
 
 	<issueManagement>
