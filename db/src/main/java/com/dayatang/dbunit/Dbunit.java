@@ -72,7 +72,7 @@ public class Dbunit {
 
 	@Before
 	public void setUp() throws Exception {
-		if (isDataSetOK()) {
+		if (existsDataFiles()) {
 			// initialize your dataset here
 
 			String[] dataSetPaths = getDataSetFilePaths();
@@ -123,14 +123,14 @@ public class Dbunit {
 
 	@After
 	public void tearDown() throws Exception {
-		if (isDataSetOK()) {
+		if (existsDataFiles()) {
 			databaseTester.setTearDownOperation(tearDownOp());
 			databaseTester.onTearDown();
 			// databaseTester.closeConnection(databaseTester.getConnection());
 		}
 	}
 
-	private boolean isDataSetOK() {
+	private boolean existsDataFiles() {
 		return getDataSetFilePaths().length > 0;
 	}
 
