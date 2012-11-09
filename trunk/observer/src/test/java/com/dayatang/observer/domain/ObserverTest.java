@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.hibernate.EntityRepositoryHibernate;
 import com.dayatang.observer.HibernateUtils;
@@ -50,7 +50,7 @@ public class ObserverTest {
 		InstanceFactory.bind(Session.class, session);
 		tx = session.beginTransaction();
 		repository = new EntityRepositoryHibernate();
-		AggregateRootEntity.setRepository(repository);
+		AbstractEntity.setRepository(repository);
 		observer_1 = createMotherObserver(false);
 		observer_1.setSubjectKeys(Collections.singleton("BABY-SUBJECT"));
 		observer_2 = createFatherObserver(false);
@@ -63,7 +63,7 @@ public class ObserverTest {
 		if (session.isOpen()) {
 			session.close();
 		}
-		AggregateRootEntity.setRepository(null);
+		AbstractEntity.setRepository(null);
 	}
 	
 	private FatherObserver createFatherObserver(boolean startCar) {

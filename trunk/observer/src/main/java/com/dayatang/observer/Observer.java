@@ -23,14 +23,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dayatang.domain.AggregateRootEntity;
+import com.dayatang.domain.AbstractEntity;
 
 @SuppressWarnings("rawtypes")
 @Entity
 @Table(name = "COMMONS_OBSERVER")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "OBSERVER_CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Observer<T extends Subject> extends AggregateRootEntity {
+public abstract class Observer<T extends Subject> extends AbstractEntity {
 
 	/**
 	 * 
