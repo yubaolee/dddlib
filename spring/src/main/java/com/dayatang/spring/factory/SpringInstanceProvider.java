@@ -9,12 +9,10 @@ import com.dayatang.domain.InstanceProvider;
 /**
  * 实例提供者接口的Spring实现。
  * SpringProvider内部通过Spring IoC的ApplicationContext实现对象创建。
- * {@link Deprecated} 因命名不恰当，请改用SpringInstanceProvider。
  * @author yyang
  *
  */
-@Deprecated
-public class SpringProvider implements InstanceProvider {
+public class SpringInstanceProvider implements InstanceProvider {
 
 	private ApplicationContext applicationContext;
 
@@ -22,7 +20,7 @@ public class SpringProvider implements InstanceProvider {
 	 * 以一批spring配置文件的路径初始化spring实例提供者。
 	 * @param locations spring配置文件的路径的集合。spring将从类路径开始获取这批资源文件。
 	 */
-	public SpringProvider(String... locations) {
+	public SpringInstanceProvider(String... locations) {
 		applicationContext = new ClassPathXmlApplicationContext(locations);
 	}
 	
@@ -30,7 +28,7 @@ public class SpringProvider implements InstanceProvider {
 	 * 从ApplicationContext生成SpringProvider
 	 * @param applicationContext
 	 */
-	public SpringProvider(ApplicationContext applicationContext) {
+	public SpringInstanceProvider(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
@@ -38,7 +36,7 @@ public class SpringProvider implements InstanceProvider {
 	 * 根据一批Spring配置文件初始化spring实例提供者。
 	 * @param annotatedClasses
 	 */
-	public SpringProvider(Class<?>... annotatedClasses) {
+	public SpringInstanceProvider(Class<?>... annotatedClasses) {
 		applicationContext = new AnnotationConfigApplicationContext(annotatedClasses);
 	}
 	

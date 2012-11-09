@@ -13,19 +13,18 @@ import com.dayatang.configuration.Configuration;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.InstanceProvider;
 
-@SuppressWarnings("deprecation")
-public class SpringProviderTest extends AbstractInstanceProviderTest {
+public class SpringInstanceProviderTest extends AbstractInstanceProviderTest {
 	
-	private SpringProvider instance;
+	private SpringInstanceProvider instance;
 
 	@Override
 	protected InstanceProvider createInstanceProvider() {
-		return new SpringProvider(new String[] {"classpath:applicationContext-multi-impl.xml"});
+		return new SpringInstanceProvider(new String[] {"classpath:applicationContext-multi-impl.xml"});
 	}
 	
 	@Test
 	public void testConstructorFromXmlPath() {
-		instance = new SpringProvider(new String[] {"classpath:applicationContext-single-impl.xml"});
+		instance = new SpringInstanceProvider(new String[] {"classpath:applicationContext-single-impl.xml"});
 		InstanceFactory.setInstanceProvider(instance);
 		Service service = instance.getInstance(Service.class);
 		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
@@ -37,7 +36,7 @@ public class SpringProviderTest extends AbstractInstanceProviderTest {
 	@Test
 	public void testConstructorFromApplicationContext() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {"classpath:applicationContext-single-impl.xml"});
-		instance = new SpringProvider(applicationContext);
+		instance = new SpringInstanceProvider(applicationContext);
 		InstanceFactory.setInstanceProvider(instance);
 		Service service = instance.getInstance(Service.class);
 		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
@@ -45,7 +44,7 @@ public class SpringProviderTest extends AbstractInstanceProviderTest {
 	
 	@Test
 	public void testConstructorFromConfigurationFiles() {
-		instance = new SpringProvider(SpringConfiguration.class);
+		instance = new SpringInstanceProvider(SpringConfiguration.class);
 		InstanceFactory.setInstanceProvider(instance);
 		Service service = instance.getInstance(Service.class, "service1");
 		assertTrue(MyService1.class.isAssignableFrom(service.getClass()));
