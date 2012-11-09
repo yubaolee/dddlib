@@ -1,19 +1,16 @@
 package com.dayatang.dbunit;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
-import org.dbunit.database.DatabaseConnection;
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CachedDataSet;
@@ -29,6 +26,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.xml.sax.InputSource;
 
 import com.dayatang.JdbcConstants;
+import com.dayatang.utils.PropertiesReader;
 
 
 /**
@@ -40,7 +38,7 @@ import com.dayatang.JdbcConstants;
  */
 public class DbUnitUtils {
 	
-	private Properties jdbcProperties;
+	private DataSource dataSource;
 	
 	/**
 	 * 从类路径属性文件中读入JDBC连接信息
@@ -48,62 +46,35 @@ public class DbUnitUtils {
 	 * @return
 	 */
 	public static DbUnitUtils configFromClasspath(String resourceFile) {
-		return new DbUnitUtils(readPropertiesFromClasspath(resourceFile));
+		Properties jdbcProperties = PropertiesReader.readPropertiesFromClasspath(resourceFile);
+		return new DbUnitUtils(createDataSource(jdbcProperties));
 	}
 
-	private static Properties readPropertiesFromClasspath(String jdbcFileInClasspath) {
-		Properties properties = new Properties();
-		try {
-			properties.load(DbUnitUtils.class.getResourceAsStream(jdbcFileInClasspath));
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot load properties from file " + jdbcFileInClasspath + ".", e);
-		}
-		return properties;
-	}
-	
 	/**
 	 * 从磁盘文件中读入JDBC连接信息
 	 * @param configFile
 	 * @return
 	 */
 	public static DbUnitUtils configFromFile(String configFile) {
-		return new DbUnitUtils(readPropertiesFromFile(configFile));
+		Properties jdbcProperties = PropertiesReader.readPropertiesFromFile(configFile);
+		return new DbUnitUtils(createDataSource(jdbcProperties));
 	}
 
-	private static Properties readPropertiesFromFile(String configFile) {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileInputStream(new File(configFile)));
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot load properties from file " + configFile + ".", e);
-		}
-		return properties;
-	}
-		
-	private DbUnitUtils(Properties jdbcProperties) {
-		this.jdbcProperties = jdbcProperties;
+	public DbUnitUtils(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	/**
 	 * 从XML数据文件中读入数据集，写入到数据库。数据库表中的原有数据将被清除。
 	 * @param flatXmlDataFile XML数据文件
 	 */
-	public void importDataFromClasspath(String flatXmlDataFile) {
-		IDatabaseConnection connection = null;
-		try {
-			connection = createConnection();
-			DatabaseOperation.CLEAN_INSERT.execute(connection, getDatasetFromFile(flatXmlDataFile));
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot clean data from or import data to database.", e);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+	public void importDataFromClasspath(final String flatXmlDataFile) {
+		new DbUnitTemplate(dataSource).execute(new DbUnitCallback() {
+			@Override
+			public void doInDbUnit(IDatabaseConnection connection) throws Exception {
+				DatabaseOperation.CLEAN_INSERT.execute(connection, getDatasetFromFile(flatXmlDataFile));
 			}
-		}
+		});
 	}
 
 	/**
@@ -111,29 +82,20 @@ public class DbUnitUtils {
 	 * @param dir 文件存放目录
 	 * @param fileName 生成的XML数据文件名。
 	 */
-	public void exportData(String dir, String fileName) {
-		IDatabaseConnection connection = null;
-		try {
-			connection = createConnection();
-			IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
-					connection.createDataSet());
-			File parent = new File(dir);
-			if (!parent.exists()) {
-				parent.mkdirs();
-			}
-			OutputStream out = new FileOutputStream(new File(dir, fileName));
-			FlatXmlDataSet.write(dataSet, out);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot export data.", e);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
+	public void exportData(final String dir, final String fileName) {
+		new DbUnitTemplate(dataSource).execute(new DbUnitCallback() {
+			@Override
+			public void doInDbUnit(IDatabaseConnection connection) throws Exception {
+				IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
+						connection.createDataSet());
+				File parent = new File(dir);
+				if (!parent.exists()) {
+					parent.mkdirs();
 				}
+				OutputStream out = new FileOutputStream(new File(dir, fileName));
+				FlatXmlDataSet.write(dataSet, out);
 			}
-		}
+		});
 	}
 
 	/**
@@ -141,54 +103,36 @@ public class DbUnitUtils {
 	 * @param dir 文件存放目录
 	 * @param fileName 生成的XML数据文件名。
 	 */
-	public void exportDtd(String dir, String fileName) {
-		IDatabaseConnection connection = null;
-		try {
-			connection = createConnection();
-			IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
-					connection.createDataSet());
-			File parent = new File(dir);
-			if (!parent.exists()) {
-				parent.mkdirs();
-			}
-	        Writer out = new OutputStreamWriter(new FileOutputStream(new File(dir, fileName)));
-	        FlatDtdDataSet.write(dataSet, out);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot export DTD.", e);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
+	public void exportDtd(final String dir, final String fileName) {
+		new DbUnitTemplate(dataSource).execute(new DbUnitCallback() {
+			@Override
+			public void doInDbUnit(IDatabaseConnection connection) throws Exception {
+				IDataSet dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), 
+						connection.createDataSet());
+				File parent = new File(dir);
+				if (!parent.exists()) {
+					parent.mkdirs();
 				}
+		        Writer out = new OutputStreamWriter(new FileOutputStream(new File(dir, fileName)));
+		        FlatDtdDataSet.write(dataSet, out);
 			}
-		}
+		});
 	}
 	
 	/**
 	 * 从XML数据文件中读入数据集，写入到数据库。数据库表中的原有数据将被清除。
 	 * @param flatXmlDataFile XML数据文件
 	 */
-	public void refreshData(String flatXmlDataFile) {
-		InputStream in = getClass().getResourceAsStream(flatXmlDataFile);
-		IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
-		IDataSet dataSet = new StreamingDataSet(producer);
-		IDatabaseConnection connection = null;
-		try {
-			connection = createConnection();
-			DatabaseOperation.REFRESH.execute(connection, dataSet);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot refresh data.", e);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+	public void refreshData(final String flatXmlDataFile) {
+		new DbUnitTemplate(dataSource).execute(new DbUnitCallback() {
+			@Override
+			public void doInDbUnit(IDatabaseConnection connection) throws Exception {
+				InputStream in = getClass().getResourceAsStream(flatXmlDataFile);
+				IDataSetProducer producer = new FlatXmlProducer(new InputSource(in), false);
+				IDataSet dataSet = new StreamingDataSet(producer);
+				DatabaseOperation.REFRESH.execute(connection, dataSet);
 			}
-		}
+		});
 	}
 	
 	private IDataSet getDatasetFromFile(String flatXmlDataFile) {
@@ -203,17 +147,13 @@ public class DbUnitUtils {
 			throw new RuntimeException("Cannot get dataset.", e);
 		}
 	}
-	
-	private IDatabaseConnection createConnection() {
-		try {
-			Class.forName(jdbcProperties.getProperty(JdbcConstants.JDBC_DRIVER));
-			Connection jdbcConnection = DriverManager.getConnection(
-					jdbcProperties.getProperty(JdbcConstants.JDBC_URL), 
-					jdbcProperties.getProperty(JdbcConstants.JDBC_USERNAME),
-					jdbcProperties.getProperty(JdbcConstants.JDBC_PASSWORD));
-			return new DatabaseConnection(jdbcConnection);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot create database connection.", e);
-		}
+
+	private static DataSource createDataSource(Properties jdbcProperties) {
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setDriverClassName(jdbcProperties.getProperty(JdbcConstants.JDBC_DRIVER));
+		dataSource.setUrl(jdbcProperties.getProperty(JdbcConstants.JDBC_URL));
+		dataSource.setUsername(jdbcProperties.getProperty(JdbcConstants.JDBC_USERNAME));
+		dataSource.setPassword(jdbcProperties.getProperty(JdbcConstants.JDBC_PASSWORD));
+		return dataSource;
 	}
 }
