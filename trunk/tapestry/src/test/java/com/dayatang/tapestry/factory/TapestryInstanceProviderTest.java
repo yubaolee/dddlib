@@ -11,34 +11,34 @@ import com.dayatang.commons.ioc.AbstractInstanceProviderTest;
 import com.dayatang.commons.ioc.Service;
 import com.dayatang.domain.InstanceProvider;
 
-public class TapestryProviderTest extends AbstractInstanceProviderTest {
+public class TapestryInstanceProviderTest extends AbstractInstanceProviderTest {
 
 	@After
 	public void tearDown() throws Exception {
-		((TapestryProvider)provider).shutdown();
+		((TapestryInstanceProvider)provider).shutdown();
 	}
 
 	@Override
 	protected InstanceProvider createInstanceProvider() {
-		return new TapestryProvider(WithAnnotationModule.class);
+		return new TapestryInstanceProvider(WithAnnotationModule.class);
 	}
 
 	@Override
 	public void testGetInstance() {
-		provider = new TapestryProvider(WithoutAnnotationModule.class);
+		provider = new TapestryInstanceProvider(WithoutAnnotationModule.class);
 		super.testGetInstance();
 	}
 
 	@Test
 	public void testConstructorFromModule() {
-		provider = new TapestryProvider(WithoutAnnotationModule.class);
+		provider = new TapestryInstanceProvider(WithoutAnnotationModule.class);
 		Service service = provider.getInstance(Service.class);
 		assertEquals("I am Service 1", service.sayHello());
 	}
 
 	@Test
 	public void testConstructorFromRegistry() {
-		provider = new TapestryProvider(createRegistry(WithoutAnnotationModule.class));
+		provider = new TapestryInstanceProvider(createRegistry(WithoutAnnotationModule.class));
 		Service service = provider.getInstance(Service.class);
 		assertEquals("I am Service 1", service.sayHello());
 	}

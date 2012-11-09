@@ -9,7 +9,7 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 /**
- * 因命名不恰当，请改用SpringInstanceProvider。
+ * 因命名不恰当，请改用GuiceInstanceProvider。
  * @author yyang
  * 
  */
