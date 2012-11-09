@@ -4,7 +4,6 @@ import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.dayatang.JdbcConstants;
 import com.dayatang.btm.BtmUtils;
 import com.dayatang.commons.repository.HibernateUtils;
 import com.dayatang.configuration.Configuration;
@@ -24,7 +23,7 @@ public class AbstractIntegrationTest {
 		Configuration configuration = new ConfigurationFactory().fromClasspath("/jdbc.properties");
 		h2Server = new H2Server(configuration.getString("h2.db.dir"), configuration.getString("h2.db.file"));
 		h2Server.start();
-		btmUtils = BtmUtils.readConfigurationFromClasspath("/jdbc.properties");
+		btmUtils = BtmUtils.readConfigurationFromClasspath("/datasources.properties");
 		btmUtils.setupDataSource();
 		sessionFactory = HibernateUtils.getSessionFactory();
 	}
@@ -33,6 +32,7 @@ public class AbstractIntegrationTest {
 	public static void tearDownClass() throws Exception {
 		sessionFactory.close();
 		btmUtils.closeDataSource();
+		btmUtils = null;
 		h2Server.shutdown();
 	}
 
