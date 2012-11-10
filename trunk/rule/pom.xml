@@ -3,15 +3,15 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.3</version>
+		<version>3.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-rule</artifactId>
 	<packaging>jar</packaging>
 	<name>Dayatang Commons Rule Module</name>
 	
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.3/rule</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.3/rule</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/rule/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/rule/</developerConnection>
 	</scm>
 
 	<build>
