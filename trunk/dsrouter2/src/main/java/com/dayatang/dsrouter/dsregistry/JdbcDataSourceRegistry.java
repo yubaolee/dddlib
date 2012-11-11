@@ -25,7 +25,7 @@ public class JdbcDataSourceRegistry extends AbstractDataSourceRegistry {
 	}
 
 	@Override
-	protected synchronized DataSource findOrCreateDataSourceForTenant(String tenant) {
+	protected DataSource findOrCreateDataSourceForTenant(String tenant) {
 		DataSource result = dataSourceCreator.createDataSourceForTenant(tenant);
 		Date now = new Date();
 		recordLastAccessTimeOfTenant(tenant, now);

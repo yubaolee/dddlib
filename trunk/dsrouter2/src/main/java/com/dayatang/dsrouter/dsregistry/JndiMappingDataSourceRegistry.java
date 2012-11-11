@@ -46,7 +46,7 @@ public class JndiMappingDataSourceRegistry extends AbstractDataSourceRegistry {
 	}
 
 	@Override
-	protected synchronized DataSource findOrCreateDataSourceForTenant(String tenant) {
+	protected DataSource findOrCreateDataSourceForTenant(String tenant) {
 		DataSource result = null;
 		String dataSourceJndi = StringUtils.defaultString(jndiPrefix) + tenant + StringUtils.defaultString(jndiSuffix);
 		try {
