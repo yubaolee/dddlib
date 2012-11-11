@@ -10,7 +10,7 @@ import com.dayatang.dsrouter.TenantService;
 import com.dayatang.dsrouter.dscreator.C3P0DataSourceCreator;
 import com.dayatang.dsrouter.dscreator.JdbcUrlTranslator;
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
-import com.dayatang.dsrouter.dsregistry.MappedDataSourceRegistry;
+import com.dayatang.dsrouter.dsregistry.JdbcDataSourceRegistry;
 import com.dayatang.dsrouter.mappingstrategy.DbNameBasedMappingStrategy;
 import com.dayatang.dsrouter.tenantservice.ThreadLocalTenantService;
 import com.dayatang.dsrouter.urltranslator.DbMappingStrategy;
@@ -33,7 +33,7 @@ public class SpringConfiguration {
 
 	@Bean
 	public DataSourceRegistry dataSourceRegistry() {
-		return new MappedDataSourceRegistry(dataSourceCreator());
+		return new JdbcDataSourceRegistry(dataSourceCreator());
 	}
 
 	@Bean

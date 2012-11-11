@@ -11,7 +11,7 @@
 	    <constructor-arg index="1" ref="dataSourceRegistry" />
 	</bean>
 	
-	<bean id="dataSourceRegistry" class="com.dayatang.dsrouter.dsregistry.MappedDataSourceRegistry">
+	<bean id="dataSourceRegistry" class="com.dayatang.dsrouter.dsregistry.JdbcDataSourceRegistry">
 	    <constructor-arg ref="dataSourceCreator"/>
 	</bean>
 
