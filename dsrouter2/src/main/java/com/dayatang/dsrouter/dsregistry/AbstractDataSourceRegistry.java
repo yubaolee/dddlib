@@ -10,14 +10,14 @@ import com.dayatang.dsrouter.DataSourceRegistry;
 import com.dayatang.utils.Assert;
 import com.dayatang.utils.Slf4jLogger;
 
-public abstract class AbstractDataSourceRegister implements DataSourceRegistry {
+public abstract class AbstractDataSourceRegistry implements DataSourceRegistry {
 
-	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(AbstractDataSourceRegister.class);
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(AbstractDataSourceRegistry.class);
 	
 	private static Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
 	private static Map<String, Date> lastAccess = new HashMap<String, Date>();
 
-	public AbstractDataSourceRegister() {
+	public AbstractDataSourceRegistry() {
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public abstract class AbstractDataSourceRegister implements DataSourceRegistry {
 
 	@Override
 	public synchronized void registerDataSources(Map<String, DataSource> dataSources) {
-		AbstractDataSourceRegister.dataSources.putAll(dataSources);
+		AbstractDataSourceRegistry.dataSources.putAll(dataSources);
 		
 	}
 

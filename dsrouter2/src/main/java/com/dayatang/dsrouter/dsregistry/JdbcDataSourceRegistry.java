@@ -11,7 +11,7 @@ import com.dayatang.utils.Slf4jLogger;
  * @author yyang
  *
  */
-public class JdbcDataSourceRegistry extends AbstractDataSourceRegister {
+public class JdbcDataSourceRegistry extends AbstractDataSourceRegistry {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(JdbcDataSourceRegistry.class);
 	

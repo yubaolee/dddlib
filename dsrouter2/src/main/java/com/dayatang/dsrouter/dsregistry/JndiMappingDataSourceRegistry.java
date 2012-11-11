@@ -15,7 +15,7 @@ import com.dayatang.utils.Slf4jLogger;
  * @author yyang
  * 
  */
-public class JndiMappingDataSourceRegistry extends AbstractDataSourceRegister {
+public class JndiMappingDataSourceRegistry extends AbstractDataSourceRegistry {
 
 	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(JndiMappingDataSourceRegistry.class);
 	private Context context;

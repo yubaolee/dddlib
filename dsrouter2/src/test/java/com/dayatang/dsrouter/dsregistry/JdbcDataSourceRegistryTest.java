@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
 import com.dayatang.dsrouter.dsregistry.JdbcDataSourceRegistry;
 
-public class MappedDataSourceRegistryTest {
+public class JdbcDataSourceRegistryTest {
 	
 	private JdbcDataSourceRegistry instance;
 	private DataSourceCreator dataSourceCreator;
