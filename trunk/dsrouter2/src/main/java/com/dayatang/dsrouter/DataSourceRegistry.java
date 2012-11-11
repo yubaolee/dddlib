@@ -1,5 +1,7 @@
 package com.dayatang.dsrouter;
 
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 /**
@@ -9,6 +11,16 @@ import javax.sql.DataSource;
  */
 public interface DataSourceRegistry {
 
+	/**
+	 * 获得与租户对应数据源
+	 * @param tenant 租户标识
+	 * @return 对应租户tenant的数据源
+	 */
 	DataSource getDataSourceOfTenant(String tenant);
 
+	/**
+	 * 注册租户数据源
+	 * @param dataSources 租户数据源映射。以租户标识为key，对应数据源为value
+	 */
+	void registerDataSources(Map<String, DataSource> dataSources);
 }

@@ -13,11 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dayatang.dsrouter.dsregistry.DataSourceCreator;
-import com.dayatang.dsrouter.dsregistry.MappedDataSourceRegistry;
+import com.dayatang.dsrouter.dsregistry.JdbcDataSourceRegistry;
 
 public class MappedDataSourceRegistryTest {
 	
-	private MappedDataSourceRegistry instance;
+	private JdbcDataSourceRegistry instance;
 	private DataSourceCreator dataSourceCreator;
 	private DataSource dataSource;
 	private DataSource dataSource2;
@@ -27,7 +27,7 @@ public class MappedDataSourceRegistryTest {
 	@Before
 	public void setUp() throws Exception {
 		dataSourceCreator = mock(DataSourceCreator.class);
-		instance = new MappedDataSourceRegistry(dataSourceCreator);
+		instance = new JdbcDataSourceRegistry(dataSourceCreator);
 		dataSource = mock(DataSource.class);
 		dataSource2 = mock(DataSource.class);
 		when(dataSourceCreator.createDataSourceForTenant(tenant)).thenReturn(dataSource);
