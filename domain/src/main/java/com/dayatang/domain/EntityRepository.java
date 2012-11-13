@@ -178,6 +178,11 @@ public interface EntityRepository {
 	 * @param entity
 	 */
 	void refresh(Entity entity);
+	
+	/**
+	 * 清空持久化缓存
+	 */
+	void clear();
 
 	/**
 	 * 查找指定类型的所有实体，分页表示

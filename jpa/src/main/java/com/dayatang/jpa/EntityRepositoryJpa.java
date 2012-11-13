@@ -233,6 +233,11 @@ public class EntityRepositoryJpa implements EntityRepository {
 	public void refresh(Entity entity) {
 		getEntityManager().refresh(entity);
 	}
+	
+	@Override
+	public void clear() {
+		getEntityManager().clear();
+	}
 
 	@Override
 	public <T extends Entity> DataPage<T> findAll(Class<T> clazz, int pageIndex, int pageSize) {

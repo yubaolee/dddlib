@@ -228,6 +228,11 @@ public abstract class AbstractEntityRepository implements EntityRepository {
 	public void refresh(Entity entity) {
 		getSession().refresh(entity);
 	}
+	
+	@Override
+	public void clear() {
+		getSession().clear();
+	}
 
 	@Override
 	public <T extends Entity> DataPage<T> findAll(Class<T> clazz, int pageIndex, int pageSize) {
