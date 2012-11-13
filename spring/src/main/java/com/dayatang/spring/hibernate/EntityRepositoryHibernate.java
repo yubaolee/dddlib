@@ -9,6 +9,9 @@ public class EntityRepositoryHibernate extends AbstractEntityRepository {
 
 	private SessionFactory sessionFactory;
 	
+	public EntityRepositoryHibernate() {
+	}
+
 	public EntityRepositoryHibernate(SessionFactory sessionFactory) {
 		super();
 		this.sessionFactory = sessionFactory;
