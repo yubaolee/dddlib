@@ -29,12 +29,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-db</artifactId>
-			<version>${project.parent.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
@@ -113,9 +107,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -128,9 +121,7 @@
 		</testResources>
 	</build>
 	<properties>
-		<h2.db.dir><![CDATA[./target]]></h2.db.dir>
-		<h2.db.file><![CDATA[test-db]]></h2.db.file>
-		<jdbc.url>jdbc:h2:tcp://localhost/${h2.db.dir}/${h2.db.file}</jdbc.url>
 		<servlet.version>2.5</servlet.version>
+		<jdbc.url><![CDATA[jdbc:h2:${basedir}/target/${db.name}]]></jdbc.url>
 	</properties>
 </project>

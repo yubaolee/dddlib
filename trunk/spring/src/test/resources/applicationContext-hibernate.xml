@@ -19,22 +19,13 @@
 	<!-- 
 	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/proj-mgmt"/>
 	-->
-	
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-		<property name="minPoolSize" value="10" />
-		<property name="maxPoolSize" value="300" />
-		<property name="initialPoolSize" value="10" />
-		<property name="acquireIncrement" value="5" />
-		<property name="maxStatements" value="0" />
-		<property name="idleConnectionTestPeriod" value="60" />
-		<property name="acquireRetryAttempts" value="30" />
-		<property name="breakAfterAcquireFailure" value="false" />
-		<property name="testConnectionOnCheckout" value="false" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -51,15 +42,30 @@
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="txManager"
+	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="repositoryOperation"
+			expression="execution(* com.dayatang.domain.EntityRepository.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="repositoryOperation" />
+	</aop:config>
+	
 	<bean id="repository" class="com.dayatang.spring.hibernate.EntityRepositoryHibernate">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
