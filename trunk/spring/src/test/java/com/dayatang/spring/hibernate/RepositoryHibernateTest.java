@@ -3,14 +3,8 @@
  */
 package com.dayatang.spring.hibernate;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,9 +15,13 @@ import javax.validation.ValidationException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dayatang.commons.domain.Dictionary;
 import com.dayatang.commons.domain.DictionaryCategory;
@@ -31,17 +29,20 @@ import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.DataPage;
 import com.dayatang.domain.EntityRepository;
 import com.dayatang.domain.ExampleSettings;
-import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
-import com.dayatang.spring.factory.SpringIocUtils;
 
 /**
  * 
  * @author yang
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:applicationContext-hibernate.xml")
+@TransactionConfiguration(transactionManager = "transactionManager")
+@Transactional
 public class RepositoryHibernateTest {
 	
-	private static EntityRepository repository;
+	@Autowired
+	private EntityRepository repository;
 
 	private DictionaryCategory gender;
 
@@ -56,14 +57,8 @@ public class RepositoryHibernateTest {
 	private Dictionary associate;
 	
 
-	@BeforeClass
-	public static void classSetUp() {
-		SpringIocUtils.initInstanceProvider("applicationContext-hibernate.xml");
-	}
-	
 	@Before
 	public void setUp() throws Exception {
-		repository = InstanceFactory.getInstance(EntityRepository.class);
 		AbstractEntity.setRepository(repository);
 		gender = createCategory("gender", 1);
 		education = createCategory("education", 2);
@@ -110,7 +105,6 @@ public class RepositoryHibernateTest {
 		assertEquals(male, repository.get(Dictionary.class, male.getId()));
 	}
 
-	@Ignore
 	@Test
 	public void testLoad() {
 		assertEquals(male.getId(), repository.load(Dictionary.class, male.getId()).getId());
@@ -204,13 +198,12 @@ public class RepositoryHibernateTest {
 		assertEquals(male, dictionary);
 	}
 
-	@Ignore
 	@Test
 	public void testExecuteUpdateArrayParams() throws Exception {
 		String description = "abcd";
 		String queryString = "update Dictionary o set o.description = ? where o.category = ?";
 		repository.executeUpdate(queryString, new Object[] { description, gender });
-		//session.clear();
+		repository.clear();
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.size() > 0);
@@ -219,7 +212,6 @@ public class RepositoryHibernateTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void testExecuteUpdateMapParams() {
 		String description = "abcd";
@@ -228,7 +220,7 @@ public class RepositoryHibernateTest {
 		params.put("category", gender);
 		params.put("description", description);
 		repository.executeUpdate(queryString, params);
-		//session.clear();
+		repository.clear();
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender);
 		List<Dictionary> results = repository.find(settings);
 		assertTrue(results.size() > 0);
@@ -237,7 +229,6 @@ public class RepositoryHibernateTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void testFindAllDataPage() {
 		DataPage<Dictionary> results = repository.findAll(Dictionary.class, 1, 2);
