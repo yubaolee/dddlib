@@ -24,33 +24,28 @@ public class DateUtils {
 	/**
 	 * 最小日期，设定为1000年1月1日
 	 */
-	public static final Date MIN_DATE = getMinDate();
+	public static final Date MIN_DATE = date(1000, 1, 1);
 
 	/**
 	 * 最大日期，设定为8888年1月1日
 	 */
-	public static final Date MAX_DATE = getMaxDate();
+	public static final Date MAX_DATE = date(8888, 1, 1);
+	
 
-	private static Date getMaxDate() {
-		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate(
-					"8888-01-01", new String[] { "yyyy-MM-dd" });
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+	/**
+	 * 根据年月日构建日期对象。注意月份是从1开始计数的，即month为1代表1月份。
+	 * @param year 年
+	 * @param month 月。注意1代表1月份，依此类推。
+	 * @param day 日
+	 * @return
+	 */
+	public static Date date(int year, int month, int date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month - 1, date, 0, 0, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
 	}
-
-	private static Date getMinDate() {
-		try {
-			return org.apache.commons.lang3.time.DateUtils.parseDate(
-					"1000-01-01", new String[] { "yyyy-MM-dd" });
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
+	
 	/**
 	 * 计算两个日期（不包括时间）之间相差的周年数
 	 * 

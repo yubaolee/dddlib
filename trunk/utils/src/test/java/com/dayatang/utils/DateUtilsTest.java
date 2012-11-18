@@ -50,6 +50,11 @@ public class DateUtilsTest {
 	}
 
 	@Test
+	public void testDate() throws ParseException {
+		assertEquals(DateUtils.date(1968, 4, 11), org.apache.commons.lang3.time.DateUtils.parseDate("1968-04-11", "yyyy-MM-dd"));
+	}
+	
+	@Test
 	public void getYearDiff() {
 		assertEquals(2009 - 1968, DateUtils.getYearDiff(parseDate("1968-4-16"), parseDate("2009-5-1")));
 		assertEquals(2009 - 1968 - 1, DateUtils.getYearDiff(parseDate("1968-4-16"), parseDate("2009-3-20")));
