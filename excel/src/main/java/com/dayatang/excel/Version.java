@@ -20,7 +20,13 @@ public enum Version {
 	};
 
 	public static Version of(String filename) {
-		return filename.toLowerCase().endsWith("xslx") ? XLSX : XLS;
+		if (filename.toLowerCase().endsWith("xls")) {
+			return XLS;
+		}
+		if (filename.toLowerCase().endsWith("xlsx")) {
+			return XLSX;
+		}
+		throw new IllegalStateException("Unsupported file type!");
 	}
 
 	public abstract Date getDate(Double value, boolean isDate1904);
