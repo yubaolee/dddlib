@@ -83,6 +83,12 @@ public abstract class AbstractEntity implements Entity {
 		return getRepository().exists(getClass(), id);
 	}
 
+	@Override
+	public boolean existed(String propertyName, Object propertyValue) {
+		List<?> entities = getRepository().find(QuerySettings.create(getClass()).eq(propertyName, propertyValue)); 
+		return !(entities.isEmpty());
+	}
+
 	private static EntityRepository repository;
 
 	public static EntityRepository getRepository() {
