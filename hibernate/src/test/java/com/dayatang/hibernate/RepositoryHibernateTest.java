@@ -80,7 +80,9 @@ public class RepositoryHibernateTest extends AbstractIntegrationTest {
 	@Test
 	public void testAddAndRemove() {
 		Dictionary dictionary = new Dictionary("2001", "双硕士", gender);
+		assertFalse(dictionary.existed());
 		dictionary = repository.save(dictionary);
+		assertTrue(dictionary.existed());
 		assertNotNull(dictionary.getId());
 		repository.remove(dictionary);
 		assertNull(repository.get(Dictionary.class, dictionary.getId()));

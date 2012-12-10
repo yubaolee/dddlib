@@ -82,7 +82,9 @@ public class RepositoryJpaTest extends AbstractIntegrationTest {
 	@Test
 	public void testAddAndRemove() {
 		Dictionary dictionary = new Dictionary("2001", "双硕士", gender);
+		assertFalse(dictionary.existed());
 		Dictionary dictionary1 = repository.save(dictionary);
+		assertTrue(dictionary.existed());
 		assertNotNull(dictionary.getId());
 		assertNotNull(dictionary1.getId());
 		repository.remove(dictionary1);

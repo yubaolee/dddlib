@@ -75,6 +75,14 @@ public abstract class AbstractEntity implements Entity {
 		return id == null || id.intValue() == 0;
 	}
 
+	@Override
+	public boolean existed() {
+		if (isNew()) {
+			return false;
+		}
+		return getRepository().exists(getClass(), id);
+	}
+
 	private static EntityRepository repository;
 
 	public static EntityRepository getRepository() {
@@ -96,6 +104,13 @@ public abstract class AbstractEntity implements Entity {
 		getRepository().remove(this);
 	}
 
+	/**
+	 * 请改用每个实体对象的实例方法的existed()方法。
+	 * @param clazz
+	 * @param id
+	 * @return
+	 */
+	@Deprecated
 	public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
 		return getRepository().exists(clazz, id);
 	}
