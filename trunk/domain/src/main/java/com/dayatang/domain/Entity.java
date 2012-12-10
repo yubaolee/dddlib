@@ -21,4 +21,10 @@ public interface Entity extends Serializable {
 	 * @return
 	 */
 	boolean isNew();
+	
+	/**
+	 * 是否在数据库中已经存在
+	 * @return
+	 */
+	boolean existed();
 }
