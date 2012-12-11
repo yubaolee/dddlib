@@ -29,6 +29,12 @@ public interface Entity extends Serializable {
 	boolean existed();
 	
 	/**
+	 * 是否在数据库中不存在
+	 * @return
+	 */
+	boolean notExisted();
+	
+	/**
 	 * 是否在数据库中已经存在属性为指定值的实体
 	 * @return
 	 */
