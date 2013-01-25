@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  */
 @MappedSuperclass
+@Deprecated
 public abstract class BaseEntity implements Entity {
 
 	/**
