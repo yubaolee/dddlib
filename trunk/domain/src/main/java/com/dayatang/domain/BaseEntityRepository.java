@@ -9,6 +9,7 @@ import java.util.Map;
  * 
  */
 @SuppressWarnings("rawtypes")
+@Deprecated
 public interface BaseEntityRepository<T extends Entity, ID extends Serializable> {
 
 	/**

@@ -6,6 +6,7 @@ package com.dayatang.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,9 +27,11 @@ public abstract class AbstractEntity implements Entity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private Long id;
 
 	@Version
+	@Column(name = "VERSION")
 	private int version;
 
 
