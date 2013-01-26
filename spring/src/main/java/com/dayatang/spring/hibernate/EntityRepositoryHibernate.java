@@ -5,6 +5,7 @@ import com.dayatang.hibernate.AbstractEntityRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+@Deprecated
 public class EntityRepositoryHibernate extends AbstractEntityRepository {
 
 	private SessionFactory sessionFactory;
