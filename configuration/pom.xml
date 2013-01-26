@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.4</version>
+		<version>3.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>dayatang-commons-configuration</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description>Common Configuration.</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.4/configuration</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.4/configuration</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/configuration/</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/configuration/</developerConnection>
 	</scm>
 
 	<dependencies>
