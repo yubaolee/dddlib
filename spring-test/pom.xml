@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dayatang.commons</groupId>
 		<artifactId>dayatang-commons-project</artifactId>
-		<version>3.4-SNAPSHOT</version>
+		<version>3.4</version>
 	</parent>
 	<artifactId>dayatang-commons-spring-test</artifactId>
 	<packaging>jar</packaging>
@@ -12,8 +12,8 @@
 	<description>Test classes for spring</description>
 
 	<scm>
-		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/spring-test/</connection>
-		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/spring-test/</developerConnection>
+		<connection>scm:svn:http://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.4/spring-test</connection>
+		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/tags/dayatang-commons-project-3.4/spring-test</developerConnection>
 	</scm>
 
 	<dependencies>
