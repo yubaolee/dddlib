@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,7 @@ import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
 
 @SuppressWarnings("unchecked")
+@Named("dddlib_querychannel_service_jpa")
 public class QueryChannelServiceJpa implements QueryChannelService {
 
 	private static final long serialVersionUID = -2520631490347218114L;
@@ -31,7 +33,7 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 		if (entityManager != null) {
 			return entityManager;
 		}
-		
+
 		try {
 			return InstanceFactory.getInstance(EntityManager.class);
 		} catch (IocInstanceNotFoundException e) {
@@ -40,7 +42,7 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 			return entityManagerFactory.createEntityManager();
 		}
 	}
-	
+
 	public QueryChannelServiceJpa() {
 	}
 
@@ -148,7 +150,8 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 
 		}
 
-		StringBuilder builder = new StringBuilder("select count(" + strInCount + ") ");
+		StringBuilder builder = new StringBuilder("select count(" + strInCount
+				+ ") ");
 
 		return builder;
 	}
@@ -158,7 +161,8 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	 * 
 	 */
 	private static String removeOrders(String queryStr) {
-		Matcher m = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*", Pattern.CASE_INSENSITIVE).matcher(queryStr);
+		Matcher m = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*",
+				Pattern.CASE_INSENSITIVE).matcher(queryStr);
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {
 			m.appendReplacement(sb, "");
@@ -219,9 +223,11 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	}
 
 	@Override
-	public <T> List<T> queryResult(final String queryStr, final Object[] params, final long firstRow, final int pageSize) {
+	public <T> List<T> queryResult(final String queryStr,
+			final Object[] params, final long firstRow, final int pageSize) {
 		Query query = createQuery(queryStr, params);
-		query.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(pageSize);
+		query.setFirstResult(Long.valueOf(firstRow).intValue()).setMaxResults(
+				pageSize);
 		return query.getResultList();
 	}
 
@@ -231,7 +237,8 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	}
 
 	@Override
-	public List<Map<String, Object>> queryMapResult(final String queryStr, final Object[] params) {
+	public List<Map<String, Object>> queryMapResult(final String queryStr,
+			final Object[] params) {
 
 		throw new RuntimeException("not implemented yet!");
 
@@ -265,18 +272,20 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResult(final String queryStr, final Object[] params, final long firstRow,
-			final int pageSize) {
+	public <T> Page<T> queryPagedResult(final String queryStr,
+			final Object[] params, final long firstRow, final int pageSize) {
 		long totalCount = countSizeInSession(queryStr, params);
 
-		List<T> data = createQuery(queryStr, params).setFirstResult(Long.valueOf(firstRow).intValue())
+		List<T> data = createQuery(queryStr, params)
+				.setFirstResult(Long.valueOf(firstRow).intValue())
 				.setMaxResults(getPageSize(pageSize)).getResultList();
 
 		return new Page<T>(firstRow, totalCount, getPageSize(pageSize), data);
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResultByPageNo(String queryStr, Object[] params, int currentPage, int pageSize) {
+	public <T> Page<T> queryPagedResultByPageNo(String queryStr,
+			Object[] params, int currentPage, int pageSize) {
 
 		final int firstRow = getFirstRow(currentPage, pageSize);
 
@@ -284,35 +293,37 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResultByNamedQuery(final String queryName, final Object[] params, final long firstRow,
+	public <T> Page<T> queryPagedResultByNamedQuery(final String queryName,
+			final Object[] params, final long firstRow, final int pageSize) {
+
+		throw new RuntimeException("not implemented yet!");
+	}
+
+	@Override
+	public <T> Page<T> queryPagedResultByPageNoAndNamedQuery(String queryName,
+			Object[] params, int currentPage, int pageSize) {
+
+		throw new RuntimeException("not implemented yet!");
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryPagedMapResult(final String queryStr,
+			final Object[] params, int currentPage, final int pageSize) {
+
+		throw new RuntimeException("not implemented yet!");
+	}
+
+	@Override
+	public Page<Map<String, Object>> queryPagedMapResultByNamedQuery(
+			final String queryName, final Object[] params, int currentPage,
 			final int pageSize) {
 
 		throw new RuntimeException("not implemented yet!");
 	}
 
 	@Override
-	public <T> Page<T> queryPagedResultByPageNoAndNamedQuery(String queryName, Object[] params, int currentPage,
-			int pageSize) {
-
-		throw new RuntimeException("not implemented yet!");
-	}
-
-	@Override
-	public Page<Map<String, Object>> queryPagedMapResult(final String queryStr, final Object[] params, int currentPage,
-			final int pageSize) {
-
-		throw new RuntimeException("not implemented yet!");
-	}
-
-	@Override
-	public Page<Map<String, Object>> queryPagedMapResultByNamedQuery(final String queryName, final Object[] params,
-			int currentPage, final int pageSize) {
-
-		throw new RuntimeException("not implemented yet!");
-	}
-
-	@Override
-	public <T extends Entity> Page<T> queryPagedByQuerySettings(QuerySettings<T> settings, int currentPage, int pageSize) {
+	public <T extends Entity> Page<T> queryPagedByQuerySettings(
+			QuerySettings<T> settings, int currentPage, int pageSize) {
 		throw new RuntimeException("not implemented yet!");
 	}
 }
