@@ -7,9 +7,11 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.dayatang.IocInstanceNotFoundException;
 import com.dayatang.domain.Entity;
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.domain.QuerySettings;
@@ -25,18 +27,25 @@ public class QueryChannelServiceJpa implements QueryChannelService {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	public EntityManager getEntityManager() {
+		if (entityManager != null) {
+			return entityManager;
+		}
+		
+		try {
+			return InstanceFactory.getInstance(EntityManager.class);
+		} catch (IocInstanceNotFoundException e) {
+			EntityManagerFactory entityManagerFactory = InstanceFactory
+					.getInstance(EntityManagerFactory.class);
+			return entityManagerFactory.createEntityManager();
+		}
+	}
+	
 	public QueryChannelServiceJpa() {
 	}
 
 	public QueryChannelServiceJpa(EntityManager entityManager) {
 		this.entityManager = entityManager;
-	}
-
-	public EntityManager getEntityManager() {
-		if (entityManager == null) {
-			entityManager = InstanceFactory.getInstance(EntityManager.class);
-		}
-		return entityManager;
 	}
 
 	public void setEntityManager(EntityManager entityManager) {
