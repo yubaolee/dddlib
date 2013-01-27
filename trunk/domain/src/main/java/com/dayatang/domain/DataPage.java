@@ -3,6 +3,7 @@ package com.dayatang.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class DataPage<T> {
 	private List<T> pageData = new ArrayList<T>();
 	private int pageIndex;
