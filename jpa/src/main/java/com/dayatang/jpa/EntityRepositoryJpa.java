@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -30,7 +32,8 @@ import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
 @SuppressWarnings("unchecked")
 public class EntityRepositoryJpa implements EntityRepository {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EntityRepositoryJpa.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(EntityRepositoryJpa.class);
 
 	public EntityRepositoryJpa() {
 	}
@@ -45,11 +48,13 @@ public class EntityRepositoryJpa implements EntityRepository {
 	public <T extends Entity> T save(T entity) {
 		if (entity.isNew()) {
 			getEntityManager().persist(entity);
-			LOGGER.info("create a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+			LOGGER.info("create a entity: " + entity.getClass() + "/"
+					+ entity.getId() + ".");
 			return entity;
 		}
 		T result = getEntityManager().merge(entity);
-		LOGGER.info("update a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+		LOGGER.info("update a entity: " + entity.getClass() + "/"
+				+ entity.getId() + ".");
 		return result;
 	}
 
@@ -62,7 +67,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	@Override
 	public void remove(Entity entity) {
 		getEntityManager().remove(get(entity.getClass(), entity.getId()));
-		LOGGER.info("remove a entity: " + entity.getClass() + "/" + entity.getId() + ".");
+		LOGGER.info("remove a entity: " + entity.getClass() + "/"
+				+ entity.getId() + ".");
 	}
 
 	/*
@@ -71,7 +77,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	 * @see com.dayatang.domain.EntityRepository#exists(java.io.Serializable)
 	 */
 	@Override
-	public <T extends Entity> boolean exists(final Class<T> clazz, final Serializable id) {
+	public <T extends Entity> boolean exists(final Class<T> clazz,
+			final Serializable id) {
 		T entity = getEntityManager().find(clazz, id);
 		return entity != null;
 	}
@@ -97,7 +104,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public <T extends Entity> T getUnmodified(final Class<T> clazz, final T entity) {
+	public <T extends Entity> T getUnmodified(final Class<T> clazz,
+			final T entity) {
 		getEntityManager().detach(entity);
 		return get(clazz, entity.getId());
 	}
@@ -110,8 +118,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 
 	@Override
 	public <T extends Entity> List<T> find(final QuerySettings<T> settings) {
-		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.getInstance().createCriteriaQuery(settings,
-				getEntityManager());
+		CriteriaQuery<T> criteriaQuery = JpaCriteriaQueryBuilder.getInstance()
+				.createCriteriaQuery(settings, getEntityManager());
 		Query query = getEntityManager().createQuery(criteriaQuery);
 		query.setFirstResult(settings.getFirstResult());
 		if (settings.getMaxResults() > 0) {
@@ -121,35 +129,38 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public <T> List<T> find(final String queryString, final Object[] params, final Class<T> resultClass) {
-		Query query = getEntityManager().createQuery(queryString);
-		for (int i = 0; i < params.length; i++) {
-			query.setParameter(i + 1, params[i]);
-		}
-		return query.getResultList();
-	}
-
-	@Override
-	public <T> List<T> find(final String queryString, final Map<String, Object> params, final Class<T> resultClass) {
-		Query query = getEntityManager().createQuery(queryString);
-		for (String key : params.keySet()) {
-			query = query.setParameter(key, params.get(key));
-		}
-		return query.getResultList();
-	}
-
-	@Override
-	public <T> List<T> findByNamedQuery(final String queryName, final Object[] params, final Class<T> resultClass) {
-		Query query = getEntityManager().createNamedQuery(queryName);
-		for (int i = 0; i < params.length; i++) {
-			query.setParameter(i + 1, params[i]);
-		}
-		return query.getResultList();
-	}
-
-	@Override
-	public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> params,
+	public <T> List<T> find(final String queryString, final Object[] params,
 			final Class<T> resultClass) {
+		Query query = getEntityManager().createQuery(queryString);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		return query.getResultList();
+	}
+
+	@Override
+	public <T> List<T> find(final String queryString,
+			final Map<String, Object> params, final Class<T> resultClass) {
+		Query query = getEntityManager().createQuery(queryString);
+		for (String key : params.keySet()) {
+			query = query.setParameter(key, params.get(key));
+		}
+		return query.getResultList();
+	}
+
+	@Override
+	public <T> List<T> findByNamedQuery(final String queryName,
+			final Object[] params, final Class<T> resultClass) {
+		Query query = getEntityManager().createNamedQuery(queryName);
+		for (int i = 0; i < params.length; i++) {
+			query.setParameter(i + 1, params[i]);
+		}
+		return query.getResultList();
+	}
+
+	@Override
+	public <T> List<T> findByNamedQuery(final String queryName,
+			final Map<String, Object> params, final Class<T> resultClass) {
 		Query query = getEntityManager().createNamedQuery(queryName);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
@@ -158,27 +169,33 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public <T extends Entity, E extends T> List<T> findByExample(final E example, final ExampleSettings<T> settings) {
-//		Map<String, Object> propValues = new EntityUtils(example).getPropValues();
-//		Map<String, Class<?>> propTypes = new EntityUtils(example).getPropTypes();
-//		
-//		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-//		CriteriaQuery<E> query = (CriteriaQuery<E>) criteriaBuilder.createQuery(example.getClass());
-//		Root<E> root = (Root<E>) query.from(example.getClass());
-//		query.distinct(true);
-//		query.select(root);
-//		List<Predicate> predicates = new ArrayList<Predicate>();
-//		for (String prop : propValues.keySet()) {
-//			if (settings.getExcludedProperties().contains(prop)) {
-//				continue;
-//			}
-//			Object value = propValues.get(prop);
-//			if (value != null) {
-//				predicates.add(criteriaBuilder.equal(root.get(prop), criteriaBuilder.parameter(propTypes.get(prop), value)));
-//			}
-//		}
-//		
-		
+	public <T extends Entity, E extends T> List<T> findByExample(
+			final E example, final ExampleSettings<T> settings) {
+		// Map<String, Object> propValues = new
+		// EntityUtils(example).getPropValues();
+		// Map<String, Class<?>> propTypes = new
+		// EntityUtils(example).getPropTypes();
+		//
+		// CriteriaBuilder criteriaBuilder =
+		// getEntityManager().getCriteriaBuilder();
+		// CriteriaQuery<E> query = (CriteriaQuery<E>)
+		// criteriaBuilder.createQuery(example.getClass());
+		// Root<E> root = (Root<E>) query.from(example.getClass());
+		// query.distinct(true);
+		// query.select(root);
+		// List<Predicate> predicates = new ArrayList<Predicate>();
+		// for (String prop : propValues.keySet()) {
+		// if (settings.getExcludedProperties().contains(prop)) {
+		// continue;
+		// }
+		// Object value = propValues.get(prop);
+		// if (value != null) {
+		// predicates.add(criteriaBuilder.equal(root.get(prop),
+		// criteriaBuilder.parameter(propTypes.get(prop), value)));
+		// }
+		// }
+		//
+
 		throw new RuntimeException("not implemented yet!");
 	}
 
@@ -189,7 +206,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public <T> T getSingleResult(final String queryString, final Object[] params, Class<T> resultClass) {
+	public <T> T getSingleResult(final String queryString,
+			final Object[] params, Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
@@ -198,7 +216,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public <T> T getSingleResult(final String queryString, final Map<String, Object> params, Class<T> resultClass) {
+	public <T> T getSingleResult(final String queryString,
+			final Map<String, Object> params, Class<T> resultClass) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
@@ -216,7 +235,8 @@ public class EntityRepositoryJpa implements EntityRepository {
 	}
 
 	@Override
-	public void executeUpdate(final String queryString, final Map<String, Object> params) {
+	public void executeUpdate(final String queryString,
+			final Map<String, Object> params) {
 		Query query = getEntityManager().createQuery(queryString);
 		for (String key : params.keySet()) {
 			query = query.setParameter(key, params.get(key));
@@ -233,80 +253,109 @@ public class EntityRepositoryJpa implements EntityRepository {
 	public void refresh(Entity entity) {
 		getEntityManager().refresh(entity);
 	}
-	
+
 	@Override
 	public void clear() {
 		getEntityManager().clear();
 	}
 
 	@Override
-	public <T extends Entity> DataPage<T> findAll(Class<T> clazz, int pageIndex, int pageSize) {
+	public <T extends Entity> DataPage<T> findAll(Class<T> clazz,
+			int pageIndex, int pageSize) {
 		List<T> data = findAll(clazz);
 		int from = (pageIndex - 1) * pageSize;
 		int to = from + pageSize;
 		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
 	}
 
 	@Override
-	public <T extends Entity> DataPage<T> find(QuerySettings<T> settings, int pageIndex, int pageSize) {
+	public <T extends Entity> DataPage<T> find(QuerySettings<T> settings,
+			int pageIndex, int pageSize) {
 		List<T> data = find(settings);
 		int from = (pageIndex - 1) * pageSize;
 		int to = from + pageSize;
 		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
 	}
 
 	@Override
-	public <T> DataPage<T> find(String queryString, Object[] params, int pageIndex, int pageSize, Class<T> resultClass) {
+	public <T> DataPage<T> find(String queryString, Object[] params,
+			int pageIndex, int pageSize, Class<T> resultClass) {
 		List<T> data = find(queryString, params, resultClass);
 		int from = (pageIndex - 1) * pageSize;
 		int to = from + pageSize;
 		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
 	}
 
 	@Override
-	public <T> DataPage<T> find(String queryString, Map<String, Object> params, int pageIndex, int pageSize,
-			Class<T> resultClass) {
+	public <T> DataPage<T> find(String queryString, Map<String, Object> params,
+			int pageIndex, int pageSize, Class<T> resultClass) {
 		List<T> data = find(queryString, params, resultClass);
 		int from = (pageIndex - 1) * pageSize;
 		int to = from + pageSize;
 		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
 	}
 
 	@Override
-	public <T> DataPage<T> findByNamedQuery(String queryName, Object[] params, int pageIndex, int pageSize,
+	public <T> DataPage<T> findByNamedQuery(String queryName, Object[] params,
+			int pageIndex, int pageSize, Class<T> resultClass) {
+		List<T> data = findByNamedQuery(queryName, params, resultClass);
+		int from = (pageIndex - 1) * pageSize;
+		int to = from + pageSize;
+		int resultCount = data.size();
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
+		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
+	}
+
+	@Override
+	public <T> DataPage<T> findByNamedQuery(String queryName,
+			Map<String, Object> params, int pageIndex, int pageSize,
 			Class<T> resultClass) {
 		List<T> data = findByNamedQuery(queryName, params, resultClass);
 		int from = (pageIndex - 1) * pageSize;
 		int to = from + pageSize;
 		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
+		List<T> pageDate = data.subList(from, to > resultCount ? resultCount
+				: to);
 		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
 	}
 
-	@Override
-	public <T> DataPage<T> findByNamedQuery(String queryName, Map<String, Object> params, int pageIndex, int pageSize,
-			Class<T> resultClass) {
-		List<T> data = findByNamedQuery(queryName, params, resultClass);
-		int from = (pageIndex - 1) * pageSize;
-		int to = from + pageSize;
-		int resultCount = data.size();
-		List<T> pageDate = data.subList(from, to > resultCount ? resultCount : to);
-		return new DataPage<T>(pageDate, pageIndex, pageSize, resultCount);
-	}
+	// private EntityManager getEntityManager() {
+	// try {
+	// return InstanceFactory.getInstance(EntityManager.class);
+	// } catch (IocInstanceNotFoundException e) {
+	// EntityManagerFactory entityManagerFactory =
+	// InstanceFactory.getInstance(EntityManagerFactory.class);
+	// return entityManagerFactory.createEntityManager();
+	// }
+	// }
+
+	@Inject
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	private EntityManager getEntityManager() {
+		if (entityManager != null) {
+			return entityManager;
+		}
+		
 		try {
 			return InstanceFactory.getInstance(EntityManager.class);
 		} catch (IocInstanceNotFoundException e) {
-			EntityManagerFactory entityManagerFactory = InstanceFactory.getInstance(EntityManagerFactory.class);
+			EntityManagerFactory entityManagerFactory = InstanceFactory
+					.getInstance(EntityManagerFactory.class);
 			return entityManagerFactory.createEntityManager();
 		}
 	}
