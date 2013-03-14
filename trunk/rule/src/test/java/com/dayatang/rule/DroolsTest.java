@@ -21,7 +21,7 @@ import com.dayatang.rule.examples.Person;
 
 public class DroolsTest {
 
-	private String ruleDrl = "/Person.drl";
+	private String ruleDrl = "/rule/Gender.drl";
 	private Person chencao;
 	private Person xishi;
 	private Person yyang;

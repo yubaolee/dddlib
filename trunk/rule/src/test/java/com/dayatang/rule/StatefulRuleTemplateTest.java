@@ -16,7 +16,7 @@ import com.dayatang.rule.examples.Person;
 public class StatefulRuleTemplateTest {
 	
 	private StatefulRuleTemplate instance;
-	private String ruleDrl = "/Person.drl";
+	private String ruleDrl = "/rule/Gender.drl";
 	private Person chencao;
 	private Person xishi;
 	private Person yyang;

@@ -13,7 +13,7 @@ import com.dayatang.rule.impl.StatelessRuleServiceJsr94;
 
 public class DayatangRuleTest {
 
-	private String ruleDrl = "/Person.drl";
+	private String ruleDrl = "/rule/Gender.drl";
 	private Person chencao;
 	private Person xishi;
 	private Person yyang;
