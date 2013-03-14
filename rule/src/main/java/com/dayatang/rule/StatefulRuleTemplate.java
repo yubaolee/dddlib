@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.rules.RuleRuntime;
@@ -25,16 +26,74 @@ import org.slf4j.LoggerFactory;
  */
 @SuppressWarnings("rawtypes")
 public class StatefulRuleTemplate {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(StatefulRuleTemplate.class);
 
+	private Map sessionProperties = new HashMap();
+	
 	private RuleAdministrator ruleAdministrator;
 	private LocalRuleExecutionSetProvider ruleExecutionSetProvider;
 	private RuleRuntime ruleRuntime;
 
 	private RuleExecutionSet ruleExecutionSet;
-	private Map sessionProperties;
-	
-	protected static Logger LOGGER = LoggerFactory.getLogger(StatefulRuleTemplate.class);
 
+	public final StatefulRuleTemplate sessionProperties(Map sessionProperties) {
+		this.sessionProperties = sessionProperties;
+		return this;
+	}
+
+	public final StatefulRuleTemplate ruleSource(String ruleSource, Map executionSetProperties) {
+		return ruleSource(new StringReader(ruleSource), executionSetProperties);
+	}
+
+	public final StatefulRuleTemplate ruleSource(String ruleSource) {
+		return ruleSource(ruleSource, null);
+	}
+
+	public final StatefulRuleTemplate ruleSource(Reader ruleSource, Map executionSetProperties) {
+		try {
+			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return this;
+	}
+
+	public final StatefulRuleTemplate ruleSource(Reader ruleSource) {
+		return ruleSource(ruleSource, null);
+	}
+
+	public final StatefulRuleTemplate ruleSource(InputStream ruleSource, Map executionSetProperties) {
+		try {
+			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return this;
+	}
+
+	public final StatefulRuleTemplate ruleSource(InputStream ruleSource) {
+		return ruleSource(ruleSource, null);
+	}
+
+	public final StatefulRuleTemplate ruleSource(Object ruleSource, Map executionSetProperties) {
+		try {
+			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		}
+		return this;
+	}
+
+	public final StatefulRuleTemplate ruleSource(Object ruleSource) {
+		return ruleSource(ruleSource, null);
+	}
+	
+	
 	/**
 	 * 构造函数
 	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
@@ -43,6 +102,38 @@ public class StatefulRuleTemplate {
 	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
 	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 */
+	public StatefulRuleTemplate(RuleServiceProvider ruleServiceProvider) {
+		this(ruleServiceProvider, null);
+	}
+	
+	/**
+	 * 构造函数
+	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
+	 * @param serviceProviderProperties 具体规则服务提供者所需要的额外属性
+	 * @param ruleSource 规则源，包含规则定义的内容。可能是字符串，Reader, InputStream或其他服务提供者支持的类型。
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
+	 */
+	public StatefulRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties) {
+		try {
+			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
+			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(serviceProviderProperties);
+			ruleRuntime = ruleServiceProvider.getRuleRuntime();
+			LOGGER.info("The rule service provider of JSR94 is " + ruleServiceProvider.getClass());
+		} catch (Exception e) {
+			throw new RuleRuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 构造函数
+	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
+	 * @param serviceProviderProperties 具体规则服务提供者所需要的额外属性
+	 * @param ruleSource 规则源，包含规则定义的内容。可能是字符串，Reader, InputStream或其他服务提供者支持的类型。
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties 规则中的上下文（如全局变量等）
+	 */
+	@Deprecated
 	public StatefulRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, 
 			Object ruleSource, Map executionSetProperties, Map sessionProperties) {
 		try {

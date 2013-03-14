@@ -31,7 +31,7 @@ public class StatefulRuleTemplateTest {
 
 	private StatefulRuleTemplate createStatefulRuleTemplate() {
 		InputStream ruleSource = getClass().getResourceAsStream(ruleDrl);
-		StatefulRuleTemplate result = new StatefulRuleTemplate(new RuleServiceProviderImpl(), null, ruleSource, null, null);
+		StatefulRuleTemplate result = new StatefulRuleTemplate(new RuleServiceProviderImpl()).ruleSource(ruleSource);
 		return result;
 	}
 
@@ -58,5 +58,4 @@ public class StatefulRuleTemplateTest {
 		assertEquals(60, yyang.getRetireAge());
 		
 	}
-
 }
