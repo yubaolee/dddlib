@@ -38,19 +38,41 @@ public class StatelessRuleTemplate {
 	private RuleExecutionSet ruleExecutionSet;
 	private Map sessionProperties;
 
+	/**
+	 * 设置会话属性
+	 * @param sessionProperties
+	 * @return
+	 */
 	public final StatelessRuleTemplate sessionProperties(Map sessionProperties) {
 		this.sessionProperties = sessionProperties;
 		return this;
 	}
 
+	/**
+	 * 从字符串中读取规则定义
+	 * @param ruleSource 字符串形式的规则定义
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(String ruleSource, Map executionSetProperties) {
 		return ruleSource(new StringReader(ruleSource), executionSetProperties);
 	}
 
+	/**
+	 * 从字符串中读取规则定义
+	 * @param ruleSource 字符串形式的规则定义
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(String ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
 
+	/**
+	 * 从Reader中读取规则定义
+	 * @param ruleSource 规则定义
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(Reader ruleSource, Map executionSetProperties) {
 		try {
 			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
@@ -62,10 +84,21 @@ public class StatelessRuleTemplate {
 		return this;
 	}
 
+	/**
+	 * 从Reader中读取规则定义
+	 * @param ruleSource 规则定义
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(Reader ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
 
+	/**
+	 * 从输入流中读取规则定义
+	 * @param ruleSource 字符串形式的规则定义
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(InputStream ruleSource, Map executionSetProperties) {
 		try {
 			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
@@ -77,10 +110,21 @@ public class StatelessRuleTemplate {
 		return this;
 	}
 
+	/**
+	 * 从输入流中读取规则定义
+	 * @param ruleSource 规则定义
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(InputStream ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
 
+	/**
+	 * 读取规则定义
+	 * @param ruleSource 规则定义
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(Object ruleSource, Map executionSetProperties) {
 		try {
 			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
@@ -90,6 +134,11 @@ public class StatelessRuleTemplate {
 		return this;
 	}
 
+	/**
+	 * 读取规则定义
+	 * @param ruleSource 规则定义
+	 * @return
+	 */
 	public final StatelessRuleTemplate ruleSource(Object ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
