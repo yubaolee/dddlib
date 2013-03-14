@@ -35,8 +35,7 @@ public class StatelessRuleTemplateTest {
 
 	private StatelessRuleTemplate createStatelessRuleTemplate() {
 		InputStream ruleSource = getClass().getResourceAsStream(ruleDrl);
-		StatelessRuleTemplate result = new StatelessRuleTemplate(new RuleServiceProviderImpl(), null, ruleSource, null, null);
-		return result;
+		return new StatelessRuleTemplate(new RuleServiceProviderImpl()).ruleSource(ruleSource);
 	}
 
 	@After
