@@ -170,10 +170,12 @@ public class StatelessRuleTemplate {
 	 * @return
 	 * @throws Exception
 	 */
-	public List execute(StatelessRuleCallback callback) throws Exception {
+	public List execute(StatelessRuleCallback callback) {
 		StatelessRuleSession session = createStatelessRuleSession();
 		try {
 			return callback.doInRuleSession(session);
+		} catch (Exception e) {
+			throw new RuleRuntimeException(e);
 		} finally {
 			releaseStatelessRuleSession(session);
 		}
