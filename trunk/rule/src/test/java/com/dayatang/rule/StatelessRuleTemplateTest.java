@@ -44,18 +44,32 @@ public class StatelessRuleTemplateTest {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-	public void testExecute() throws Exception {
-		final List objects = Arrays.asList(chencao, xishi, yyang);
+	public void testExecuteCallback() throws Exception {
+		final List facts = Arrays.asList(chencao, xishi, yyang);
 		List results = instance.execute(new StatelessRuleCallback() {
 			
 			@Override
 			public List doInRuleSession(StatelessRuleSession session) throws Exception {
-				return session.executeRules(objects);
+				return session.executeRules(facts);
 			}
 		});
 
 		// Validate
-		assertTrue(results.containsAll(objects));
+		assertTrue(results.containsAll(facts));
+		assertEquals(60, chencao.getRetireAge());
+		assertEquals(55, xishi.getRetireAge());
+		assertEquals(60, yyang.getRetireAge());
+		
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void testExecuteFacts() throws Exception {
+		final List facts = Arrays.asList(chencao, xishi, yyang);
+		List results = instance.execute(facts);
+
+		// Validate
+		assertTrue(results.containsAll(facts));
 		assertEquals(60, chencao.getRetireAge());
 		assertEquals(55, xishi.getRetireAge());
 		assertEquals(60, yyang.getRetireAge());
