@@ -25,6 +25,6 @@
 	</dependencies>
 	
 	<properties>
-		<groovy.version>1.8.6</groovy.version>
+		<groovy.version>1.8.9</groovy.version>
 	</properties>
 </project>

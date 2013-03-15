@@ -76,10 +76,18 @@ public class ScriptServiceTest {
 
 	
 	@Test
-	public void testEvalString() throws ScriptException {
+	public void testEvalStringGroovy() throws ScriptException {
 		ScriptEngine engine = new ScriptService().getEngine();
-		String script = "System.out.println(\"Hello!!!!\";)";
+		String script = "System.out.println(\"Hello!!!!\");";
 		engine.eval(script);
+	}
+	
+	@Test
+	public void testEvalStringJavascript() throws ScriptException {
+		ScriptEngine engine = new ScriptService(ScriptType.JS).getEngine();
+		//String script = "print(\"Hello!!!!\");";
+		String script = "eval(\"3 + 2\");";
+		System.out.println(engine.eval(script));
 	}
 	
 	
