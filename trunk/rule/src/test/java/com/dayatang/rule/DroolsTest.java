@@ -75,8 +75,7 @@ public class DroolsTest {
 
 	private KnowledgeBase createknowledgeBase() {
 		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(); 
-		Collection<KnowledgePackage> knowledgePackages = createKnowledgeBuilder().getKnowledgePackages();
-		knowledgeBase.addKnowledgePackages(knowledgePackages);
+		knowledgeBase.addKnowledgePackages(createKnowledgeBuilder().getKnowledgePackages());
 		return knowledgeBase;
 	}
 
