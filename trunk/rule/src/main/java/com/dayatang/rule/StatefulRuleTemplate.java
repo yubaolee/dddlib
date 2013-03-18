@@ -175,9 +175,9 @@ public class StatefulRuleTemplate {
 
 	private StatefulRuleSession createStatefulRuleSession() {
 		try{
-			String packageName = ruleExecutionSet.getName();
-			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
-			return (StatefulRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
+			String ruleExecutionSetUri = ruleExecutionSet.getName();
+			ruleAdministrator.registerRuleExecutionSet(ruleExecutionSetUri, ruleExecutionSet, null);
+			return (StatefulRuleSession) ruleRuntime.createRuleSession(ruleExecutionSetUri, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
