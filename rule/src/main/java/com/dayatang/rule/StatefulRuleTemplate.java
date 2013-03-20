@@ -41,49 +41,21 @@ public class StatefulRuleTemplate {
 		this.sessionProperties = sessionProperties;
 		return this;
 	}
-
-	public final StatefulRuleTemplate ruleSource(String ruleSource, Map executionSetProperties) {
-		return ruleSource(new StringReader(ruleSource), executionSetProperties);
-	}
-
-	public final StatefulRuleTemplate ruleSource(String ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
-	public final StatefulRuleTemplate ruleSource(Reader ruleSource, Map executionSetProperties) {
-		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return this;
-	}
-
-	public final StatefulRuleTemplate ruleSource(Reader ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
-	public final StatefulRuleTemplate ruleSource(InputStream ruleSource, Map executionSetProperties) {
-		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return this;
-	}
-
-	public final StatefulRuleTemplate ruleSource(InputStream ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
+	
 	public final StatefulRuleTemplate ruleSource(Object ruleSource, Map executionSetProperties) {
 		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+			if (ruleSource instanceof String) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(new StringReader((String) ruleSource), executionSetProperties);
+			} else if (ruleSource instanceof Reader) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet((Reader) ruleSource, executionSetProperties);
+			} else if (ruleSource instanceof InputStream) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet((InputStream) ruleSource, executionSetProperties);
+			} else {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+			}
 		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
 			throw new UnSupportedRuleFormatException(e);
 		}
 		return this;

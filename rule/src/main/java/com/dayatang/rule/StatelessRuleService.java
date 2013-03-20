@@ -3,8 +3,6 @@
  */
 package com.dayatang.rule;
 
-import java.io.InputStream;
-import java.io.Reader;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -25,71 +23,23 @@ public interface StatelessRuleService extends Serializable {
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param facts 用于执行规则的对象列表。
-	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(String ruleSource, List facts);
-	
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param facts 用于执行规则的对象列表。
-	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(InputStream ruleSource, List facts);
-
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param facts 用于执行规则的对象列表。
-	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(Reader ruleSource, List facts);
-
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
 	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
 	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
 	 * @throws RuleRuntimeException
 	 */
 	List executeRules(Object ruleSource, List facts);
 
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @param sessionProperties 规则中的上下文（如全局变量等）
-	 * @param facts 用于执行规则的对象列表。
-	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(String ruleSource, Map executionSetProperties, Map sessionProperties, List facts);
-	
-	/**
-	 * 执行规则并返回结果
-	 * @param ruleSource 规则源
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @param sessionProperties 规则中的上下文（如全局变量等）
-	 * @param facts 用于执行规则的对象列表。
-	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
-	 * @throws RuleRuntimeException
-	 */
-	List executeRules(InputStream ruleSource, Map executionSetProperties, Map sessionProperties, List facts);
 
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
 	 * @param sessionProperties 规则中的上下文（如全局变量等）
 	 * @param facts 用于执行规则的对象列表。
 	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
 	 * @throws RuleRuntimeException
 	 */
-	List executeRules(Reader ruleSource, Map executionSetProperties, Map sessionProperties, List facts);
+	List executeRules(Object ruleSource, Map sessionProperties, List facts);
+
 
 	/**
 	 * 执行规则并返回结果
