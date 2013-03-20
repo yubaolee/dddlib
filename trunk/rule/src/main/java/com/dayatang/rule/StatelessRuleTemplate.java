@@ -22,13 +22,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 无状态规则服务模板类。负责创建StatelessRuleSession,执行规则和关闭StatelessRuleSession。
- * 建立这个类的目的，一是消除了客户代码自行创建StatelessRuleSession的必要性，二是为了防止客户代码执行规则之后忘记释放StatelessRuleSession。
+ * 建立这个类的目的，一是消除了客户代码自行创建StatelessRuleSession的必要性
+ * ，二是为了防止客户代码执行规则之后忘记释放StatelessRuleSession。
+ * 
  * @author yyang <a href="mailto:gdyangyu@gmail.com">杨宇</a>
- *
+ * 
  */
 @SuppressWarnings("rawtypes")
 public class StatelessRuleTemplate {
-	
+
 	private static Logger LOGGER = LoggerFactory.getLogger(StatelessRuleTemplate.class);
 
 	private RuleAdministrator ruleAdministrator;
@@ -40,6 +42,7 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 设置会话属性
+	 * 
 	 * @param sessionProperties
 	 * @return
 	 */
@@ -49,86 +52,28 @@ public class StatelessRuleTemplate {
 	}
 
 	/**
-	 * 从字符串中读取规则定义
-	 * @param ruleSource 字符串形式的规则定义
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(String ruleSource, Map executionSetProperties) {
-		return ruleSource(new StringReader(ruleSource), executionSetProperties);
-	}
-
-	/**
-	 * 从字符串中读取规则定义
-	 * @param ruleSource 字符串形式的规则定义
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(String ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
-	/**
-	 * 从Reader中读取规则定义
-	 * @param ruleSource 规则定义
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(Reader ruleSource, Map executionSetProperties) {
-		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return this;
-	}
-
-	/**
-	 * 从Reader中读取规则定义
-	 * @param ruleSource 规则定义
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(Reader ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
-	/**
-	 * 从输入流中读取规则定义
-	 * @param ruleSource 字符串形式的规则定义
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(InputStream ruleSource, Map executionSetProperties) {
-		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
-		} catch (RuleExecutionSetCreateException e) {
-			throw new UnSupportedRuleFormatException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return this;
-	}
-
-	/**
-	 * 从输入流中读取规则定义
-	 * @param ruleSource 规则定义
-	 * @return
-	 */
-	public final StatelessRuleTemplate ruleSource(InputStream ruleSource) {
-		return ruleSource(ruleSource, null);
-	}
-
-	/**
 	 * 读取规则定义
-	 * @param ruleSource 规则定义
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * 
+	 * @param ruleSource
+	 *            规则定义
+	 * @param executionSetProperties
+	 *            规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
 	 * @return
 	 */
 	public final StatelessRuleTemplate ruleSource(Object ruleSource, Map executionSetProperties) {
 		try {
-			this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+			if (ruleSource instanceof String) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(new StringReader((String) ruleSource), executionSetProperties);
+			} else if (ruleSource instanceof Reader) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet((Reader) ruleSource, executionSetProperties);
+			} else if (ruleSource instanceof InputStream) {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet((InputStream) ruleSource, executionSetProperties);
+			} else {
+				this.ruleExecutionSet = ruleExecutionSetProvider.createRuleExecutionSet(ruleSource, executionSetProperties);
+			}
 		} catch (RuleExecutionSetCreateException e) {
+			throw new UnSupportedRuleFormatException(e);
+		} catch (IOException e) {
 			throw new UnSupportedRuleFormatException(e);
 		}
 		return this;
@@ -136,16 +81,20 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 读取规则定义
-	 * @param ruleSource 规则定义
+	 * 
+	 * @param ruleSource
+	 *            规则定义
 	 * @return
 	 */
 	public final StatelessRuleTemplate ruleSource(Object ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
-	
+
 	/**
 	 * 构造函数
-	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
+	 * 
+	 * @param ruleServiceProvider
+	 *            规则服务提供者实现类，如Drools等。
 	 */
 	public StatelessRuleTemplate(RuleServiceProvider ruleServiceProvider) {
 		this(ruleServiceProvider, null);
@@ -153,8 +102,11 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 构造函数
-	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
-	 * @param serviceProviderProperties 具体规则服务提供者所需要的额外属性
+	 * 
+	 * @param ruleServiceProvider
+	 *            规则服务提供者实现类，如Drools等。
+	 * @param serviceProviderProperties
+	 *            具体规则服务提供者所需要的额外属性
 	 */
 	public StatelessRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties) {
 		try {
@@ -169,15 +121,21 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 构造函数
-	 * @param ruleServiceProvider 规则服务提供者实现类，如Drools等。
-	 * @param serviceProviderProperties 具体规则服务提供者所需要的额外属性
-	 * @param ruleSource 规则源，包含规则定义的内容。可能是字符串，Reader, InputStream或其他服务提供者支持的类型。
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
-	 * @param sessionProperties 规则中的上下文（如全局变量等）
+	 * 
+	 * @param ruleServiceProvider
+	 *            规则服务提供者实现类，如Drools等。
+	 * @param serviceProviderProperties
+	 *            具体规则服务提供者所需要的额外属性
+	 * @param ruleSource
+	 *            规则源，包含规则定义的内容。可能是字符串，Reader, InputStream或其他服务提供者支持的类型。
+	 * @param executionSetProperties
+	 *            规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @param sessionProperties
+	 *            规则中的上下文（如全局变量等）
 	 */
 	@Deprecated
-	public StatelessRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, 
-			Object ruleSource, Map executionSetProperties, Map sessionProperties) {
+	public StatelessRuleTemplate(RuleServiceProvider ruleServiceProvider, Map serviceProviderProperties, Object ruleSource,
+			Map executionSetProperties, Map sessionProperties) {
 		try {
 			ruleAdministrator = ruleServiceProvider.getRuleAdministrator();
 			ruleExecutionSetProvider = ruleAdministrator.getLocalRuleExecutionSetProvider(serviceProviderProperties);
@@ -215,6 +173,7 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 执行规则
+	 * 
 	 * @param callback
 	 * @return
 	 * @throws Exception
@@ -232,6 +191,7 @@ public class StatelessRuleTemplate {
 
 	/**
 	 * 执行规则
+	 * 
 	 * @param facts
 	 * @return
 	 * @throws Exception
@@ -241,16 +201,16 @@ public class StatelessRuleTemplate {
 		try {
 			return session.executeRules(facts);
 		} catch (InvalidRuleSessionException e) {
-			 throw new RuleRuntimeException(e);
+			throw new RuleRuntimeException(e);
 		} catch (RemoteException e) {
-			 throw new RuleRuntimeException(e);
+			throw new RuleRuntimeException(e);
 		} finally {
 			releaseStatelessRuleSession(session);
 		}
 	}
 
 	private StatelessRuleSession createStatelessRuleSession() {
-		try{
+		try {
 			String packageName = ruleExecutionSet.getName();
 			ruleAdministrator.registerRuleExecutionSet(packageName, ruleExecutionSet, null);
 			return (StatelessRuleSession) ruleRuntime.createRuleSession(packageName, sessionProperties, RuleRuntime.STATELESS_SESSION_TYPE);
@@ -267,4 +227,5 @@ public class StatelessRuleTemplate {
 			throw new RuleRuntimeException("Cannot release rule session!!", e);
 		}
 	}
+
 }
