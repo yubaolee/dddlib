@@ -42,6 +42,12 @@ public class StatefulRuleTemplate {
 		return this;
 	}
 	
+	/**
+	 * 从指定的来源读取规则集
+	 * @param ruleSource 规则定义源
+	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+	 * @return
+	 */
 	public final StatefulRuleTemplate ruleSource(Object ruleSource, Map executionSetProperties) {
 		try {
 			if (ruleSource instanceof String) {
@@ -61,6 +67,11 @@ public class StatefulRuleTemplate {
 		return this;
 	}
 
+	/**
+	 * 从指定的来源读取规则集
+	 * @param ruleSource 规则定义源
+	 * @return
+	 */
 	public final StatefulRuleTemplate ruleSource(Object ruleSource) {
 		return ruleSource(ruleSource, null);
 	}
@@ -136,23 +147,17 @@ public class StatefulRuleTemplate {
 		}
 	}
 
+	/**
+	 * 提供StatefulRuleSession给StatefulRuleCallback执行
+	 * @param callback
+	 * @throws Exception
+	 */
 	public void execute(StatefulRuleCallback callback) throws Exception {
-		StatefulRuleSession session = createStatefulRuleSession();
+		StatefulRuleSession session = getStatefulRuleSession();
 		try {
 			callback.doInRuleSession(session);
 		} finally {
 			releaseStatefulRuleSession(session);
-		}
-	}
-
-	private StatefulRuleSession createStatefulRuleSession() {
-		try{
-			String ruleExecutionSetUri = ruleExecutionSet.getName();
-			ruleAdministrator.registerRuleExecutionSet(ruleExecutionSetUri, ruleExecutionSet, null);
-			return (StatefulRuleSession) ruleRuntime.createRuleSession(ruleExecutionSetUri, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
 		}
 	}
 
@@ -161,6 +166,21 @@ public class StatefulRuleTemplate {
 			session.release();
 		} catch (Exception e) {
 			throw new RuleRuntimeException("Cannot release rule session!!", e);
+		}
+	}
+	
+	/**
+	 * 获取StatefulRuleSession。客户代码要记得在使用StatefulRuleSession之后通过调用其release()方法释放资源。
+	 * @return
+	 */
+	public StatefulRuleSession getStatefulRuleSession() {
+		try{
+			String ruleExecutionSetUri = ruleExecutionSet.getName();
+			ruleAdministrator.registerRuleExecutionSet(ruleExecutionSetUri, ruleExecutionSet, null);
+			return (StatefulRuleSession) ruleRuntime.createRuleSession(ruleExecutionSetUri, sessionProperties, RuleRuntime.STATEFUL_SESSION_TYPE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuleRuntimeException("Cannot create Rule Session!!!", e);
 		}
 	}
 }
