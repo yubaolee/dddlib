@@ -10,6 +10,7 @@ import java.util.Map;
  * @author yyang
  * 
  */
+@SuppressWarnings("deprecation")
 public interface EntityRepository {
 
 	/**
