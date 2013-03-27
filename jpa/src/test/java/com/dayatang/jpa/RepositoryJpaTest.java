@@ -192,6 +192,28 @@ public class RepositoryJpaTest extends AbstractIntegrationTest {
 		assertTrue(dictionaries.contains(dictionary3));
 	}
 
+	
+	@Test
+	public void testFindByProperty() {
+		List<Dictionary> results = repository.findByProperty(Dictionary.class, "category", education);
+		assertTrue(results.contains(undergraduate));
+		assertTrue(results.contains(graduate));
+		assertFalse(results.contains(male));
+	}
+
+	
+	@Test
+	public void testFindByProperties() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("category", education);
+		params.put("code", "02");
+		List<Dictionary> results = repository.findByProperties(Dictionary.class, params);
+		assertTrue(results.contains(graduate));
+		assertFalse(results.contains(undergraduate));
+		assertFalse(results.contains(male));
+	}
+	
+	
 	@Test
 	public void testGetSingleResultSettings() {
 		QuerySettings<Dictionary> settings = QuerySettings.create(Dictionary.class).eq("category", gender)
