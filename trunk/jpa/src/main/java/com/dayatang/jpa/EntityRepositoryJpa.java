@@ -30,7 +30,7 @@ import com.dayatang.jpa.internal.JpaCriteriaQueryBuilder;
  * @author yyang
  * 
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "deprecation"})
 @Named("dddlib_entity_repository_jpa")
 public class EntityRepositoryJpa implements EntityRepository {
 
@@ -199,6 +199,21 @@ public class EntityRepositoryJpa implements EntityRepository {
 		//
 
 		throw new RuntimeException("not implemented yet!");
+	}
+
+	@Override
+	public <T extends Entity> List<T> findByProperty(Class<T> clazz, String propertyName, Object propertyValue) {
+		QuerySettings<T> querySettings = QuerySettings.create(clazz).eq(propertyName, propertyValue);
+		return find(querySettings);
+	}
+
+	@Override
+	public <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> properties) {
+		QuerySettings<T> querySettings = QuerySettings.create(clazz);
+		for (String propertyName : properties.keySet()) {
+			querySettings = querySettings.eq(propertyName, properties.get(propertyName));
+		}
+		return find(querySettings);
 	}
 
 	@Override

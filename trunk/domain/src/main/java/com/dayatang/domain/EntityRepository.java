@@ -127,6 +127,24 @@ public interface EntityRepository {
 	<T extends Entity, E extends T> List<T> findByExample(E example, ExampleSettings<T> settings);
 	
 	/**
+	 * 根据单一属性的值查找实体
+	 * @param clazz 要查询的实体的类
+	 * @param propertyName 要查询的属性
+	 * @param propertyValue 匹配的属性值
+	 * @return 类型为clazz的、属性propertyName的值等于propertyValue的实体的集合
+	 */
+	<T extends Entity> List<T> findByProperty(Class<T> clazz, String propertyName, Object propertyValue);
+	
+	/**
+	 * 根据多个属性的值查找实体
+	 * @param clazz 要查询的实体的类
+	 * @param properties 一批属性的Map，其中key为属性名，value为要匹配的属性值。
+	 * @return 类型为clazz、多个属性分别等于指定的属性值的实体的集合。
+	 */
+	<T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> properties);
+	
+	
+	/**
 	 * 根据查询设置返回单一结果
 	 * @param <T> 结果类型
 	 * @param settings
