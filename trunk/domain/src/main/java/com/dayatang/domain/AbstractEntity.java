@@ -5,6 +5,7 @@ package com.dayatang.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -145,6 +146,18 @@ public abstract class AbstractEntity implements Entity {
 		return getRepository().find(QuerySettings.create(clazz));
 	}
 
+	public static <T extends Entity> List<T> findByProperty(Class<T> clazz, String propName, Object value) {
+		return getRepository().find(QuerySettings.create(clazz).eq(propName, value));
+	}
+
+	public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
+		QuerySettings<T> querySettings = QuerySettings.create(clazz);
+		for (String propName : propValues.keySet()) {
+			querySettings.eq(propName, propValues.get(propName));
+		}
+		return getRepository().find(querySettings);
+	}
+	
 
 	@Override
 	public abstract int hashCode();
