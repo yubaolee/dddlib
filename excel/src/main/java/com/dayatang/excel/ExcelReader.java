@@ -107,7 +107,11 @@ public class ExcelReader {
 
 	private List<Object[]> readRange(Sheet sheet) {
 		List<Object[]> results = new ArrayList<Object[]>();
-		int lastRow = rowTo < 0 ? sheet.getLastRowNum() : rowTo;
+		int lastRow = rowTo < 0 ? getLastRowNum(sheet) : rowTo;
+		System.out.println("===============" + lastRow);
+		if (lastRow < rowFrom) {	//没有数据
+			return results;
+		}
 		
 		for (int rowIndex = rowFrom; rowIndex <= lastRow; rowIndex++) {
 			Row row = sheet.getRow(rowIndex);
@@ -119,6 +123,23 @@ public class ExcelReader {
 			results.add(rowData);
 		}
 		return results;
+	}
+
+	private int getLastRowNum(Sheet sheet) {
+		int lastRowNum = sheet.getLastRowNum();
+		for (int row = rowFrom; row <= lastRowNum; row++) {
+			boolean isBlankRow = true;
+			for (int column = columnFrom; column <= columnTo; column++) {
+				if (StringUtils.isNotBlank(sheet.getRow(row).getCell(column).getStringCellValue())) { //本行非空行，检验下一行
+					isBlankRow = false;
+					break;
+				}
+			}
+			if (isBlankRow) { //代码进入此处说明整行为空行，
+				return row - 1;
+			}
+		}
+		return lastRowNum;
 	}
 
 	private Object getCellValue(Cell cell) {
