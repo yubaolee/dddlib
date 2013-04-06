@@ -53,7 +53,7 @@ public class ConfigurationDbImpl extends AbstractConfiguration implements Writab
 	@Override
 	public Properties getProperties() {
 		Properties results = new Properties();
-		for (Map.Entry<String, String> each : hTable.entrySet()) {
+		for (Map.Entry<String, String> each : getHashtable().entrySet()) {
 			results.put(each.getKey(), each.getValue());
 		}
 		return results;
