@@ -25,7 +25,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class ConfigurationDbImplTest {
 	
 	private static DataSource dataSource;
-	private static String TABLE_NAME = "SYS_CONFIG";
 	private ConfigurationDbImpl instance;
 
 	@BeforeClass
@@ -61,13 +60,13 @@ public class ConfigurationDbImplTest {
 	@Before
 	public void setUp() throws Exception {
 		readConfigFromFile();
-		instance = new ConfigurationDbImpl(dataSource, TABLE_NAME);
+		instance = new ConfigurationDbImpl(dataSource);
 	}
 
 	private static void readConfigFromFile() throws IOException {
 		Properties props = new Properties();
 		props.load(new InputStreamReader(ConfigurationDbImplTest.class.getResourceAsStream("/conf.properties"), "UTF-8") );
-		ConfigurationDbImpl dbImpl = new ConfigurationDbImpl(dataSource, TABLE_NAME);
+		ConfigurationDbImpl dbImpl = new ConfigurationDbImpl(dataSource);
 		for (Object key : props.keySet()) {
 			dbImpl.setString((String) key, props.getProperty((String) key));
 		}
@@ -202,7 +201,7 @@ public class ConfigurationDbImplTest {
 	public void testSave() {
 		instance.setString("xyz", "yyyy-MM-dd");
 		instance.save();
-		ConfigurationDbImpl instance2 = new ConfigurationDbImpl(dataSource, TABLE_NAME);
+		ConfigurationDbImpl instance2 = new ConfigurationDbImpl(dataSource);
 		assertEquals("yyyy-MM-dd", instance2.getString("xyz"));
 	}
 

@@ -37,12 +37,6 @@ public class ConfigurationFactoryTest {
 	}
 
 	@Test
-	public void testFromDatabaseDataSourceString() {
-		final DataSource dataSource = mock(DataSource.class);
-		assertTrue(instance.fromDatabase(dataSource, "table") instanceof ConfigurationDbImpl);
-	}
-
-	@Test
 	public void testFromDatabaseDataSourceStringStringString() {
 		final DataSource dataSource = mock(DataSource.class);
 		assertTrue(instance.fromDatabase(dataSource, "table", "key", "value") instanceof ConfigurationDbImpl);
