@@ -23,7 +23,7 @@ public interface StatelessRuleService extends Serializable {
 	/**
 	 * 执行规则并返回结果
 	 * @param ruleSource 规则源
-	 * @param executionSetProperties 规则的属性Map(如：source=drl/xml dsl=java.io.Reader)
+     * @param facts 用于执行规则的对象列表。
 	 * @return 返回规则执行的结果，可能包括全部或部分传入的对象（这些对象的某些属性值可能已发生变化），以及规则执行过程中创建的某些对象。
 	 * @throws RuleRuntimeException
 	 */
