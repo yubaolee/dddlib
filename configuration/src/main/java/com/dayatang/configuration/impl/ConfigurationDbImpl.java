@@ -38,10 +38,6 @@ public class ConfigurationDbImpl extends AbstractConfiguration implements Writab
 		this(dataSource, DEFAULT_TABLE_NAME, DEFAULT_KEY_COLUMN, DEFAULT_VALUE_COLUMN);
 	}
 
-	public ConfigurationDbImpl(DataSource dataSource, String tableName) {
-		this(dataSource, tableName, DEFAULT_KEY_COLUMN, DEFAULT_VALUE_COLUMN);
-	}
-
 	public ConfigurationDbImpl(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
 		dbUtils = new ConfigurationDbUtils(dataSource, tableName, keyColumn, valueColumn);
 	}

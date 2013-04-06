@@ -1,5 +1,7 @@
 package com.dayatang.configuration.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -10,6 +12,8 @@ import com.dayatang.utils.Assert;
 
 public abstract class AbstractConfiguration implements Configuration {
 	private String prefix = "";
+	private static final String DATE_FORMAT_KEY = "DATE_FORMAT";
+	private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
 	/**
 	 * 激活配置前缀功能
@@ -162,7 +166,12 @@ public abstract class AbstractConfiguration implements Configuration {
 	@Override
 	public Date getDate(String key, Date defaultValue) {
 		String result = getString(key);
-		return StringUtils.isBlank(result) ? defaultValue : new Date(Long.parseLong(result));
+		String dateFormat = getString(DATE_FORMAT_KEY, DEFAULT_DATE_FORMAT);
+		try {
+			return StringUtils.isBlank(result) ? defaultValue : new SimpleDateFormat(dateFormat).parse(result);
+		} catch (ParseException e) {
+			throw new RuntimeException("日期解析错误！日期格式是：" + dateFormat + ", 日期：" + result, e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -181,7 +190,8 @@ public abstract class AbstractConfiguration implements Configuration {
 		if (value == null) {
 			setString(key, "");
 		}
-		setString(key, String.valueOf(value.getTime()));
+		String dateFormat = getString(DATE_FORMAT_KEY, DEFAULT_DATE_FORMAT);
+		setString(key, new SimpleDateFormat(dateFormat).format(value));
 	}
 
 	public abstract Hashtable<String, String> getHashtable();

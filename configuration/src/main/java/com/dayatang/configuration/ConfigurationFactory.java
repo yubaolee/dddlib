@@ -24,17 +24,7 @@ public class ConfigurationFactory {
 	public WritableConfiguration fromDatabase(DataSource dataSource) {
 		return new ConfigurationDbImpl(dataSource);
 	}
-	
-	/**
-	 * 从JDBC数据源中读取配置
-	 * @param dataSource 数据源
-	 * @param tableName 存放配置信息的数据表名
-	 * @return 可写的配置
-	 */
-	public WritableConfiguration fromDatabase(DataSource dataSource, String tableName) {
-		return new ConfigurationDbImpl(dataSource, tableName);
-	}
-	
+
 	/**
 	 * 从JDBC数据源中读取配置
 	 * @param dataSource 数据源
