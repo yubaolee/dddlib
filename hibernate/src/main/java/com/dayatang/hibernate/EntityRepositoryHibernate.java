@@ -113,6 +113,7 @@ public class EntityRepositoryHibernate implements EntityRepository {
 		LOGGER.info("params: " + StringUtils.join(params, ", "));
 		Query query = getSession().createQuery(queryString);
 		for (int i = 0; i < params.size(); i++) {
+			System.out.println("==================" + i + ": " + params.get(i));
 			query.setParameter(i, params.get(i));
 		}
 		query.setFirstResult(settings.getFirstResult());
