@@ -57,6 +57,8 @@ public class BtmUtils {
 
 	private BtmUtils(String confFile) {
 		this.confFile = confFile;
+		System.out.println("----------------------------"); 
+		System.out.println("LogPart1Filename:" + TransactionManagerServices.getConfiguration().getLogPart1Filename());
 	}
 	
 	/**
