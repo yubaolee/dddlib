@@ -1,15 +1,23 @@
 package com.dayatang.h2;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
 
+import com.dayatang.utils.Slf4jLogger;
+
 public class H2Server {
 	
-	private static H2Server instance = new H2Server("h2-test-db");
+	private static final Slf4jLogger LOGGER = Slf4jLogger.getLogger(H2Server.class);
+	private static final String DEFAULT_DB_FILE = "h2-test-db";
+	private static H2Server instance;
 	
-	public static final H2Server getSingleton() {
+	public static final synchronized H2Server getSingleton() {
+		if (instance == null) {
+			instance = new H2Server(DEFAULT_DB_FILE);
+		}
 		return instance;
 	}
 	
@@ -36,7 +44,9 @@ public class H2Server {
 			DeleteDbFiles.execute(dir, dbFile, true);
 			server = Server.createTcpServer(new String[0]);
 			server.start();
+			LOGGER.info("H2 server started! data file is {}", new File(dir, dbFile).getAbsolutePath());
 		} catch (SQLException e) {
+			LOGGER.error("Cannot start h2 server database", e);
 			throw new RuntimeException("Cannot start h2 server database", e);
 		}
 	}
@@ -49,6 +59,7 @@ public class H2Server {
 			server.stop();
 			server.shutdown();
 			DeleteDbFiles.execute(dir, dbFile, true);
+			LOGGER.info("H2 server shutdowned!");
 		}
 		server = null;
 	}
