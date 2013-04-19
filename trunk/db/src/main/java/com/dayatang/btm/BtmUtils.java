@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javax.transaction.UserTransaction;
 
+import bitronix.tm.BitronixTransactionManager;
 import bitronix.tm.TransactionManagerServices;
 
 /**
@@ -83,4 +84,7 @@ public class BtmUtils {
 		return TransactionManagerServices.getTransactionManager();
 	}
 
+	public BitronixTransactionManager getTransactionManager() {
+		return TransactionManagerServices.getTransactionManager();
+	}
 }
