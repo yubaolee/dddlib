@@ -25,15 +25,14 @@ public class ExcelWriterTest {
 		outputFile = new File(outFileName);
 		String inputFileName = getClass().getResource("/import.xls").getFile();
 		inputFile = new File(inputFileName);
-		instance = new ExcelWriter(outputFile);
-		instance.setTemplateFile(inputFile);
 	}
 
 	@Test
-	public void testExportData() throws Exception {
+	public void testExportDataRange() throws Exception {
 		List<Object[]> data = createData();
-		instance.write("Company", 0, 0, data);
-		ExcelReader reader = ExcelReader.builder().file(outputFile).sheetName("Company").rowFrom(0).columnRange(0, 6).build();
+		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").build();
+		instance.write(data);
+		ExcelReader reader = ExcelReader.builder(outputFile).sheetName("Company").rowFrom(0).columnRange(0, 6).build();
 		ExcelRangeData results = reader.read();
 		assertEquals("编号", results.getString(0, 0));
 		assertEquals("公司", results.getString(0, 1));
@@ -89,4 +88,14 @@ public class ExcelWriterTest {
 		result.set(year, month - 1, date);
 		return result.getTime();
 	}
+
+	@Test
+	public void testExportDataCell() throws Exception {
+		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").rowFrom(2).columnFrom(1).build();
+		instance.writeCell(parseDate(2012, 2, 5));
+		ExcelReader reader = ExcelReader.builder(outputFile).sheetName("Company").rowFrom(2).columnRange(1, 1).build();
+		ExcelRangeData results = reader.read();
+		assertTrue(DateUtils.isSameDay(results.getDate(0, 0), parseDate(2012, 2, 5)));
+	}
+
 }

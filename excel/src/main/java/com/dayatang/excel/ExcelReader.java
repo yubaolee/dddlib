@@ -44,8 +44,18 @@ public class ExcelReader {
 		this.columnTo = builder.columnTo;
 	}
 	
-	public static Builder builder() {
-		return new Builder();
+	public static Builder builder(File excelFile) {
+		Builder builder = new Builder();
+		builder.readerTemplate = new ExcelReaderTemplate(excelFile);
+		builder.version = Version.of(excelFile.getName());
+		return builder;
+	}
+	
+	public static Builder builder(InputStream in, Version version) {
+		Builder builder = new Builder();
+		builder.readerTemplate = new ExcelReaderTemplate(in, version);
+		builder.version = version;
+		return builder;
 	}
 	
 	public ExcelRangeData read() {
@@ -130,10 +140,12 @@ public class ExcelReader {
 		for (int row = rowFrom; row <= lastRowNum; row++) {
 			boolean isBlankRow = true;
 			for (int column = columnFrom; column <= columnTo; column++) {
-				if (StringUtils.isNotBlank(sheet.getRow(row).getCell(column).getStringCellValue())) { //本行非空行，检验下一行
+				Object cellValue = getCellValue(sheet.getRow(row).getCell(column));
+				if (cellValue != null && StringUtils.isNotBlank(cellValue.toString())) { //本行非空行，检验下一行
 					isBlankRow = false;
 					break;
 				}
+				
 			}
 			if (isBlankRow) { //代码进入此处说明整行为空行，
 				return row - 1;
@@ -175,18 +187,6 @@ public class ExcelReader {
 		private String sheetName;
 		private int rowFrom = -1, rowTo = -1;
 		private int columnFrom, columnTo;
-
-		public Builder file(File excelFile) {
-			readerTemplate = new ExcelReaderTemplate(excelFile);
-			version = Version.of(excelFile.getName());
-			return this;
-		}
-		
-		public Builder inputStream(InputStream in, Version version) {
-			readerTemplate = new ExcelReaderTemplate(in, version);
-			this.version = version;
-			return this;
-		}
 		
 		public Builder sheetAt(int sheetIndex) {
 			this.sheetIndex = sheetIndex;
