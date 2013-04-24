@@ -13,8 +13,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class WorkbookFactory {
 	
 	public static Workbook createWorkbook(File excelFile) {
+		return createWorkbook(excelFile, Version.of(excelFile.getName()));
+	}
+
+	public static Workbook createWorkbook(File excelFile, Version version) {
 		try {
-			return createWorkbook(new FileInputStream(excelFile), Version.of(excelFile.getName()));
+			return createWorkbook(new FileInputStream(excelFile), version);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("File " + excelFile.getPath() + " not exists.", e);
 		}
