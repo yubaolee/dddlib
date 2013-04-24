@@ -32,8 +32,9 @@ public class ExcelWriterTest {
 		List<Object[]> data = createData();
 		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").build();
 		instance.write(data);
-		ExcelReader reader = ExcelReader.builder(outputFile).sheetName("Company").rowFrom(0).columnRange(0, 6).build();
-		ExcelRangeData results = reader.read();
+		ExcelRange range = new ExcelRange().rowFrom(0).columnRange(0, 6);
+		ExcelReader reader = new ExcelReader(outputFile);
+		ExcelRangeData results = reader.read("Company", range);
 		assertEquals("编号", results.getString(0, 0));
 		assertEquals("公司", results.getString(0, 1));
 		assertEquals("创建日期", results.getString(0, 2));
@@ -93,9 +94,9 @@ public class ExcelWriterTest {
 	public void testExportDataCell() throws Exception {
 		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").rowFrom(2).columnFrom(1).build();
 		instance.writeCell(parseDate(2012, 2, 5));
-		ExcelReader reader = ExcelReader.builder(outputFile).sheetName("Company").rowFrom(2).columnRange(1, 1).build();
-		ExcelRangeData results = reader.read();
-		assertTrue(DateUtils.isSameDay(results.getDate(0, 0), parseDate(2012, 2, 5)));
+		ExcelReader reader = new ExcelReader(outputFile);
+		Object value = reader.read("Company", 2, 1);
+		assertTrue(DateUtils.isSameDay((Date)value, parseDate(2012, 2, 5)));
 	}
 
 }

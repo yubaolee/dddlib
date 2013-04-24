@@ -2,8 +2,8 @@ package com.dayatang.excel;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -25,69 +25,69 @@ import org.slf4j.LoggerFactory;
 public class ExcelReader {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReader.class);
-	private ExcelReaderTemplate readerTemplate;
+	private Workbook workbook;
 	private Version version;
-
-	private int sheetIndex;
-	private String sheetName;
-	private int rowFrom, rowTo = -1;
-	private int columnFrom, columnTo;
 	
-	public ExcelReader(Builder builder) {
-		this.readerTemplate = builder.readerTemplate;
-		this.version = builder.version;
-		this.sheetIndex = builder.sheetIndex;
-		this.sheetName = builder.sheetName;
-		this.rowFrom = builder.rowFrom;
-		this.rowTo = builder.rowTo;
-		this.columnFrom = builder.columnFrom;
-		this.columnTo = builder.columnTo;
+	
+	public ExcelReader(File excelFile) {
+		workbook = WorkbookFactory.createWorkbook(excelFile);
+		this.version = Version.of(excelFile.getName());
 	}
 	
-	public static Builder builder(File excelFile) {
-		Builder builder = new Builder();
-		builder.readerTemplate = new ExcelReaderTemplate(excelFile);
-		builder.version = Version.of(excelFile.getName());
-		return builder;
+	public ExcelReader(File excelFile, Version version) {
+		workbook = WorkbookFactory.createWorkbook(excelFile, version);
+		this.version = version;
 	}
 	
-	public static Builder builder(InputStream in, Version version) {
-		Builder builder = new Builder();
-		builder.readerTemplate = new ExcelReaderTemplate(in, version);
-		builder.version = version;
-		return builder;
+	public ExcelReader(InputStream excelStream, Version version) {
+		workbook = WorkbookFactory.createWorkbook(excelStream, version);
+		this.version = version;
 	}
 	
-	public ExcelRangeData read() {
-		
-		return readerTemplate.execute(new ExcelReaderCallback<ExcelRangeData>() {
-
-			@Override
-			public ExcelRangeData doInPoi(Workbook workbook) {
-				Sheet sheet = getSheet(workbook);
-				List<Object[]> data = readRange(sheet);
-				return new ExcelRangeData(data, version, isDate1904(workbook));
-			}
-
-			private Sheet getSheet(Workbook workbook) {
-				Sheet result = null;
-				if (StringUtils.isNotBlank(sheetName)) {
-					result = workbook.getSheet(sheetName);
-					if (result == null) {
-						throw new IllegalStateException("Sheet '" + sheetName + "' not exists!");
-					}
-				} else {
-					result = workbook.getSheetAt(sheetIndex);
-					if (result == null) {
-						throw new IllegalStateException("Sheet index of " + sheetIndex + " not exists!");
-					}
-				}
-				return result;
-			}
-
-		});
+	public ExcelRangeData read(int sheetIndex, ExcelRange excelRange) {
+		if (sheetIndex <0 || sheetIndex >= workbook.getNumberOfSheets()) {
+			throw new IllegalStateException("Sheet index of " + sheetIndex + " not exists!");
+		}
+		Sheet sheet = workbook.getSheetAt(sheetIndex);
+		List<Object[]> data = readRange(sheet, excelRange);
+		return new ExcelRangeData(data, version, isDate1904(workbook));
 	}
 	
+	public ExcelRangeData read(String sheetName, ExcelRange excelRange) {
+		Sheet sheet = workbook.getSheet(sheetName);
+		if (sheet == null) {
+			throw new IllegalStateException("Sheet name of " + sheetName + " not exists!");
+		}
+		List<Object[]> data = readRange(sheet, excelRange);
+		return new ExcelRangeData(data, version, isDate1904(workbook));
+	}
+	
+	public Object read(int sheetIndex, int rowIndex, int columnIndex) {
+		Sheet sheet = workbook.getSheetAt(sheetIndex);
+		return getCellValue(sheet.getRow(rowIndex).getCell(columnIndex));
+	}
+	
+	public Object read(String sheetName, int rowIndex, int columnIndex) {
+		Sheet sheet = workbook.getSheet(sheetName);
+		if (sheet == null) {
+			throw new IllegalStateException("Sheet name of " + sheetName + " not exists!");
+		}
+		return getCellValue(sheet.getRow(rowIndex).getCell(columnIndex));
+	}
+	
+	public Object read(int sheetIndex, int rowIndex, String columnName) {
+		Sheet sheet = workbook.getSheetAt(sheetIndex);
+		return getCellValue(sheet.getRow(rowIndex).getCell(convertColumnLabelToIndex(columnName)));
+	}
+	
+	public Object read(String sheetName, int rowIndex, String columnName) {
+		Sheet sheet = workbook.getSheet(sheetName);
+		if (sheet == null) {
+			throw new IllegalStateException("Sheet name of " + sheetName + " not exists!");
+		}
+		return getCellValue(sheet.getRow(rowIndex).getCell(convertColumnLabelToIndex(columnName)));
+	
+	}
 	/**
 	 * 检测Excel工作簿是否采用1904日期系统
 	 */
@@ -115,31 +115,31 @@ public class ExcelReader {
         return year1900 > yearEst1900;
     }
 
-	private List<Object[]> readRange(Sheet sheet) {
+	private List<Object[]> readRange(Sheet sheet, ExcelRange excelRange) {
 		List<Object[]> results = new ArrayList<Object[]>();
-		int lastRow = rowTo < 0 ? getLastRowNum(sheet) : rowTo;
+		int lastRow = excelRange.getRowTo() < 0 ? getLastRowNum(sheet, excelRange) : excelRange.getRowTo();
 		System.out.println("===============" + lastRow);
-		if (lastRow < rowFrom) {	//没有数据
+		if (lastRow < excelRange.getRowFrom()) {	//没有数据
 			return results;
 		}
 		
-		for (int rowIndex = rowFrom; rowIndex <= lastRow; rowIndex++) {
+		for (int rowIndex = excelRange.getRowFrom(); rowIndex <= lastRow; rowIndex++) {
 			Row row = sheet.getRow(rowIndex);
-			Object[] rowData = new Object[columnTo - columnFrom + 1];
-			for (int columnIndex = columnFrom; columnIndex <= columnTo; columnIndex++) {
+			Object[] rowData = new Object[excelRange.getColumnTo() - excelRange.getColumnFrom() + 1];
+			for (int columnIndex = excelRange.getColumnFrom(); columnIndex <= excelRange.getColumnTo(); columnIndex++) {
 				Cell cell = row.getCell(columnIndex, Row.CREATE_NULL_AS_BLANK);
-				rowData[columnIndex - columnFrom] = getCellValue(cell);
+				rowData[columnIndex - excelRange.getColumnFrom()] = getCellValue(cell);
 			}
 			results.add(rowData);
 		}
 		return results;
 	}
 
-	private int getLastRowNum(Sheet sheet) {
+	private int getLastRowNum(Sheet sheet, ExcelRange excelRange) {
 		int lastRowNum = sheet.getLastRowNum();
-		for (int row = rowFrom; row <= lastRowNum; row++) {
+		for (int row = excelRange.getRowFrom(); row <= lastRowNum; row++) {
 			boolean isBlankRow = true;
-			for (int column = columnFrom; column <= columnTo; column++) {
+			for (int column = excelRange.getColumnFrom(); column <= excelRange.getColumnTo(); column++) {
 				Object cellValue = getCellValue(sheet.getRow(row).getCell(column));
 				if (cellValue != null && StringUtils.isNotBlank(cellValue.toString())) { //本行非空行，检验下一行
 					isBlankRow = false;
@@ -180,78 +180,18 @@ public class ExcelReader {
 		return null;
 	}
 
-	public static class Builder {
-		private ExcelReaderTemplate readerTemplate;
-		private Version version;
-		private int sheetIndex = -1;
-		private String sheetName;
-		private int rowFrom = -1, rowTo = -1;
-		private int columnFrom, columnTo;
-		
-		public Builder sheetAt(int sheetIndex) {
-			this.sheetIndex = sheetIndex;
-			this.sheetName = null;
-			return this;
+	private int convertColumnLabelToIndex(String columnLabel) {
+		if (columnLabel.length() > 2) {
+			throw new IllegalArgumentException("Column index too large!");
 		}
-		
-		public Builder sheetName(String sheetName) {
-			this.sheetName = sheetName;
-			this.sheetIndex = -1;
-			return this;
+		String theColumn = columnLabel.toUpperCase();
+		if (theColumn.length() == 1) {
+			int letter = theColumn.charAt(0);
+			return letter - 65;
 		}
-		 
-		public Builder rowFrom(int rowFrom) {
-			this.rowFrom = rowFrom;
-			return this;
-		}
-		
-		public Builder rowTo(int rowTo) {
-			this.rowTo = rowTo;
-			return this;
-		}
-
-		public Builder columnRange(int columnFrom, int columnTo) {
-			if (columnTo < columnFrom) {
-				throw new IllegalArgumentException("Last column is less than first column!");
-			}
-			this.columnFrom = columnFrom;
-			this.columnTo = columnTo;
-			return this;
-		}
-
-		public Builder columnRange(String columnFrom, String columnTo) {
-			return columnRange(convertColumnLabelToIndex(columnFrom), convertColumnLabelToIndex(columnTo));
-		}
-
-		private int convertColumnLabelToIndex(String columnLabel) {
-			if (columnLabel.length() > 2) {
-				throw new IllegalArgumentException("Column index too large!");
-			}
-			String theColumn = columnLabel.toUpperCase();
-			if (theColumn.length() == 1) {
-				int letter = theColumn.charAt(0);
-				return letter - 65;
-			}
-			int firstLetter = theColumn.charAt(0);
-			int lastLetter = theColumn.charAt(1);
-			return (firstLetter - 64) * 26 + lastLetter - 65;
-		}
-		
-		public ExcelReader build() {
-			if (sheetIndex < 0 && StringUtils.isEmpty(sheetName)) {
-				throw new IllegalArgumentException("Sheet name or index needed!");
-			}
-			if (rowFrom < 0) {
-				throw new IllegalArgumentException("First row is less than 0!");
-			}
-			if (rowTo >= 0 && rowTo < rowFrom) {
-				throw new IllegalArgumentException("Last row is less than first row!");
-			}
-			if (columnFrom < 0) {
-				throw new IllegalArgumentException("Need one column at least!");
-			}
-			return new ExcelReader(this);
-		}
+		int firstLetter = theColumn.charAt(0);
+		int lastLetter = theColumn.charAt(1);
+		return (firstLetter - 64) * 26 + lastLetter - 65;
 	}
 
 }

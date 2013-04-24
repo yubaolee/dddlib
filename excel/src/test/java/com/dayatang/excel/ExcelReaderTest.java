@@ -10,6 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class ExcelReaderTest {
 
 	private ExcelReader importer;
@@ -19,13 +20,14 @@ public class ExcelReaderTest {
 	public void setUp() throws Exception {
 		String excelFileName = getClass().getResource("/import.xls").toURI().toURL().getFile();
 		excelFile = new File(excelFileName);
+		importer = new ExcelReader(excelFile);
 	}
 
 
 	@Test
 	public void testReadColumnIndexRange() throws Exception {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).columnRange(0, 6).build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).columnRange(0, 6);
+		ExcelRangeData data = importer.read(0, range);
 		assertEquals(3, data.getRowCount());
 		
 		assertEquals("suilink", data.getString(0, 0));
@@ -43,10 +45,9 @@ public class ExcelReaderTest {
 
 	@Test
 	public void testReadColumnNameRange() throws Exception {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).columnRange("A", "G").build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).columnRange("A", "G");
+		ExcelRangeData data = importer.read(0, range);
 		assertEquals(3, data.getRowCount());
-		
 		assertEquals("suilink", data.getString(0, 0));
 		assertEquals("广州穗灵通讯科技有限公司", data.getString(0, 1));
 		assertTrue(DateUtils.isSameDay(data.getDate(0, 2), parseDate(2002, 7, 1)));
@@ -62,8 +63,8 @@ public class ExcelReaderTest {
 	
 	@Test
 	public void testReadFixedRows() throws Exception {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).rowTo(2).columnRange("A", "G").build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).rowTo(2).columnRange("A", "G");
+		ExcelRangeData data = importer.read(0, range);
 		assertEquals(2, data.getRowCount());
 		
 		assertEquals("suilink", data.getString(0, 0));
@@ -86,22 +87,22 @@ public class ExcelReaderTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void testWrongNumeric() {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).rowTo(2).columnRange("A", "G").build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).rowTo(2).columnRange("A", "G");
+		ExcelRangeData data = importer.read(0, range);
 		data.getDouble(0, 1);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testWrongBoolean() {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).rowTo(2).columnRange("A", "G").build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).rowTo(2).columnRange("A", "G");
+		ExcelRangeData data = importer.read(0, range);
 		data.getBoolean(0, 1);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testWrongDate() {
-		importer = ExcelReader.builder(excelFile).sheetAt(0).rowFrom(1).rowTo(2).columnRange("A", "G").build();
-		ExcelRangeData data = importer.read();
+		ExcelRange range = new ExcelRange().rowFrom(1).rowTo(2).columnRange("A", "G");
+		ExcelRangeData data = importer.read(0, range);
 		data.getDate(0, 1);
 	}
 }
