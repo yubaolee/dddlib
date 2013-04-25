@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class ExcelRangeData {
 	private List<Object[]> data = new ArrayList<Object[]>();
 	private Version version;
@@ -27,51 +25,27 @@ public class ExcelRangeData {
 	}
 	
 	public Double getDouble(int row, int column) {
-		Object value = data.get(row)[column];
-		if (value == null) {
-			return null;
-		}
-		if (! (value instanceof Double)) {
-			throw new IllegalStateException("数据类型错误：单元格中的数据不是数值/日期类型");
-		}
-		return (Double) value;
+		return ExcelUtils.getDouble(data.get(row)[column]);
 	}
 	
 	public Integer getInt(int row, int column) {
-		Double value = getDouble(row, column);
-		return value == null ? null : value.intValue();
+		return ExcelUtils.getInt(data.get(row)[column]);
 	}
 	
 	public Long getLong(int row, int column) {
-		Double value = getDouble(row, column);
-		return value == null ? null : value.longValue();
+		return ExcelUtils.getLong(data.get(row)[column]);
 	}
 	
 	public Boolean getBoolean(int row, int column) {
-		Object value = data.get(row)[column];
-		if (value == null) {
-			return null;
-		}
-		if (! (value instanceof Boolean)) {
-			throw new IllegalStateException("数据类型错误：单元格中的数据不是布尔类型");
-		}
-		return (Boolean) value;
+		return ExcelUtils.getBoolean(data.get(row)[column]);
 	}
 	
 	public String getString(int row, int column) {
-		Object value = data.get(row)[column];
-		if (value == null) {
-			return null;
-		}
-		if (StringUtils.isBlank(value.toString())) {
-			return null;
-		}
-		return value.toString();
+		return ExcelUtils.getString(data.get(row)[column]);
 	}
 	
 	public Date getDate(int row, int column) {
-		Double value = getDouble(row, column);
-		return version.getDate(value, isDate1904);
+		return ExcelUtils.getDate(data.get(row)[column], version, isDate1904);
 	}
 
 	public List<Object[]> getData() {
