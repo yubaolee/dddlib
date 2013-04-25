@@ -29,28 +29,28 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ExcelHandler {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelHandler.class);
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private Workbook workbook;
 	private Version version;
-	
+
 	public ExcelHandler() {
 		workbook = new HSSFWorkbook();
 		workbook.createSheet();
 		this.version = Version.XLS;
 	}
-	
+
 	public ExcelHandler(File excelFile) {
 		workbook = WorkbookFactory.createWorkbook(excelFile);
 		this.version = Version.of(excelFile.getName());
 	}
-	
+
 	public ExcelHandler(File excelFile, Version version) {
 		workbook = WorkbookFactory.createWorkbook(excelFile, version);
 		this.version = version;
 	}
-	
+
 	public ExcelHandler(InputStream excelStream, Version version) {
 		workbook = WorkbookFactory.createWorkbook(excelStream, version);
 		this.version = version;
@@ -58,6 +58,7 @@ public class ExcelHandler {
 
 	/**
 	 * 从指定的工作表范围读取数据
+	 * 
 	 * @param excelRange
 	 * @return
 	 */
@@ -65,7 +66,7 @@ public class ExcelHandler {
 		Sheet sheet = getSheet(excelRange);
 		List<Object[]> data = new ArrayList<Object[]>();
 		int lastRow = excelRange.getRowTo() < 0 ? getLastRowNum(sheet, excelRange) : excelRange.getRowTo();
-		if (lastRow < excelRange.getRowFrom()) {	//没有数据
+		if (lastRow < excelRange.getRowFrom()) { // 没有数据
 			return new ExcelRangeData(data, version, isDate1904());
 		}
 		for (int rowIndex = excelRange.getRowFrom(); rowIndex <= lastRow; rowIndex++) {
@@ -79,7 +80,7 @@ public class ExcelHandler {
 		}
 		return new ExcelRangeData(data, version, isDate1904());
 	}
-	
+
 	private Sheet getSheet(ExcelRange excelRange) {
 		int sheetIndex = excelRange.getSheetIndex();
 		String sheetName = excelRange.getSheetName();
@@ -88,7 +89,7 @@ public class ExcelHandler {
 		}
 		return sheetIndex < 0 ? getSheet(sheetName) : getSheet(sheetIndex);
 	}
-	
+
 	private Sheet getSheet(ExcelCell excelCell) {
 		int sheetIndex = excelCell.getSheetIndex();
 		String sheetName = excelCell.getSheetName();
@@ -101,8 +102,7 @@ public class ExcelHandler {
 	private Sheet getSheet(int sheetIndex) {
 		Sheet sheet = workbook.getSheetAt(sheetIndex);
 		if (sheet == null) {
-            throw new IllegalArgumentException("Sheet index ("
-                    + sheetIndex +") is out of range (0.." + (workbook.getNumberOfSheets() - 1) + ")");
+			throw new IllegalArgumentException("Sheet index (" + sheetIndex + ") is out of range (0.." + (workbook.getNumberOfSheets() - 1) + ")");
 		}
 		return sheet;
 	}
@@ -110,7 +110,7 @@ public class ExcelHandler {
 	private Sheet getSheet(String sheetName) {
 		Sheet sheet = workbook.getSheet(sheetName);
 		if (sheet == null) {
-            throw new IllegalArgumentException("Sheet name (" + sheetName +") does not exists.)");
+			throw new IllegalArgumentException("Sheet name (" + sheetName + ") does not exists.)");
 		}
 		return sheet;
 	}
@@ -121,13 +121,13 @@ public class ExcelHandler {
 			boolean isBlankRow = true;
 			for (int column = excelRange.getColumnFrom(); column <= excelRange.getColumnTo(); column++) {
 				Object cellValue = getCellValue(sheet.getRow(row).getCell(column));
-				if (cellValue != null && StringUtils.isNotBlank(cellValue.toString())) { //本行非空行，检验下一行
+				if (cellValue != null && StringUtils.isNotBlank(cellValue.toString())) { // 本行非空行，检验下一行
 					isBlankRow = false;
 					break;
 				}
-				
+
 			}
-			if (isBlankRow) { //代码进入此处说明整行为空行，
+			if (isBlankRow) { // 代码进入此处说明整行为空行，
 				return row - 1;
 			}
 		}
@@ -135,46 +135,95 @@ public class ExcelHandler {
 	}
 
 	/**
-	 * 从工作表的指定单元格中读取数据
+	 * 从工作表的指定单元格中读取字符串数据
 	 * @param excelCell
 	 * @return
 	 */
-	public Object readCell(ExcelCell excelCell) {
-		return getCellValue(getSheet(excelCell).getRow(excelCell.getRowIndex()).getCell(excelCell.getColumnIndex()));
+	public String readString(ExcelCell excelCell) {
+		return ExcelUtils.getString(readCell(excelCell));
 	}
 
+	/**
+	 * 从工作表的指定单元格中读取整数数据
+	 * @param excelCell
+	 * @return
+	 */
+	public Integer readInt(ExcelCell excelCell) {
+		return ExcelUtils.getInt(readCell(excelCell));
+	}
+
+	/**
+	 * 从工作表的指定单元格中读取长整数数据
+	 * @param excelCell
+	 * @return
+	 */
+	public Long readLong(ExcelCell excelCell) {
+		return ExcelUtils.getLong(readCell(excelCell));
+	}
+
+	/**
+	 * 从工作表的指定单元格中读取Double数据
+	 * @param excelCell
+	 * @return
+	 */
+	public Double readDouble(ExcelCell excelCell) {
+		return ExcelUtils.getDouble(readCell(excelCell));
+	}
+
+	/**
+	 * 从工作表的指定单元格中读取布尔数据
+	 * @param excelCell
+	 * @return
+	 */
+	public Boolean readBoolean(ExcelCell excelCell) {
+		return ExcelUtils.getBoolean(readCell(excelCell));
+	}
+
+	/**
+	 * 从工作表的指定单元格中读取日期数据
+	 * @param excelCell
+	 * @return
+	 */
+	public Date readDate(ExcelCell excelCell) {
+		return ExcelUtils.getDate(readCell(excelCell), version, isDate1904());
+	}
+
+	private Object readCell(ExcelCell excelCell) {
+		return getCellValue(getSheet(excelCell).getRow(excelCell.getRowIndex()).getCell(excelCell.getColumnIndex()));
+	}
 
 	/**
 	 * 检测Excel工作簿是否采用1904日期系统
 	 */
 	private boolean isDate1904() {
-        Sheet sheet = workbook.createSheet();
-        int sheetIndex = workbook.getSheetIndex(sheet);
-        Row row = sheet.createRow(0);
-        Cell cell = row.createCell(0);
-        cell.setCellValue(0.0);
-        boolean is1994 = isDate1904(cell);
-        workbook.removeSheetAt(sheetIndex);
-        return is1994;
+		Sheet sheet = workbook.createSheet();
+		int sheetIndex = workbook.getSheetIndex(sheet);
+		Row row = sheet.createRow(0);
+		Cell cell = row.createCell(0);
+		cell.setCellValue(0.0);
+		boolean is1994 = isDate1904(cell);
+		workbook.removeSheetAt(sheetIndex);
+		return is1994;
 	}
-	
-    /**
-     * throws an exception for non-numeric cells
-     */
+
+	/**
+	 * throws an exception for non-numeric cells
+	 */
 	private static boolean isDate1904(Cell cell) {
-        double value = cell.getNumericCellValue();
-        Date date = cell.getDateCellValue();
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        long year1900 = cal.get(Calendar.YEAR)-1900;
-        long yearEst1900 = Math.round(value/(365.25));
-        return year1900 > yearEst1900;
-    }
+		double value = cell.getNumericCellValue();
+		Date date = cell.getDateCellValue();
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		long year1900 = cal.get(Calendar.YEAR) - 1900;
+		long yearEst1900 = Math.round(value / (365.25));
+		return year1900 > yearEst1900;
+	}
 
 	private Object getCellValue(Cell cell) {
-		try{
+		try {
 			if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
-				LOGGER.error("Cell content is error. Sheet: {}, row: {}, column: {}", new Object[] {cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex()});
+				LOGGER.error("Cell content is error. Sheet: {}, row: {}, column: {}",
+						new Object[] { cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex() });
 				return null;
 			}
 			if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
@@ -191,7 +240,8 @@ public class ExcelHandler {
 			}
 		} catch (IllegalStateException e) {
 			LOGGER.error(e.getLocalizedMessage());
-			LOGGER.error("Read cell error. Sheet: {}, row: {}, column: {}", new Object[] {cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex()});
+			LOGGER.error("Read cell error. Sheet: {}, row: {}, column: {}",
+					new Object[] { cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex() });
 			throw new RuntimeException(e);
 		}
 		return null;
@@ -199,6 +249,7 @@ public class ExcelHandler {
 
 	/**
 	 * 以指定ExcelCell代表的单元格为左上角，将一批数据写入工作表
+	 * 
 	 * @param topLeftCell
 	 * @param data
 	 */
@@ -219,9 +270,10 @@ public class ExcelHandler {
 			rowIndex++;
 		}
 	}
-	
+
 	/**
 	 * 将数据写入指定的Excel单元格中。
+	 * 
 	 * @param excelCell
 	 * @param value
 	 */

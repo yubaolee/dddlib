@@ -98,8 +98,7 @@ public class ExcelWriterTest {
 		instance.writeCell(excelCell, parseDate(2012, 2, 5));
 		instance.outputTo(outputFile);
 		instance = new ExcelHandler(outputFile);
-		Object value = instance.readCell(excelCell);
-		assertTrue(DateUtils.isSameDay((Date)value, parseDate(2012, 2, 5)));
+		assertTrue(DateUtils.isSameDay(instance.readDate(excelCell), parseDate(2012, 2, 5)));
 	}
 
 }
