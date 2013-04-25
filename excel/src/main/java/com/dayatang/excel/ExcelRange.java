@@ -1,11 +1,49 @@
 package com.dayatang.excel;
 
+import com.dayatang.utils.Assert;
+
+/**
+ * Excel工作表范围，代表指定工作表中的一个矩形区域
+ * @author yyang
+ *
+ */
 public class ExcelRange {
+	private int sheetIndex = 0;
+	private String sheetName;
 	private int rowFrom;
 	private int rowTo = -1;
 	private int columnFrom;
 	private int columnTo;
-	 
+	
+	public static ExcelRange sheetIndex(int sheetIndex) {
+		return new ExcelRange(sheetIndex);
+	}
+	
+	private ExcelRange(int sheetIndex) {
+		if (sheetIndex < 0) {
+			throw new IllegalArgumentException("Sheet index cannot less than 0!");
+		}
+		this.sheetIndex = sheetIndex;
+	}
+	
+	public static ExcelRange sheetName(String sheetName) {
+		return new ExcelRange(sheetName);
+	}
+
+	private ExcelRange(String sheetName) {
+		Assert.notBlank(sheetName, "Sheet name cannot be null or blank!");
+		this.sheetName = sheetName;
+		this.sheetIndex = -1;
+	}
+
+	public int getSheetIndex() {
+		return sheetIndex;
+	}
+
+	public String getSheetName() {
+		return sheetName;
+	}
+
 	public int getRowFrom() {
 		return rowFrom;
 	}

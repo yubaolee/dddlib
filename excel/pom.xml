@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<inceptionYear>dayatang</inceptionYear>
 	<parent>
@@ -11,13 +12,18 @@
 	<packaging>jar</packaging>
 	<name>Dayatang Excel Date Import and Export Library</name>
 	<description>Dayatang Excel Date Import and Export Library</description>
-	
+
 	<scm>
 		<connection>scm:svn:http://dddlib.googlecode.com/svn/trunk/excel/</connection>
 		<developerConnection>scm:svn:https://dddlib.googlecode.com/svn/trunk/excel/</developerConnection>
 	</scm>
 
 	<dependencies>
+		<dependency>
+		<groupId>com.dayatang.commons</groupId>
+		<artifactId>dayatang-commons-utils</artifactId>
+		<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
