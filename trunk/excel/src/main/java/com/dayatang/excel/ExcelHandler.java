@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Excel读写工具类
+ * Excel读写类
  * 
  * @author yyang
  * 

@@ -77,6 +77,6 @@ public class ExcelCell {
 	}
 
 	public ExcelCell column(String columnName) {
-		return column(ColumnNameConverter.convertColumnNameToIndex(columnName));
+		return column(ExcelUtils.convertColumnNameToIndex(columnName));
 	}
 }
