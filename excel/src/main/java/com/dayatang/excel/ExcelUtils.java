@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.dayatang.utils.Assert;
+
 /**
  * Excel工具类
  * @author yyang
@@ -20,17 +22,22 @@ public class ExcelUtils {
 	 * @return 参数columnName代表的列的索引
 	 */
 	public static int convertColumnNameToIndex(String columnName) {
-		if (columnName.length() > 2) {
-			throw new IllegalArgumentException("Column index too large!");
-		}
+		Assert.notBlank(columnName);
 		String theColumn = columnName.toUpperCase();
-		if (theColumn.length() == 1) {
-			int letter = theColumn.charAt(0);
-			return letter - 65;
+		int length = theColumn.length();
+		int result = letterToInt(theColumn.charAt(length - 1));
+		if (length == 1) {
+			return result;
 		}
-		int firstLetter = theColumn.charAt(0);
-		int lastLetter = theColumn.charAt(1);
-		return (firstLetter - 64) * 26 + lastLetter - 65;
+		for (int i = 1; i < length; i++) {
+			int letter = theColumn.charAt(length - i - 1);
+			result = (letterToInt(letter) + 1) * ((int) Math.pow(26, i)) + result;
+		}
+		return result;
+	}
+	
+	private static int letterToInt(int letter) {
+		return letter - 65;
 	}
 	
 	public static Double getDouble(Object data) {
