@@ -56,6 +56,10 @@ public class ExcelHandler {
 		this.version = version;
 	}
 
+	public Workbook getWorkbook() {
+		return workbook;
+	}
+
 	/**
 	 * 从指定的工作表范围读取数据
 	 * 
