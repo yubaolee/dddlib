@@ -17,24 +17,26 @@ public class ExcelWriterTest {
 
 	private File outputFile;
 	private File inputFile;
-	private ExcelWriter instance;
+	private ExcelHandler instance;
 	
 	@Before
 	public void setUp() throws Exception {
-		String outFileName = getClass().getResource("/export.xls").getFile();
-		outputFile = new File(outFileName);
 		String inputFileName = getClass().getResource("/import.xls").getFile();
 		inputFile = new File(inputFileName);
+		instance = new ExcelHandler(inputFile);
+		String outFileName = getClass().getResource("/export.xls").getFile();
+		outputFile = new File(outFileName);
 	}
 
 	@Test
 	public void testExportDataRange() throws Exception {
 		List<Object[]> data = createData();
-		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").build();
-		instance.write(data);
-		ExcelRange range = new ExcelRange().rowFrom(0).columnRange(0, 6);
-		ExcelReader reader = new ExcelReader(outputFile);
-		ExcelRangeData results = reader.read("Company", range);
+		ExcelCell excelCell = ExcelCell.sheetName("Company").row(0).column(0);
+		instance.writeRange(excelCell, data);
+		instance.outputTo(outputFile);
+		ExcelRange range = ExcelRange.sheetName("Company").rowFrom(0).columnRange(0, 6);
+		instance = new ExcelHandler(outputFile);
+		ExcelRangeData results = instance.readRange(range);
 		assertEquals("编号", results.getString(0, 0));
 		assertEquals("公司", results.getString(0, 1));
 		assertEquals("创建日期", results.getString(0, 2));
@@ -92,10 +94,11 @@ public class ExcelWriterTest {
 
 	@Test
 	public void testExportDataCell() throws Exception {
-		instance = ExcelWriter.builder(outputFile).templateFile(inputFile).sheetName("Company").rowFrom(2).columnFrom(1).build();
-		instance.writeCell(parseDate(2012, 2, 5));
-		ExcelReader reader = new ExcelReader(outputFile);
-		Object value = reader.read("Company", 2, 1);
+		ExcelCell excelCell = ExcelCell.sheetName("Company").row(2).column(1);
+		instance.writeCell(excelCell, parseDate(2012, 2, 5));
+		instance.outputTo(outputFile);
+		instance = new ExcelHandler(outputFile);
+		Object value = instance.readCell(excelCell);
 		assertTrue(DateUtils.isSameDay((Date)value, parseDate(2012, 2, 5)));
 	}
 

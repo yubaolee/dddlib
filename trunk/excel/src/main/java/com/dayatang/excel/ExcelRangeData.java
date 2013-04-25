@@ -73,4 +73,8 @@ public class ExcelRangeData {
 		Double value = getDouble(row, column);
 		return version.getDate(value, isDate1904);
 	}
+
+	public List<Object[]> getData() {
+		return data;
+	}
 }
