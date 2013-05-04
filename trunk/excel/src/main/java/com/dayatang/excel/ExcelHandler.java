@@ -340,4 +340,8 @@ public class ExcelHandler {
 			}
 		}
 	}
+	
+	public int getSheetCount() {
+		return workbook.getNumberOfSheets();
+	}
 }
