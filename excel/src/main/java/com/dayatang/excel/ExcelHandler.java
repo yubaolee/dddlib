@@ -124,12 +124,14 @@ public class ExcelHandler {
 		for (int row = excelRange.getRowFrom(); row <= lastRowNum; row++) {
 			boolean isBlankRow = true;
 			for (int column = excelRange.getColumnFrom(); column <= excelRange.getColumnTo(); column++) {
+				if (sheet.getRow(row) == null) {
+					return row - 1;
+				}
 				Object cellValue = getCellValue(sheet.getRow(row).getCell(column));
 				if (cellValue != null && StringUtils.isNotBlank(cellValue.toString())) { // 本行非空行，检验下一行
 					isBlankRow = false;
 					break;
 				}
-
 			}
 			if (isBlankRow) { // 代码进入此处说明整行为空行，
 				return row - 1;
