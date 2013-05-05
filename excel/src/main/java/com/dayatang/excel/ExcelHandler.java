@@ -226,6 +226,9 @@ public class ExcelHandler {
 	}
 
 	private Object getCellValue(Cell cell) {
+		if (cell == null) {
+			return null;
+		}
 		try {
 			if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
 				LOGGER.error("Cell content is error. Sheet: {}, row: {}, column: {}",
